@@ -142,6 +142,74 @@ const colors: ButtonColor[] = ["default", "primary", "danger", "cyan", "purple",
 const shapes: ButtonShape[] = ["default", "round", "circle"];
 const sizes: ButtonSize[] = ["small", "medium", "large"];
 
+const SearchIcon = ({ size = 15 }: { size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
+
+const StarIcon = ({ size = 15 }: { size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
+const ArrowRightIcon = ({ size = 15 }: { size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const DownloadIcon = ({ size = 15 }: { size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="7 10 12 15 17 10" />
+    <line x1="12" y1="15" x2="12" y2="3" />
+  </svg>
+);
+
 export const ButtonDocPage: React.FC = () => {
   const [mode, setMode] = useState<"type" | "colorVariant">("type");
   const [type, setType] = useState<ButtonType>("primary");
@@ -157,18 +225,33 @@ export const ButtonDocPage: React.FC = () => {
 
   const interactiveCode =
     mode === "type"
-      ? `<Button
+      ? shape === "circle"
+        ? `<Button
+  type="${type}"
+  shape="circle"
+  icon={<SearchIcon />}
+  size="${size}"${danger ? "\n  danger" : ""}${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${disabled ? "\n  disabled" : ""}
+/>`
+        : `<Button
   type="${type}"
   size="${size}"${shape !== "default" ? `\n  shape="${shape}"` : ""}${danger ? "\n  danger" : ""}${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${block ? "\n  block" : ""}${disabled ? "\n  disabled" : ""}
 >
-  ${shape === "circle" ? "🔍" : type.charAt(0).toUpperCase() + type.slice(1) + " Button"}
+  ${type.charAt(0).toUpperCase() + type.slice(1)} Button
 </Button>`
+      : shape === "circle"
+      ? `<Button
+  color="${color}"
+  variant="${variant}"
+  shape="circle"
+  icon={<SearchIcon />}
+  size="${size}"${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${disabled ? "\n  disabled" : ""}
+/>`
       : `<Button
   color="${color}"
   variant="${variant}"
   size="${size}"${shape !== "default" ? `\n  shape="${shape}"` : ""}${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${block ? "\n  block" : ""}${disabled ? "\n  disabled" : ""}
 >
-  ${shape === "circle" ? "🔍" : `${color} ${variant}`}
+  ${color} ${variant}
 </Button>`;
 
   return (
@@ -387,11 +470,11 @@ export const ButtonDocPage: React.FC = () => {
               danger={danger}
               ghost={ghost}
               loading={loading}
-              block={block}
+              block={shape === "circle" ? false : block}
               disabled={disabled}
-              onClick={() => {}}
+              icon={shape === "circle" ? <SearchIcon /> : undefined}
             >
-              {shape === "circle" ? "🔍" : `${type.charAt(0).toUpperCase() + type.slice(1)} Button`}
+              {shape === "circle" ? undefined : `${type.charAt(0).toUpperCase() + type.slice(1)} Button`}
             </Button>
           ) : (
             <Button
@@ -401,11 +484,11 @@ export const ButtonDocPage: React.FC = () => {
               size={size}
               ghost={ghost}
               loading={loading}
-              block={block}
+              block={shape === "circle" ? false : block}
               disabled={disabled}
-              onClick={() => {}}
+              icon={shape === "circle" ? <SearchIcon /> : undefined}
             >
-              {shape === "circle" ? "🔍" : `${color} ${variant}`}
+              {shape === "circle" ? undefined : `${color} ${variant}`}
             </Button>
           )}
         </div>
@@ -515,20 +598,32 @@ export const ButtonDocPage: React.FC = () => {
       />
 
       {/* Shapes & Icon Placement */}
-      <h2 className="docs-section-heading">Button Shapes & Icons</h2>
+      <h2 className="docs-section-heading">Button Shapes & Icons (Ant Design Specification)</h2>
       <p className="docs-p">
-        Set <code>shape="circle"</code> for circular icon triggers, or <code>shape="round"</code> for pill buttons. Icons can be placed at <code>start</code> or <code>end</code>:
+        Use <code>shape="circle"</code> for circular icon triggers, or <code>shape="round"</code> for pill buttons. When <code>shape="circle"</code> is specified, the button computes a 1:1 square ratio with <code>border-radius: 50%</code> and mathematically centers the icon:
       </p>
       <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", margin: "1.5rem 0", alignItems: "center" }}>
-        <Button type="primary" shape="circle">🔍</Button>
-        <Button type="primary" shape="round">Download Now</Button>
-        <Button type="default" icon={<span>★</span>} iconPlacement="start">Favorite</Button>
-        <Button type="default" icon={<span>→</span>} iconPlacement="end">Next Step</Button>
+        <Button type="primary" shape="circle" icon={<SearchIcon />} />
+        <Button type="primary" shape="circle">A</Button>
+        <Button type="primary" icon={<SearchIcon />}>Search</Button>
+        <Button shape="circle" icon={<SearchIcon />} />
+        <Button icon={<SearchIcon />}>Search</Button>
+        <Button type="dashed" shape="circle" icon={<SearchIcon />} />
+        <Button type="dashed" icon={<SearchIcon />}>Search</Button>
+        <Button type="primary" shape="round" icon={<DownloadIcon />}>Download</Button>
+        <Button type="default" icon={<StarIcon />} iconPlacement="start">Favorite</Button>
+        <Button type="default" icon={<ArrowRightIcon />} iconPlacement="end">Next Step</Button>
       </div>
       <CodeBlock
-        code={`<Button type="primary" shape="circle">🔍</Button>
-<Button type="primary" shape="round">Download Now</Button>
-<Button type="default" icon={<SearchIcon />} iconPlacement="start">Favorite</Button>
+        code={`<Button type="primary" shape="circle" icon={<SearchIcon />} />
+<Button type="primary" shape="circle">A</Button>
+<Button type="primary" icon={<SearchIcon />}>Search</Button>
+<Button shape="circle" icon={<SearchIcon />} />
+<Button icon={<SearchIcon />}>Search</Button>
+<Button type="dashed" shape="circle" icon={<SearchIcon />} />
+<Button type="dashed" icon={<SearchIcon />}>Search</Button>
+<Button type="primary" shape="round" icon={<DownloadIcon />}>Download</Button>
+<Button type="default" icon={<StarIcon />} iconPlacement="start">Favorite</Button>
 <Button type="default" icon={<ArrowRightIcon />} iconPlacement="end">Next Step</Button>`}
         language="tsx"
       />
@@ -584,15 +679,27 @@ export const ButtonDocPage: React.FC = () => {
       />
 
       {/* Ant Design Click Wave Effect */}
-      <h2 className="docs-section-heading">Ant Design Click Wave Effect</h2>
+      <h2 className="docs-section-heading">Ant Design Signature Click Wave Animation</h2>
       <p className="docs-p">
-        Clicking any solid or bordered button triggers the dynamic Ant Design radiating wave pulse animation around the border. Click the button below to observe the wave effect:
+        Clicking any solid or bordered button triggers the signature Ant Design radiating wave ripple animation. Click any button below to see the wave in action across types and colors:
       </p>
-      <div style={{ margin: "1.5rem 0" }}>
-        <Button type="primary" size="large" onClick={() => {}}>
-          Click Me for Wave Effect ⚡
-        </Button>
+      <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", margin: "1.5rem 0", alignItems: "center" }}>
+        <Button type="primary">Primary Wave (Blue)</Button>
+        <Button type="default">Default Wave</Button>
+        <Button type="dashed">Dashed Wave</Button>
+        <Button type="primary" danger>Danger Wave (Red)</Button>
+        <Button color="cyan" variant="solid">Cyan Wave</Button>
+        <Button color="purple" variant="solid">Purple Wave</Button>
+        <Button color="green" variant="solid">Green Wave</Button>
       </div>
+      <CodeBlock
+        code={`<Button type="primary">Primary Wave (Blue)</Button>
+<Button type="default">Default Wave</Button>
+<Button type="dashed">Dashed Wave</Button>
+<Button type="primary" danger>Danger Wave (Red)</Button>
+<Button color="purple" variant="solid">Purple Wave</Button>`}
+        language="tsx"
+      />
 
       {/* Props Reference */}
       <h2 className="docs-section-heading">API Reference</h2>

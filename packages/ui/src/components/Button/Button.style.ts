@@ -26,8 +26,7 @@ export const buttonCssText = `
   justify-content: center;
   gap: 8px;
   height: var(--ch-btn-height);
-  padding-left: var(--ch-btn-padding-x);
-  padding-right: var(--ch-btn-padding-x);
+  padding: 0 var(--ch-btn-padding-x);
   font-family: var(--ch-font-sans);
   font-size: var(--ch-btn-font-size);
   font-weight: 400;
@@ -86,15 +85,17 @@ export const buttonCssText = `
   transition: margin-left 0.2s, margin-right 0.2s;
 }
 
+.ch-btn-icon > svg,
 .ch-btn-icon svg {
+  display: inline-block;
   width: 1em;
   height: 1em;
-  fill: currentColor;
 }
 
 .ch-btn-content {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   line-height: 1;
 }
 
@@ -277,7 +278,7 @@ export const buttonCssText = `
 }
 
 /* ==========================================================================
-   Shapes (Default, Round, Circle)
+   Shapes & Icon-Only (Default, Round, Circle)
    ========================================================================== */
 .ch-btn--shape-round {
   border-radius: 9999px;
@@ -285,12 +286,50 @@ export const buttonCssText = `
   padding-right: 16px;
 }
 
+.ch-btn--icon-only {
+  width: var(--ch-btn-height);
+  min-width: var(--ch-btn-height);
+  padding: 0 !important;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.ch-btn--icon-only .ch-btn-icon {
+  font-size: 16px;
+  margin: 0;
+}
+
+.ch-btn--size-sm.ch-btn--icon-only .ch-btn-icon {
+  font-size: 14px;
+}
+
+.ch-btn--size-lg.ch-btn--icon-only .ch-btn-icon {
+  font-size: 18px;
+}
+
 .ch-btn--shape-circle {
-  border-radius: 50%;
   min-width: var(--ch-btn-height);
   width: var(--ch-btn-height);
-  padding-left: 0;
-  padding-right: 0;
+  height: var(--ch-btn-height);
+  padding: 0 !important;
+  border-radius: 50% !important;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.ch-btn--shape-circle .ch-btn-icon {
+  font-size: 16px;
+  margin: 0;
+}
+
+.ch-btn--size-sm.ch-btn--shape-circle .ch-btn-icon {
+  font-size: 14px;
+}
+
+.ch-btn--size-lg.ch-btn--shape-circle .ch-btn-icon {
+  font-size: 18px;
 }
 
 /* ==========================================================================
@@ -332,22 +371,34 @@ export const buttonCssText = `
 /* ==========================================================================
    Ant Design Signature Click Wave Ripple Animation
    ========================================================================== */
+.ch-btn-wave {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  display: block;
+  z-index: 1;
+  animation: ch-btn-wave-effect 0.45s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+}
+
 .ch-btn--waving::after {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  animation: ch-btn-wave-effect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+  display: block;
+  z-index: 1;
+  animation: ch-btn-wave-effect 0.45s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
 }
 
 @keyframes ch-btn-wave-effect {
   0% {
     box-shadow: 0 0 0 0 var(--ch-wave-color, #1677ff);
-    opacity: 0.75;
+    opacity: 0.8;
   }
   100% {
-    box-shadow: 0 0 0 6px var(--ch-wave-color, #1677ff);
+    box-shadow: 0 0 0 8px var(--ch-wave-color, #1677ff);
     opacity: 0;
   }
 }

@@ -134,6 +134,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       injectStyle("ch-button", buttonCssText);
     }
 
+    const [waveKey, setWaveKey] = useState(0);
     const [isWaving, setIsWaving] = useState(false);
     const waveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -153,7 +154,11 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isDisabled = disabled || isComponentLoading;
 
     const isWaveDisabled =
-      wave === false || (typeof wave === "object" && wave?.disabled === true) || variant === "link" || ghost;
+      wave === false ||
+      (typeof wave === "object" && wave?.disabled === true) ||
+      variant === "link" ||
+      variant === "text" ||
+      ghost;
 
     // Handle Ant Design click wave effect
     const handleClick = (e: React.MouseEvent<HTMLButtonElement & HTMLAnchorElement>) => {
@@ -163,15 +168,29 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       }
 
       if (!isWaveDisabled) {
+        setWaveKey((k) => k + 1);
         setIsWaving(true);
         if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
         waveTimerRef.current = setTimeout(() => {
           setIsWaving(false);
-        }, 400);
+        }, 450);
       }
 
       onClick?.(e);
     };
+
+    // Icons & Children
+    const startIcon = icon && iconPlacement === "start" ? icon : leftIcon;
+    const endIcon = icon && iconPlacement === "end" ? icon : rightIcon;
+    const contentChildren = insertSpace(children, autoInsertSpace);
+    const hasText =
+      contentChildren !== undefined &&
+      contentChildren !== null &&
+      contentChildren !== false &&
+      contentChildren !== "";
+    const isIconOnly =
+      shape === "circle" ||
+      (!hasText && (!!startIcon || !!endIcon || (isComponentLoading && !loadingText)));
 
     const rootClasses = [
       "ch-btn",
@@ -181,6 +200,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       `ch-btn--${type ?? (variant === "solid" ? "primary" : "default")}`,
       `ch-btn--size-${normalizedSize}`,
       shape !== "default" && `ch-btn--shape-${shape}`,
+      isIconOnly && "ch-btn--icon-only",
       ghost && "ch-btn--ghost",
       isBlock && "ch-btn--block",
       isComponentLoading && "ch-btn--loading",
@@ -196,10 +216,6 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       ...style,
     };
 
-    // Icons
-    const startIcon = icon && iconPlacement === "start" ? icon : leftIcon;
-    const endIcon = icon && iconPlacement === "end" ? icon : rightIcon;
-
     const spinnerNode = customLoadingIcon ? (
       <span className={["ch-btn-icon", classNames?.icon].filter(Boolean).join(" ")} style={styles?.icon}>
         {customLoadingIcon}
@@ -211,7 +227,14 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       />
     );
 
-    const contentChildren = insertSpace(children, autoInsertSpace);
+    const waveNode = !isWaveDisabled && isWaving && (
+      <span
+        key={waveKey}
+        className="ch-btn-wave"
+        aria-hidden="true"
+        onAnimationEnd={() => setIsWaving(false)}
+      />
+    );
 
     const content = (
       <>
@@ -226,7 +249,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
             {loadingText}
           </span>
         ) : (
-          contentChildren !== undefined && (
+          hasText && (
             <span className={["ch-btn-content", classNames?.content].filter(Boolean).join(" ")} style={styles?.content}>
               {contentChildren}
             </span>
@@ -283,6 +306,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
           {...(restProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {content}
+          {waveNode}
         </a>
       );
     }
@@ -306,6 +330,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         {...restProps}
       >
         {content}
+        {waveNode}
       </button>
     );
   }

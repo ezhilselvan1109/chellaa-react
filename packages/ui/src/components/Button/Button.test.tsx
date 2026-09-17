@@ -219,4 +219,32 @@ describe("Button Component (Ant Design Exact Specification)", () => {
     expect(ref.current).toBeInstanceOf(HTMLButtonElement);
     expect(ref.current?.textContent).toBe("Ref Target");
   });
+
+  it("handles circle button and icon-only classes properly without empty content container", () => {
+    render(
+      <Button
+        shape="circle"
+        type="primary"
+        icon={<span data-testid="test-icon">🔍</span>}
+      />
+    );
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("ch-btn--shape-circle");
+    expect(button).toHaveClass("ch-btn--icon-only");
+    expect(screen.getByTestId("test-icon")).toBeInTheDocument();
+    expect(button.querySelector(".ch-btn-content")).toBeNull();
+  });
+
+  it("triggers radiating wave animation on click", async () => {
+    const user = userEvent.setup();
+    render(<Button type="primary">Wave Button</Button>);
+
+    const button = screen.getByRole("button", { name: "Wave Button" });
+    expect(button.querySelector(".ch-btn-wave")).toBeNull();
+
+    await user.click(button);
+    expect(button).toHaveClass("ch-btn--waving");
+    expect(button.querySelector(".ch-btn-wave")).toBeInTheDocument();
+  });
 });
