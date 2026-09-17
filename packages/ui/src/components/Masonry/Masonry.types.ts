@@ -5,6 +5,10 @@ export type Gap = undefined | number | Partial<Record<Breakpoint, number>>;
 
 export type MasonrySemanticDOM = "root" | "item";
 
+export interface MasonryRef {
+  nativeElement: HTMLDivElement | null;
+}
+
 export interface MasonryItem<T = any> {
   /**
    * Unique identifier for the item.
@@ -31,6 +35,10 @@ export interface MasonryItem<T = any> {
 export interface MasonryProps<T = any>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "className" | "style"> {
   /**
+   * Additional class name for the root container element.
+   */
+  rootClassName?: string;
+  /**
    * Number of columns, can be a fixed number or a responsive configuration object.
    * @default 3
    */
@@ -47,7 +55,7 @@ export interface MasonryProps<T = any>
   /**
    * Custom item rendering function for items.
    */
-  itemRender?: (item: MasonryItem<T>) => React.ReactNode;
+  itemRender?: (item: MasonryItem<T> & { index: number }, index: number) => React.ReactNode;
   /**
    * Direct child elements to layout in masonry (alternative to items prop).
    */

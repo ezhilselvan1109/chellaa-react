@@ -31,7 +31,7 @@ const masonryProps: PropItem[] = [
   },
   {
     name: "itemRender",
-    type: "(item: MasonryItem) => ReactNode",
+    type: "(item: MasonryItem & { index: number }, index: number) => ReactNode",
     defaultValue: "undefined",
     description: "Custom item rendering function for items.",
   },
@@ -58,6 +58,12 @@ const masonryProps: PropItem[] = [
     type: "Record<'root' | 'item', CSSProperties> | ((info: { props }) => Record<...>)",
     defaultValue: "undefined",
     description: "Customize inline style for each semantic structure (root, item). Supports object or function (Ant Design 6.0).",
+  },
+  {
+    name: "rootClassName",
+    type: "string",
+    defaultValue: "undefined",
+    description: "Additional class name for the root container element.",
   },
 ];
 
@@ -314,6 +320,132 @@ export const MasonryDocPage: React.FC = () => {
   gutter={[16, 16]}
   items={items}
   itemRender={(item) => <ProductCard item={item} />}
+/>`}
+        language="tsx"
+      />
+
+      {/* Image Loading Demo */}
+      <h2 className="docs-section-heading">Image Dynamic Loading (<code>[Image]</code>)</h2>
+      <p className="docs-p">
+        Dynamically adjusts the masonry height and item positions as images load. Items smoothly settle into their optimal columns:
+      </p>
+      <div style={{ margin: "1.5rem 0", padding: "1rem", background: "var(--docs-bg-muted)", borderRadius: 8 }}>
+        <Masonry
+          columns={{ xs: 1, sm: 2, md: 3 }}
+          gutter={16}
+          items={[
+            {
+              key: "img-1",
+              data: {
+                title: "Mountain Vista",
+                height: 180,
+                bg: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+                tag: "Landscape",
+              },
+            },
+            {
+              key: "img-2",
+              data: {
+                title: "Emerald Forest",
+                height: 260,
+                bg: "linear-gradient(135deg, #065f46 0%, #10b981 100%)",
+                tag: "Tall Portrait",
+              },
+            },
+            {
+              key: "img-3",
+              data: {
+                title: "Golden Hour Sunset",
+                height: 150,
+                bg: "linear-gradient(135deg, #9a3412 0%, #f59e0b 100%)",
+                tag: "Panorama",
+              },
+            },
+            {
+              key: "img-4",
+              data: {
+                title: "Ocean Tide",
+                height: 220,
+                bg: "linear-gradient(135deg, #0e7490 0%, #06b6d4 100%)",
+                tag: "Medium",
+              },
+            },
+            {
+              key: "img-5",
+              data: {
+                title: "Nebula Cluster",
+                height: 190,
+                bg: "linear-gradient(135deg, #581c87 0%, #8b5cf6 100%)",
+                tag: "Square",
+              },
+            },
+            {
+              key: "img-6",
+              data: {
+                title: "Crimson Aurora",
+                height: 140,
+                bg: "linear-gradient(135deg, #9f1239 0%, #f43f5e 100%)",
+                tag: "Banner",
+              },
+            },
+          ]}
+          itemRender={(item) => (
+            <div
+              style={{
+                borderRadius: 12,
+                overflow: "hidden",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                background: "var(--docs-bg-surface)",
+                border: "1px solid var(--docs-border)",
+              }}
+            >
+              <div
+                style={{
+                  height: item.data.height,
+                  background: item.data.bg,
+                  display: "flex",
+                  alignItems: "flex-end",
+                  padding: "1rem",
+                  color: "#fff",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      fontSize: "0.7rem",
+                      background: "rgba(0,0,0,0.3)",
+                      padding: "2px 8px",
+                      borderRadius: 12,
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    {item.data.tag}
+                  </span>
+                  <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>
+                    {item.data.title}
+                  </div>
+                </div>
+              </div>
+              <div style={{ padding: "0.75rem 1rem", fontSize: "0.8rem", color: "var(--docs-fg-muted)" }}>
+                Rendered height: {item.data.height}px
+              </div>
+            </div>
+          )}
+        />
+      </div>
+      <CodeBlock
+        code={`<Masonry
+  columns={{ xs: 1, sm: 2, md: 3 }}
+  gutter={16}
+  items={mediaItems}
+  itemRender={(item) => (
+    <div className="media-card">
+      <img src={item.data.src} alt={item.data.title} />
+      <span>{item.data.title}</span>
+    </div>
+  )}
 />`}
         language="tsx"
       />

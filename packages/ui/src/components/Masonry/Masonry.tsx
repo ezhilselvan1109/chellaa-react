@@ -69,6 +69,7 @@ const useIsomorphicLayoutEffect =
 export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
   (props, ref) => {
     const {
+      rootClassName,
       columns = 3,
       gutter = 0,
       items: rawItems,
@@ -94,6 +95,7 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
     const [measuredHeights, setMeasuredHeights] = useState<Map<React.Key, number>>(
       new Map()
     );
+    const lastSummaryJsonRef = useRef<string>("");
 
     const screens = useBreakpoint();
     const resolvedColumns = resolveColumns(columns, screens);
@@ -194,7 +196,7 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
     }, [fresh, measureItemHeights, normalizedItems]);
 
     // Compute column layouts and shortest-column placement
-    const { layoutPositions, totalHeight } = useMemo(() => {
+    const { layoutPositions, totalHeight, layoutSummary } = useMemo(() => {
       const positions = new Map<
         React.Key,
         { x: number; y: number; width: number; column: number }
@@ -206,7 +208,7 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
           ? (containerWidth - (resolvedColumns - 1) * gutterH) / resolvedColumns
           : 0;
 
-      const layoutSummary: { key: React.Key; column: number }[] = [];
+      const summary: { key: React.Key; column: number }[] = [];
 
       normalizedItems.forEach((item) => {
         let targetCol: number;
@@ -234,20 +236,17 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
         });
 
         colHeights[targetCol] += h + gutterV;
-        layoutSummary.push({ key: item.key, column: targetCol });
+        summary.push({ key: item.key, column: targetCol });
       });
 
       const maxColHeight = Math.max(0, ...colHeights);
       const computedTotalHeight =
         maxColHeight > 0 ? maxColHeight - gutterV : 0;
 
-      if (onLayoutChange && layoutSummary.length > 0) {
-        onLayoutChange(layoutSummary);
-      }
-
       return {
         layoutPositions: positions,
         totalHeight: computedTotalHeight,
+        layoutSummary: summary,
       };
     }, [
       normalizedItems,
@@ -256,8 +255,17 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
       gutterH,
       gutterV,
       measuredHeights,
-      onLayoutChange,
     ]);
+
+    // Safely trigger onLayoutChange when layout column assignments actually change
+    useEffect(() => {
+      if (!onLayoutChange || layoutSummary.length === 0) return;
+      const currentJson = JSON.stringify(layoutSummary);
+      if (lastSummaryJsonRef.current !== currentJson) {
+        lastSummaryJsonRef.current = currentJson;
+        onLayoutChange(layoutSummary);
+      }
+    }, [layoutSummary, onLayoutChange]);
 
     // Resolve semantic DOM classNames & styles (Ant Design 6.0 supports object or function)
     const resolvedClassNames =
@@ -269,6 +277,7 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
 
     const rootClasses = [
       "ch-masonry",
+      rootClassName,
       resolvedClassNames.root,
       className,
     ]
@@ -286,20 +295,26 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
       <div
         ref={(node) => {
           containerRef.current = node;
+          if (node) {
+            (node as any).nativeElement = node;
+          }
           if (typeof ref === "function") {
             ref(node);
           } else if (ref) {
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+            (ref as any).current = node;
           }
         }}
         className={rootClasses}
         style={rootStyle}
+        onLoadCapture={measureItemHeights}
         {...restProps}
       >
-        {normalizedItems.map((item) => {
+        {normalizedItems.map((item, index) => {
           const pos = layoutPositions.get(item.key);
           const isMeasured =
-            item.height !== undefined || measuredHeights.has(item.key);
+            typeof window === "undefined" ||
+            item.height !== undefined ||
+            measuredHeights.has(item.key);
 
           const itemWidth =
             pos && pos.width > 0
@@ -315,7 +330,10 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
             ...resolvedStyles.item,
           };
 
-          const itemContent = item.children ?? (itemRender ? itemRender(item) : null);
+          const itemWithIndex = { ...item, index };
+          const itemContent =
+            item.children ??
+            (itemRender ? itemRender(itemWithIndex, index) : null);
 
           return (
             <div

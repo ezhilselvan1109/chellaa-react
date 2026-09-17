@@ -124,11 +124,45 @@ describe("Masonry Component (Ant Design 6.0 Specification)", () => {
     expect(item).toBeInTheDocument();
   });
 
-  it("forwards ref to HTMLDivElement root container", () => {
-    const ref = React.createRef<HTMLDivElement>();
+  it("forwards ref to HTMLDivElement root container and provides nativeElement", () => {
+    const ref = React.createRef<any>();
     render(<Masonry ref={ref} items={[{ key: "1", children: "Content" }]} />);
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
     expect(ref.current).toHaveClass("ch-masonry");
+    expect(ref.current.nativeElement).toBe(ref.current);
+  });
+
+  it("supports rootClassName prop", () => {
+    render(<Masonry rootClassName="extra-root-class" items={[{ key: "1", children: "Content" }]} />);
+
+    const root = document.querySelector(".extra-root-class");
+    expect(root).toBeInTheDocument();
+    expect(root).toHaveClass("ch-masonry");
+  });
+
+  it("passes index to itemRender callback", () => {
+    const renderFn = vi.fn((item) => <div>{item.key} - {item.index}</div>);
+    const items = [
+      { key: "a", data: "Alpha" },
+      { key: "b", data: "Beta" },
+    ];
+
+    render(<Masonry items={items} itemRender={renderFn} />);
+
+    expect(renderFn).toHaveBeenCalledWith(expect.objectContaining({ key: "a", index: 0 }), 0);
+    expect(renderFn).toHaveBeenCalledWith(expect.objectContaining({ key: "b", index: 1 }), 1);
+    expect(screen.getByText("a - 0")).toBeInTheDocument();
+    expect(screen.getByText("b - 1")).toBeInTheDocument();
+  });
+
+  it("handles tuple gutter [horizontal, vertical]", () => {
+    const items = [
+      { key: "1", height: 100, children: <div>Item 1</div> },
+      { key: "2", height: 100, children: <div>Item 2</div> },
+    ];
+
+    const { container } = render(<Masonry columns={2} gutter={[20, 30]} items={items} />);
+    expect(container.firstChild).toHaveClass("ch-masonry");
   });
 });
