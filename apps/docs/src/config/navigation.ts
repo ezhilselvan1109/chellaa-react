@@ -93,6 +93,12 @@ export const navigationConfig: NavSection[] = [
         description: "24-column raster grid system with responsive breakpoints, gutters, and offsets.",
       },
       {
+        title: "Masonry",
+        href: "/docs/components/masonry",
+        badge: "Layout",
+        description: "Adaptive masonry column layout for content with irregular heights.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",

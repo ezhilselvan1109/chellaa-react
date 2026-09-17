@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -13,6 +13,29 @@ interface ComponentItem {
 }
 
 const componentList: ComponentItem[] = [
+  {
+    id: "masonry",
+    name: "Masonry",
+    category: "Layout",
+    description: "Adaptive masonry column layout for displaying content with different heights.",
+    href: "/docs/components/masonry",
+    status: "Stable",
+    preview: (
+      <Masonry
+        columns={3}
+        gutter={4}
+        style={{ width: "90%" }}
+        items={[
+          { key: "1", height: 26, children: <div style={{ height: 26, borderRadius: 4, background: "var(--ch-color-primary)" }} /> },
+          { key: "2", height: 38, children: <div style={{ height: 38, borderRadius: 4, background: "var(--ch-color-secondary, #6366f1)" }} /> },
+          { key: "3", height: 20, children: <div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-accent, #06b6d4)" }} /> },
+          { key: "4", height: 30, children: <div style={{ height: 30, borderRadius: 4, background: "#ec4899" }} /> },
+          { key: "5", height: 24, children: <div style={{ height: 24, borderRadius: 4, background: "#f59e0b" }} /> },
+          { key: "6", height: 34, children: <div style={{ height: 34, borderRadius: 4, background: "#10b981" }} /> },
+        ]}
+      />
+    ),
+  },
   {
     id: "grid",
     name: "Grid",
