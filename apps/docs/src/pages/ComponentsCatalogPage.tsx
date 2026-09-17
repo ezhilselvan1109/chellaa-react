@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -24,6 +24,20 @@ const componentList: ComponentItem[] = [
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
         <Button variant="primary" size="sm">Primary</Button>
         <Button variant="outline" size="sm">Outline</Button>
+      </div>
+    ),
+  },
+  {
+    id: "float-button",
+    name: "FloatButton",
+    category: "General",
+    description: "Floating action button with group menu modes and BackTop scroll progress ring.",
+    href: "/docs/components/float-button",
+    status: "Stable",
+    preview: (
+      <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", justifyContent: "center" }}>
+        <FloatButton inGroup shape="circle" icon={<span>★</span>} />
+        <FloatButton inGroup type="primary" shape="circle" icon={<span>↑</span>} />
       </div>
     ),
   },

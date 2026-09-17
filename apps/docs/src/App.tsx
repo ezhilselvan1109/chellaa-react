@@ -11,6 +11,7 @@ import { InstallationPage } from "./pages/InstallationPage";
 import { ThemingPage } from "./pages/ThemingPage";
 import { TokensPage } from "./pages/TokensPage";
 import { ButtonDocPage } from "./pages/components/ButtonDocPage";
+import { FloatButtonDocPage } from "./pages/components/FloatButtonDocPage";
 import { BadgeDocPage } from "./pages/components/BadgeDocPage";
 import { InputDocPage } from "./pages/components/InputDocPage";
 import { SpinnerDocPage } from "./pages/components/SpinnerDocPage";
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
             <Route path="/docs/tokens" element={<TokensPage />} />
             <Route path="/docs/components" element={<ComponentsCatalogPage />} />
             <Route path="/docs/components/button" element={<ButtonDocPage />} />
+            <Route path="/docs/components/float-button" element={<FloatButtonDocPage />} />
             <Route path="/docs/components/badge" element={<BadgeDocPage />} />
             <Route path="/docs/components/input" element={<InputDocPage />} />
             <Route path="/docs/components/spinner" element={<SpinnerDocPage />} />

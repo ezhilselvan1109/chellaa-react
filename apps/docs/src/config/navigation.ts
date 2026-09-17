@@ -57,6 +57,12 @@ export const navigationConfig: NavSection[] = [
         description: "Interactive button with variants, sizes, loading states, and polymorphism.",
       },
       {
+        title: "FloatButton",
+        href: "/docs/components/float-button",
+        badge: "Stable",
+        description: "Floating action button with group menu modes and BackTop scroll progress ring.",
+      },
+      {
         title: "Badge",
         href: "/docs/components/badge",
         badge: "Stable",
