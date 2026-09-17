@@ -11,5 +11,5 @@ export default defineConfig({
   minify: false,
   treeshake: true,
   external: ["react", "react-dom"],
-  injectStyle: false, // Outputs CSS into dist/styles.css cleanly
+  injectStyle: false,
 });

@@ -1,4 +1,6 @@
 import React, { createContext, useEffect, useState, useMemo, useCallback } from "react";
+import { injectStyle } from "../styles/registry";
+import { tokensCssText } from "../tokens/tokens.style";
 import type { ChellaProviderProps, Theme, ResolvedTheme, ThemeContextValue } from "./ThemeProvider.types";
 
 export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -20,6 +22,9 @@ export const ChellaProvider: React.FC<ChellaProviderProps> = ({
   target,
   children,
 }) => {
+  if (typeof window !== "undefined") {
+    injectStyle("ch-theme-tokens", tokensCssText);
+  }
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === "undefined") {
       return defaultTheme;

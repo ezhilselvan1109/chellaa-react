@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ChellaProvider } from "@chella-ui/react";
-import "@chella-ui/react/styles.css";
 import "./styles/playground.css";
 import { App } from "./App";
 

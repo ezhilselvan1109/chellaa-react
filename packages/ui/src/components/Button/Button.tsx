@@ -1,8 +1,10 @@
 import React from "react";
 import { Slot } from "../../primitives/Slot";
 import { Spinner } from "../Spinner";
+import { injectStyle } from "../../styles/registry";
+import { tokensCssText } from "../../tokens/tokens.style";
+import { buttonCssText } from "./Button.style";
 import type { ButtonProps, ButtonSize } from "./Button.types";
-import styles from "./Button.module.css";
 
 const spinnerSizeMap: Record<ButtonSize, "xs" | "sm" | "md"> = {
   sm: "xs",
@@ -29,14 +31,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    // Automatically ensure design tokens and button styles are injected into document.head
+    if (typeof window !== "undefined") {
+      injectStyle("ch-theme-tokens", tokensCssText);
+      injectStyle("ch-button", buttonCssText);
+    }
+
     const Component = asChild ? Slot : "button";
 
     const classNames = [
-      styles.button,
-      styles[variant],
-      styles[size],
-      fullWidth && styles.fullWidth,
-      isLoading && styles.loading,
+      "ch-btn",
+      `ch-btn--${variant}`,
+      `ch-btn--${size}`,
+      fullWidth && "ch-btn--full-width",
+      isLoading && "ch-btn--loading",
       className,
     ]
       .filter(Boolean)
@@ -49,7 +57,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && (
           <Spinner
             size={spinnerSizeMap[size]}
-            className={styles.spinner}
             label={loadingText ? "" : "Loading..."}
           />
         )}
@@ -59,7 +66,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       </>
     );
 
-    // When asChild is true, Slot clones the single child element
     if (asChild) {
       return (
         <Component

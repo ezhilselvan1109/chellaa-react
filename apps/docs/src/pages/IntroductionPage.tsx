@@ -42,7 +42,6 @@ export const IntroductionPage: React.FC = () => {
       <h2 className="docs-section-heading">Quick Example</h2>
       <CodeBlock
         code={`import { Button, ChellaProvider } from "@chella-ui/react";
-import "@chella-ui/react/styles.css";
 
 function App() {
   return (

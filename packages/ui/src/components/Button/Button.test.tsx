@@ -106,7 +106,18 @@ describe("Button Component", () => {
     render(<Button fullWidth>Full Width</Button>);
 
     const button = screen.getByRole("button", { name: "Full Width" });
-    expect(button.className).toContain("fullWidth");
+    expect(button.className).toContain("ch-btn--full-width");
+  });
+
+  it("automatically injects component and token styles into document.head without manual CSS imports", () => {
+    render(<Button>Auto Styled</Button>);
+
+    const tokenStyle = document.getElementById("ch-theme-tokens");
+    const buttonStyle = document.getElementById("ch-button");
+
+    expect(tokenStyle).toBeInTheDocument();
+    expect(buttonStyle).toBeInTheDocument();
+    expect(buttonStyle?.textContent).toContain(".ch-btn");
   });
 
   it("supports polymorphic composition via asChild", () => {

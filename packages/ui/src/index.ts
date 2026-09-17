@@ -13,3 +13,6 @@ export * from "./primitives";
 
 // Export Components
 export * from "./components";
+
+// Export Styles Registry
+export * from "./styles";

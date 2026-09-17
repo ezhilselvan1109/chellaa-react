@@ -50,15 +50,9 @@ chellaa-react/
 npm install @chella-ui/react
 ```
 
-### 2. Import Stylesheet
+### 2. Usage (Zero CSS Imports Required!)
 
-Import the bundled stylesheet in your application root (`main.tsx` or `layout.tsx`):
-
-```tsx
-import "@chella-ui/react/styles.css";
-```
-
-### 3. Usage
+Unlike older component libraries, **Chella UI components own their own styles** (inspired by Ant Design v5). When you import a component, its styles and design tokens are automatically injected on demand:
 
 ```tsx
 import React from "react";

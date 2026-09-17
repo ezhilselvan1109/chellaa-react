@@ -1,11 +1,19 @@
 import React from "react";
 import { VisuallyHidden } from "../../primitives/VisuallyHidden";
+import { injectStyle } from "../../styles/registry";
+import { spinnerCssText } from "./Spinner.style";
 import type { SpinnerProps } from "./Spinner.types";
-import styles from "./Spinner.module.css";
 
 export const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
   ({ size = "md", label = "Loading...", color, className, style, ...props }, ref) => {
-    const classNames = [styles.spinner, styles[size], className].filter(Boolean).join(" ");
+    // Automatically ensure styles are injected into document.head
+    if (typeof window !== "undefined") {
+      injectStyle("ch-spinner", spinnerCssText);
+    }
+
+    const classNames = ["ch-spinner", `ch-spinner--${size}`, className]
+      .filter(Boolean)
+      .join(" ");
 
     return (
       <svg

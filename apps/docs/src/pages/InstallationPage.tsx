@@ -13,31 +13,44 @@ export const InstallationPage: React.FC = () => {
       <p className="docs-p">Install the core package using your preferred package manager:</p>
       <CodeBlock code="npm install @chella-ui/react" language="bash" />
 
-      <h2 className="docs-section-heading">Stylesheet Setup</h2>
+      <h2 className="docs-section-heading">Usage (Zero CSS Imports Required!)</h2>
       <p className="docs-p">
-        Import the bundled stylesheet in your application root (e.g. <code>main.tsx</code> in Vite or <code>layout.tsx</code> in Next.js App Router):
+        Unlike older UI libraries, <strong>Chella UI components own their own styling</strong> (inspired by Ant Design v5).
+        When you import and render a component, its styles and design tokens are automatically injected into <code>document.head</code> on demand.
+        You do <strong>NOT</strong> need to manually import any CSS files!
       </p>
-      <CodeBlock code='import "@chella-ui/react/styles.css";' language="tsx" />
 
-      <h2 className="docs-section-heading">Theme Provider</h2>
+      <h2 className="docs-section-heading">Quick Start Example</h2>
       <p className="docs-p">
-        Wrap your application with <code>ChellaProvider</code> to enable automatic system dark mode detection and theme persistence:
+        Simply import components and use them directly:
       </p>
       <CodeBlock
         code={`import React from "react";
 import ReactDOM from "react-dom/client";
-import { ChellaProvider } from "@chella-ui/react";
-import "@chella-ui/react/styles.css";
-import App from "./App";
+import { Button, ChellaProvider } from "@chella-ui/react";
+
+function App() {
+  return (
+    <ChellaProvider defaultTheme="system">
+      <Button variant="primary" onClick={() => alert("Action triggered!")}>
+        Get Started
+      </Button>
+    </ChellaProvider>
+  );
+}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ChellaProvider defaultTheme="system">
-      <App />
-    </ChellaProvider>
+    <App />
   </React.StrictMode>
 );`}
       />
+
+      <h2 className="docs-section-heading">Optional: Static CSS for SSR</h2>
+      <p className="docs-p">
+        For advanced SSR frameworks where you prefer static stylesheet links, the compiled stylesheet is also available at <code>@chella-ui/react/styles.css</code>:
+      </p>
+      <CodeBlock code='import "@chella-ui/react/styles.css";' language="tsx" />
     </article>
   );
 };
