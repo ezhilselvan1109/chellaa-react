@@ -125,17 +125,24 @@ export const AutoComplete = forwardRef<AutoCompleteRef, AutoCompleteProps>(
     );
 
     // Filter and normalize options
+    const effectiveFilterOption =
+      typeof showSearch === "object" && showSearch.filterOption !== undefined
+        ? showSearch.filterOption
+        : filterOption;
+
     const filteredOptions = useMemo(() => {
-      if (!showSearch || filterOption === false || !searchQuery) {
+      if (!showSearch || effectiveFilterOption === false || !searchQuery) {
         return options;
       }
 
       const matchFn =
-        typeof filterOption === "function"
-          ? filterOption
+        typeof effectiveFilterOption === "function"
+          ? effectiveFilterOption
           : (inputValue: string, opt: AutoCompleteOption) => {
               const query = inputValue.toLowerCase();
-              const valMatch = String(opt.value).toLowerCase().includes(query);
+              const valMatch = opt.value
+                ? String(opt.value).toLowerCase().includes(query)
+                : false;
               const labelMatch =
                 typeof opt.label === "string"
                   ? opt.label.toLowerCase().includes(query)
@@ -397,81 +404,161 @@ export const AutoComplete = forwardRef<AutoCompleteRef, AutoCompleteProps>(
           e.preventDefault();
         }}
       >
-        <ul
-          className={["ch-autocomplete-menu", resolvedClassNames["popup.list"]]
-            .filter(Boolean)
-            .join(" ")}
-          style={resolvedStyles["popup.list"]}
-          onScroll={onPopupScroll}
-        >
-          {filteredOptions.length > 0 ? (
-            filteredOptions.map((opt, groupIdx) => {
-              if (opt.options && Array.isArray(opt.options)) {
-                return (
-                  <li key={opt.key ?? `group-${groupIdx}`} className="ch-autocomplete-option-group">
-                    <div className="ch-autocomplete-option-group-title">
-                      {opt.label}
-                    </div>
-                    <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-                      {opt.options.map((childOpt, childIdx) => {
-                        const isSelected = currentValue === childOpt.value;
-                        const isItemActive =
-                          flatSelectableOptions[activeIndex]?.value ===
-                          childOpt.value;
+        {popupRender
+          ? popupRender(
+              <ul
+                className={["ch-autocomplete-menu", resolvedClassNames["popup.list"]]
+                  .filter(Boolean)
+                  .join(" ")}
+                style={resolvedStyles["popup.list"]}
+                onScroll={onPopupScroll}
+              >
+                {filteredOptions.length > 0 ? (
+                  filteredOptions.map((opt, groupIdx) => {
+                    if (opt.options && Array.isArray(opt.options)) {
+                      return (
+                        <li key={opt.key ?? `group-${groupIdx}`} className="ch-autocomplete-option-group">
+                          <div className="ch-autocomplete-option-group-title">
+                            {opt.label}
+                          </div>
+                          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                            {opt.options.map((childOpt, childIdx) => {
+                              const isSelected = currentValue === childOpt.value;
+                              const isItemActive =
+                                flatSelectableOptions[activeIndex]?.value ===
+                                childOpt.value;
 
-                        return (
-                          <li
-                            key={childOpt.key ?? `child-${groupIdx}-${childIdx}`}
-                            className={[
-                              "ch-autocomplete-option",
-                              isSelected ? "ch-autocomplete-option--selected" : "",
-                              isItemActive ? "ch-autocomplete-option--active" : "",
-                              childOpt.disabled
-                                ? "ch-autocomplete-option--disabled"
-                                : "",
-                              resolvedClassNames["popup.listItem"],
-                            ]
-                              .filter(Boolean)
-                              .join(" ")}
-                            style={resolvedStyles["popup.listItem"]}
-                            onClick={() => handleSelectOption(childOpt)}
-                          >
-                            {childOpt.label ?? childOpt.value}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                );
-              }
+                              return (
+                                <li
+                                  key={childOpt.key ?? `child-${groupIdx}-${childIdx}`}
+                                  className={[
+                                    "ch-autocomplete-option",
+                                    isSelected ? "ch-autocomplete-option--selected" : "",
+                                    isItemActive ? "ch-autocomplete-option--active" : "",
+                                    childOpt.disabled
+                                      ? "ch-autocomplete-option--disabled"
+                                      : "",
+                                    resolvedClassNames["popup.listItem"],
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                  style={resolvedStyles["popup.listItem"]}
+                                  onClick={() => handleSelectOption(childOpt)}
+                                >
+                                  {childOpt.label ?? childOpt.value}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      );
+                    }
 
-              const isSelected = currentValue === opt.value;
-              const isItemActive =
-                flatSelectableOptions[activeIndex]?.value === opt.value;
+                    const isSelected = currentValue === opt.value;
+                    const isItemActive =
+                      flatSelectableOptions[activeIndex]?.value === opt.value;
 
-              return (
-                <li
-                  key={opt.key ?? `opt-${groupIdx}`}
-                  className={[
-                    "ch-autocomplete-option",
-                    isSelected ? "ch-autocomplete-option--selected" : "",
-                    isItemActive ? "ch-autocomplete-option--active" : "",
-                    opt.disabled ? "ch-autocomplete-option--disabled" : "",
-                    resolvedClassNames["popup.listItem"],
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  style={resolvedStyles["popup.listItem"]}
-                  onClick={() => handleSelectOption(opt)}
-                >
-                  {opt.label ?? opt.value}
-                </li>
-              );
-            })
-          ) : notFoundContent ? (
-            <div className="ch-autocomplete-empty">{notFoundContent}</div>
-          ) : null}
-        </ul>
+                    return (
+                      <li
+                        key={opt.key ?? `opt-${groupIdx}`}
+                        className={[
+                          "ch-autocomplete-option",
+                          isSelected ? "ch-autocomplete-option--selected" : "",
+                          isItemActive ? "ch-autocomplete-option--active" : "",
+                          opt.disabled ? "ch-autocomplete-option--disabled" : "",
+                          resolvedClassNames["popup.listItem"],
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        style={resolvedStyles["popup.listItem"]}
+                        onClick={() => handleSelectOption(opt)}
+                      >
+                        {opt.label ?? opt.value}
+                      </li>
+                    );
+                  })
+                ) : notFoundContent ? (
+                  <div className="ch-autocomplete-empty">{notFoundContent}</div>
+                ) : null}
+              </ul>
+            )
+          : (
+              <ul
+                className={["ch-autocomplete-menu", resolvedClassNames["popup.list"]]
+                  .filter(Boolean)
+                  .join(" ")}
+                style={resolvedStyles["popup.list"]}
+                onScroll={onPopupScroll}
+              >
+                {filteredOptions.length > 0 ? (
+                  filteredOptions.map((opt, groupIdx) => {
+                    if (opt.options && Array.isArray(opt.options)) {
+                      return (
+                        <li key={opt.key ?? `group-${groupIdx}`} className="ch-autocomplete-option-group">
+                          <div className="ch-autocomplete-option-group-title">
+                            {opt.label}
+                          </div>
+                          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                            {opt.options.map((childOpt, childIdx) => {
+                              const isSelected = currentValue === childOpt.value;
+                              const isItemActive =
+                                flatSelectableOptions[activeIndex]?.value ===
+                                childOpt.value;
+
+                              return (
+                                <li
+                                  key={childOpt.key ?? `child-${groupIdx}-${childIdx}`}
+                                  className={[
+                                    "ch-autocomplete-option",
+                                    isSelected ? "ch-autocomplete-option--selected" : "",
+                                    isItemActive ? "ch-autocomplete-option--active" : "",
+                                    childOpt.disabled
+                                      ? "ch-autocomplete-option--disabled"
+                                      : "",
+                                    resolvedClassNames["popup.listItem"],
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                  style={resolvedStyles["popup.listItem"]}
+                                  onClick={() => handleSelectOption(childOpt)}
+                                >
+                                  {childOpt.label ?? childOpt.value}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      );
+                    }
+
+                    const isSelected = currentValue === opt.value;
+                    const isItemActive =
+                      flatSelectableOptions[activeIndex]?.value === opt.value;
+
+                    return (
+                      <li
+                        key={opt.key ?? `opt-${groupIdx}`}
+                        className={[
+                          "ch-autocomplete-option",
+                          isSelected ? "ch-autocomplete-option--selected" : "",
+                          isItemActive ? "ch-autocomplete-option--active" : "",
+                          opt.disabled ? "ch-autocomplete-option--disabled" : "",
+                          resolvedClassNames["popup.listItem"],
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        style={resolvedStyles["popup.listItem"]}
+                        onClick={() => handleSelectOption(opt)}
+                      >
+                        {opt.label ?? opt.value}
+                      </li>
+                    );
+                  })
+                ) : notFoundContent ? (
+                  <div className="ch-autocomplete-empty">{notFoundContent}</div>
+                ) : null}
+              </ul>
+            )}
       </div>
     ) : null;
 

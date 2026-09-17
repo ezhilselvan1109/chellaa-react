@@ -6,6 +6,7 @@ import {
   AutoCompleteVariant,
   AutoCompleteSize,
   AutoCompleteStatus,
+  Button,
   Badge,
 } from "@chella-ui/react";
 import { ComponentPreview } from "../../components/ComponentPreview";
@@ -232,6 +233,69 @@ export const AutoCompleteDocPage: React.FC = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
   const [playgroundVal, setPlaygroundVal] = useState<string>("");
 
+  // Controlled mode state
+  const [controlledVal, setControlledVal] = useState<string>("");
+
+  // Dynamic email completion state
+  const [emailValue, setEmailValue] = useState("");
+  const [emailOptions, setEmailOptions] = useState<AutoCompleteOption[]>([]);
+
+  const handleEmailSearch = (text: string) => {
+    if (!text || text.includes("@")) {
+      setEmailOptions([]);
+    } else {
+      setEmailOptions([
+        { value: `${text}@gmail.com`, label: `${text}@gmail.com` },
+        { value: `${text}@163.com`, label: `${text}@163.com` },
+        { value: `${text}@qq.com`, label: `${text}@qq.com` },
+        { value: `${text}@outlook.com`, label: `${text}@outlook.com` },
+      ]);
+    }
+  };
+
+  // Uncertain category state
+  const [uncertainVal, setUncertainVal] = useState("");
+  const [uncertainOptions, setUncertainOptions] = useState<AutoCompleteOption[]>([]);
+
+  const handleUncertainSearch = (query: string) => {
+    if (!query) {
+      setUncertainOptions([]);
+      return;
+    }
+    setUncertainOptions([
+      {
+        value: query,
+        label: (
+          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <span>Search <strong>{query}</strong> in Topics</span>
+            <span style={{ color: "var(--docs-fg-muted)", fontSize: "0.8rem" }}>12,000 results</span>
+          </div>
+        ),
+      },
+      {
+        value: `${query} tutorial`,
+        label: (
+          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <span>Search <strong>{query}</strong> in Articles</span>
+            <span style={{ color: "var(--docs-fg-muted)", fontSize: "0.8rem" }}>8,400 results</span>
+          </div>
+        ),
+      },
+      {
+        value: `${query} questions`,
+        label: (
+          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <span>Search <strong>{query}</strong> in Questions</span>
+            <span style={{ color: "var(--docs-fg-muted)", fontSize: "0.8rem" }}>1,500 results</span>
+          </div>
+        ),
+      },
+    ]);
+  };
+
+  // Custom clear button state
+  const [clearableState, setClearableState] = useState<boolean>(true);
+
   const playgroundCode = `<AutoComplete
   options={options}
   placeholder="Type a street name..."
@@ -393,6 +457,84 @@ const options = [
         language="tsx"
       />
 
+      {/* Controlled Mode */}
+      <h2 className="docs-section-heading">Controlled Mode (<code>control mode</code>)</h2>
+      <p className="docs-p">
+        Manage input value externally using <code>value</code> and <code>onChange</code>:
+      </p>
+      <div style={{ margin: "1.5rem 0", maxWidth: 360 }}>
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.75rem" }}>
+          <Button size="small" onClick={() => setControlledVal("Downing Street")}>
+            Set "Downing Street"
+          </Button>
+          <Button size="small" onClick={() => setControlledVal("")}>
+            Clear
+          </Button>
+        </div>
+        <AutoComplete
+          options={sampleStreets}
+          placeholder="Controlled autocomplete..."
+          value={controlledVal}
+          onChange={setControlledVal}
+          allowClear
+        />
+        <div style={{ fontSize: "0.8rem", color: "var(--docs-fg-muted)", marginTop: "0.5rem" }}>
+          Current controlled value: <code>{controlledVal || "(empty)"}</code>
+        </div>
+      </div>
+      <CodeBlock
+        code={`const [val, setVal] = useState("");
+
+<Button onClick={() => setVal("Downing Street")}>Set Downing Street</Button>
+<AutoComplete
+  value={val}
+  onChange={setVal}
+  options={options}
+/>;`}
+        language="tsx"
+      />
+
+      {/* Customized Option Label / Email Completion */}
+      <h2 className="docs-section-heading">Customized Option Label (Email Suggestion)</h2>
+      <p className="docs-p">
+        Dynamically generate options with customized labels based on user input (e.g. email domain hints):
+      </p>
+      <div style={{ margin: "1.5rem 0", maxWidth: 360 }}>
+        <AutoComplete
+          options={emailOptions}
+          value={emailValue}
+          placeholder="Enter username (e.g. alex)"
+          onSearch={handleEmailSearch}
+          onChange={setEmailValue}
+          filterOption={false}
+          allowClear
+        />
+      </div>
+      <CodeBlock
+        code={`const [options, setOptions] = useState([]);
+
+const onSearch = (searchText) => {
+  if (!searchText || searchText.includes("@")) {
+    setOptions([]);
+  } else {
+    setOptions([
+      { value: \`\${searchText}@gmail.com\` },
+      { value: \`\${searchText}@163.com\` },
+      { value: \`\${searchText}@qq.com\` },
+      { value: \`\${searchText}@outlook.com\` },
+    ]);
+  }
+};
+
+<AutoComplete
+  options={options}
+  onSearch={onSearch}
+  filterOption={false}
+  placeholder="Enter username..."
+/>;`}
+        language="tsx"
+      />
+
       {/* Lookup Patterns: Certain Category */}
       <h2 className="docs-section-heading">Lookup Patterns: Certain Category</h2>
       <p className="docs-p">
@@ -444,6 +586,71 @@ const options = [
         language="tsx"
       />
 
+      {/* Lookup Patterns: Uncertain Category */}
+      <h2 className="docs-section-heading">Lookup Patterns: Uncertain Category</h2>
+      <p className="docs-p">
+        Dynamically prompt search actions across diverse categories with result metrics:
+      </p>
+      <div style={{ margin: "1.5rem 0", maxWidth: 360 }}>
+        <AutoComplete
+          options={uncertainOptions}
+          value={uncertainVal}
+          placeholder="Try typing 'react' or 'antd'..."
+          onSearch={handleUncertainSearch}
+          onChange={setUncertainVal}
+          filterOption={false}
+          allowClear
+        />
+      </div>
+      <CodeBlock
+        code={`const onSearch = (query) => {
+  setOptions([
+    {
+      value: query,
+      label: (
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>Search \${query} in Topics</span>
+          <span>12,000 results</span>
+        </div>
+      ),
+    },
+  ]);
+};
+
+<AutoComplete
+  options={options}
+  onSearch={onSearch}
+  filterOption={false}
+  placeholder="Search across categories..."
+/>;`}
+        language="tsx"
+      />
+
+      {/* Non-case-sensitive AutoComplete */}
+      <h2 className="docs-section-heading">Non-case-sensitive AutoComplete</h2>
+      <p className="docs-p">
+        Try typing <code>b</code> or <code>B</code> to see matching regardless of case using a custom <code>filterOption</code>:
+      </p>
+      <div style={{ margin: "1.5rem 0", maxWidth: 360 }}>
+        <AutoComplete
+          placeholder="Try to type 'b'..."
+          options={sampleStreets}
+          filterOption={(inputValue, option) =>
+            (option.value ?? "").toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          }
+        />
+      </div>
+      <CodeBlock
+        code={`<AutoComplete
+  options={options}
+  placeholder="Try to type 'b'..."
+  filterOption={(inputValue, option) =>
+    option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+  }
+/>`}
+        language="tsx"
+      />
+
       {/* Customize Input Component */}
       <h2 className="docs-section-heading">Customize Input Component</h2>
       <p className="docs-p">
@@ -464,6 +671,53 @@ const options = [
     style={{ height: 64, resize: "none" }}
   />
 </AutoComplete>`}
+        language="tsx"
+      />
+
+      {/* Customize Clear Button */}
+      <h2 className="docs-section-heading">Customize Clear Button</h2>
+      <p className="docs-p">
+        Toggle clearability or configure custom clear icons using <code>allowClear</code>:
+      </p>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "1.5rem 0" }}>
+        <div style={{ width: 220 }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--docs-fg-muted)", marginBottom: 4 }}>
+            {clearableState ? "Clearable" : "UnClearable"}
+          </div>
+          <AutoComplete
+            defaultValue="Chella UI"
+            allowClear={clearableState}
+            options={sampleStreets}
+          />
+          <button
+            type="button"
+            className="control-pill"
+            style={{ marginTop: 8 }}
+            onClick={() => setClearableState((prev) => !prev)}
+          >
+            Toggle clearable
+          </button>
+        </div>
+        <div style={{ width: 220 }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--docs-fg-muted)", marginBottom: 4 }}>
+            Customized Clear Icon
+          </div>
+          <AutoComplete
+            defaultValue="Custom Clear Icon"
+            allowClear={{
+              clearIcon: <span style={{ color: "var(--ch-color-primary)", fontWeight: "bold" }}>✕</span>,
+            }}
+            options={sampleStreets}
+          />
+        </div>
+      </div>
+      <CodeBlock
+        code={`// Unclearable vs Custom Icon:
+<AutoComplete allowClear={false} defaultValue="UnClearable" />
+<AutoComplete
+  defaultValue="Custom Clear"
+  allowClear={{ clearIcon: <span style={{ color: "blue" }}>✕</span> }}
+/>`}
         language="tsx"
       />
 
@@ -520,29 +774,52 @@ const options = [
       {/* Semantic DOM Styling */}
       <h2 className="docs-section-heading">Custom Semantic DOM Styling (Ant Design 6.0)</h2>
       <p className="docs-p">
-        Customize classes and inline styles for semantic DOM elements (<code>root</code>, <code>input</code>, <code>popup.root</code>, <code>popup.listItem</code>) using object or function syntax:
+        Customize classes and inline styles for semantic DOM elements using object or function syntax:
       </p>
-      <div style={{ margin: "1.5rem 0", maxWidth: 360 }}>
-        <AutoComplete
-          options={sampleStreets}
-          placeholder="Semantic styling..."
-          classNames={({ props }) => ({
-            root: `custom-ac-root-${props.variant}`,
-          })}
-          styles={{
-            root: { borderRadius: 12 },
-          }}
-        />
+      <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", margin: "1.5rem 0" }}>
+        <div style={{ width: 280 }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--docs-fg-muted)", marginBottom: 6 }}>Object styles</div>
+          <AutoComplete
+            options={sampleStreets}
+            placeholder="Object styles..."
+            classNames={{
+              root: "custom-object-root",
+              input: "custom-object-input",
+            }}
+            styles={{
+              root: { borderRadius: 12, borderColor: "#6366f1" },
+            }}
+          />
+        </div>
+        <div style={{ width: 280 }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--docs-fg-muted)", marginBottom: 6 }}>Function styles</div>
+          <AutoComplete
+            options={sampleStreets}
+            placeholder="Function styles..."
+            classNames={({ props }) => ({
+              root: `custom-fn-root-${props.size}`,
+            })}
+            styles={({ props }) => ({
+              root: { borderRadius: props.size === "medium" ? 8 : 4 },
+            })}
+          />
+        </div>
       </div>
       <CodeBlock
-        code={`<AutoComplete
-  options={options}
+        code={`// Object syntax:
+<AutoComplete
+  classNames={{ root: "custom-root", input: "custom-input" }}
+  styles={{ root: { borderRadius: 12 } }}
+/>
+
+// Function syntax (Ant Design 6.0):
+<AutoComplete
   classNames={({ props }) => ({
-    root: \`custom-ac-root-\${props.variant}\`,
+    root: \`custom-root-\${props.size}\`,
   })}
-  styles={{
-    root: { borderRadius: 12 },
-  }}
+  styles={({ props }) => ({
+    root: { borderRadius: props.size === "medium" ? 8 : 4 },
+  })}
 />`}
         language="tsx"
       />
