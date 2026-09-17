@@ -129,6 +129,8 @@ export const FloatButtonBackTop = forwardRef<
           <svg
             className="ch-float-btn-progress-ring"
             viewBox="0 0 44 44"
+            width={44}
+            height={44}
             aria-hidden="true"
           >
             <circle

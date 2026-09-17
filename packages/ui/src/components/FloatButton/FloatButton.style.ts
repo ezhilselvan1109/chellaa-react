@@ -82,11 +82,13 @@ export const floatButtonCssText = `
   --ch-float-btn-shadow: 0 6px 16px 0 rgba(22, 119, 255, 0.28), 0 3px 6px -4px rgba(22, 119, 255, 0.35);
 }
 
-/* Inside FloatButton.Group */
+/* Inside FloatButton.Group or when inline/inGroup */
 .ch-float-btn--in-group {
-  position: static !important;
+  position: relative !important;
   right: auto !important;
   bottom: auto !important;
+  top: auto !important;
+  left: auto !important;
 }
 
 /* Hover & Active States */
@@ -283,11 +285,15 @@ export const floatButtonCssText = `
    ========================================================================== */
 .ch-float-btn-progress-ring {
   position: absolute;
-  inset: -2px;
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
+  top: -2px;
+  left: -2px;
+  width: 44px;
+  height: 44px;
+  max-width: 44px;
+  max-height: 44px;
   pointer-events: none;
   transform: rotate(-90deg);
+  z-index: 1;
 }
 
 .ch-float-btn-progress-track {
