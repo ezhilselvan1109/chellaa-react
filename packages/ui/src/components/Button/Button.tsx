@@ -1,106 +1,206 @@
-import React from "react";
+import React, { useState, forwardRef, useRef } from "react";
 import { Slot } from "../../primitives/Slot";
 import { Spinner } from "../Spinner";
 import { injectStyle } from "../../styles/registry";
 import { tokensCssText } from "../../tokens/tokens.style";
 import { buttonCssText } from "./Button.style";
-import type { ButtonProps, ButtonSize } from "./Button.types";
+import type { ButtonProps, ButtonType, ButtonSize } from "./Button.types";
 
-const spinnerSizeMap: Record<ButtonSize, "xs" | "sm" | "md"> = {
-  sm: "xs",
-  md: "sm",
-  lg: "md",
-};
+function normalizeSize(size: ButtonSize = "medium"): "sm" | "md" | "lg" {
+  if (size === "small" || size === "sm") return "sm";
+  if (size === "large" || size === "lg") return "lg";
+  return "md";
+}
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+function resolveButtonType(
+  type?: ButtonType,
+  variant?: string
+): ButtonType {
+  if (type) return type;
+  if (variant === "secondary" || variant === "outline") return "default";
+  if (variant === "ghost") return "text";
+  if (variant === "primary") return "primary";
+  if (variant === "danger") return "primary";
+  return "default";
+}
+
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
     {
       asChild = false,
-      variant = "primary",
-      size = "md",
-      isLoading = false,
+      type: propType,
+      variant,
+      danger = false,
+      ghost = false,
+      shape = "default",
+      size = "medium",
+      loading = false,
+      isLoading: propIsLoading,
       loadingText,
+      block = false,
+      fullWidth = false,
+      icon,
+      iconPlacement = "start",
       leftIcon,
       rightIcon,
-      fullWidth = false,
+      href,
+      target,
+      htmlType = "button",
       disabled = false,
-      type = "button",
-      className,
+      className = "",
+      onClick,
       children,
-      ...props
+      ...restProps
     },
     ref
   ) => {
-    // Automatically ensure design tokens and button styles are injected into document.head
     if (typeof window !== "undefined") {
       injectStyle("ch-theme-tokens", tokensCssText);
       injectStyle("ch-button", buttonCssText);
     }
 
-    const Component = asChild ? Slot : "button";
+    const [isWaving, setIsWaving] = useState(false);
+    const waveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const buttonType = resolveButtonType(propType, variant);
+    const normalizedSize = normalizeSize(size);
+
+    // Resolve loading state
+    const isComponentLoading =
+      typeof loading === "boolean"
+        ? loading || !!propIsLoading
+        : !!loading;
+    const customLoadingIcon =
+      typeof loading === "object" && loading !== null ? loading.icon : undefined;
+
+    const isDanger = danger || variant === "danger";
+    const isGhost = ghost || variant === "ghost";
+    const isBlock = block || fullWidth;
+    const isDisabled = disabled || isComponentLoading;
+
+    // Handle Ant Design click wave effect
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement & HTMLAnchorElement>) => {
+      if (isDisabled) {
+        e.preventDefault();
+        return;
+      }
+
+      if (buttonType !== "link" && !isGhost) {
+        setIsWaving(true);
+        if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
+        waveTimerRef.current = setTimeout(() => {
+          setIsWaving(false);
+        }, 400);
+      }
+
+      onClick?.(e);
+    };
 
     const classNames = [
       "ch-btn",
-      `ch-btn--${variant}`,
-      `ch-btn--${size}`,
-      fullWidth && "ch-btn--full-width",
-      isLoading && "ch-btn--loading",
+      `ch-btn--${buttonType}`,
+      `ch-btn--size-${normalizedSize}`,
+      shape !== "default" && `ch-btn--shape-${shape}`,
+      isDanger && "ch-btn--danger",
+      isGhost && "ch-btn--ghost",
+      isBlock && "ch-btn--block",
+      isComponentLoading && "ch-btn--loading",
+      isWaving && "ch-btn--waving",
       className,
     ]
       .filter(Boolean)
       .join(" ");
 
-    const isDisabled = disabled || isLoading;
+    // Icon handling
+    const startIcon = icon && iconPlacement === "start" ? icon : leftIcon;
+    const endIcon = icon && iconPlacement === "end" ? icon : rightIcon;
+
+    const spinnerNode = customLoadingIcon ? (
+      <span className="ch-btn__icon">{customLoadingIcon}</span>
+    ) : (
+      <Spinner
+        size={normalizedSize === "lg" ? "md" : normalizedSize === "sm" ? "xs" : "sm"}
+        label={loadingText ? "" : "Loading..."}
+      />
+    );
 
     const content = (
       <>
-        {isLoading && (
-          <Spinner
-            size={spinnerSizeMap[size]}
-            label={loadingText ? "" : "Loading..."}
-          />
+        {isComponentLoading && spinnerNode}
+        {!isComponentLoading && startIcon && (
+          <span className="ch-btn__icon">{startIcon}</span>
         )}
-        {!isLoading && leftIcon}
-        {isLoading && loadingText ? loadingText : children}
-        {!isLoading && rightIcon}
+        {isComponentLoading && loadingText ? (
+          <span>{loadingText}</span>
+        ) : (
+          children !== undefined && <span>{children}</span>
+        )}
+        {!isComponentLoading && endIcon && (
+          <span className="ch-btn__icon">{endIcon}</span>
+        )}
       </>
     );
 
+    // Slot polymorphism
     if (asChild) {
       return (
-        <Component
+        <Slot
           ref={ref}
           className={classNames}
-          data-variant={variant}
-          data-size={size}
+          data-type={buttonType}
+          data-size={normalizedSize}
           data-disabled={isDisabled ? "true" : undefined}
-          data-loading={isLoading ? "true" : undefined}
-          aria-busy={isLoading}
+          data-loading={isComponentLoading ? "true" : undefined}
+          aria-busy={isComponentLoading}
           aria-disabled={isDisabled}
-          {...props}
+          onClick={handleClick}
+          {...restProps}
         >
           {children}
-        </Component>
+        </Slot>
       );
     }
 
+    // Render as <a> when href is specified
+    if (href) {
+      return (
+        <a
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          href={isDisabled ? undefined : href}
+          target={target}
+          rel={target === "_blank" ? "noreferrer noopener" : undefined}
+          className={classNames}
+          data-type={buttonType}
+          data-size={normalizedSize}
+          data-disabled={isDisabled ? "true" : undefined}
+          aria-disabled={isDisabled}
+          onClick={handleClick}
+          {...(restProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    // Render as <button>
     return (
-      <Component
-        ref={ref}
-        type={type}
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type={htmlType}
         className={classNames}
         disabled={isDisabled}
-        data-variant={variant}
-        data-size={size}
+        data-type={buttonType}
+        data-size={normalizedSize}
         data-disabled={isDisabled ? "true" : undefined}
-        data-loading={isLoading ? "true" : undefined}
-        aria-busy={isLoading}
-        {...props}
+        data-loading={isComponentLoading ? "true" : undefined}
+        aria-busy={isComponentLoading}
+        onClick={handleClick}
+        {...restProps}
       >
         {content}
-      </Component>
+      </button>
     );
   }
 );
 
-Button.displayName = "ChellaButton";
+Button.displayName = "Button";

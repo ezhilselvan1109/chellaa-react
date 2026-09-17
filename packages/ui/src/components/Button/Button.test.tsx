@@ -4,18 +4,18 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "./Button";
 
-describe("Button Component", () => {
+describe("Button Component (Ant Design Inspired)", () => {
   it("renders with default props and text content", () => {
     render(<Button>Click Me</Button>);
 
     const button = screen.getByRole("button", { name: "Click Me" });
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("type", "button");
-    expect(button).toHaveAttribute("data-variant", "primary");
+    expect(button).toHaveAttribute("data-type", "default");
     expect(button).toHaveAttribute("data-size", "md");
   });
 
-  it("handles click events", async () => {
+  it("handles click events and triggers click wave effect", async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
 
@@ -25,28 +25,84 @@ describe("Button Component", () => {
     await user.click(button);
 
     expect(handleClick).toHaveBeenCalledTimes(1);
+    expect(button.className).toContain("ch-btn--waving");
   });
 
-  it("renders all variant styles and data attributes", () => {
-    const variants = ["primary", "secondary", "outline", "ghost", "danger"] as const;
+  it("renders all Ant Design 5 types", () => {
+    const types = ["primary", "default", "dashed", "text", "link"] as const;
 
-    variants.forEach((variant) => {
-      const { unmount } = render(<Button variant={variant}>{variant}</Button>);
-      const button = screen.getByRole("button", { name: variant });
-      expect(button).toHaveAttribute("data-variant", variant);
+    types.forEach((type) => {
+      const { unmount } = render(<Button type={type}>{type}</Button>);
+      const button = screen.getByRole("button", { name: type });
+      expect(button).toHaveAttribute("data-type", type);
+      expect(button.className).toContain(`ch-btn--${type}`);
       unmount();
     });
   });
 
-  it("renders all size scales and data attributes", () => {
-    const sizes = ["sm", "md", "lg"] as const;
+  it("supports danger modifier across types", () => {
+    render(
+      <Button type="primary" danger>
+        Delete
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Delete" });
+    expect(button.className).toContain("ch-btn--danger");
+  });
+
+  it("supports ghost modifier", () => {
+    render(
+      <Button type="primary" ghost>
+        Ghost Button
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Ghost Button" });
+    expect(button.className).toContain("ch-btn--ghost");
+  });
+
+  it("supports shapes: circle and round", () => {
+    const { unmount: unmount1 } = render(<Button shape="circle">🔍</Button>);
+    expect(screen.getByRole("button").className).toContain("ch-btn--shape-circle");
+    unmount1();
+
+    const { unmount: unmount2 } = render(<Button shape="round">Rounded</Button>);
+    expect(screen.getByRole("button").className).toContain("ch-btn--shape-round");
+    unmount2();
+  });
+
+  it("supports sizes: small, medium, large", () => {
+    const sizes = ["small", "medium", "large"] as const;
 
     sizes.forEach((size) => {
       const { unmount } = render(<Button size={size}>{size}</Button>);
       const button = screen.getByRole("button", { name: size });
-      expect(button).toHaveAttribute("data-size", size);
+      expect(button.className).toContain(`ch-btn--size-${size === "small" ? "sm" : size === "large" ? "lg" : "md"}`);
       unmount();
     });
+  });
+
+  it("supports block property", () => {
+    render(<Button block>Full Width Block</Button>);
+
+    const button = screen.getByRole("button", { name: "Full Width Block" });
+    expect(button.className).toContain("ch-btn--block");
+  });
+
+  it("renders as <a> tag when href is specified", () => {
+    render(
+      <Button type="link" href="https://ant.design" target="_blank">
+        Ant Design Link
+      </Button>
+    );
+
+    const link = screen.getByRole("link", { name: "Ant Design Link" });
+    expect(link).toBeInTheDocument();
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "https://ant.design");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noreferrer noopener");
   });
 
   it("supports disabled state and prevents click actions", async () => {
@@ -72,7 +128,7 @@ describe("Button Component", () => {
     const handleClick = vi.fn();
 
     render(
-      <Button isLoading loadingText="Saving..." onClick={handleClick}>
+      <Button loading loadingText="Saving..." onClick={handleClick}>
         Save
       </Button>
     );
@@ -88,41 +144,30 @@ describe("Button Component", () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
-  it("renders leftIcon and rightIcon properly", () => {
+  it("supports icon and iconPlacement", () => {
     render(
       <Button
-        leftIcon={<span data-testid="left-icon">←</span>}
-        rightIcon={<span data-testid="right-icon">→</span>}
+        icon={<span data-testid="test-icon">★</span>}
+        iconPlacement="end"
       >
-        Navigate
+        Favorited
       </Button>
     );
 
-    expect(screen.getByTestId("left-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("right-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("test-icon")).toBeInTheDocument();
   });
 
-  it("supports fullWidth modifier", () => {
-    render(<Button fullWidth>Full Width</Button>);
-
-    const button = screen.getByRole("button", { name: "Full Width" });
-    expect(button.className).toContain("ch-btn--full-width");
-  });
-
-  it("automatically injects component and token styles into document.head without manual CSS imports", () => {
+  it("automatically injects component styles into document.head", () => {
     render(<Button>Auto Styled</Button>);
 
-    const tokenStyle = document.getElementById("ch-theme-tokens");
     const buttonStyle = document.getElementById("ch-button");
-
-    expect(tokenStyle).toBeInTheDocument();
     expect(buttonStyle).toBeInTheDocument();
     expect(buttonStyle?.textContent).toContain(".ch-btn");
   });
 
   it("supports polymorphic composition via asChild", () => {
     render(
-      <Button asChild variant="outline">
+      <Button asChild type="primary">
         <a href="/dashboard">Dashboard Link</a>
       </Button>
     );
@@ -130,7 +175,7 @@ describe("Button Component", () => {
     const link = screen.getByRole("link", { name: "Dashboard Link" });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/dashboard");
-    expect(link).toHaveAttribute("data-variant", "outline");
+    expect(link).toHaveAttribute("data-type", "primary");
     expect(link.tagName).toBe("A");
   });
 

@@ -1,43 +1,109 @@
 import React from "react";
 import type { AsChildProp } from "../../primitives/Slot";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger";
+export type ButtonType = "primary" | "default" | "dashed" | "text" | "link";
 
-export type ButtonSize = "sm" | "md" | "lg";
+export type ButtonShape = "default" | "circle" | "round";
+
+export type ButtonSize = "large" | "medium" | "small" | "lg" | "md" | "sm";
+
+export type ButtonHTMLType = "submit" | "button" | "reset";
+
+export type IconPlacement = "start" | "end";
+
+export interface ButtonLoadingConfig {
+  delay?: number;
+  icon?: React.ReactNode;
+}
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type">,
     AsChildProp {
   /**
-   * The visual variant style of the button.
-   * @default "primary"
+   * Set button type syntactic sugar (Ant Design inspired: primary, default, dashed, text, link).
+   * @default "default"
    */
-  variant?: ButtonVariant;
+  type?: ButtonType;
   /**
-   * The size scale of the button.
-   * @default "md"
+   * Backwards compatible variant alias (maps primary, secondary, outline, ghost, danger).
+   */
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger" | ButtonType;
+  /**
+   * Set the danger status of button. Works seamlessly with all button types.
+   * @default false
+   */
+  danger?: boolean;
+  /**
+   * Make background transparent and invert text and border colors for colored/dark backgrounds.
+   * @default false
+   */
+  ghost?: boolean;
+  /**
+   * Can be used to set button shape (default, circle, round).
+   * @default "default"
+   */
+  shape?: ButtonShape;
+  /**
+   * Set the size of button (large/lg, medium/md, small/sm).
+   * @default "medium"
    */
   size?: ButtonSize;
   /**
-   * Whether the button is in a loading state. Shows a spinner and disables user interaction.
+   * Set the loading status of button.
+   * @default false
+   */
+  loading?: boolean | ButtonLoadingConfig;
+  /**
+   * Backwards-compatible loading alias.
    * @default false
    */
   isLoading?: boolean;
   /**
-   * Optional text displayed alongside the spinner when isLoading is true.
+   * Optional text displayed alongside the spinner when loading is true.
    */
   loadingText?: string;
   /**
-   * Icon displayed before the button label.
+   * Option to fit button width to its parent width.
+   * @default false
    */
-  leftIcon?: React.ReactNode;
+  block?: boolean;
   /**
-   * Icon displayed after the button label.
-   */
-  rightIcon?: React.ReactNode;
-  /**
-   * If true, the button will expand to take the full width of its container.
+   * Backwards-compatible fullWidth alias.
    * @default false
    */
   fullWidth?: boolean;
+  /**
+   * Set the icon component of button.
+   */
+  icon?: React.ReactNode;
+  /**
+   * Set the icon position of button (start | end).
+   * @default "start"
+   */
+  iconPlacement?: IconPlacement;
+  /**
+   * Backwards-compatible icon rendered before button label.
+   */
+  leftIcon?: React.ReactNode;
+  /**
+   * Backwards-compatible icon rendered after button label.
+   */
+  rightIcon?: React.ReactNode;
+  /**
+   * Redirect URL when button acts as a link. Renders as an <a> tag when specified.
+   */
+  href?: string;
+  /**
+   * Target attribute when href is specified.
+   */
+  target?: string;
+  /**
+   * Original HTML button type.
+   * @default "button"
+   */
+  htmlType?: ButtonHTMLType;
+  /**
+   * Button child content.
+   */
+  children?: React.ReactNode;
 }
