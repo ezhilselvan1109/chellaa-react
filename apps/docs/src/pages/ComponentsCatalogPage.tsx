@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -13,6 +13,19 @@ interface ComponentItem {
 }
 
 const componentList: ComponentItem[] = [
+  {
+    id: "divider",
+    name: "Divider",
+    category: "Layout",
+    description: "A line that separates different content blocks or inline elements with titles and dash styles.",
+    href: "/docs/components/divider",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "90%", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <Divider dashed style={{ margin: "0.5rem 0" }}>Title</Divider>
+      </div>
+    ),
+  },
   {
     id: "button",
     name: "Button",

@@ -75,6 +75,12 @@ export const navigationConfig: NavSection[] = [
         description: "Single-line accessible text input field with validation and size scales.",
       },
       {
+        title: "Divider",
+        href: "/docs/components/divider",
+        badge: "Layout",
+        description: "A line that separates different blocks or inline content with text and style variants.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
