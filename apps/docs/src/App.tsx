@@ -19,6 +19,7 @@ import { DividerDocPage } from "./pages/components/DividerDocPage";
 import { FlexDocPage } from "./pages/components/FlexDocPage";
 import { GridDocPage } from "./pages/components/GridDocPage";
 import { MasonryDocPage } from "./pages/components/MasonryDocPage";
+import { AutoCompleteDocPage } from "./pages/components/AutoCompleteDocPage";
 
 const AppContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -61,6 +62,7 @@ const AppContent: React.FC = () => {
             <Route path="/docs/components/flex" element={<FlexDocPage />} />
             <Route path="/docs/components/grid" element={<GridDocPage />} />
             <Route path="/docs/components/masonry" element={<MasonryDocPage />} />
+            <Route path="/docs/components/auto-complete" element={<AutoCompleteDocPage />} />
           </Routes>
         </div>
       )}

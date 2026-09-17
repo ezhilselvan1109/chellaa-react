@@ -99,6 +99,12 @@ export const navigationConfig: NavSection[] = [
         description: "Adaptive masonry column layout for content with irregular heights.",
       },
       {
+        title: "AutoComplete",
+        href: "/docs/components/auto-complete",
+        badge: "Data Entry",
+        description: "Autocomplete function of input field with suggestions and helping text.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",

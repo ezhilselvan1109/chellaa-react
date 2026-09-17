@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -134,6 +134,24 @@ const componentList: ComponentItem[] = [
     preview: (
       <div style={{ width: "100%", maxWidth: 220 }}>
         <Input placeholder="Enter email..." size="sm" />
+      </div>
+    ),
+  },
+  {
+    id: "auto-complete",
+    name: "AutoComplete",
+    category: "Data Entry",
+    description: "Autocomplete function of input field with suggestions and helping text.",
+    href: "/docs/components/auto-complete",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "100%", maxWidth: 220 }}>
+        <AutoComplete
+          placeholder="Search..."
+          size="small"
+          allowClear
+          options={[{ value: "React" }, { value: "Chella UI" }]}
+        />
       </div>
     ),
   },

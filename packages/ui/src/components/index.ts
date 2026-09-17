@@ -7,3 +7,4 @@ export * from "./Divider";
 export * from "./Flex";
 export * from "./Grid";
 export * from "./Masonry";
+export * from "./AutoComplete";
