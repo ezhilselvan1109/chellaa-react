@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import {
   Button,
   ButtonType,
+  ButtonVariant,
+  ButtonColor,
   ButtonShape,
   ButtonSize,
   Badge,
@@ -16,13 +18,25 @@ const antDesignButtonProps: PropItem[] = [
     name: "type",
     type: '"primary" | "default" | "dashed" | "text" | "link"',
     defaultValue: '"default"',
-    description: "Syntactic sugar. Set button type preset styling.",
+    description: "Syntactic sugar. Set button type preset styling. Follows color & variant if provided.",
+  },
+  {
+    name: "variant",
+    type: '"solid" | "outlined" | "dashed" | "filled" | "text" | "link"',
+    defaultValue: '"outlined"',
+    description: "Set button variant (Ant Design 5.21+ / 6.0).",
+  },
+  {
+    name: "color",
+    type: '"default" | "primary" | "danger" | PresetColors',
+    defaultValue: '"default"',
+    description: "Set button color. Supports preset colors like cyan, purple, green, orange, red, blue, etc.",
   },
   {
     name: "danger",
     type: "boolean",
     defaultValue: "false",
-    description: "Set the danger status of button. Works across all button types.",
+    description: "Syntactic sugar. Set the danger status of button across any type or variant.",
   },
   {
     name: "ghost",
@@ -46,7 +60,13 @@ const antDesignButtonProps: PropItem[] = [
     name: "loading",
     type: "boolean | { delay?: number, icon?: ReactNode }",
     defaultValue: "false",
-    description: "Set the loading status of button with animated spinner.",
+    description: "Set the loading status of button with animated spinner and click lock.",
+  },
+  {
+    name: "loadingIcon",
+    type: "ReactNode",
+    defaultValue: "<Spinner />",
+    description: "Custom loading icon element.",
   },
   {
     name: "block",
@@ -73,6 +93,30 @@ const antDesignButtonProps: PropItem[] = [
     description: "Set the icon position of button.",
   },
   {
+    name: "autoInsertSpace",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Automatically inserts a space between two Chinese characters.",
+  },
+  {
+    name: "wave",
+    type: "boolean | { disabled?: boolean }",
+    defaultValue: "true",
+    description: "Configuration for Ant Design radiating click wave ripple animation.",
+  },
+  {
+    name: "classNames",
+    type: "Record<'root' | 'icon' | 'content', string>",
+    defaultValue: "undefined",
+    description: "Customize class for each semantic structure inside the component.",
+  },
+  {
+    name: "styles",
+    type: "Record<'root' | 'icon' | 'content', CSSProperties>",
+    defaultValue: "undefined",
+    description: "Customize inline style for each semantic structure inside the component.",
+  },
+  {
     name: "href",
     type: "string",
     defaultValue: "undefined",
@@ -88,16 +132,21 @@ const antDesignButtonProps: PropItem[] = [
     name: "onClick",
     type: "(event: React.MouseEvent) => void",
     defaultValue: "undefined",
-    description: "Set the handler to handle click event with click wave effect.",
+    description: "Handler for click event with click wave effect trigger.",
   },
 ];
 
 const types: ButtonType[] = ["primary", "default", "dashed", "text", "link"];
+const variants: ButtonVariant[] = ["solid", "outlined", "dashed", "filled", "text", "link"];
+const colors: ButtonColor[] = ["default", "primary", "danger", "cyan", "purple", "green", "orange"];
 const shapes: ButtonShape[] = ["default", "round", "circle"];
 const sizes: ButtonSize[] = ["small", "medium", "large"];
 
 export const ButtonDocPage: React.FC = () => {
+  const [mode, setMode] = useState<"type" | "colorVariant">("type");
   const [type, setType] = useState<ButtonType>("primary");
+  const [variant, setVariant] = useState<ButtonVariant>("solid");
+  const [color, setColor] = useState<ButtonColor>("primary");
   const [shape, setShape] = useState<ButtonShape>("default");
   const [size, setSize] = useState<ButtonSize>("medium");
   const [danger, setDanger] = useState(false);
@@ -106,11 +155,20 @@ export const ButtonDocPage: React.FC = () => {
   const [block, setBlock] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  const interactiveCode = `<Button
+  const interactiveCode =
+    mode === "type"
+      ? `<Button
   type="${type}"
   size="${size}"${shape !== "default" ? `\n  shape="${shape}"` : ""}${danger ? "\n  danger" : ""}${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${block ? "\n  block" : ""}${disabled ? "\n  disabled" : ""}
 >
   ${shape === "circle" ? "🔍" : type.charAt(0).toUpperCase() + type.slice(1) + " Button"}
+</Button>`
+      : `<Button
+  color="${color}"
+  variant="${variant}"
+  size="${size}"${shape !== "default" ? `\n  shape="${shape}"` : ""}${ghost ? "\n  ghost" : ""}${loading ? "\n  loading" : ""}${block ? "\n  block" : ""}${disabled ? "\n  disabled" : ""}
+>
+  ${shape === "circle" ? "🔍" : `${color} ${variant}`}
 </Button>`;
 
   return (
@@ -146,22 +204,78 @@ export const ButtonDocPage: React.FC = () => {
         code={interactiveCode}
         controls={
           <>
-            {/* Type selector */}
+            {/* Mode selector */}
             <div className="preview-control-group">
-              <span className="control-label">Type:</span>
+              <span className="control-label">Mode:</span>
               <div className="control-segmented-group">
-                {types.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    className={`control-pill ${type === t ? "active" : ""}`}
-                    onClick={() => setType(t)}
-                  >
-                    {t.charAt(0).toUpperCase() + t.slice(1)}
-                  </button>
-                ))}
+                <button
+                  type="button"
+                  className={`control-pill ${mode === "type" ? "active" : ""}`}
+                  onClick={() => setMode("type")}
+                >
+                  Type (Sugar)
+                </button>
+                <button
+                  type="button"
+                  className={`control-pill ${mode === "colorVariant" ? "active" : ""}`}
+                  onClick={() => setMode("colorVariant")}
+                >
+                  Color & Variant
+                </button>
               </div>
             </div>
+
+            {mode === "type" ? (
+              <div className="preview-control-group">
+                <span className="control-label">Type:</span>
+                <div className="control-segmented-group">
+                  {types.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`control-pill ${type === t ? "active" : ""}`}
+                      onClick={() => setType(t)}
+                    >
+                      {t.charAt(0).toUpperCase() + t.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="preview-control-group">
+                  <span className="control-label">Variant:</span>
+                  <div className="control-segmented-group">
+                    {variants.map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        className={`control-pill ${variant === v ? "active" : ""}`}
+                        onClick={() => setVariant(v)}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="preview-control-group">
+                  <span className="control-label">Color:</span>
+                  <div className="control-segmented-group">
+                    {colors.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        className={`control-pill ${color === c ? "active" : ""}`}
+                        onClick={() => setColor(c)}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             {/* Shape selector */}
             <div className="preview-control-group">
@@ -265,33 +379,49 @@ export const ButtonDocPage: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          <Button
-            type={type}
-            shape={shape}
-            size={size}
-            danger={danger}
-            ghost={ghost}
-            loading={loading}
-            block={block}
-            disabled={disabled}
-            onClick={() => {}}
-          >
-            {shape === "circle" ? "🔍" : `${type.charAt(0).toUpperCase() + type.slice(1)} Button`}
-          </Button>
+          {mode === "type" ? (
+            <Button
+              type={type}
+              shape={shape}
+              size={size}
+              danger={danger}
+              ghost={ghost}
+              loading={loading}
+              block={block}
+              disabled={disabled}
+              onClick={() => {}}
+            >
+              {shape === "circle" ? "🔍" : `${type.charAt(0).toUpperCase() + type.slice(1)} Button`}
+            </Button>
+          ) : (
+            <Button
+              color={color}
+              variant={variant}
+              shape={shape}
+              size={size}
+              ghost={ghost}
+              loading={loading}
+              block={block}
+              disabled={disabled}
+              onClick={() => {}}
+            >
+              {shape === "circle" ? "🔍" : `${color} ${variant}`}
+            </Button>
+          )}
         </div>
       </ComponentPreview>
 
       {/* 5 Types Section */}
-      <h2 className="docs-section-heading">5 Button Types</h2>
+      <h2 className="docs-section-heading">5 Button Types (Syntactic Sugar)</h2>
       <p className="docs-p">
         In Ant Design we provide 5 types of button:
       </p>
       <ul>
-        <li><strong>Primary button:</strong> used for the main action, there can be at most one primary button in a section.</li>
-        <li><strong>Default button:</strong> used for a series of actions without priority.</li>
-        <li><strong>Dashed button:</strong> commonly used for adding more actions.</li>
-        <li><strong>Text button:</strong> used for the most secondary action.</li>
-        <li><strong>Link button:</strong> used for external links and light inline actions.</li>
+        <li>🔵 <strong>Primary button:</strong> used for the main action, there can be at most one primary button in a section.</li>
+        <li>⚪️ <strong>Default button:</strong> used for a series of actions without priority.</li>
+        <li>😶 <strong>Dashed button:</strong> commonly used for adding more actions.</li>
+        <li>🔤 <strong>Text button:</strong> used for the most secondary action.</li>
+        <li>🔗 <strong>Link button:</strong> used for external links.</li>
       </ul>
       <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", margin: "1.5rem 0", alignItems: "center" }}>
         <Button type="primary">Primary Button</Button>
@@ -306,6 +436,29 @@ export const ButtonDocPage: React.FC = () => {
 <Button type="dashed">Dashed Button</Button>
 <Button type="text">Text Button</Button>
 <Button type="link">Link Button</Button>`}
+        language="tsx"
+      />
+
+      {/* Color & Variant (Ant Design 5.21+) */}
+      <h2 className="docs-section-heading">Color & Variant (Ant Design 5.21+)</h2>
+      <p className="docs-p">
+        You can set the <code>color</code> and <code>variant</code> attributes at the same time to derive more button variants across preset colors (cyan, purple, green, orange, etc.):
+      </p>
+      <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", margin: "1.5rem 0", alignItems: "center" }}>
+        <Button color="cyan" variant="solid">Cyan Solid</Button>
+        <Button color="purple" variant="outlined">Purple Outlined</Button>
+        <Button color="green" variant="dashed">Green Dashed</Button>
+        <Button color="orange" variant="filled">Orange Filled</Button>
+        <Button color="primary" variant="text">Primary Text</Button>
+        <Button color="danger" variant="link">Danger Link</Button>
+      </div>
+      <CodeBlock
+        code={`<Button color="cyan" variant="solid">Cyan Solid</Button>
+<Button color="purple" variant="outlined">Purple Outlined</Button>
+<Button color="green" variant="dashed">Green Dashed</Button>
+<Button color="orange" variant="filled">Orange Filled</Button>
+<Button color="primary" variant="text">Primary Text</Button>
+<Button color="danger" variant="link">Danger Link</Button>`}
         language="tsx"
       />
 
@@ -333,7 +486,7 @@ export const ButtonDocPage: React.FC = () => {
       {/* Ghost Buttons */}
       <h2 className="docs-section-heading">Ghost Button</h2>
       <p className="docs-p">
-        The <code>ghost</code> property will make a button's background transparent and invert text and border colors, commonly used on colored or dark hero surfaces:
+        The <code>ghost</code> property makes a button's background transparent and inverts text and border colors, commonly used on colored or dark hero surfaces:
       </p>
       <div
         style={{
@@ -383,7 +536,7 @@ export const ButtonDocPage: React.FC = () => {
       {/* Sizes */}
       <h2 className="docs-section-heading">Size Scale</h2>
       <p className="docs-p">
-        Supports three sizes: <code>large</code> (44px), <code>medium</code> (36px, default), and <code>small</code> (28px):
+        Supports three sizes: <code>large</code> (40px), <code>medium</code> (32px, default), and <code>small</code> (24px):
       </p>
       <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", margin: "1.5rem 0", alignItems: "center" }}>
         <Button type="primary" size="large">Large Button</Button>
@@ -407,7 +560,30 @@ export const ButtonDocPage: React.FC = () => {
         <Button type="primary" block>Block Button (100% Width)</Button>
       </div>
 
-      {/* Click Wave Animation */}
+      {/* Custom Semantic DOM Styling */}
+      <h2 className="docs-section-heading">Custom Semantic DOM Styling</h2>
+      <p className="docs-p">
+        You can customize the semantic DOM style of Button by passing objects through <code>classNames</code> and <code>styles</code> for <code>root</code>, <code>icon</code>, and <code>content</code>:
+      </p>
+      <CodeBlock
+        code={`<Button
+  type="primary"
+  classNames={{
+    root: "custom-btn-root",
+    icon: "custom-btn-icon",
+    content: "custom-btn-content",
+  }}
+  styles={{
+    root: { boxShadow: "0 4px 12px rgba(22, 119, 255, 0.4)" },
+    content: { letterSpacing: "1px" },
+  }}
+>
+  Semantic Button
+</Button>`}
+        language="tsx"
+      />
+
+      {/* Ant Design Click Wave Effect */}
       <h2 className="docs-section-heading">Ant Design Click Wave Effect</h2>
       <p className="docs-p">
         Clicking any solid or bordered button triggers the dynamic Ant Design radiating wave pulse animation around the border. Click the button below to observe the wave effect:

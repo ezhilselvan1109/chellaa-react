@@ -4,7 +4,23 @@ import { Spinner } from "../Spinner";
 import { injectStyle } from "../../styles/registry";
 import { tokensCssText } from "../../tokens/tokens.style";
 import { buttonCssText } from "./Button.style";
-import type { ButtonProps, ButtonType, ButtonSize } from "./Button.types";
+import type {
+  ButtonProps,
+  ButtonType,
+  ButtonVariant,
+  ButtonColor,
+  ButtonSize,
+} from "./Button.types";
+
+const isTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
+
+function insertSpace(children: React.ReactNode, autoInsertSpace = true): React.ReactNode {
+  if (!autoInsertSpace) return children;
+  if (typeof children === "string" && isTwoCNChar.test(children.trim())) {
+    return children.trim().split("").join(" ");
+  }
+  return children;
+}
 
 function normalizeSize(size: ButtonSize = "medium"): "sm" | "md" | "lg" {
   if (size === "small" || size === "sm") return "sm";
@@ -12,30 +28,84 @@ function normalizeSize(size: ButtonSize = "medium"): "sm" | "md" | "lg" {
   return "md";
 }
 
-function resolveButtonType(
+function resolveColorAndVariant(
   type?: ButtonType,
-  variant?: string
-): ButtonType {
-  if (type) return type;
-  if (variant === "secondary" || variant === "outline") return "default";
-  if (variant === "ghost") return "text";
-  if (variant === "primary") return "primary";
-  if (variant === "danger") return "primary";
-  return "default";
+  variantProp?: string,
+  colorProp?: ButtonColor,
+  danger = false
+): { color: ButtonColor; variant: ButtonVariant } {
+  // If variant is explicitly one of Ant Design 6 variants, use it
+  let resolvedVariant: ButtonVariant = "outlined";
+  let resolvedColor: ButtonColor = colorProp ?? (danger ? "danger" : "default");
+
+  if (
+    variantProp === "solid" ||
+    variantProp === "outlined" ||
+    variantProp === "dashed" ||
+    variantProp === "filled" ||
+    variantProp === "text" ||
+    variantProp === "link"
+  ) {
+    resolvedVariant = variantProp;
+    if (!colorProp) {
+      resolvedColor = danger ? "danger" : variantProp === "solid" ? "primary" : "default";
+    }
+  } else if (variantProp === "primary") {
+    resolvedVariant = "solid";
+    if (!colorProp) resolvedColor = danger ? "danger" : "primary";
+  } else if (variantProp === "secondary" || variantProp === "outline") {
+    resolvedVariant = "outlined";
+  } else if (variantProp === "ghost") {
+    resolvedVariant = "text";
+  } else if (variantProp === "danger") {
+    resolvedVariant = "solid";
+    if (!colorProp) resolvedColor = "danger";
+  } else if (type) {
+    // Syntactic sugar mapping
+    switch (type) {
+      case "primary":
+        resolvedVariant = "solid";
+        resolvedColor = colorProp ?? (danger ? "danger" : "primary");
+        break;
+      case "dashed":
+        resolvedVariant = "dashed";
+        resolvedColor = colorProp ?? (danger ? "danger" : "default");
+        break;
+      case "text":
+        resolvedVariant = "text";
+        resolvedColor = colorProp ?? (danger ? "danger" : "default");
+        break;
+      case "link":
+        resolvedVariant = "link";
+        resolvedColor = colorProp ?? (danger ? "danger" : "primary");
+        break;
+      case "default":
+      default:
+        resolvedVariant = "outlined";
+        resolvedColor = colorProp ?? (danger ? "danger" : "default");
+        break;
+    }
+  } else if (colorProp === "primary") {
+    resolvedVariant = "solid";
+  }
+
+  return { color: resolvedColor, variant: resolvedVariant };
 }
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
     {
       asChild = false,
-      type: propType,
-      variant,
+      type,
+      variant: propVariant,
+      color: propColor,
       danger = false,
       ghost = false,
       shape = "default",
       size = "medium",
       loading = false,
       isLoading: propIsLoading,
+      loadingIcon,
       loadingText,
       block = false,
       fullWidth = false,
@@ -46,8 +116,13 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       href,
       target,
       htmlType = "button",
+      autoInsertSpace = true,
+      wave = true,
+      classNames,
+      styles,
       disabled = false,
       className = "",
+      style,
       onClick,
       children,
       ...restProps
@@ -62,7 +137,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const [isWaving, setIsWaving] = useState(false);
     const waveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const buttonType = resolveButtonType(propType, variant);
+    const { color, variant } = resolveColorAndVariant(type, propVariant, propColor, danger);
     const normalizedSize = normalizeSize(size);
 
     // Resolve loading state
@@ -71,12 +146,14 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         ? loading || !!propIsLoading
         : !!loading;
     const customLoadingIcon =
-      typeof loading === "object" && loading !== null ? loading.icon : undefined;
+      loadingIcon ??
+      (typeof loading === "object" && loading !== null ? loading.icon : undefined);
 
-    const isDanger = danger || variant === "danger";
-    const isGhost = ghost || variant === "ghost";
     const isBlock = block || fullWidth;
     const isDisabled = disabled || isComponentLoading;
+
+    const isWaveDisabled =
+      wave === false || (typeof wave === "object" && wave?.disabled === true) || variant === "link" || ghost;
 
     // Handle Ant Design click wave effect
     const handleClick = (e: React.MouseEvent<HTMLButtonElement & HTMLAnchorElement>) => {
@@ -85,7 +162,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         return;
       }
 
-      if (buttonType !== "link" && !isGhost) {
+      if (!isWaveDisabled) {
         setIsWaving(true);
         if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
         waveTimerRef.current = setTimeout(() => {
@@ -96,27 +173,37 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       onClick?.(e);
     };
 
-    const classNames = [
+    const rootClasses = [
       "ch-btn",
-      `ch-btn--${buttonType}`,
+      `ch-btn--variant-${variant}`,
+      `ch-btn--color-${color}`,
+      // Backwards-compatible classnames
+      `ch-btn--${type ?? (variant === "solid" ? "primary" : "default")}`,
       `ch-btn--size-${normalizedSize}`,
       shape !== "default" && `ch-btn--shape-${shape}`,
-      isDanger && "ch-btn--danger",
-      isGhost && "ch-btn--ghost",
+      ghost && "ch-btn--ghost",
       isBlock && "ch-btn--block",
       isComponentLoading && "ch-btn--loading",
       isWaving && "ch-btn--waving",
+      classNames?.root,
       className,
     ]
       .filter(Boolean)
       .join(" ");
 
-    // Icon handling
+    const rootStyle: React.CSSProperties = {
+      ...styles?.root,
+      ...style,
+    };
+
+    // Icons
     const startIcon = icon && iconPlacement === "start" ? icon : leftIcon;
     const endIcon = icon && iconPlacement === "end" ? icon : rightIcon;
 
     const spinnerNode = customLoadingIcon ? (
-      <span className="ch-btn__icon">{customLoadingIcon}</span>
+      <span className={["ch-btn-icon", classNames?.icon].filter(Boolean).join(" ")} style={styles?.icon}>
+        {customLoadingIcon}
+      </span>
     ) : (
       <Spinner
         size={normalizedSize === "lg" ? "md" : normalizedSize === "sm" ? "xs" : "sm"}
@@ -124,30 +211,45 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       />
     );
 
+    const contentChildren = insertSpace(children, autoInsertSpace);
+
     const content = (
       <>
         {isComponentLoading && spinnerNode}
         {!isComponentLoading && startIcon && (
-          <span className="ch-btn__icon">{startIcon}</span>
+          <span className={["ch-btn-icon", classNames?.icon].filter(Boolean).join(" ")} style={styles?.icon}>
+            {startIcon}
+          </span>
         )}
         {isComponentLoading && loadingText ? (
-          <span>{loadingText}</span>
+          <span className={["ch-btn-content", classNames?.content].filter(Boolean).join(" ")} style={styles?.content}>
+            {loadingText}
+          </span>
         ) : (
-          children !== undefined && <span>{children}</span>
+          contentChildren !== undefined && (
+            <span className={["ch-btn-content", classNames?.content].filter(Boolean).join(" ")} style={styles?.content}>
+              {contentChildren}
+            </span>
+          )
         )}
         {!isComponentLoading && endIcon && (
-          <span className="ch-btn__icon">{endIcon}</span>
+          <span className={["ch-btn-icon", classNames?.icon].filter(Boolean).join(" ")} style={styles?.icon}>
+            {endIcon}
+          </span>
         )}
       </>
     );
 
-    // Slot polymorphism
+    // Slot Polymorphism
     if (asChild) {
       return (
         <Slot
           ref={ref}
-          className={classNames}
-          data-type={buttonType}
+          className={rootClasses}
+          style={rootStyle}
+          data-type={type ?? (variant === "solid" ? "primary" : "default")}
+          data-variant={variant}
+          data-color={color}
           data-size={normalizedSize}
           data-disabled={isDisabled ? "true" : undefined}
           data-loading={isComponentLoading ? "true" : undefined}
@@ -161,7 +263,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       );
     }
 
-    // Render as <a> when href is specified
+    // Render as <a> tag when href is provided
     if (href) {
       return (
         <a
@@ -169,8 +271,11 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
           href={isDisabled ? undefined : href}
           target={target}
           rel={target === "_blank" ? "noreferrer noopener" : undefined}
-          className={classNames}
-          data-type={buttonType}
+          className={rootClasses}
+          style={rootStyle}
+          data-type={type ?? (variant === "solid" ? "primary" : "default")}
+          data-variant={variant}
+          data-color={color}
           data-size={normalizedSize}
           data-disabled={isDisabled ? "true" : undefined}
           aria-disabled={isDisabled}
@@ -187,9 +292,12 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
         type={htmlType}
-        className={classNames}
+        className={rootClasses}
+        style={rootStyle}
         disabled={isDisabled}
-        data-type={buttonType}
+        data-type={type ?? (variant === "solid" ? "primary" : "default")}
+        data-variant={variant}
+        data-color={color}
         data-size={normalizedSize}
         data-disabled={isDisabled ? "true" : undefined}
         data-loading={isComponentLoading ? "true" : undefined}

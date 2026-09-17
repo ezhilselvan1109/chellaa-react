@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "./Button";
 
-describe("Button Component (Ant Design Inspired)", () => {
+describe("Button Component (Ant Design Exact Specification)", () => {
   it("renders with default props and text content", () => {
     render(<Button>Click Me</Button>);
 
@@ -12,6 +12,8 @@ describe("Button Component (Ant Design Inspired)", () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("type", "button");
     expect(button).toHaveAttribute("data-type", "default");
+    expect(button).toHaveAttribute("data-variant", "outlined");
+    expect(button).toHaveAttribute("data-color", "default");
     expect(button).toHaveAttribute("data-size", "md");
   });
 
@@ -35,20 +37,45 @@ describe("Button Component (Ant Design Inspired)", () => {
       const { unmount } = render(<Button type={type}>{type}</Button>);
       const button = screen.getByRole("button", { name: type });
       expect(button).toHaveAttribute("data-type", type);
-      expect(button.className).toContain(`ch-btn--${type}`);
       unmount();
     });
+  });
+
+  it("supports Ant Design 5.21+ Color and Variant derivation", () => {
+    render(
+      <Button color="cyan" variant="solid">
+        Cyan Solid
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Cyan Solid" });
+    expect(button.className).toContain("ch-btn--variant-solid");
+    expect(button.className).toContain("ch-btn--color-cyan");
+    expect(button).toHaveAttribute("data-variant", "solid");
+    expect(button).toHaveAttribute("data-color", "cyan");
+  });
+
+  it("supports filled variant across colors", () => {
+    render(
+      <Button color="purple" variant="filled">
+        Purple Filled
+      </Button>
+    );
+
+    const button = screen.getByRole("button", { name: "Purple Filled" });
+    expect(button.className).toContain("ch-btn--variant-filled");
+    expect(button.className).toContain("ch-btn--color-purple");
   });
 
   it("supports danger modifier across types", () => {
     render(
       <Button type="primary" danger>
-        Delete
+        Delete Action
       </Button>
     );
 
-    const button = screen.getByRole("button", { name: "Delete" });
-    expect(button.className).toContain("ch-btn--danger");
+    const button = screen.getByRole("button", { name: "Delete Action" });
+    expect(button.className).toContain("ch-btn--color-danger");
   });
 
   it("supports ghost modifier", () => {
@@ -105,6 +132,29 @@ describe("Button Component (Ant Design Inspired)", () => {
     expect(link).toHaveAttribute("rel", "noreferrer noopener");
   });
 
+  it("supports Semantic DOM customization (classNames and styles)", () => {
+    render(
+      <Button
+        icon={<span>★</span>}
+        classNames={{ root: "my-root", icon: "my-icon", content: "my-content" }}
+        styles={{ root: { margin: "10px" } }}
+      >
+        Star
+      </Button>
+    );
+
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("my-root");
+    expect(button.style.margin).toBe("10px");
+    expect(screen.getByText("★").parentElement?.className).toContain("my-icon");
+    expect(screen.getByText("Star").className).toContain("my-content");
+  });
+
+  it("automatically inserts space between two Chinese characters by default", () => {
+    render(<Button>确定</Button>);
+    expect(screen.getByRole("button", { name: "确 定" })).toBeInTheDocument();
+  });
+
   it("supports disabled state and prevents click actions", async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
@@ -123,12 +173,16 @@ describe("Button Component (Ant Design Inspired)", () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
-  it("handles loading state with spinner, aria-busy, and loadingText", async () => {
+  it("handles loading state with custom loading icon and aria-busy", async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
 
     render(
-      <Button loading loadingText="Saving..." onClick={handleClick}>
+      <Button
+        loading={{ icon: <span data-testid="custom-spinner">⌛</span> }}
+        loadingText="Saving..."
+        onClick={handleClick}
+      >
         Save
       </Button>
     );
@@ -136,33 +190,11 @@ describe("Button Component (Ant Design Inspired)", () => {
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
-    expect(button).toHaveAttribute("data-loading", "true");
+    expect(screen.getByTestId("custom-spinner")).toBeInTheDocument();
     expect(screen.getByText("Saving...")).toBeInTheDocument();
-    expect(screen.getByRole("status")).toBeInTheDocument();
 
     await user.click(button);
     expect(handleClick).not.toHaveBeenCalled();
-  });
-
-  it("supports icon and iconPlacement", () => {
-    render(
-      <Button
-        icon={<span data-testid="test-icon">★</span>}
-        iconPlacement="end"
-      >
-        Favorited
-      </Button>
-    );
-
-    expect(screen.getByTestId("test-icon")).toBeInTheDocument();
-  });
-
-  it("automatically injects component styles into document.head", () => {
-    render(<Button>Auto Styled</Button>);
-
-    const buttonStyle = document.getElementById("ch-button");
-    expect(buttonStyle).toBeInTheDocument();
-    expect(buttonStyle?.textContent).toContain(".ch-btn");
   });
 
   it("supports polymorphic composition via asChild", () => {

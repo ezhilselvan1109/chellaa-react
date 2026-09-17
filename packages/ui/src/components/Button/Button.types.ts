@@ -3,6 +3,31 @@ import type { AsChildProp } from "../../primitives/Slot";
 
 export type ButtonType = "primary" | "default" | "dashed" | "text" | "link";
 
+export type ButtonVariant =
+  | "solid"
+  | "outlined"
+  | "dashed"
+  | "filled"
+  | "text"
+  | "link";
+
+export type PresetColors =
+  | "blue"
+  | "purple"
+  | "cyan"
+  | "green"
+  | "magenta"
+  | "pink"
+  | "red"
+  | "orange"
+  | "yellow"
+  | "volcano"
+  | "geekblue"
+  | "lime"
+  | "gold";
+
+export type ButtonColor = "default" | "primary" | "danger" | PresetColors;
+
 export type ButtonShape = "default" | "circle" | "round";
 
 export type ButtonSize = "large" | "medium" | "small" | "lg" | "md" | "sm";
@@ -11,45 +36,57 @@ export type ButtonHTMLType = "submit" | "button" | "reset";
 
 export type IconPlacement = "start" | "end";
 
+export type ButtonSemanticDOM = "root" | "icon" | "content";
+
 export interface ButtonLoadingConfig {
   delay?: number;
   icon?: React.ReactNode;
+}
+
+export interface ButtonWaveConfig {
+  disabled?: boolean;
 }
 
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type">,
     AsChildProp {
   /**
-   * Set button type syntactic sugar (Ant Design inspired: primary, default, dashed, text, link).
+   * Syntactic sugar. Set button type. Will follow variant & color if provided.
    * @default "default"
    */
   type?: ButtonType;
   /**
-   * Backwards compatible variant alias (maps primary, secondary, outline, ghost, danger).
+   * Set button variant (Ant Design 5.21+ / 6.0).
+   * @default "outlined" (or "solid" when color="primary")
    */
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger" | ButtonType;
+  variant?: ButtonVariant | "secondary" | "outline" | "ghost" | "danger" | ButtonType;
   /**
-   * Set the danger status of button. Works seamlessly with all button types.
+   * Set button color (Ant Design 5.21+ / 6.0).
+   * @default "default" (or "primary" when variant="solid")
+   */
+  color?: ButtonColor;
+  /**
+   * Syntactic sugar. Set the danger status of button. Will follow color if provided.
    * @default false
    */
   danger?: boolean;
   /**
-   * Make background transparent and invert text and border colors for colored/dark backgrounds.
+   * Make background transparent and invert text and border colors.
    * @default false
    */
   ghost?: boolean;
   /**
-   * Can be used to set button shape (default, circle, round).
+   * Can be used to set button shape (default | circle | round).
    * @default "default"
    */
   shape?: ButtonShape;
   /**
-   * Set the size of button (large/lg, medium/md, small/sm).
+   * Set the size of button (large | medium | small).
    * @default "medium"
    */
   size?: ButtonSize;
   /**
-   * Set the loading status of button.
+   * Set the loading status of button with animated spinner and click lock.
    * @default false
    */
   loading?: boolean | ButtonLoadingConfig;
@@ -59,7 +96,11 @@ export interface ButtonProps
    */
   isLoading?: boolean;
   /**
-   * Optional text displayed alongside the spinner when loading is true.
+   * Optional custom loading icon.
+   */
+  loadingIcon?: React.ReactNode;
+  /**
+   * Optional text displayed alongside the spinner when loading.
    */
   loadingText?: string;
   /**
@@ -82,26 +123,47 @@ export interface ButtonProps
    */
   iconPlacement?: IconPlacement;
   /**
-   * Backwards-compatible icon rendered before button label.
+   * Icon element rendered before button label.
    */
   leftIcon?: React.ReactNode;
   /**
-   * Backwards-compatible icon rendered after button label.
+   * Icon element rendered after button label.
    */
   rightIcon?: React.ReactNode;
   /**
-   * Redirect URL when button acts as a link. Renders as an <a> tag when specified.
+   * Redirect url of link button (renders as <a> tag).
    */
   href?: string;
   /**
-   * Target attribute when href is specified.
+   * Same as target attribute of <a>, works when href is specified.
    */
   target?: string;
   /**
-   * Original HTML button type.
+   * Set the original html type of button.
    * @default "button"
    */
   htmlType?: ButtonHTMLType;
+  /**
+   * Add a space between two Chinese characters by default.
+   * @default true
+   */
+  autoInsertSpace?: boolean;
+  /**
+   * Configuration for the dynamic click wave effect.
+   */
+  wave?: boolean | ButtonWaveConfig;
+  /**
+   * Customize class for each semantic structure inside the component (root, icon, content).
+   */
+  classNames?: Partial<Record<ButtonSemanticDOM, string>>;
+  /**
+   * Customize inline style for each semantic structure inside the component (root, icon, content).
+   */
+  styles?: Partial<Record<ButtonSemanticDOM, React.CSSProperties>>;
+  /**
+   * Click handler with click wave event trigger.
+   */
+  onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
    * Button child content.
    */
