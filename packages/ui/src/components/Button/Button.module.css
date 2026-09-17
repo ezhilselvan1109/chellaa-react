@@ -1,0 +1,178 @@
+/**
+ * Chella UI - Button Component Styles
+ * Powered by scoped Component Tokens mapped to Semantic Design Tokens.
+ */
+
+.button {
+  --ch-btn-bg: transparent;
+  --ch-btn-fg: var(--ch-color-fg-default);
+  --ch-btn-border: transparent;
+  --ch-btn-hover-bg: transparent;
+  --ch-btn-hover-border: transparent;
+  --ch-btn-active-bg: transparent;
+  --ch-btn-height: 2.5rem;
+  --ch-btn-padding-x: 1rem;
+  --ch-btn-font-size: var(--ch-font-size-sm);
+  --ch-btn-radius: var(--ch-radius-md);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ch-space-2);
+  height: var(--ch-btn-height);
+  padding-left: var(--ch-btn-padding-x);
+  padding-right: var(--ch-btn-padding-x);
+  font-family: var(--ch-font-sans);
+  font-size: var(--ch-btn-font-size);
+  font-weight: var(--ch-font-weight-medium);
+  line-height: var(--ch-line-height-none);
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border-radius: var(--ch-btn-radius);
+  border: 1px solid var(--ch-btn-border);
+  background-color: var(--ch-btn-bg);
+  color: var(--ch-btn-fg);
+  cursor: pointer;
+  transition: background-color var(--ch-duration-fast) var(--ch-ease-default),
+              border-color var(--ch-duration-fast) var(--ch-ease-default),
+              color var(--ch-duration-fast) var(--ch-ease-default),
+              box-shadow var(--ch-duration-fast) var(--ch-ease-default),
+              transform 100ms ease;
+}
+
+.button:focus-visible {
+  outline: var(--ch-ring-width) solid var(--ch-ring-color);
+  outline-offset: 2px;
+}
+
+.button:active:not(:disabled):not([data-disabled="true"]):not([data-loading="true"]) {
+  transform: scale(0.98);
+}
+
+.button:disabled,
+.button[data-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ==========================================================================
+   Variants
+   ========================================================================== */
+
+/* Primary */
+.primary {
+  --ch-btn-bg: var(--ch-color-primary);
+  --ch-btn-fg: var(--ch-color-fg-on-primary);
+  --ch-btn-border: transparent;
+  --ch-btn-hover-bg: var(--ch-color-primary-hover);
+  --ch-btn-active-bg: var(--ch-color-primary-active);
+  box-shadow: var(--ch-shadow-sm);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--ch-btn-hover-bg);
+}
+
+.primary:active:not(:disabled) {
+  background-color: var(--ch-btn-active-bg);
+}
+
+/* Secondary */
+.secondary {
+  --ch-btn-bg: var(--ch-color-bg-subtle);
+  --ch-btn-fg: var(--ch-color-fg-default);
+  --ch-btn-border: var(--ch-color-border-default);
+  --ch-btn-hover-bg: var(--ch-color-bg-muted);
+  --ch-btn-hover-border: var(--ch-color-border-strong);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--ch-btn-hover-bg);
+  border-color: var(--ch-btn-hover-border);
+}
+
+/* Outline */
+.outline {
+  --ch-btn-bg: transparent;
+  --ch-btn-fg: var(--ch-color-primary);
+  --ch-btn-border: var(--ch-color-primary);
+  --ch-btn-hover-bg: var(--ch-color-primary-subtle);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: var(--ch-btn-hover-bg);
+}
+
+/* Ghost */
+.ghost {
+  --ch-btn-bg: transparent;
+  --ch-btn-fg: var(--ch-color-fg-default);
+  --ch-btn-border: transparent;
+  --ch-btn-hover-bg: var(--ch-color-bg-subtle);
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--ch-btn-hover-bg);
+}
+
+/* Danger */
+.danger {
+  --ch-btn-bg: var(--ch-color-danger);
+  --ch-btn-fg: var(--ch-color-fg-on-danger);
+  --ch-btn-border: transparent;
+  --ch-btn-hover-bg: var(--ch-color-danger-hover);
+  --ch-btn-active-bg: var(--ch-color-danger-active);
+  box-shadow: var(--ch-shadow-sm);
+}
+
+.danger:hover:not(:disabled) {
+  background-color: var(--ch-btn-hover-bg);
+}
+
+.danger:active:not(:disabled) {
+  background-color: var(--ch-btn-active-bg);
+}
+
+/* ==========================================================================
+   Sizes
+   ========================================================================== */
+
+.sm {
+  --ch-btn-height: 2rem;
+  --ch-btn-padding-x: 0.75rem;
+  --ch-btn-font-size: var(--ch-font-size-xs);
+  --ch-btn-radius: var(--ch-radius-sm);
+}
+
+.md {
+  --ch-btn-height: 2.5rem;
+  --ch-btn-padding-x: 1rem;
+  --ch-btn-font-size: var(--ch-font-size-sm);
+  --ch-btn-radius: var(--ch-radius-md);
+}
+
+.lg {
+  --ch-btn-height: 3rem;
+  --ch-btn-padding-x: 1.5rem;
+  --ch-btn-font-size: var(--ch-font-size-base);
+  --ch-btn-radius: var(--ch-radius-lg);
+}
+
+/* ==========================================================================
+   Modifiers
+   ========================================================================== */
+
+.fullWidth {
+  width: 100%;
+  display: flex;
+}
+
+.loading {
+  cursor: wait;
+}
+
+.spinner {
+  flex-shrink: 0;
+}

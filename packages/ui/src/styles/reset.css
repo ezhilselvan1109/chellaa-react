@@ -1,0 +1,58 @@
+/**
+ * Chella UI - Base Component Resets
+ * Ensures predictable box-sizing, font rendering, and focus boundaries across all browsers.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-family: var(--ch-font-sans);
+}
+
+body {
+  margin: 0;
+  color: var(--ch-color-fg-default);
+  background-color: var(--ch-color-bg-canvas);
+  font-family: var(--ch-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+:focus-visible {
+  outline: var(--ch-ring-width) solid var(--ch-ring-color);
+  outline-offset: 2px;
+}

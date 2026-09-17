@@ -1,0 +1,132 @@
+/* ==========================================================================
+   Chella UI Playground Workbench Styles
+   ========================================================================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--ch-color-bg-canvas);
+  color: var(--ch-color-fg-default);
+  font-family: var(--ch-font-sans);
+}
+
+.playground-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.playground-sidebar {
+  width: 22rem;
+  background-color: var(--ch-color-bg-surface);
+  border-right: 1px solid var(--ch-color-border-default);
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.playground-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.playground-brand-mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--ch-radius-md);
+  background: linear-gradient(135deg, var(--ch-color-primary) 0%, #10b981 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+}
+
+.control-card {
+  padding: 1rem;
+  background-color: var(--ch-color-bg-subtle);
+  border: 1px solid var(--ch-color-border-default);
+  border-radius: var(--ch-radius-md);
+}
+
+.control-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ch-color-fg-subtle);
+  margin-bottom: 0.75rem;
+}
+
+.control-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+}
+
+.control-field:last-child {
+  margin-bottom: 0;
+}
+
+.control-field label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+}
+
+.playground-canvas {
+  flex: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+  background-image: radial-gradient(var(--ch-color-border-default) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.canvas-section {
+  background-color: var(--ch-color-bg-surface);
+  border: 1px solid var(--ch-color-border-default);
+  border-radius: var(--ch-radius-xl);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--ch-shadow-sm);
+}
+
+.canvas-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.component-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.export-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--ch-color-bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--ch-z-modal);
+}
+
+.export-modal {
+  width: 90%;
+  max-width: 32rem;
+  background-color: var(--ch-color-bg-surface);
+  border: 1px solid var(--ch-color-border-default);
+  border-radius: var(--ch-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--ch-shadow-xl);
+}
