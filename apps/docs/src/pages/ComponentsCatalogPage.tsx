@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -13,6 +13,23 @@ interface ComponentItem {
 }
 
 const componentList: ComponentItem[] = [
+  {
+    id: "grid",
+    name: "Grid",
+    category: "Layout",
+    description: "24-column proportional grid system with responsive breakpoints, gutters, offsets, and flex stretch.",
+    href: "/docs/components/grid",
+    status: "Stable",
+    preview: (
+      <Row gutter={[4, 4]} style={{ width: "90%" }}>
+        <Col span={8}><div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-primary)" }} /></Col>
+        <Col span={8}><div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-secondary, #6366f1)" }} /></Col>
+        <Col span={8}><div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-accent, #06b6d4)" }} /></Col>
+        <Col span={12}><div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-secondary, #6366f1)" }} /></Col>
+        <Col span={12}><div style={{ height: 20, borderRadius: 4, background: "var(--ch-color-primary)" }} /></Col>
+      </Row>
+    ),
+  },
   {
     id: "flex",
     name: "Flex",

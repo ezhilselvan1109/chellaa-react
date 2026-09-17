@@ -17,6 +17,7 @@ import { InputDocPage } from "./pages/components/InputDocPage";
 import { SpinnerDocPage } from "./pages/components/SpinnerDocPage";
 import { DividerDocPage } from "./pages/components/DividerDocPage";
 import { FlexDocPage } from "./pages/components/FlexDocPage";
+import { GridDocPage } from "./pages/components/GridDocPage";
 
 const AppContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -57,6 +58,7 @@ const AppContent: React.FC = () => {
             <Route path="/docs/components/spinner" element={<SpinnerDocPage />} />
             <Route path="/docs/components/divider" element={<DividerDocPage />} />
             <Route path="/docs/components/flex" element={<FlexDocPage />} />
+            <Route path="/docs/components/grid" element={<GridDocPage />} />
           </Routes>
         </div>
       )}

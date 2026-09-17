@@ -5,3 +5,4 @@ export * from "./Input";
 export * from "./FloatButton";
 export * from "./Divider";
 export * from "./Flex";
+export * from "./Grid";

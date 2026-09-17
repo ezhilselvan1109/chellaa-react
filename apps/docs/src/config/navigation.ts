@@ -87,6 +87,12 @@ export const navigationConfig: NavSection[] = [
         description: "A flex layout container for setting spacing and alignment between elements.",
       },
       {
+        title: "Grid",
+        href: "/docs/components/grid",
+        badge: "Layout",
+        description: "24-column raster grid system with responsive breakpoints, gutters, and offsets.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
