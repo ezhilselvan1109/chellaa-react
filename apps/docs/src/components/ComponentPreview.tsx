@@ -14,6 +14,17 @@ export const ComponentPreview: React.FC<ComponentPreviewProps> = ({
   controls,
 }) => {
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  };
 
   return (
     <div className="preview-canvas-wrapper">
@@ -31,9 +42,18 @@ export const ComponentPreview: React.FC<ComponentPreviewProps> = ({
             className={`preview-tab-btn ${activeTab === "code" ? "active" : ""}`}
             onClick={() => setActiveTab("code")}
           >
-            Source Code
+            Code
           </button>
         </div>
+
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="code-copy-btn"
+          aria-label="Copy code to clipboard"
+        >
+          {copied ? "✓ Copied!" : "Copy code"}
+        </button>
       </div>
 
       {activeTab === "preview" ? (

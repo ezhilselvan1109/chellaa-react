@@ -5,10 +5,14 @@ import { Header } from "./components/Header";
 import { Sidebar } from "./components/Sidebar";
 import { SearchModal } from "./components/SearchModal";
 import { LandingPage } from "./pages/LandingPage";
+import { DocsOverviewPage } from "./pages/DocsOverviewPage";
+import { ComponentsCatalogPage } from "./pages/ComponentsCatalogPage";
 import { InstallationPage } from "./pages/InstallationPage";
 import { ThemingPage } from "./pages/ThemingPage";
 import { TokensPage } from "./pages/TokensPage";
 import { ButtonDocPage } from "./pages/components/ButtonDocPage";
+import { BadgeDocPage } from "./pages/components/BadgeDocPage";
+import { InputDocPage } from "./pages/components/InputDocPage";
 import { SpinnerDocPage } from "./pages/components/SpinnerDocPage";
 
 const AppContent: React.FC = () => {
@@ -38,10 +42,14 @@ const AppContent: React.FC = () => {
         <div className="docs-main-container">
           <Sidebar />
           <Routes>
+            <Route path="/docs" element={<DocsOverviewPage />} />
             <Route path="/docs/installation" element={<InstallationPage />} />
             <Route path="/docs/theming" element={<ThemingPage />} />
             <Route path="/docs/tokens" element={<TokensPage />} />
+            <Route path="/docs/components" element={<ComponentsCatalogPage />} />
             <Route path="/docs/components/button" element={<ButtonDocPage />} />
+            <Route path="/docs/components/badge" element={<BadgeDocPage />} />
+            <Route path="/docs/components/input" element={<InputDocPage />} />
             <Route path="/docs/components/spinner" element={<SpinnerDocPage />} />
           </Routes>
         </div>

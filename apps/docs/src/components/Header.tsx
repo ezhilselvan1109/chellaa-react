@@ -9,7 +9,14 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
   const { resolvedTheme, toggleTheme } = useTheme();
   const location = useLocation();
-  const isDocsPage = location.pathname.startsWith("/docs");
+
+  const isDocs =
+    location.pathname === "/docs" ||
+    location.pathname.startsWith("/docs/installation") ||
+    location.pathname.startsWith("/docs/overview");
+
+  const isComponents = location.pathname.startsWith("/docs/components");
+  const isTheming = location.pathname.startsWith("/docs/theming");
 
   return (
     <header className="docs-header">
@@ -27,16 +34,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
 
       {/* Middle: Links */}
       <nav className="header-nav">
-        <Link
-          to="/docs/installation"
-          className={`header-nav-link ${isDocsPage ? "active" : ""}`}
-        >
+        <Link to="/docs" className={`header-nav-link ${isDocs ? "active" : ""}`}>
           Docs
         </Link>
-        <Link to="/docs/components/button" className="header-nav-link">
+        <Link
+          to="/docs/components"
+          className={`header-nav-link ${isComponents ? "active" : ""}`}
+        >
           Components
         </Link>
-        <Link to="/docs/theming" className="header-nav-link">
+        <Link
+          to="/docs/theming"
+          className={`header-nav-link ${isTheming ? "active" : ""}`}
+        >
           Theming
         </Link>
         <a
@@ -74,15 +84,51 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
           </svg>
         </a>
 
-        {/* Theme Toggle */}
+        {/* Polished Theme Toggle Icon */}
         <button
           type="button"
           onClick={toggleTheme}
           className="icon-button"
-          aria-label="Toggle theme mode"
+          aria-label="Toggle color theme"
           title={`Switch to ${resolvedTheme === "dark" ? "Light" : "Dark"} mode`}
         >
-          {resolvedTheme === "dark" ? "☀️" : "🌙"}
+          {resolvedTheme === "dark" ? (
+            /* Sun icon */
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          ) : (
+            /* Moon icon */
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          )}
         </button>
       </div>
     </header>

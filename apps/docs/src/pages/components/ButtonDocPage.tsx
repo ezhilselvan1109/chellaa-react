@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, ButtonVariant, ButtonSize } from "@chella-ui/react";
+import { Link } from "react-router-dom";
+import { Button, ButtonVariant, ButtonSize, Badge } from "@chella-ui/react";
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { PropsTable, PropItem } from "../../components/PropsTable";
 import { CodeBlock } from "../../components/CodeBlock";
@@ -61,6 +62,9 @@ const buttonPropsData: PropItem[] = [
   },
 ];
 
+const variants: ButtonVariant[] = ["primary", "secondary", "outline", "ghost", "danger"];
+const sizes: ButtonSize[] = ["sm", "md", "lg"];
+
 export const ButtonDocPage: React.FC = () => {
   const [variant, setVariant] = useState<ButtonVariant>("primary");
   const [size, setSize] = useState<ButtonSize>("md");
@@ -76,49 +80,74 @@ export const ButtonDocPage: React.FC = () => {
 
   return (
     <article className="docs-content">
-      <h1 className="docs-title">Button</h1>
+      <div className="docs-breadcrumb">
+        <Link to="/">Home</Link>
+        <span>/</span>
+        <Link to="/docs/components">Components</Link>
+        <span>/</span>
+        <span>Button</span>
+      </div>
+
+      <div className="docs-title-row">
+        <h1 className="docs-title">Button</h1>
+        <Badge variant="primary" size="md">
+          Stable
+        </Badge>
+        <Badge variant="success" size="md">
+          100% WAI-ARIA
+        </Badge>
+      </div>
+
       <p className="docs-description">
         Interactive button component supporting multiple semantic variants, sizes, loading states,
         icon slots, and polymorphic composition via the Slot pattern.
       </p>
 
-      <h2 className="docs-section-heading">Interactive Preview</h2>
+      {/* Package import box */}
+      <CodeBlock code='import { Button } from "@chella-ui/react";' language="tsx" />
+
+      <h2 className="docs-section-heading">Interactive Playground</h2>
       <ComponentPreview
         code={interactiveCode}
         controls={
           <>
+            {/* Variant Segmented Pills */}
             <div className="preview-control-group">
-              <label htmlFor="variant-select"><strong>Variant:</strong></label>
-              <select
-                id="variant-select"
-                value={variant}
-                onChange={(e) => setVariant(e.target.value as ButtonVariant)}
-                style={{ padding: "0.25rem 0.5rem", borderRadius: "4px" }}
-              >
-                <option value="primary">Primary</option>
-                <option value="secondary">Secondary</option>
-                <option value="outline">Outline</option>
-                <option value="ghost">Ghost</option>
-                <option value="danger">Danger</option>
-              </select>
+              <span className="control-label">Variant:</span>
+              <div className="control-segmented-group">
+                {variants.map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    className={`control-pill ${variant === v ? "active" : ""}`}
+                    onClick={() => setVariant(v)}
+                  >
+                    {v.charAt(0).toUpperCase() + v.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
 
+            {/* Size Segmented Pills */}
             <div className="preview-control-group">
-              <label htmlFor="size-select"><strong>Size:</strong></label>
-              <select
-                id="size-select"
-                value={size}
-                onChange={(e) => setSize(e.target.value as ButtonSize)}
-                style={{ padding: "0.25rem 0.5rem", borderRadius: "4px" }}
-              >
-                <option value="sm">Small (sm)</option>
-                <option value="md">Medium (md)</option>
-                <option value="lg">Large (lg)</option>
-              </select>
+              <span className="control-label">Size:</span>
+              <div className="control-segmented-group">
+                {sizes.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`control-pill ${size === s ? "active" : ""}`}
+                    onClick={() => setSize(s)}
+                  >
+                    {s.toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
 
+            {/* Toggles */}
             <div className="preview-control-group">
-              <label style={{ display: "flex", alignItems: "center", gap: "0.25rem", cursor: "pointer" }}>
+              <label className="control-toggle-label">
                 <input
                   type="checkbox"
                   checked={isLoading}
@@ -129,7 +158,7 @@ export const ButtonDocPage: React.FC = () => {
             </div>
 
             <div className="preview-control-group">
-              <label style={{ display: "flex", alignItems: "center", gap: "0.25rem", cursor: "pointer" }}>
+              <label className="control-toggle-label">
                 <input
                   type="checkbox"
                   checked={disabled}
@@ -148,7 +177,7 @@ export const ButtonDocPage: React.FC = () => {
 
       <h2 className="docs-section-heading">Variants</h2>
       <p className="docs-p">
-        Use variants to communicate visual weight and hierarchy:
+        Use variants to communicate visual hierarchy and weight across interfaces:
       </p>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "1.5rem 0" }}>
         <Button variant="primary">Primary</Button>
@@ -166,7 +195,7 @@ export const ButtonDocPage: React.FC = () => {
       />
 
       <h2 className="docs-section-heading">Sizes</h2>
-      <p className="docs-p">Available in small, medium, and large scales:</p>
+      <p className="docs-p">Available in small, medium, and large size scales:</p>
       <div style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "1.5rem 0" }}>
         <Button size="sm">Small (sm)</Button>
         <Button size="md">Medium (md)</Button>
@@ -210,19 +239,6 @@ import Link from "next/link";
 
       <h2 className="docs-section-heading">Props Reference</h2>
       <PropsTable props={buttonPropsData} />
-
-      <h2 className="docs-section-heading">Component CSS Tokens</h2>
-      <p className="docs-p">
-        Custom styling hooks available for local overrides:
-      </p>
-      <ul>
-        <li><code>--ch-btn-bg</code>: Background color</li>
-        <li><code>--ch-btn-fg</code>: Text and icon color</li>
-        <li><code>--ch-btn-border</code>: Border color</li>
-        <li><code>--ch-btn-height</code>: Button height scale</li>
-        <li><code>--ch-btn-padding-x</code>: Horizontal padding</li>
-        <li><code>--ch-btn-radius</code>: Border radius</li>
-      </ul>
     </article>
   );
 };

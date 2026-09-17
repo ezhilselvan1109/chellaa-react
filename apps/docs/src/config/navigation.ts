@@ -16,7 +16,7 @@ export const navigationConfig: NavSection[] = [
     items: [
       {
         title: "Overview",
-        href: "/",
+        href: "/docs",
         description: "Introduction to Chella UI design philosophy and architecture.",
       },
       {
@@ -25,9 +25,9 @@ export const navigationConfig: NavSection[] = [
         description: "How to install and configure Chella UI in Vite, Next.js, and Remix.",
       },
       {
-        title: "Theming & Dark Mode",
+        title: "Theming & Token Studio",
         href: "/docs/theming",
-        description: "Zero-runtime CSS variable theming, dark mode, and SSR hydration.",
+        description: "Zero-runtime CSS custom properties theming, dark mode, and SSR hydration.",
       },
     ],
   },
@@ -45,10 +45,28 @@ export const navigationConfig: NavSection[] = [
     title: "Components",
     items: [
       {
+        title: "All Components",
+        href: "/docs/components",
+        badge: "Gallery",
+        description: "Browse all accessible production-ready components in one place.",
+      },
+      {
         title: "Button",
         href: "/docs/components/button",
         badge: "Stable",
         description: "Interactive button with variants, sizes, loading states, and polymorphism.",
+      },
+      {
+        title: "Badge",
+        href: "/docs/components/badge",
+        badge: "Stable",
+        description: "Compact status indicators, count tags, and descriptors.",
+      },
+      {
+        title: "Input",
+        href: "/docs/components/input",
+        badge: "Stable",
+        description: "Single-line accessible text input field with validation and size scales.",
       },
       {
         title: "Spinner",
@@ -61,7 +79,6 @@ export const navigationConfig: NavSection[] = [
   {
     title: "Upcoming Components",
     items: [
-      { title: "Input & Textarea", href: "#", badge: "Phase 4" },
       { title: "Checkbox & Radio", href: "#", badge: "Phase 4" },
       { title: "Modal / Dialog", href: "#", badge: "Phase 6" },
       { title: "Tabs", href: "#", badge: "Phase 7" },
