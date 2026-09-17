@@ -26,7 +26,7 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   vertical?: boolean;
   /**
-   * Line style variant.
+   * Line style variant (Ant Design 5.20+).
    * @default "solid"
    */
   variant?: DividerVariant;
@@ -42,9 +42,9 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
   plain?: boolean;
   /**
    * The size of margin spacing. Only valid for horizontal layout.
-   * - "small": 8px
-   * - "medium": 16px (default)
-   * - "large": 24px
+   * - "small": 8px (marginXS)
+   * - "medium": 16px (margin)
+   * - "large": 24px (marginLG)
    */
   size?: DividerSize;
   /**
@@ -54,14 +54,22 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
   titlePlacement?: DividerTitlePlacement;
   /**
    * Distance between title text and edge (e.g. 0, 50, "50px", 0.05).
+   * If orientationMargin is set, titlePlacement will default to "start".
    */
   orientationMargin?: number | string;
   /**
    * Customize class for each semantic structure inside the component (root, rail, content).
+   * Supports both object and function signatures.
    */
-  classNames?: Partial<Record<DividerSemanticDOM, string>>;
+  classNames?:
+    | Partial<Record<DividerSemanticDOM, string>>
+    | ((info: { props: DividerProps }) => Partial<Record<DividerSemanticDOM, string>>);
   /**
    * Customize inline style for each semantic structure inside the component (root, rail, content).
+   * Supports both object and function signatures.
    */
-  styles?: Partial<Record<DividerSemanticDOM, React.CSSProperties>>;
+  styles?:
+    | Partial<Record<DividerSemanticDOM, React.CSSProperties>>
+    | ((info: { props: DividerProps }) => Partial<Record<DividerSemanticDOM, React.CSSProperties>>);
 }
+

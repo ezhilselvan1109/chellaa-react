@@ -22,100 +22,81 @@ function normalizeMargin(margin?: number | string): string | undefined {
   return margin;
 }
 
-export const Divider = forwardRef<HTMLDivElement, DividerProps>(
-  (
-    {
-      children,
-      orientation: propOrientation,
-      vertical = false,
-      variant: propVariant,
-      dashed = false,
-      plain = false,
-      size,
-      titlePlacement: propTitlePlacement,
-      orientationMargin,
-      classNames,
-      styles,
-      className,
-      style,
-      ...restProps
-    },
-    ref
-  ) => {
-    if (typeof window !== "undefined") {
-      injectStyle("ch-theme-tokens", tokensCssText);
-      injectStyle("ch-divider", dividerCssText);
-    }
+export const Divider = forwardRef<HTMLDivElement, DividerProps>((props, ref) => {
+  const {
+    children,
+    orientation: propOrientation,
+    vertical = false,
+    variant: propVariant,
+    dashed = false,
+    plain = false,
+    size,
+    titlePlacement: propTitlePlacement,
+    orientationMargin,
+    classNames,
+    styles,
+    className,
+    style,
+    ...restProps
+  } = props;
 
-    const orientation: DividerOrientation =
-      propOrientation ?? (vertical ? "vertical" : "horizontal");
-    const variant: DividerVariant =
-      propVariant ?? (dashed ? "dashed" : "solid");
-    const hasChildren = orientation === "horizontal" && Boolean(children);
-    const placement = normalizePlacement(propTitlePlacement);
+  if (typeof window !== "undefined") {
+    injectStyle("ch-theme-tokens", tokensCssText);
+    injectStyle("ch-divider", dividerCssText);
+  }
 
-    const rootClasses = [
-      "ch-divider",
-      `ch-divider--${orientation}`,
-      `ch-divider--${variant}`,
-      hasChildren && "ch-divider--with-text",
-      hasChildren && `ch-divider--title-${placement}`,
-      plain && "ch-divider--plain",
-      size && `ch-divider--size-${size}`,
-      classNames?.root,
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
+  const orientation: DividerOrientation =
+    propOrientation ?? (vertical ? "vertical" : "horizontal");
+  const variant: DividerVariant =
+    propVariant ?? (dashed ? "dashed" : "solid");
+  const hasChildren = orientation === "horizontal" && Boolean(children);
 
-    const rootStyle: React.CSSProperties = {
-      ...styles?.root,
-      ...style,
-    };
+  // If orientationMargin is provided but titlePlacement is not, Ant Design defaults to "start"
+  const placement = propTitlePlacement
+    ? normalizePlacement(propTitlePlacement)
+    : (orientationMargin !== undefined ? "start" : "center");
 
-    // Vertical Divider
-    if (orientation === "vertical") {
-      return (
-        <div
-          ref={ref}
-          className={rootClasses}
-          style={rootStyle}
-          role="separator"
-          aria-orientation="vertical"
-          {...restProps}
-        />
-      );
-    }
+  // Resolve object or functional classNames & styles (Ant Design 6.0 specification)
+  const resolvedClassNames =
+    typeof classNames === "function" ? classNames({ props }) : (classNames || {});
+  const resolvedStyles =
+    typeof styles === "function" ? styles({ props }) : (styles || {});
 
-    // Horizontal Divider without inner title text
-    if (!hasChildren) {
-      return (
-        <div
-          ref={ref}
-          className={rootClasses}
-          style={rootStyle}
-          role="separator"
-          {...restProps}
-        />
-      );
-    }
+  const rootClasses = [
+    "ch-divider",
+    `ch-divider--${orientation}`,
+    `ch-divider--${variant}`,
+    hasChildren && "ch-divider--with-text",
+    hasChildren && `ch-divider--title-${placement}`,
+    plain && "ch-divider--plain",
+    size && `ch-divider--size-${size}`,
+    resolvedClassNames.root,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-    // Horizontal Divider with inner title text
-    const customMargin = normalizeMargin(orientationMargin);
-    const startRailStyle: React.CSSProperties = {
-      ...styles?.rail,
-      ...(customMargin && placement === "start"
-        ? { width: customMargin, flex: "none" }
-        : {}),
-    };
+  const rootStyle: React.CSSProperties = {
+    ...resolvedStyles.root,
+    ...style,
+  };
 
-    const endRailStyle: React.CSSProperties = {
-      ...styles?.rail,
-      ...(customMargin && placement === "end"
-        ? { width: customMargin, flex: "none" }
-        : {}),
-    };
+  // Vertical Divider
+  if (orientation === "vertical") {
+    return (
+      <div
+        ref={ref}
+        className={rootClasses}
+        style={rootStyle}
+        role="separator"
+        aria-orientation="vertical"
+        {...restProps}
+      />
+    );
+  }
 
+  // Horizontal Divider without inner title text
+  if (!hasChildren) {
     return (
       <div
         ref={ref}
@@ -123,34 +104,60 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
         style={rootStyle}
         role="separator"
         {...restProps}
-      >
-        <span
-          className={["ch-divider-rail", "ch-divider-rail--start", classNames?.rail]
-            .filter(Boolean)
-            .join(" ")}
-          style={startRailStyle}
-          aria-hidden="true"
-        />
-
-        <span
-          className={["ch-divider-content", classNames?.content]
-            .filter(Boolean)
-            .join(" ")}
-          style={styles?.content}
-        >
-          {children}
-        </span>
-
-        <span
-          className={["ch-divider-rail", "ch-divider-rail--end", classNames?.rail]
-            .filter(Boolean)
-            .join(" ")}
-          style={endRailStyle}
-          aria-hidden="true"
-        />
-      </div>
+      />
     );
   }
-);
+
+  // Horizontal Divider with inner title text
+  const customMargin = normalizeMargin(orientationMargin);
+  const startRailStyle: React.CSSProperties = {
+    ...resolvedStyles.rail,
+    ...(customMargin !== undefined && placement === "start"
+      ? { width: customMargin, flex: "none" }
+      : {}),
+  };
+
+  const endRailStyle: React.CSSProperties = {
+    ...resolvedStyles.rail,
+    ...(customMargin !== undefined && placement === "end"
+      ? { width: customMargin, flex: "none" }
+      : {}),
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={rootClasses}
+      style={rootStyle}
+      role="separator"
+      {...restProps}
+    >
+      <span
+        className={["ch-divider-rail", "ch-divider-rail--start", resolvedClassNames.rail]
+          .filter(Boolean)
+          .join(" ")}
+        style={startRailStyle}
+        aria-hidden="true"
+      />
+
+      <span
+        className={["ch-divider-content", resolvedClassNames.content]
+          .filter(Boolean)
+          .join(" ")}
+        style={resolvedStyles.content}
+      >
+        {children}
+      </span>
+
+      <span
+        className={["ch-divider-rail", "ch-divider-rail--end", resolvedClassNames.rail]
+          .filter(Boolean)
+          .join(" ")}
+        style={endRailStyle}
+        aria-hidden="true"
+      />
+    </div>
+  );
+});
 
 Divider.displayName = "Divider";

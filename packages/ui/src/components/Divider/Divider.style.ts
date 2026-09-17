@@ -1,29 +1,44 @@
 export const dividerCssText = `
 /* ==========================================================================
    Ant Design Specification Divider Styles for Chella UI
+   Design Tokens:
+   - colorSplit: rgba(5,5,5,0.06) (light) / rgba(253,253,253,0.12) (dark)
+   - colorText: rgba(0,0,0,0.88)
+   - colorTextHeading: rgba(0,0,0,0.88)
+   - orientationMargin: 0.05 (5%)
+   - textPaddingInline: 1em
+   - verticalMarginInline: 8px
+   - marginXS: 8px, margin: 16px, marginLG: 24px
+   - fontSize: 14px, fontSizeLG: 16px, lineHeight: 1.5714285714285714
    ========================================================================== */
 
 .ch-divider {
-  --ch-divider-color: var(--ch-color-border-subtle, rgba(0, 0, 0, 0.08));
-  --ch-divider-text: var(--ch-color-fg-muted, #475569);
-  --ch-divider-heading: var(--ch-color-fg-default, #0f172a);
+  --ch-divider-color-split: rgba(5, 5, 5, 0.06);
+  --ch-divider-color-text: rgba(0, 0, 0, 0.88);
+  --ch-divider-color-text-heading: rgba(0, 0, 0, 0.88);
+  --ch-divider-color: var(--ch-divider-color-split);
+  --ch-divider-text: var(--ch-divider-color-text);
+  --ch-divider-heading: var(--ch-divider-color-text-heading);
   --ch-divider-margin: 16px;
   --ch-divider-border-style: solid;
+  --ch-divider-line-width: 1px;
+  --ch-divider-text-padding-inline: 1em;
+  --ch-divider-vertical-margin-inline: 8px;
 
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   color: var(--ch-divider-heading);
-  font-family: var(--ch-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-family: var(--ch-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
   font-size: 14px;
-  line-height: 1.5714;
+  line-height: 1.5714285714285714;
   list-style: none;
 }
 
 [data-theme="dark"] .ch-divider {
-  --ch-divider-color: var(--ch-color-border-subtle, rgba(255, 255, 255, 0.12));
-  --ch-divider-text: var(--ch-color-fg-muted, #94a3b8);
-  --ch-divider-heading: var(--ch-color-fg-default, #f8fafc);
+  --ch-divider-color-split: rgba(253, 253, 253, 0.12);
+  --ch-divider-color-text: rgba(255, 255, 255, 0.85);
+  --ch-divider-color-text-heading: rgba(255, 255, 255, 0.88);
 }
 
 /* ==========================================================================
@@ -35,7 +50,7 @@ export const dividerCssText = `
   width: 100%;
   min-width: 100%;
   margin: var(--ch-divider-margin) 0;
-  border-top: 1px var(--ch-divider-border-style) var(--ch-divider-color);
+  border-top: var(--ch-divider-line-width) var(--ch-divider-border-style) var(--ch-divider-color);
 }
 
 /* ==========================================================================
@@ -55,13 +70,13 @@ export const dividerCssText = `
 
 .ch-divider-rail {
   position: relative;
-  border-top: 1px var(--ch-divider-border-style) var(--ch-divider-color);
+  border-top: var(--ch-divider-line-width) var(--ch-divider-border-style) var(--ch-divider-color);
   transform: translateY(50%);
 }
 
 .ch-divider-content {
   display: inline-block;
-  padding: 0 1em;
+  padding: 0 var(--ch-divider-text-padding-inline, 1em);
   font-size: 16px;
   font-weight: 500;
   color: var(--ch-divider-heading);
@@ -107,10 +122,10 @@ export const dividerCssText = `
   top: -0.06em;
   display: inline-block;
   height: 0.9em;
-  margin: 0 8px;
+  margin: 0 var(--ch-divider-vertical-margin-inline, 8px);
   vertical-align: middle;
   border-top: 0;
-  border-left: 1px var(--ch-divider-border-style) var(--ch-divider-color);
+  border-left: var(--ch-divider-line-width) var(--ch-divider-border-style) var(--ch-divider-color);
 }
 
 /* ==========================================================================

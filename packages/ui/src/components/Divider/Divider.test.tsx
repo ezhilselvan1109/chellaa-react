@@ -111,7 +111,7 @@ describe("Divider Component (Ant Design Specification)", () => {
     expect(startRail).toHaveStyle({ width: "50px" });
   });
 
-  it("supports custom semantic DOM classNames and styles", () => {
+  it("supports custom semantic DOM classNames and styles as object", () => {
     render(
       <Divider
         classNames={{ root: "custom-root", rail: "custom-rail", content: "custom-content" }}
@@ -126,5 +126,46 @@ describe("Divider Component (Ant Design Specification)", () => {
     const content = screen.getByText("Custom Semantic");
     expect(content).toHaveClass("custom-content");
     expect(content).toHaveStyle({ letterSpacing: "2px" });
+  });
+
+  it("supports functional classNames and styles (Ant Design 6.0 specification)", () => {
+    render(
+      <Divider
+        variant="dashed"
+        classNames={({ props }) => ({
+          root: `fn-root-${props.variant}`,
+          rail: "fn-rail",
+        })}
+        styles={({ props }) => ({
+          content: { fontSize: props.plain ? "12px" : "18px" },
+        })}
+      >
+        Function Semantic
+      </Divider>
+    );
+
+    expect(screen.getByRole("separator")).toHaveClass("fn-root-dashed");
+    expect(document.querySelector(".ch-divider-rail")).toHaveClass("fn-rail");
+    expect(screen.getByText("Function Semantic")).toHaveStyle({ fontSize: "18px" });
+  });
+
+  it("automatically defaults titlePlacement to start when orientationMargin is provided", () => {
+    render(
+      <Divider orientationMargin={0} data-testid="margin-0-divider">
+        Left Text margin with 0
+      </Divider>
+    );
+
+    const divider = screen.getByTestId("margin-0-divider");
+    expect(divider).toHaveClass("ch-divider--title-start");
+    const startRail = document.querySelector(".ch-divider-rail--start");
+    expect(startRail).toHaveStyle({ width: "0px" });
+  });
+
+  it("forwards ref to HTMLDivElement root separator", () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(<Divider ref={ref}>Ref Test</Divider>);
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current).toHaveClass("ch-divider");
   });
 });

@@ -69,15 +69,103 @@ const dividerProps: PropItem[] = [
   },
   {
     name: "classNames",
-    type: "Record<SemanticDOM, string>",
-    defaultValue: "undefined",
-    description: "Customize class for each semantic structure inside the component (root, rail, content).",
+    type: "Record<SemanticDOM, string> | ((info: { props }) => Record<SemanticDOM, string>)",
+    defaultValue: "-",
+    description: "Customize class for each semantic structure (root, rail, content). Supports object or function (Ant Design 6.0).",
   },
   {
     name: "styles",
-    type: "Record<SemanticDOM, CSSProperties>",
-    defaultValue: "undefined",
-    description: "Customize inline style for each semantic structure inside the component (root, rail, content).",
+    type: "Record<SemanticDOM, CSSProperties> | ((info: { props }) => Record<SemanticDOM, CSSProperties>)",
+    defaultValue: "-",
+    description: "Customize inline style for each semantic structure (root, rail, content). Supports object or function (Ant Design 6.0).",
+  },
+];
+
+interface TokenItem {
+  name: string;
+  description: string;
+  type: string;
+  defaultValue: string;
+}
+
+const dividerTokens: TokenItem[] = [
+  {
+    name: "colorSplit",
+    description: "Used as the color of separator, matching border color with transparency.",
+    type: "string",
+    defaultValue: "rgba(5, 5, 5, 0.06)",
+  },
+  {
+    name: "colorText",
+    description: "Default text color complying with W3C standards.",
+    type: "string",
+    defaultValue: "rgba(0, 0, 0, 0.88)",
+  },
+  {
+    name: "colorTextHeading",
+    description: "Font color of bold heading divider title.",
+    type: "string",
+    defaultValue: "rgba(0, 0, 0, 0.88)",
+  },
+  {
+    name: "orientationMargin",
+    description: "Distance between text and edge, which should be a number between 0 and 1 (percentage) or pixel value.",
+    type: "number | string",
+    defaultValue: "0.05",
+  },
+  {
+    name: "textPaddingInline",
+    description: "Horizontal padding of inner title text.",
+    type: "string | number",
+    defaultValue: "1em",
+  },
+  {
+    name: "verticalMarginInline",
+    description: "Horizontal margin of vertical Divider.",
+    type: "string | number",
+    defaultValue: "8px",
+  },
+  {
+    name: "fontSize",
+    description: "Standard body font size used in plain style.",
+    type: "number",
+    defaultValue: "14",
+  },
+  {
+    name: "fontSizeLG",
+    description: "Large font size used in heading style.",
+    type: "number",
+    defaultValue: "16",
+  },
+  {
+    name: "lineHeight",
+    description: "Line height of text.",
+    type: "number",
+    defaultValue: "1.5714285714285714",
+  },
+  {
+    name: "lineWidth",
+    description: "Border width of divider separator line.",
+    type: "number",
+    defaultValue: "1",
+  },
+  {
+    name: "marginXS",
+    description: "Margin spacing for small size.",
+    type: "number",
+    defaultValue: "8",
+  },
+  {
+    name: "margin",
+    description: "Default margin spacing for medium size.",
+    type: "number",
+    defaultValue: "16",
+  },
+  {
+    name: "marginLG",
+    description: "Margin spacing for large size.",
+    type: "number",
+    defaultValue: "24",
   },
 ];
 
@@ -397,33 +485,119 @@ export const DividerDocPage: React.FC = () => {
       {/* Semantic DOM Styling */}
       <h2 className="docs-section-heading">Custom Semantic DOM Styling</h2>
       <p className="docs-p">
-        Customize classes and inline styles for the semantic DOM parts (<code>root</code>, <code>rail</code>, <code>content</code>):
+        You can customize the semantic DOM style of divider by passing <strong>objects</strong> or <strong>functions</strong> through <code>classNames</code> and <code>styles</code> (Ant Design 6.0):
       </p>
+
       <div style={{ margin: "1.5rem 0" }}>
         <Divider
           styles={{
-            rail: { borderColor: "var(--ch-color-primary)" },
-            content: { color: "var(--ch-color-primary)", letterSpacing: "1px" },
+            rail: { borderColor: "var(--ch-color-primary)", borderTopWidth: "2px" },
+            content: { color: "var(--ch-color-primary)", letterSpacing: "1px", fontWeight: 600 },
           }}
         >
-          Custom Primary Rails
+          Custom Semantic DOM (Object)
+        </Divider>
+
+        <Divider
+          variant="dashed"
+          classNames={({ props }) => ({
+            root: `custom-fn-root-${props.variant ?? "solid"}`,
+            rail: "custom-fn-rail",
+          })}
+          styles={({ props }) => ({
+            content: {
+              background: "var(--docs-bg-muted)",
+              padding: "0.25rem 1rem",
+              borderRadius: "9999px",
+              border: `1px ${props.variant ?? "dashed"} var(--ch-color-primary)`,
+              color: "var(--ch-color-primary)",
+            },
+          })}
+        >
+          Custom Semantic DOM (Function)
         </Divider>
       </div>
+
       <CodeBlock
-        code={`<Divider
+        code={`// Object Syntax:
+<Divider
   styles={{
-    rail: { borderColor: "var(--ch-color-primary)" },
-    content: { color: "var(--ch-color-primary)", letterSpacing: "1px" },
+    rail: { borderColor: "var(--ch-color-primary)", borderTopWidth: "2px" },
+    content: { color: "var(--ch-color-primary)", letterSpacing: "1px", fontWeight: 600 },
   }}
 >
-  Custom Primary Rails
+  Custom Semantic DOM (Object)
+</Divider>
+
+// Function Syntax (Ant Design 6.0):
+<Divider
+  variant="dashed"
+  classNames={({ props }) => ({
+    root: "custom-fn-root",
+    rail: "custom-fn-rail",
+  })}
+  styles={({ props }) => ({
+    content: {
+      background: "var(--docs-bg-muted)",
+      padding: "0.25rem 1rem",
+      borderRadius: "9999px",
+      border: "1px dashed var(--ch-color-primary)",
+    },
+  })}
+>
+  Custom Semantic DOM (Function)
 </Divider>`}
         language="tsx"
       />
 
+      {/* Semantic DOM Structure */}
+      <h2 className="docs-section-heading">Semantic DOM Structure</h2>
+      <p className="docs-p">
+        Divider is structured into three semantic sub-elements:
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem", margin: "1.5rem 0" }}>
+        <div style={{ padding: "1.25rem", borderRadius: "10px", border: "1px solid var(--docs-border)", background: "var(--docs-bg-surface)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <code style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ch-color-primary)" }}>root</code>
+            <Badge variant="default" size="sm">Container</Badge>
+          </div>
+          <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--docs-fg-muted)" }}>
+            Root element with container divider styles, margin spacing, separator role, and orientation modes.
+          </p>
+        </div>
+
+        <div style={{ padding: "1.25rem", borderRadius: "10px", border: "1px solid var(--docs-border)", background: "var(--docs-bg-surface)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <code style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ch-color-primary)" }}>rail</code>
+            <Badge variant="default" size="sm">Line Element</Badge>
+          </div>
+          <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--docs-fg-muted)" }}>
+            Background connection rail elements (<code>start</code> and <code>end</code>) with border style, color split, and orientation margin sizing.
+          </p>
+        </div>
+
+        <div style={{ padding: "1.25rem", borderRadius: "10px", border: "1px solid var(--docs-border)", background: "var(--docs-bg-surface)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <code style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ch-color-primary)" }}>content</code>
+            <Badge variant="default" size="sm">Inner Text</Badge>
+          </div>
+          <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--docs-fg-muted)" }}>
+            Inner wrapped title element with inline-block display, text padding inline, and plain/heading font weight.
+          </p>
+        </div>
+      </div>
+
       {/* API Reference */}
       <h2 className="docs-section-heading">API Reference</h2>
       <PropsTable props={dividerProps} />
+
+      {/* Design Tokens */}
+      <h2 className="docs-section-heading" style={{ marginTop: "3rem" }}>Design Tokens</h2>
+      <p className="docs-p">
+        Chella UI follows the Ant Design token architecture. You can customize Divider appearance globally via <code>ChellaProvider</code> or CSS custom properties:
+      </p>
+      <PropsTable props={dividerTokens} />
     </article>
   );
 };
