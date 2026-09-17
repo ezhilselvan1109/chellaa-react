@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -13,6 +13,21 @@ interface ComponentItem {
 }
 
 const componentList: ComponentItem[] = [
+  {
+    id: "flex",
+    name: "Flex",
+    category: "Layout",
+    description: "A flex layout container for setting spacing and alignment between elements.",
+    href: "/docs/components/flex",
+    status: "Stable",
+    preview: (
+      <Flex gap="small" justify="center" align="center" style={{ width: "90%" }}>
+        <div style={{ width: 28, height: 28, borderRadius: 6, background: "var(--ch-color-primary)" }} />
+        <div style={{ width: 28, height: 28, borderRadius: 6, background: "var(--ch-color-secondary, #6366f1)" }} />
+        <div style={{ width: 28, height: 28, borderRadius: 6, background: "var(--ch-color-accent, #06b6d4)" }} />
+      </Flex>
+    ),
+  },
   {
     id: "divider",
     name: "Divider",

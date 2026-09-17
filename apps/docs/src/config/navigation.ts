@@ -81,6 +81,12 @@ export const navigationConfig: NavSection[] = [
         description: "A line that separates different blocks or inline content with text and style variants.",
       },
       {
+        title: "Flex",
+        href: "/docs/components/flex",
+        badge: "Layout",
+        description: "A flex layout container for setting spacing and alignment between elements.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
