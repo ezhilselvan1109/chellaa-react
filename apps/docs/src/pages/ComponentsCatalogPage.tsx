@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -152,6 +152,20 @@ const componentList: ComponentItem[] = [
           allowClear
           options={[{ value: "React" }, { value: "Chella UI" }]}
         />
+      </div>
+    ),
+  },
+  {
+    id: "checkbox",
+    name: "Checkbox",
+    category: "Data Entry",
+    description: "Collect user choices with support for single checkboxes, indeterminate tri-states, and groups.",
+    href: "/docs/components/checkbox",
+    status: "Stable",
+    preview: (
+      <div style={{ display: "flex", gap: "1rem", alignItems: "center", justifyContent: "center" }}>
+        <Checkbox defaultChecked>Option A</Checkbox>
+        <Checkbox indeterminate>Option B</Checkbox>
       </div>
     ),
   },

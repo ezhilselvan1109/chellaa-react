@@ -105,6 +105,12 @@ export const navigationConfig: NavSection[] = [
         description: "Autocomplete function of input field with suggestions and helping text.",
       },
       {
+        title: "Checkbox",
+        href: "/docs/components/checkbox",
+        badge: "Data Entry",
+        description: "Collect user choices with support for single checkboxes, indeterminate tri-states, and groups.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
@@ -115,7 +121,7 @@ export const navigationConfig: NavSection[] = [
   {
     title: "Upcoming Components",
     items: [
-      { title: "Checkbox & Radio", href: "#", badge: "Phase 4" },
+      { title: "Radio", href: "#", badge: "Phase 4" },
       { title: "Modal / Dialog", href: "#", badge: "Phase 6" },
       { title: "Tabs", href: "#", badge: "Phase 7" },
     ],
