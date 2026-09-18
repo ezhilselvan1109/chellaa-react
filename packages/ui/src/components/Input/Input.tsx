@@ -1,45 +1,23 @@
-import { forwardRef } from "react";
+import React from "react";
+import { InternalInput } from "./InternalInput";
+import { TextArea } from "./TextArea";
+import { Search } from "./Search";
+import { Password } from "./Password";
+import { OTP } from "./OTP";
+import type { InputProps, InputRef } from "./Input.types";
 
-import { injectStyle } from "../../styles/registry";
-import { tokensCssText } from "../../tokens/tokens.style";
-import { inputCssText } from "./Input.style";
-import type { InputProps } from "./Input.types";
+export interface CompoundedInput
+  extends React.ForwardRefExoticComponent<
+    InputProps & React.RefAttributes<InputRef>
+  > {
+  TextArea: typeof TextArea;
+  Search: typeof Search;
+  Password: typeof Password;
+  OTP: typeof OTP;
+}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      size = "md",
-      invalid = false,
-      disabled = false,
-      className = "",
-      ...restProps
-    },
-    ref
-  ) => {
-    if (typeof window !== "undefined") {
-      injectStyle("ch-theme-tokens", tokensCssText);
-      injectStyle("ch-input", inputCssText);
-    }
-
-    const classes = [
-      "ch-input",
-      `ch-input--${size}`,
-      invalid ? "ch-input--invalid" : "",
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    return (
-      <input
-        ref={ref}
-        className={classes}
-        disabled={disabled}
-        aria-invalid={invalid ? "true" : undefined}
-        {...restProps}
-      />
-    );
-  }
-);
-
-Input.displayName = "Input";
+export const Input = InternalInput as CompoundedInput;
+Input.TextArea = TextArea;
+Input.Search = Search;
+Input.Password = Password;
+Input.OTP = OTP;
