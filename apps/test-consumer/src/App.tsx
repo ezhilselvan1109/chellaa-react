@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Spinner, useTheme } from "@chella-ui/react";
+import { Button, Spinner, useTheme } from "@chellaa/react";
 
 export function App() {
   const { theme, resolvedTheme, toggleTheme } = useTheme();
