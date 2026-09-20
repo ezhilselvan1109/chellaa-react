@@ -9,8 +9,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@chellaa/react": path.resolve(__dirname, "../../packages/ui/dist/index.js"),
-      "@chella-ui/react": path.resolve(__dirname, "../../packages/ui/dist/index.js"),
+      "@chellaa/react": path.resolve(__dirname, "../../packages/ui/src/index.ts"),
+      "@chella-ui/react": path.resolve(__dirname, "../../packages/ui/src/index.ts"),
     },
   },
 });

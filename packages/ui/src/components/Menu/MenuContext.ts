@@ -3,7 +3,6 @@ import type {
   MenuMode,
   MenuTheme,
   MenuTriggerAction,
-  MenuProps,
   SubMenuProps,
   MenuSemanticDOM,
 } from "./Menu.types";

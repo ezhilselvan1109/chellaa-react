@@ -1,13 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@chellaa/react": ["../../packages/ui/dist/index.d.ts"],
-      "@chella-ui/react": ["../../packages/ui/dist/index.d.ts"]
+      "@chellaa/react": ["../../packages/ui/src/index.ts"],
+      "@chella-ui/react": ["../../packages/ui/src/index.ts"]
     }
   },
   "include": ["src/**/*"]
