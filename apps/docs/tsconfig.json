@@ -4,7 +4,8 @@
     "noEmit": true,
     "paths": {
       "@chellaa/react": ["../../packages/ui/src/index.ts"],
-      "@chella-ui/react": ["../../packages/ui/src/index.ts"]
+      "@chella-ui/react": ["../../packages/ui/src/index.ts"],
+      "react-router-dom": ["../../node_modules/react-router-dom"]
     }
   },
   "include": ["src/**/*"]
