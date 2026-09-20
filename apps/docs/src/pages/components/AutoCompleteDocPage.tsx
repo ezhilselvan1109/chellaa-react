@@ -8,6 +8,9 @@ import {
   AutoCompleteStatus,
   Button,
   Badge,
+  Select,
+  UserOutlined,
+  SearchOutlined,
 } from "@chella-ui/react";
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { PropsTable, PropItem } from "../../components/PropsTable";
@@ -231,6 +234,7 @@ export const AutoCompleteDocPage: React.FC = () => {
   const [allowClear, setAllowClear] = useState<boolean>(true);
   const [backfill, setBackfill] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [prefixIcon, setPrefixIcon] = useState<"none" | "user" | "search">("none");
   const [playgroundVal, setPlaygroundVal] = useState<string>("");
 
   // Controlled mode state
@@ -296,11 +300,18 @@ export const AutoCompleteDocPage: React.FC = () => {
   // Custom clear button state
   const [clearableState, setClearableState] = useState<boolean>(true);
 
+  const prefixCodeSnippet =
+    prefixIcon === "user"
+      ? '\n  prefix={<UserOutlined />}'
+      : prefixIcon === "search"
+      ? '\n  prefix={<SearchOutlined />}'
+      : "";
+
   const playgroundCode = `<AutoComplete
   options={options}
   placeholder="Type a street name..."
   variant="${variant}"
-  size="${size}"${status ? `\n  status="${status}"` : ""}${allowClear ? `\n  allowClear` : ""}${backfill ? `\n  backfill` : ""}${disabled ? `\n  disabled` : ""}
+  size="${size}"${status ? `\n  status="${status}"` : ""}${prefixCodeSnippet}${allowClear ? `\n  allowClear` : ""}${backfill ? `\n  backfill` : ""}${disabled ? `\n  disabled` : ""}
   value={value}
   onChange={setValue}
 />`;
@@ -337,50 +348,63 @@ export const AutoCompleteDocPage: React.FC = () => {
           <>
             <div className="preview-control-group">
               <span className="control-label">Variant:</span>
-              <div className="control-segmented-group">
-                {(["outlined", "filled", "borderless", "underlined"] as AutoCompleteVariant[]).map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    className={`control-pill ${variant === v ? "active" : ""}`}
-                    onClick={() => setVariant(v)}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={variant}
+                onChange={(val) => setVariant(val as AutoCompleteVariant)}
+                options={[
+                  { value: "outlined", label: "Outlined" },
+                  { value: "filled", label: "Filled" },
+                  { value: "borderless", label: "Borderless" },
+                  { value: "underlined", label: "Underlined" },
+                ]}
+                style={{ width: 130 }}
+                size="small"
+              />
             </div>
 
             <div className="preview-control-group">
               <span className="control-label">Size:</span>
-              <div className="control-segmented-group">
-                {(["small", "medium", "large"] as AutoCompleteSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    className={`control-pill ${size === s ? "active" : ""}`}
-                    onClick={() => setSize(s)}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={size}
+                onChange={(val) => setSize(val as AutoCompleteSize)}
+                options={[
+                  { value: "small", label: "Small" },
+                  { value: "medium", label: "Medium" },
+                  { value: "large", label: "Large" },
+                ]}
+                style={{ width: 110 }}
+                size="small"
+              />
             </div>
 
             <div className="preview-control-group">
               <span className="control-label">Status:</span>
-              <div className="control-segmented-group">
-                {[undefined, "error", "warning"].map((st) => (
-                  <button
-                    key={String(st)}
-                    type="button"
-                    className={`control-pill ${status === st ? "active" : ""}`}
-                    onClick={() => setStatus(st as any)}
-                  >
-                    {st ? st : "default"}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={status || "default"}
+                onChange={(val) => setStatus(val === "default" ? undefined : (val as AutoCompleteStatus))}
+                options={[
+                  { value: "default", label: "Default" },
+                  { value: "error", label: "Error" },
+                  { value: "warning", label: "Warning" },
+                ]}
+                style={{ width: 110 }}
+                size="small"
+              />
+            </div>
+
+            <div className="preview-control-group">
+              <span className="control-label">Prefix:</span>
+              <Select
+                value={prefixIcon}
+                onChange={(val) => setPrefixIcon(val as "none" | "user" | "search")}
+                options={[
+                  { value: "none", label: "None" },
+                  { value: "user", label: "UserOutlined" },
+                  { value: "search", label: "SearchOutlined" },
+                ]}
+                style={{ width: 140 }}
+                size="small"
+              />
             </div>
 
             <div className="preview-control-group">
@@ -419,6 +443,13 @@ export const AutoCompleteDocPage: React.FC = () => {
             variant={variant}
             size={size}
             status={status}
+            prefix={
+              prefixIcon === "user" ? (
+                <UserOutlined />
+              ) : prefixIcon === "search" ? (
+                <SearchOutlined />
+              ) : undefined
+            }
             allowClear={allowClear}
             backfill={backfill}
             disabled={disabled}
@@ -454,6 +485,48 @@ const options = [
   placeholder="Input here..."
   allowClear
 />;`}
+        language="tsx"
+      />
+
+      {/* Prefix Icon */}
+      <h2 className="docs-section-heading">Prefix Icon (<code>prefix=&lt;UserOutlined /&gt;</code>)</h2>
+      <p className="docs-p">
+        Use <code>prefix</code> with icon components (e.g. <code>&lt;UserOutlined /&gt;</code> or <code>&lt;SearchOutlined /&gt;</code>) to render a clean leading hint in the input:
+      </p>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "1.5rem 0", maxWidth: 720 }}>
+        <div style={{ flex: 1, minWidth: 260 }}>
+          <AutoComplete
+            prefix={<UserOutlined />}
+            options={sampleStreets}
+            placeholder="Search address with user prefix..."
+            allowClear
+          />
+        </div>
+        <div style={{ flex: 1, minWidth: 260 }}>
+          <AutoComplete
+            prefix={<SearchOutlined />}
+            options={sampleStreets}
+            placeholder="Search query with search prefix..."
+            allowClear
+          />
+        </div>
+      </div>
+      <CodeBlock
+        code={`import { AutoComplete, UserOutlined, SearchOutlined } from "@chella-ui/react";
+
+<AutoComplete
+  prefix={<UserOutlined />}
+  placeholder="Search with user icon..."
+  options={options}
+  allowClear
+/>
+
+<AutoComplete
+  prefix={<SearchOutlined />}
+  placeholder="Search with search icon..."
+  options={options}
+  allowClear
+/>`}
         language="tsx"
       />
 

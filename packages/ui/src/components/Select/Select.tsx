@@ -22,6 +22,8 @@ import type {
 } from "./Select.types";
 import { Option, type OptionFC } from "./Option";
 import { OptGroup, type OptGroupFC } from "./OptGroup";
+import { LoadingOutlined } from "../../icons";
+
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -1278,7 +1280,11 @@ export const InternalSelect = forwardRef<SelectRef, SelectProps>(
             style={resolvedStyles["suffix"]}
           >
             {loading ? (
-              loadingIcon || <span className="ch-select-arrow">⏳</span>
+              loadingIcon || (
+                <span className="ch-select-arrow ch-select-arrow--loading">
+                  <LoadingOutlined spin />
+                </span>
+              )
             ) : (
               <span className="ch-select-arrow">
                 {suffixIcon || <DownArrowIcon isOpen={isOpen} />}

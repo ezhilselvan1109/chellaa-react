@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox, DatePicker, Radio, Select, Steps, Menu } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox, DatePicker, Radio, Select, Steps, Menu, AppstoreOutlined, SettingOutlined } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -251,8 +251,8 @@ const componentList: ComponentItem[] = [
           mode="inline"
           defaultSelectedKeys={["1"]}
           items={[
-            { key: "1", label: "Dashboard", icon: "📊" },
-            { key: "2", label: "Settings", icon: "⚙️" },
+            { key: "1", label: "Dashboard", icon: <AppstoreOutlined /> },
+            { key: "2", label: "Settings", icon: <SettingOutlined /> },
           ]}
         />
       </div>

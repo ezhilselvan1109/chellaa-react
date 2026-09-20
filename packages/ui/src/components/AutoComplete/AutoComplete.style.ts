@@ -186,7 +186,9 @@ export const autoCompleteCssText = `
 .ch-autocomplete-dropdown {
   position: absolute;
   z-index: 1050;
-  background: var(--ch-ac-bg);
+  background-color: var(--ch-color-bg-elevated, var(--ch-color-bg-container, #ffffff));
+  background: var(--ch-color-bg-elevated, var(--ch-color-bg-container, #ffffff));
+  border: 1px solid var(--ch-color-border-subtle, rgba(5, 5, 5, 0.06));
   border-radius: 8px;
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
               0 3px 6px -4px rgba(0, 0, 0, 0.12),
@@ -194,7 +196,7 @@ export const autoCompleteCssText = `
   padding: 4px;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: var(--ch-ac-color);
+  color: var(--ch-color-text, rgba(0, 0, 0, 0.88));
   animation: ch-ac-fadeIn 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
@@ -277,5 +279,38 @@ export const autoCompleteCssText = `
   text-align: center;
   color: rgba(0, 0, 0, 0.25);
   font-size: 14px;
+}
+
+/* ------------------- Dark Theme Support ------------------- */
+[data-theme="dark"] .ch-autocomplete-dropdown {
+  background-color: #1f1f1f !important;
+  background: #1f1f1f !important;
+  border-color: rgba(253, 253, 253, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.32),
+              0 3px 6px -4px rgba(0, 0, 0, 0.48),
+              0 9px 28px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .ch-autocomplete-option {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] .ch-autocomplete-option:hover,
+[data-theme="dark"] .ch-autocomplete-option--active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .ch-autocomplete-option--selected {
+  background: #111b26 !important;
+  color: #1677ff !important;
+}
+
+[data-theme="dark"] .ch-autocomplete-option-group-title {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+[data-theme="dark"] .ch-autocomplete-empty {
+  color: rgba(255, 255, 255, 0.3);
 }
 `;

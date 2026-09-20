@@ -7,6 +7,16 @@ import {
   ItemType,
   Button,
   Badge,
+  Select,
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+  SafetyOutlined,
+  KeyOutlined,
+  FolderOutlined,
+  FileOutlined,
+  DeleteOutlined,
+  UserOutlined,
 } from "@chella-ui/react";
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { PropsTable, PropItem } from "../../components/PropsTable";
@@ -260,23 +270,23 @@ export const MenuDocPage: React.FC = () => {
 
   // Playground Items with multi-level nested submenus (SubMenu into SubMenu into SubMenu)
   const playgroundItems: ItemType[] = [
-    { key: "dashboard", label: "Dashboard", icon: "📊" },
+    { key: "dashboard", label: "Dashboard", icon: <AppstoreOutlined /> },
     {
       key: "sys-settings",
       label: "System Settings",
-      icon: "⚙️",
+      icon: <SettingOutlined />,
       children: [
-        { key: "profile", label: "User Profile" },
+        { key: "profile", label: "User Profile", icon: <UserOutlined /> },
         {
           key: "security-sub",
           label: "Security & Privacy",
-          icon: "🛡️",
+          icon: <SafetyOutlined />,
           children: [
             { key: "two-factor", label: "2FA Verification" },
             {
               key: "access-sub",
               label: "Access Control (Deep)",
-              icon: "🔑",
+              icon: <KeyOutlined />,
               children: [
                 { key: "deep-perm-read", label: "Read Permission" },
                 { key: "deep-perm-write", label: "Write Permission" },
@@ -292,12 +302,12 @@ export const MenuDocPage: React.FC = () => {
       type: "group",
       label: "DATA & STORAGE",
       children: [
-        { key: "database", label: "Cloud Database", icon: "💾" },
-        { key: "backups", label: "Scheduled Backups", icon: "📦" },
+        { key: "database", label: "Cloud Database", icon: <FolderOutlined /> },
+        { key: "backups", label: "Scheduled Backups", icon: <FileOutlined /> },
       ],
     },
     { type: "divider" },
-    { key: "logout", label: "Sign Out", danger: true, icon: "🚪" },
+    { key: "logout", label: "Sign Out", danger: true, icon: <DeleteOutlined /> },
   ];
 
   const playgroundCode = `<Menu
@@ -308,23 +318,23 @@ export const MenuDocPage: React.FC = () => {
   onSelect={({ selectedKeys }) => setSelectedKeys(selectedKeys)}
   onOpenChange={(keys) => setOpenKeys(keys)}
   items={[
-    { key: 'dashboard', label: 'Dashboard', icon: '📊' },
+    { key: 'dashboard', label: 'Dashboard', icon: <AppstoreOutlined /> },
     {
       key: 'sys-settings',
       label: 'System Settings',
-      icon: '⚙️',
+      icon: <SettingOutlined />,
       children: [
-        { key: 'profile', label: 'User Profile' },
+        { key: 'profile', label: 'User Profile', icon: <UserOutlined /> },
         {
           key: 'security-sub',
           label: 'Security & Privacy',
-          icon: '🛡️',
+          icon: <SafetyOutlined />,
           children: [
             { key: 'two-factor', label: '2FA Verification' },
             {
               key: 'access-sub',
               label: 'Access Control (Deep)',
-              icon: '🔑',
+              icon: <KeyOutlined />,
               children: [
                 { key: 'deep-perm-read', label: 'Read Permission' },
                 { key: 'deep-perm-write', label: 'Write Permission' },
@@ -377,35 +387,32 @@ export const MenuDocPage: React.FC = () => {
             {/* Mode */}
             <div className="preview-control-group">
               <span className="control-label">Mode:</span>
-              <div className="control-segmented-group">
-                {(["inline", "vertical", "horizontal"] as MenuMode[]).map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    className={`control-pill ${mode === m ? "active" : ""}`}
-                    onClick={() => setMode(m)}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={mode}
+                onChange={(val) => setMode(val as MenuMode)}
+                options={[
+                  { value: "inline", label: "Inline" },
+                  { value: "vertical", label: "Vertical" },
+                  { value: "horizontal", label: "Horizontal" },
+                ]}
+                style={{ width: 130 }}
+                size="small"
+              />
             </div>
 
             {/* Theme */}
             <div className="preview-control-group">
               <span className="control-label">Theme:</span>
-              <div className="control-segmented-group">
-                {(["light", "dark"] as MenuTheme[]).map((th) => (
-                  <button
-                    key={th}
-                    type="button"
-                    className={`control-pill ${theme === th ? "active" : ""}`}
-                    onClick={() => setTheme(th)}
-                  >
-                    {th}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={theme}
+                onChange={(val) => setTheme(val as MenuTheme)}
+                options={[
+                  { value: "light", label: "Light" },
+                  { value: "dark", label: "Dark" },
+                ]}
+                style={{ width: 110 }}
+                size="small"
+              />
             </div>
 
             {/* Toggles */}
@@ -471,18 +478,18 @@ export const MenuDocPage: React.FC = () => {
       </p>
       <ComponentPreview
         code={`import React, { useState } from 'react';
-import { Menu } from '@chella-ui/react';
+import { Menu, MailOutlined, AppstoreOutlined, SettingOutlined } from '@chella-ui/react';
 
 export const App = () => {
   const [current, setCurrent] = useState('mail');
 
   const items = [
-    { key: 'mail', label: 'Navigation One', icon: '✉️' },
-    { key: 'app', label: 'Navigation Two', icon: '📱', disabled: true },
+    { key: 'mail', label: 'Navigation One', icon: <MailOutlined /> },
+    { key: 'app', label: 'Navigation Two', icon: <AppstoreOutlined />, disabled: true },
     {
       key: 'SubMenu',
       label: 'Navigation Three - Submenu',
-      icon: '⚙️',
+      icon: <SettingOutlined />,
       children: [
         {
           type: 'group',
@@ -520,12 +527,12 @@ export const App = () => {
             mode="horizontal"
             defaultSelectedKeys={["mail"]}
             items={[
-              { key: "mail", label: "Navigation One", icon: "✉️" },
-              { key: "app", label: "Navigation Two", icon: "📱", disabled: true },
+              { key: "mail", label: "Navigation One", icon: <MailOutlined /> },
+              { key: "app", label: "Navigation Two", icon: <AppstoreOutlined />, disabled: true },
               {
                 key: "SubMenu",
                 label: "Navigation Three - Submenu",
-                icon: "⚙️",
+                icon: <SettingOutlined />,
                 children: [
                   {
                     type: "group",
@@ -647,13 +654,13 @@ export const App = () => (
       </p>
       <ComponentPreview
         code={`import React from 'react';
-import { Menu } from '@chella-ui/react';
+import { Menu, MailOutlined, AppstoreOutlined, SettingOutlined } from '@chella-ui/react';
 
 const inlineItems = [
   {
     key: 'sub1',
     label: 'Navigation One',
-    icon: '✉️',
+    icon: <MailOutlined />,
     children: [
       {
         type: 'group',
@@ -676,7 +683,7 @@ const inlineItems = [
   {
     key: 'sub2',
     label: 'Navigation Two',
-    icon: '📱',
+    icon: <AppstoreOutlined />,
     children: [
       { key: '5', label: 'Option 5' },
       { key: '6', label: 'Option 6' },
@@ -693,7 +700,7 @@ const inlineItems = [
   {
     key: 'sub4',
     label: 'Navigation Three',
-    icon: '⚙️',
+    icon: <SettingOutlined />,
     children: [
       { key: '9', label: 'Option 9' },
       { key: '10', label: 'Option 10' },
@@ -717,7 +724,7 @@ export const App = () => (
               {
                 key: "sub1",
                 label: "Navigation One",
-                icon: "✉️",
+                icon: <MailOutlined />,
                 children: [
                   {
                     type: "group",
@@ -740,7 +747,7 @@ export const App = () => (
               {
                 key: "sub2",
                 label: "Navigation Two",
-                icon: "📱",
+                icon: <AppstoreOutlined />,
                 children: [
                   { key: "5", label: "Option 5" },
                   { key: "6", label: "Option 6" },
@@ -757,7 +764,7 @@ export const App = () => (
               {
                 key: "sub4",
                 label: "Navigation Three",
-                icon: "⚙️",
+                icon: <SettingOutlined />,
                 children: [
                   { key: "9", label: "Option 9" },
                   { key: "10", label: "Option 10" },
@@ -795,11 +802,11 @@ export const App = () => {
         mode="inline"
         inlineCollapsed={collapsed}
         items={[
-          { key: '1', icon: '🥧', label: 'Option 1' },
-          { key: '2', icon: '📊', label: 'Option 2' },
+          { key: '1', icon: <AppstoreOutlined />, label: 'Option 1' },
+          { key: '2', icon: <FolderOutlined />, label: 'Option 2' },
           {
             key: 'sub1',
-            icon: '✉️',
+            icon: <MailOutlined />,
             label: 'Navigation One',
             children: [
               { key: '5', label: 'Option 5' },
@@ -827,11 +834,11 @@ export const App = () => {
               mode="inline"
               inlineCollapsed={inlineCollapsedDemo}
               items={[
-                { key: "1", icon: "🥧", label: "Option 1" },
-                { key: "2", icon: "📊", label: "Option 2" },
+                { key: "1", icon: <AppstoreOutlined />, label: "Option 1" },
+                { key: "2", icon: <FolderOutlined />, label: "Option 2" },
                 {
                   key: "sub1",
-                  icon: "✉️",
+                  icon: <MailOutlined />,
                   label: "Navigation One",
                   children: [
                     { key: "5", label: "Option 5" },
@@ -851,7 +858,7 @@ export const App = () => {
       </p>
       <ComponentPreview
         code={`import React, { useState } from 'react';
-import { Menu } from '@chella-ui/react';
+import { Menu, MailOutlined, AppstoreOutlined, SettingOutlined } from '@chella-ui/react';
 
 export const App = () => {
   const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -867,9 +874,9 @@ export const App = () => {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
       items={[
-        { key: 'sub1', label: 'Navigation One', icon: '✉️', children: [{ key: '1', label: 'Option 1' }] },
-        { key: 'sub2', label: 'Navigation Two', icon: '📱', children: [{ key: '2', label: 'Option 2' }] },
-        { key: 'sub3', label: 'Navigation Three', icon: '⚙️', children: [{ key: '3', label: 'Option 3' }] },
+        { key: 'sub1', label: 'Navigation One', icon: <MailOutlined />, children: [{ key: '1', label: 'Option 1' }] },
+        { key: 'sub2', label: 'Navigation Two', icon: <AppstoreOutlined />, children: [{ key: '2', label: 'Option 2' }] },
+        { key: 'sub3', label: 'Navigation Three', icon: <SettingOutlined />, children: [{ key: '3', label: 'Option 3' }] },
       ]}
       style={{ width: 280 }}
     />
@@ -888,7 +895,7 @@ export const App = () => {
               {
                 key: "sub1",
                 label: "Navigation One",
-                icon: "✉️",
+                icon: <MailOutlined />,
                 children: [
                   { key: "1", label: "Option 1" },
                   { key: "2", label: "Option 2" },
@@ -897,7 +904,7 @@ export const App = () => {
               {
                 key: "sub2",
                 label: "Navigation Two",
-                icon: "📱",
+                icon: <AppstoreOutlined />,
                 children: [
                   { key: "3", label: "Option 3" },
                   { key: "4", label: "Option 4" },
@@ -906,7 +913,7 @@ export const App = () => {
               {
                 key: "sub3",
                 label: "Navigation Three",
-                icon: "⚙️",
+                icon: <SettingOutlined />,
                 children: [
                   { key: "5", label: "Option 5" },
                   { key: "6", label: "Option 6" },
@@ -925,7 +932,7 @@ export const App = () => {
       </p>
       <ComponentPreview
         code={`import React from 'react';
-import { Menu } from '@chella-ui/react';
+import { Menu, MailOutlined, AppstoreOutlined } from '@chella-ui/react';
 
 export const App = () => (
   <Menu
@@ -935,7 +942,7 @@ export const App = () => (
       {
         key: 'sub1',
         label: 'Navigation One',
-        icon: '✉️',
+        icon: <MailOutlined />,
         children: [
           { key: '1', label: 'Option 1' },
           { key: '2', label: 'Option 2' },
@@ -944,7 +951,7 @@ export const App = () => (
       {
         key: 'sub2',
         label: 'Navigation Two',
-        icon: '📱',
+        icon: <AppstoreOutlined />,
         children: [
           { key: '3', label: 'Option 3' },
           { key: '4', label: 'Option 4' },
@@ -963,7 +970,7 @@ export const App = () => (
               {
                 key: "sub1",
                 label: "Navigation One",
-                icon: "✉️",
+                icon: <MailOutlined />,
                 children: [
                   { key: "1", label: "Option 1" },
                   { key: "2", label: "Option 2" },
@@ -972,7 +979,7 @@ export const App = () => (
               {
                 key: "sub2",
                 label: "Navigation Two",
-                icon: "📱",
+                icon: <AppstoreOutlined />,
                 children: [
                   { key: "3", label: "Option 3" },
                   { key: "4", label: "Option 4" },
@@ -991,7 +998,7 @@ export const App = () => (
       </p>
       <ComponentPreview
         code={`import React from 'react';
-import { Menu } from '@chella-ui/react';
+import { Menu, MailOutlined, SettingOutlined } from '@chella-ui/react';
 
 export const App = () => (
   <Menu
@@ -1000,10 +1007,10 @@ export const App = () => (
     defaultSelectedKeys={['1']}
     defaultOpenKeys={['sub1']}
     items={[
-      { key: '1', icon: '✉️', label: 'Navigation One' },
+      { key: '1', icon: <MailOutlined />, label: 'Navigation One' },
       {
         key: 'sub1',
-        icon: '⚙️',
+        icon: <SettingOutlined />,
         label: 'Settings',
         children: [
           { key: '3', label: 'Option 3' },
@@ -1022,10 +1029,10 @@ export const App = () => (
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             items={[
-              { key: "1", icon: "✉️", label: "Navigation One" },
+              { key: "1", icon: <MailOutlined />, label: "Navigation One" },
               {
                 key: "sub1",
-                icon: "⚙️",
+                icon: <SettingOutlined />,
                 label: "Settings",
                 children: [
                   { key: "3", label: "Option 3" },

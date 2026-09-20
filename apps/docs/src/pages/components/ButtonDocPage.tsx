@@ -8,6 +8,11 @@ import {
   ButtonShape,
   ButtonSize,
   Badge,
+  Select,
+  SearchIcon,
+  DownloadIcon,
+  StarIcon,
+  ArrowRightIcon,
 } from "@chella-ui/react";
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { PropsTable, PropItem } from "../../components/PropsTable";
@@ -142,73 +147,6 @@ const colors: ButtonColor[] = ["default", "primary", "danger", "cyan", "purple",
 const shapes: ButtonShape[] = ["default", "round", "circle"];
 const sizes: ButtonSize[] = ["small", "medium", "large"];
 
-const SearchIcon = ({ size = 15 }: { size?: number }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
-);
-
-const StarIcon = ({ size = 15 }: { size?: number }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </svg>
-);
-
-const ArrowRightIcon = ({ size = 15 }: { size?: number }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
-
-const DownloadIcon = ({ size = 15 }: { size?: number }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="7 10 12 15 17 10" />
-    <line x1="12" y1="15" x2="12" y2="3" />
-  </svg>
-);
 
 export const ButtonDocPage: React.FC = () => {
   const [mode, setMode] = useState<"type" | "colorVariant">("type");
@@ -290,72 +228,54 @@ export const ButtonDocPage: React.FC = () => {
             {/* Mode selector */}
             <div className="preview-control-group">
               <span className="control-label">Mode:</span>
-              <div className="control-segmented-group">
-                <button
-                  type="button"
-                  className={`control-pill ${mode === "type" ? "active" : ""}`}
-                  onClick={() => setMode("type")}
-                >
-                  Type (Sugar)
-                </button>
-                <button
-                  type="button"
-                  className={`control-pill ${mode === "colorVariant" ? "active" : ""}`}
-                  onClick={() => setMode("colorVariant")}
-                >
-                  Color & Variant
-                </button>
-              </div>
+              <Select
+                value={mode}
+                onChange={(val) => setMode(val as any)}
+                options={[
+                  { value: "type", label: "Type (Sugar)" },
+                  { value: "colorVariant", label: "Color & Variant" },
+                ]}
+                style={{ width: 150 }}
+                size="small"
+              />
             </div>
 
             {mode === "type" ? (
               <div className="preview-control-group">
                 <span className="control-label">Type:</span>
-                <div className="control-segmented-group">
-                  {types.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      className={`control-pill ${type === t ? "active" : ""}`}
-                      onClick={() => setType(t)}
-                    >
-                      {t.charAt(0).toUpperCase() + t.slice(1)}
-                    </button>
-                  ))}
-                </div>
+                <Select
+                  value={type}
+                  onChange={(val) => setType(val as any)}
+                  options={types.map((t) => ({
+                    value: t,
+                    label: t.charAt(0).toUpperCase() + t.slice(1),
+                  }))}
+                  style={{ width: 120 }}
+                  size="small"
+                />
               </div>
             ) : (
               <>
                 <div className="preview-control-group">
                   <span className="control-label">Variant:</span>
-                  <div className="control-segmented-group">
-                    {variants.map((v) => (
-                      <button
-                        key={v}
-                        type="button"
-                        className={`control-pill ${variant === v ? "active" : ""}`}
-                        onClick={() => setVariant(v)}
-                      >
-                        {v}
-                      </button>
-                    ))}
-                  </div>
+                  <Select
+                    value={variant}
+                    onChange={(val) => setVariant(val as any)}
+                    options={variants.map((v) => ({ value: v, label: v }))}
+                    style={{ width: 120 }}
+                    size="small"
+                  />
                 </div>
 
                 <div className="preview-control-group">
                   <span className="control-label">Color:</span>
-                  <div className="control-segmented-group">
-                    {colors.map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        className={`control-pill ${color === c ? "active" : ""}`}
-                        onClick={() => setColor(c)}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
+                  <Select
+                    value={color}
+                    onChange={(val) => setColor(val as any)}
+                    options={colors.map((c) => ({ value: c, label: c }))}
+                    style={{ width: 120 }}
+                    size="small"
+                  />
                 </div>
               </>
             )}
@@ -363,35 +283,31 @@ export const ButtonDocPage: React.FC = () => {
             {/* Shape selector */}
             <div className="preview-control-group">
               <span className="control-label">Shape:</span>
-              <div className="control-segmented-group">
-                {shapes.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    className={`control-pill ${shape === s ? "active" : ""}`}
-                    onClick={() => setShape(s)}
-                  >
-                    {s.charAt(0).toUpperCase() + s.slice(1)}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={shape}
+                onChange={(val) => setShape(val as any)}
+                options={shapes.map((s) => ({
+                  value: s,
+                  label: s.charAt(0).toUpperCase() + s.slice(1),
+                }))}
+                style={{ width: 120 }}
+                size="small"
+              />
             </div>
 
             {/* Size selector */}
             <div className="preview-control-group">
               <span className="control-label">Size:</span>
-              <div className="control-segmented-group">
-                {sizes.map((sz) => (
-                  <button
-                    key={sz}
-                    type="button"
-                    className={`control-pill ${size === sz ? "active" : ""}`}
-                    onClick={() => setSize(sz)}
-                  >
-                    {sz.charAt(0).toUpperCase() + sz.slice(1)}
-                  </button>
-                ))}
-              </div>
+              <Select
+                value={size}
+                onChange={(val) => setSize(val as any)}
+                options={sizes.map((sz) => ({
+                  value: sz,
+                  label: sz.charAt(0).toUpperCase() + sz.slice(1),
+                }))}
+                style={{ width: 120 }}
+                size="small"
+              />
             </div>
 
             {/* Toggles */}

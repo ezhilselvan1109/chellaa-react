@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "./Button";
+import { SearchIcon, DownloadIcon, StarIcon, ArrowRightIcon } from "../../icons";
 
 describe("Button Component (Ant Design Exact Specification)", () => {
   it("renders with default props and text content", () => {
@@ -246,5 +247,35 @@ describe("Button Component (Ant Design Exact Specification)", () => {
     await user.click(button);
     expect(button).toHaveClass("ch-btn--waving");
     expect(button.querySelector(".ch-btn-wave")).toBeInTheDocument();
+  });
+
+  it("renders all icon, shape, and placement combinations requested by user", () => {
+    const { container } = render(
+      <>
+        <Button type="primary" shape="circle" icon={<SearchIcon />} data-testid="b1" />
+        <Button type="primary" shape="circle" data-testid="b2">A</Button>
+        <Button type="primary" icon={<SearchIcon />} data-testid="b3">Search</Button>
+        <Button shape="circle" icon={<SearchIcon />} data-testid="b4" />
+        <Button icon={<SearchIcon />} data-testid="b5">Search</Button>
+        <Button type="dashed" shape="circle" icon={<SearchIcon />} data-testid="b6" />
+        <Button type="dashed" icon={<SearchIcon />} data-testid="b7">Search</Button>
+        <Button type="primary" shape="round" icon={<DownloadIcon />} data-testid="b8">Download</Button>
+        <Button type="default" icon={<StarIcon />} iconPlacement="start" data-testid="b9">Favorite</Button>
+        <Button type="default" icon={<ArrowRightIcon />} iconPlacement="end" data-testid="b10">Next Step</Button>
+      </>
+    );
+
+    // Verify shapes
+    expect(screen.getByTestId("b1")).toHaveClass("ch-btn--shape-circle", "ch-btn--icon-only");
+    expect(screen.getByTestId("b2")).toHaveClass("ch-btn--shape-circle");
+    expect(screen.getByTestId("b8")).toHaveClass("ch-btn--shape-round");
+
+    // Verify icon placements
+    expect(screen.getByTestId("b9").textContent).toContain("Favorite");
+    expect(screen.getByTestId("b10").textContent).toContain("Next Step");
+
+    // Verify SVGs rendered inside buttons
+    const svgIcons = container.querySelectorAll(".ch-btn-icon svg");
+    expect(svgIcons.length).toBe(9);
   });
 });

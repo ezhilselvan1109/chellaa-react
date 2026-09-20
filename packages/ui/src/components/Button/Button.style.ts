@@ -57,7 +57,11 @@ export const buttonCssText = `
   background-color: var(--ch-btn-active-bg);
   color: var(--ch-btn-active-fg);
   border-color: var(--ch-btn-active-border);
-  transform: scale(0.985);
+  transform: scale(0.99);
+}
+
+.ch-btn:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .ch-btn:focus-visible {
@@ -378,27 +382,16 @@ export const buttonCssText = `
   pointer-events: none;
   display: block;
   z-index: 1;
-  animation: ch-btn-wave-effect 0.45s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
-}
-
-.ch-btn--waving::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  display: block;
-  z-index: 1;
-  animation: ch-btn-wave-effect 0.45s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+  animation: ch-btn-wave-effect 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
 }
 
 @keyframes ch-btn-wave-effect {
   0% {
     box-shadow: 0 0 0 0 var(--ch-wave-color, #1677ff);
-    opacity: 0.8;
+    opacity: 0.35;
   }
   100% {
-    box-shadow: 0 0 0 8px var(--ch-wave-color, #1677ff);
+    box-shadow: 0 0 0 5px var(--ch-wave-color, #1677ff);
     opacity: 0;
   }
 }

@@ -67,6 +67,7 @@
   "author": "Chella UI Team",
   "license": "MIT",
   "dependencies": {
-    "dayjs": "^1.11.23"
+    "dayjs": "^1.11.23",
+    "lucide-react": "^1.47.0"
   }
 }
