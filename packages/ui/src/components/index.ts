@@ -11,3 +11,4 @@ export * from "./AutoComplete";
 export * from "./Checkbox";
 export * from "./DatePicker";
 export * from "./Radio";
+export * from "./Modal";

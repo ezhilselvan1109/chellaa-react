@@ -123,6 +123,12 @@ export const navigationConfig: NavSection[] = [
         description: "Used to select a single state from multiple options with circular and button styles.",
       },
       {
+        title: "Modal",
+        href: "/docs/components/modal",
+        badge: "Feedback",
+        description: "Display a modal dialog box, providing a title, content area, and action buttons.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
@@ -133,7 +139,6 @@ export const navigationConfig: NavSection[] = [
   {
     title: "Upcoming Components",
     items: [
-      { title: "Modal / Dialog", href: "#", badge: "Phase 6" },
       { title: "Tabs", href: "#", badge: "Phase 7" },
     ],
   },

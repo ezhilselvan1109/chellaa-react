@@ -197,6 +197,20 @@ const componentList: ComponentItem[] = [
     ),
   },
   {
+    id: "modal",
+    name: "Modal",
+    category: "Feedback",
+    description: "Display a modal dialog box, providing a title, content area, and action buttons.",
+    href: "/docs/components/modal",
+    status: "Stable",
+    preview: (
+      <div style={{ padding: "8px 14px", border: "1px solid #d9d9d9", borderRadius: 6, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", fontSize: 12 }}>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>Dialog Title</div>
+        <div style={{ color: "#8c8c8c" }}>Modal content preview...</div>
+      </div>
+    ),
+  },
+  {
     id: "spinner",
     name: "Spinner",
     category: "Feedback",
