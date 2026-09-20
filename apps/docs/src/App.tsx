@@ -21,6 +21,8 @@ import { GridDocPage } from "./pages/components/GridDocPage";
 import { MasonryDocPage } from "./pages/components/MasonryDocPage";
 import { AutoCompleteDocPage } from "./pages/components/AutoCompleteDocPage";
 import { CheckboxDocPage } from "./pages/components/CheckboxDocPage";
+import { DatePickerDocPage } from "./pages/components/DatePickerDocPage";
+import { RadioDocPage } from "./pages/components/RadioDocPage";
 
 const AppContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -65,6 +67,8 @@ const AppContent: React.FC = () => {
             <Route path="/docs/components/masonry" element={<MasonryDocPage />} />
             <Route path="/docs/components/auto-complete" element={<AutoCompleteDocPage />} />
             <Route path="/docs/components/checkbox" element={<CheckboxDocPage />} />
+            <Route path="/docs/components/date-picker" element={<DatePickerDocPage />} />
+            <Route path="/docs/components/radio" element={<RadioDocPage />} />
           </Routes>
         </div>
       )}

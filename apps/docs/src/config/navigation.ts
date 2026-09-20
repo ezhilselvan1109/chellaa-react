@@ -111,6 +111,18 @@ export const navigationConfig: NavSection[] = [
         description: "Collect user choices with support for single checkboxes, indeterminate tri-states, and groups.",
       },
       {
+        title: "DatePicker",
+        href: "/docs/components/date-picker",
+        badge: "Data Entry",
+        description: "To select or input a date or date range from a popup calendar.",
+      },
+      {
+        title: "Radio",
+        href: "/docs/components/radio",
+        badge: "Data Entry",
+        description: "Used to select a single state from multiple options with circular and button styles.",
+      },
+      {
         title: "Spinner",
         href: "/docs/components/spinner",
         badge: "Stable",
@@ -121,7 +133,6 @@ export const navigationConfig: NavSection[] = [
   {
     title: "Upcoming Components",
     items: [
-      { title: "Radio", href: "#", badge: "Phase 4" },
       { title: "Modal / Dialog", href: "#", badge: "Phase 6" },
       { title: "Tabs", href: "#", badge: "Phase 7" },
     ],

@@ -65,5 +65,8 @@
     "chella-ui"
   ],
   "author": "Chella UI Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dayjs": "^1.11.23"
+  }
 }

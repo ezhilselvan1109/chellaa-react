@@ -1,4 +1,4 @@
-import React, { useState, useRef, forwardRef } from "react";
+import React, { useState, useRef, useEffect, forwardRef } from "react";
 import { injectStyle } from "../../styles/registry";
 import { tokensCssText } from "../../tokens/tokens.style";
 import { floatButtonCssText } from "./FloatButton.style";
@@ -56,6 +56,12 @@ export const FloatButtonInternal = forwardRef<
     const [waveKey, setWaveKey] = useState(0);
     const [isWaving, setIsWaving] = useState(false);
     const waveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+      return () => {
+        if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
+      };
+    }, []);
 
     const activeContent = description ?? propContent;
     const hasContent = Boolean(activeContent);

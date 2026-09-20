@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox, DatePicker, Radio } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
@@ -167,6 +167,33 @@ const componentList: ComponentItem[] = [
         <Checkbox defaultChecked>Option A</Checkbox>
         <Checkbox indeterminate>Option B</Checkbox>
       </div>
+    ),
+  },
+  {
+    id: "date-picker",
+    name: "DatePicker",
+    category: "Data Entry",
+    description: "To select or input a date or date range from an interactive calendar popup.",
+    href: "/docs/components/date-picker",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "100%", maxWidth: 220 }}>
+        <DatePicker size="small" placeholder="Select date" />
+      </div>
+    ),
+  },
+  {
+    id: "radio",
+    name: "Radio",
+    category: "Data Entry",
+    description: "Used to select a single state from multiple options with circular and button styles.",
+    href: "/docs/components/radio",
+    status: "Stable",
+    preview: (
+      <Radio.Group defaultValue="a" size="small">
+        <Radio value="a">A</Radio>
+        <Radio value="b">B</Radio>
+      </Radio.Group>
     ),
   },
   {
