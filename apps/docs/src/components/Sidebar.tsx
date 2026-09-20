@@ -13,10 +13,10 @@ export const Sidebar: React.FC = () => {
               key={item.title}
               to={item.href}
               end={item.href === "/"}
-              className={({ isActive }) =>
+              className={({ isActive }: { isActive: boolean }) =>
                 `docs-sidebar-link ${isActive && item.href !== "#" ? "active" : ""}`
               }
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent) => {
                 if (item.href === "#") {
                   e.preventDefault();
                 }

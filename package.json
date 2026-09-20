@@ -17,6 +17,9 @@
     "dev:docs": "npm run dev --workspace=@chella-ui/docs",
     "dev:playground": "npm run dev --workspace=@chella-ui/playground"
   },
+  "dependencies": {
+    "react-router-dom": "^6.30.6"
+  },
   "devDependencies": {
     "prettier": "^3.3.3",
     "typescript": "^5.6.2"
