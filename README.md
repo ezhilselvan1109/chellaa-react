@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript)](tsconfig.base.json)
 
-**Chella UI** is a production-quality, accessible, and type-safe React design system and UI component library distributed as `@chella-ui/react`.
+**Chella UI** is a production-quality, accessible, and type-safe React design system and UI component library distributed as `@chellaa/react`.
 
 Inspired by the engineering discipline and developer experience of Ant Design, Material UI, Chakra UI, and Radix UI, Chella UI provides an uncompromised foundation designed to scale from early prototypes to enterprise systems.
 
@@ -12,7 +12,7 @@ Inspired by the engineering discipline and developer experience of Ant Design, M
 
 ## 🌟 Key Features
 
-* **Zero-Friction Consumer DX**: Install `@chella-ui/react` and import components directly. No Tailwind prerequisite, no complex bundler plugins.
+* **Zero-Friction Consumer DX**: Install `@chellaa/react` and import components directly. No Tailwind prerequisite, no complex bundler plugins.
 * **Three-Tier Token Cascade**: Clean separation from raw Primitives to Semantic Tokens to Component Tokens.
 * **Zero-Runtime Theme Engine**: Instantaneous (<1ms) switching between Light, Dark, and System modes powered by CSS custom properties.
 * **Polymorphism via Slot (`asChild`)**: Radix-inspired composition pattern eliminating fragile TypeScript `as` prop unions.
@@ -27,7 +27,7 @@ Inspired by the engineering discipline and developer experience of Ant Design, M
 ```text
 chellaa-react/
 ├── packages/
-│   └── ui/                     # Core library: @chella-ui/react
+│   └── ui/                     # Core library: @chellaa/react
 ├── apps/
 │   ├── docs/                   # Independent Documentation Web Application
 │   ├── playground/             # Design System Workbench & Token Customizer
@@ -47,7 +47,7 @@ chellaa-react/
 ### 1. Installation
 
 ```bash
-npm install @chella-ui/react
+npm install @chellaa/react lucide-react
 ```
 
 ### 2. Usage (Zero CSS Imports Required!)
@@ -56,7 +56,7 @@ Unlike older component libraries, **Chella UI components own their own styles** 
 
 ```tsx
 import React from "react";
-import { Button, ChellaProvider, useTheme } from "@chella-ui/react";
+import { Button, ChellaProvider, useTheme } from "@chellaa/react";
 
 function ThemeToggleButton() {
   const { toggleTheme, resolvedTheme } = useTheme();
@@ -108,6 +108,83 @@ npm install
 | `npm run format:check` | Verifies code formatting with Prettier |
 
 ---
+
+## 🚀 Publishing to npm & Release Workflow
+
+The UI package is published to npm under the `@chellaa` scope as **`@chellaa/react`**.
+
+### 1. npm Authentication
+Before publishing for the first time, log in with your npm credentials:
+
+```bash
+npm login
+```
+
+Verify that you are logged in:
+
+```bash
+npm whoami
+# Output: ezhilselvan1109 (or your npm username)
+```
+
+Verify your membership/ownership of the `@chellaa` organization:
+
+```bash
+npm org ls chellaa
+# Output: ezhilselvan1109 - owner
+```
+
+### 2. Package Configuration
+In `packages/ui/package.json`:
+
+```json
+{
+  "name": "@chellaa/react",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run build && npm test"
+  }
+}
+```
+
+> **Safety Guarantee**: The `prepublishOnly` script automatically runs `npm run build` and `npm test` (all 194 unit tests) before uploading to npm. If any test fails or the build is broken, npm cancels the release immediately.
+
+### 3. Publishing to npm
+
+From the **monorepo root**:
+
+```bash
+npm publish --workspace=@chellaa/react --access public
+```
+
+*Or from the `packages/ui` directory:*
+
+```bash
+cd packages/ui
+npm publish --access public
+```
+
+### 4. Releasing Future Updates (Versioning)
+
+When you make changes and want to release a new version to npm:
+
+```bash
+# 1. Bump version
+# Patch release (e.g. 0.1.0 -> 0.1.1): Bug fixes & tweaks
+npm version patch --workspace=@chellaa/react
+
+# Minor release (e.g. 0.1.0 -> 0.2.0): New components & features
+# npm version minor --workspace=@chellaa/react
+
+# Major release (e.g. 0.1.0 -> 1.0.0): Breaking API changes
+# npm version major --workspace=@chellaa/react
+
+# 2. Publish the new version to npm
+npm publish --workspace=@chellaa/react --access public
+```
 
 ## 🏛️ Architecture Decision Records (ADRs)
 

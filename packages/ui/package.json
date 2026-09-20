@@ -1,6 +1,6 @@
 {
-  "name": "@chella-ui/react",
-  "version": "0.1.0",
+  "name": "@chellaa/react",
+  "version": "0.1.2",
   "description": "Scalable, accessible, production-ready React design system and UI component library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -29,7 +29,8 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build && npm test"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

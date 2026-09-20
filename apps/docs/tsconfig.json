@@ -3,7 +3,12 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@chellaa/react": ["../../packages/ui/dist/index.d.ts"],
+      "@chella-ui/react": ["../../packages/ui/dist/index.d.ts"]
+    }
   },
   "include": ["src/**/*"]
 }

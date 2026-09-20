@@ -138,6 +138,15 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const [isWaving, setIsWaving] = useState(false);
     const waveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    React.useEffect(() => {
+      return () => {
+        if (waveTimerRef.current) {
+          clearTimeout(waveTimerRef.current);
+          waveTimerRef.current = null;
+        }
+      };
+    }, []);
+
     const { color, variant } = resolveColorAndVariant(type, propVariant, propColor, danger);
     const normalizedSize = normalizeSize(size);
 
@@ -172,7 +181,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         setIsWaving(true);
         if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
         waveTimerRef.current = setTimeout(() => {
-          setIsWaving(false);
+          if (typeof window !== "undefined") {
+            setIsWaving(false);
+          }
         }, 450);
       }
 
