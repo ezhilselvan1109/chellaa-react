@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox, DatePicker, Radio } from "@chella-ui/react";
+import { Button, Badge, Spinner, Input, FloatButton, Divider, Flex, Row, Col, Masonry, AutoComplete, Checkbox, DatePicker, Radio, Select, Steps, Menu } from "@chella-ui/react";
 
 interface ComponentItem {
   id: string;
   name: string;
-  category: "General" | "Data Entry" | "Feedback" | "Layout";
+  category: "General" | "Data Entry" | "Feedback" | "Layout" | "Navigation";
   description: string;
   href: string;
   status: "Stable" | "Phase 4" | "Phase 6" | "Phase 7";
@@ -194,6 +194,68 @@ const componentList: ComponentItem[] = [
         <Radio value="a">A</Radio>
         <Radio value="b">B</Radio>
       </Radio.Group>
+    ),
+  },
+  {
+    id: "select",
+    name: "Select",
+    category: "Data Entry",
+    description: "A dropdown menu for displaying choices with single, multiple tags, and custom freeform tags.",
+    href: "/docs/components/select",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "100%", maxWidth: 220 }}>
+        <Select
+          size="small"
+          placeholder="Select item"
+          defaultValue="lucy"
+          options={[
+            { label: "Jack", value: "jack" },
+            { label: "Lucy", value: "lucy" },
+          ]}
+        />
+      </div>
+    ),
+  },
+  {
+    id: "steps",
+    name: "Steps",
+    category: "Navigation",
+    description: "A navigation bar that guides users through the sequential steps of a task.",
+    href: "/docs/components/steps",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "100%", maxWidth: 260 }}>
+        <Steps
+          size="small"
+          current={1}
+          items={[
+            { title: "Step 1" },
+            { title: "Step 2" },
+            { title: "Step 3" },
+          ]}
+        />
+      </div>
+    ),
+  },
+  {
+    id: "menu",
+    name: "Menu",
+    category: "Navigation",
+    description: "A versatile navigation menu with multi-level submenus, inline accordion, and flyout popups.",
+    href: "/docs/components/menu",
+    status: "Stable",
+    preview: (
+      <div style={{ width: "100%", maxWidth: 200, border: "1px solid rgba(0,0,0,0.06)", borderRadius: 6, overflow: "hidden" }}>
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          items={[
+            { key: "1", label: "Dashboard", icon: "📊" },
+            { key: "2", label: "Settings", icon: "⚙️" },
+          ]}
+        />
+      </div>
     ),
   },
   {

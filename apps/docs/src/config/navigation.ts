@@ -123,6 +123,24 @@ export const navigationConfig: NavSection[] = [
         description: "Used to select a single state from multiple options with circular and button styles.",
       },
       {
+        title: "Select",
+        href: "/docs/components/select",
+        badge: "Data Entry",
+        description: "A dropdown menu for displaying choices with single, multiple tags, and custom freeform tags.",
+      },
+      {
+        title: "Steps",
+        href: "/docs/components/steps",
+        badge: "Navigation",
+        description: "A navigation bar that guides users through the sequential steps of a task.",
+      },
+      {
+        title: "Menu",
+        href: "/docs/components/menu",
+        badge: "Navigation",
+        description: "A versatile navigation menu with multi-level submenus, inline accordion, and flyout popups.",
+      },
+      {
         title: "Modal",
         href: "/docs/components/modal",
         badge: "Feedback",

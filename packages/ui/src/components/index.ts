@@ -12,3 +12,6 @@ export * from "./Checkbox";
 export * from "./DatePicker";
 export * from "./Radio";
 export * from "./Modal";
+export * from "./Select";
+export * from "./Steps";
+export * from "./Menu";

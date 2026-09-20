@@ -24,6 +24,9 @@ import { CheckboxDocPage } from "./pages/components/CheckboxDocPage";
 import { DatePickerDocPage } from "./pages/components/DatePickerDocPage";
 import { RadioDocPage } from "./pages/components/RadioDocPage";
 import { ModalDocPage } from "./pages/components/ModalDocPage";
+import { SelectDocPage } from "./pages/components/SelectDocPage";
+import { StepsDocPage } from "./pages/components/StepsDocPage";
+import { MenuDocPage } from "./pages/components/MenuDocPage";
 
 const AppContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -71,6 +74,9 @@ const AppContent: React.FC = () => {
             <Route path="/docs/components/date-picker" element={<DatePickerDocPage />} />
             <Route path="/docs/components/radio" element={<RadioDocPage />} />
             <Route path="/docs/components/modal" element={<ModalDocPage />} />
+            <Route path="/docs/components/select" element={<SelectDocPage />} />
+            <Route path="/docs/components/steps" element={<StepsDocPage />} />
+            <Route path="/docs/components/menu" element={<MenuDocPage />} />
           </Routes>
         </div>
       )}
