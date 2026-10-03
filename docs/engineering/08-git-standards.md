@@ -133,3 +133,81 @@ Run the interactive CLI from the repository root:
 pnpm changeset
 ```
 Follow the prompts to select packages (`@chellaa/react`), choose the SemVer bump (`patch`, `minor`, `major`), and write a user-facing markdown summary of the change.
+
+---
+
+## 6. Git vs. npm: The Architecture of Separation
+
+A fundamental architectural principle of Chellaa React is that **Git is NOT the npm package**:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        Source vs. Distribution                         │
+├────────────────────┬───────────────────────────────────────────────────┤
+│ Git / GitHub       │ • Complete source code, history, and commit graph │
+│                    │ • Issues, pull requests, and peer reviews         │
+│                    │ • Raw TypeScript, tests, stories, and benchmarks  │
+│                    │ • Monorepo workspaces, internal apps, and configs │
+├────────────────────┼───────────────────────────────────────────────────┤
+│ npm Registry       │ • Published distribution artifacts only           │
+│                    │ • Compiled ESM (.mjs) and CJS (.cjs) bundles      │
+│                    │ • Emitted TypeScript declarations (.d.ts)         │
+│                    │ • Zero tests, zero source code, zero stories      │
+│                    │ • Immutable versioned consumer packages           │
+└────────────────────┴───────────────────────────────────────────────────┘
+```
+
+---
+
+## 7. The Complete Lifecycle from Commit to Release
+
+The lifecycle bridging source code in Git to published packages on npm is strictly automated:
+
+```text
+Developer
+    ↓
+Git branch (feat/..., fix/...)
+    ↓
+Conventional Commit
+    ↓
+Pull Request
+    ↓
+CI Gates (typecheck, lint, test, a11y, build, size)
+    ↓
+Peer Review (min 1 approval)
+    ↓
+Squash and Merge to main
+    ↓
+Changeset Detected
+    ↓
+Automated Version PR (pnpm changeset version)
+    ↓
+Maintainer Merges Version PR
+    ↓
+Automated Release Job (pnpm changeset publish)
+    ↓
+npm Publish (@chellaa/react with provenance)
+    ↓
+Git Tag Created (e.g., @chellaa/react@1.2.0)
+    ↓
+GitHub Release Generated with Changelog
+```
+
+---
+
+## 8. Branch Protection & Main Branch Governance
+
+The `main` branch is the production source of truth and must be protected by the following repository rules:
+1. **Require Pull Request Reviews:** Minimum 1 approving review from a core maintainer before merging.
+2. **Require Status Checks to Pass:** CI workflow (`ci.yml`) must pass completely:
+   - Typecheck
+   - Lint & format
+   - Unit tests
+   - Accessibility tests (`vitest-axe`)
+   - Package build & validation (`publint`, `@arethetypeswrong/cli`)
+   - Test consumer verification
+   - Bundle size budgets (`size-limit`)
+3. **Require Linear History:** Merges must use **Squash and Merge**. Direct merge commits are blocked.
+4. **Require Branches to be Up-to-Date:** PR branch must be rebased onto latest `origin/main` before merge.
+5. **No Direct Pushes:** Direct pushes to `main` are strictly prohibited for all developers and maintainers.
+

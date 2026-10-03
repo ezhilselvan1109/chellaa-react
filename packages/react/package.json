@@ -1,0 +1,89 @@
+{
+  "name": "@chellaa/react",
+  "version": "0.1.0",
+  "description": "Production-grade, accessible, high-performance React component library and design system engine built with zero-runtime CSS custom properties.",
+  "keywords": [
+    "react",
+    "react-components",
+    "component-library",
+    "design-system",
+    "accessibility",
+    "wcag",
+    "wai-aria",
+    "zero-runtime",
+    "css-variables",
+    "typescript"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chellaa/chellaa-react.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://chellaa.dev",
+  "bugs": {
+    "url": "https://github.com/chellaa/chellaa-react/issues"
+  },
+  "author": "Chellaa React Contributors",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "size": "size-limit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.15.4",
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.10",
+    "jsdom": "^25.0.1",
+    "lightningcss": "^1.26.0",
+    "publint": "^0.2.11",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "size-limit": "^11.1.4",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.2",
+    "vitest-axe": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
