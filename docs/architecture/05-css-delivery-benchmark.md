@@ -1,20 +1,23 @@
 # Chellaa React — CSS Delivery Benchmark & Empirical Analysis
+
 ## Document 05: Multi-Environment CSS Delivery & Packaging Benchmark
 
 **Document Status:** 🟢 COMPLETE & CERTIFIED  
 **Phase:** 23 — CSS Delivery Benchmark (ADR-007 Validation)  
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
-**Test Harness:** `apps/test-consumer`  
+**Test Harness:** `apps/test-consumer`
 
 ---
 
 ## 1. Executive Summary
 
 ADR-007 established the core consumer contract for Chellaa React:
+
 > **Importing components from `@chellaa/react` delivers fully styled components out of the box without requiring consumers to manually import `@chellaa/react/styles.css`.**
 
 Per the Master Prompt (Section 13 & 23), this mechanism cannot be assumed; it must be **empirically benchmarked** across diverse runtime environments:
+
 1. Node.js ESM Runtime
 2. Node.js CommonJS Runtime
 3. Server-Side Rendering (SSR) via `react-dom/server`
@@ -59,6 +62,7 @@ This document records the actual test execution results, observed issues, mitiga
 ## 3. Detailed Environment Test Logs & Findings
 
 ### 3.1 Node.js ESM Runtime (`benchmark-node-esm.mjs`)
+
 - **Execution:** `node benchmark-node-esm.mjs`
 - **Output:**
   ```text
@@ -68,6 +72,7 @@ This document records the actual test execution results, observed issues, mitiga
 - **Finding:** ES Modules load instantaneously. Symbol exports (`ThemeProvider`, `useTheme`, `createTheme`, `ThemeScript`) resolve properly without module syntax errors.
 
 ### 3.2 Node.js CommonJS Runtime (`benchmark-node-cjs.cjs`)
+
 - **Execution:** `node benchmark-node-cjs.cjs`
 - **Output:**
   ```text
@@ -77,6 +82,7 @@ This document records the actual test execution results, observed issues, mitiga
 - **Finding:** A classic failure mode in npm libraries with static CSS is `SyntaxError: Unexpected token '.'` when pure Node CJS executes a file with an embedded raw CSS import. In Chellaa React's build pipeline, `tsup` bundles pure JavaScript for `dist/index.cjs` while emitting static CSS to `dist/index.css`. CommonJS consumers execute without crashing.
 
 ### 3.3 Server-Side Rendering (`benchmark-ssr.mjs`)
+
 - **Execution:** `node benchmark-ssr.mjs`
 - **Output:**
   ```text
@@ -86,6 +92,7 @@ This document records the actual test execution results, observed issues, mitiga
 - **Finding:** Server-side execution of `<ThemeProvider>` and `<ThemeScript />` produces valid markup containing the inline theme initialization script. Neither component attempts to access `window`, `document`, or `localStorage` during SSR render passes.
 
 ### 3.4 CSS Cascade Layer & Token Integrity (`benchmark-css.mjs`)
+
 - **Execution:** `node benchmark-css.mjs`
 - **Output:**
   ```text
@@ -101,6 +108,7 @@ This document records the actual test execution results, observed issues, mitiga
 Based on the empirical evidence gathered across all 6 test environments:
 
 ### Decision
+
 1. **Dual Delivery Strategy (Approach C in ADR-007) is Formalized:**
    - **Primary Zero-Config Delivery:** In consumer applications using modern bundlers (Next.js, Vite, Webpack, Remix), importing `@chellaa/react` delivers styling automatically via package manifest declaration (`"sideEffects": ["*.css", "**/*.css"]`).
    - **Secondary Fallback Export:** `dist/styles.css` is exported under `"./styles.css"` with full TypeScript declarations (`dist/styles.css.d.ts` and `styles.css.d.ts`) for non-bundler setups, CDN deployments, or static HTML layouts.

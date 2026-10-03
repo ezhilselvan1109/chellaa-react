@@ -1,6 +1,18 @@
 [
   {
     "path": "dist/index.mjs",
+    "import": "{ Button }",
+    "limit": "2.5 KB",
+    "name": "Button Component"
+  },
+  {
+    "path": "dist/index.mjs",
+    "import": "{ ButtonGroup }",
+    "limit": "2.5 KB",
+    "name": "ButtonGroup Component"
+  },
+  {
+    "path": "dist/index.mjs",
     "limit": "45 KB",
     "name": "Core Library Bundle"
   }

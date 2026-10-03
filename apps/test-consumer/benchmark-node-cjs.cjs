@@ -1,4 +1,11 @@
-const { ThemeProvider, useTheme, createTheme, ThemeScript } = require("@chellaa/react");
+const {
+  ThemeProvider,
+  useTheme,
+  createTheme,
+  ThemeScript,
+  Button,
+  ButtonGroup,
+} = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require...");
 
@@ -14,5 +21,13 @@ if (typeof createTheme !== "function") {
 if (typeof ThemeScript !== "function") {
   throw new Error("ThemeScript is not a function in CJS");
 }
+if (typeof Button !== "object" && typeof Button !== "function") {
+  throw new Error("Button is not a valid component in CJS");
+}
+if (typeof ButtonGroup !== "object" && typeof ButtonGroup !== "function") {
+  throw new Error("ButtonGroup is not a valid component in CJS");
+}
 
-console.log("[Benchmark Node CJS] PASSED: CommonJS require succeeded without CSS syntax errors.");
+console.log(
+  "[Benchmark Node CJS] PASSED: CommonJS require succeeded without CSS syntax errors.",
+);

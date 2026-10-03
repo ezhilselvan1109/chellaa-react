@@ -1,0 +1,61 @@
+/**
+ * Chellaa React — ButtonGroup Styles
+ * Layered inside @layer cl-components.
+ */
+@layer cl-components {
+  .cl-button-group {
+    display: inline-flex;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .cl-button-group--horizontal {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cl-button-group--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Unattached spacing */
+  .cl-button-group:not(.cl-button-group--attached) {
+    gap: var(--cl-space-2);
+  }
+
+  /* Attached horizontal group */
+  .cl-button-group--attached.cl-button-group--horizontal
+    > .cl-button:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+  }
+
+  .cl-button-group--attached.cl-button-group--horizontal
+    > .cl-button:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  /* Attached vertical group */
+  .cl-button-group--attached.cl-button-group--vertical
+    > .cl-button:not(:first-child) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: -1px;
+  }
+
+  .cl-button-group--attached.cl-button-group--vertical
+    > .cl-button:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  /* Elevation on hover/focus to prevent overlapping borders from getting hidden */
+  .cl-button-group--attached > .cl-button:hover,
+  .cl-button-group--attached > .cl-button:focus-visible,
+  .cl-button-group--attached > .cl-button:active {
+    z-index: 1;
+  }
+}

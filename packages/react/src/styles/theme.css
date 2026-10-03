@@ -32,6 +32,13 @@
     --cl-color-primary-fg: var(--cl-palette-white);
     --cl-color-primary-subtle: var(--cl-palette-indigo-50);
 
+    /* Action: Secondary (Violet) */
+    --cl-color-secondary-base: var(--cl-palette-violet-600);
+    --cl-color-secondary-hover: var(--cl-palette-violet-700);
+    --cl-color-secondary-active: var(--cl-palette-violet-800);
+    --cl-color-secondary-fg: var(--cl-palette-white);
+    --cl-color-secondary-subtle: var(--cl-palette-violet-50);
+
     /* Neutral */
     --cl-color-neutral-base: var(--cl-palette-slate-700);
     --cl-color-neutral-hover: var(--cl-palette-slate-800);
@@ -42,24 +49,28 @@
     /* Status: Success (Emerald) */
     --cl-color-success-base: var(--cl-palette-emerald-600);
     --cl-color-success-hover: var(--cl-palette-emerald-700);
+    --cl-color-success-active: var(--cl-palette-emerald-800);
     --cl-color-success-fg: var(--cl-palette-white);
     --cl-color-success-subtle: var(--cl-palette-emerald-50);
 
     /* Status: Warning (Amber) */
     --cl-color-warning-base: var(--cl-palette-amber-600);
     --cl-color-warning-hover: var(--cl-palette-amber-700);
+    --cl-color-warning-active: var(--cl-palette-amber-800);
     --cl-color-warning-fg: var(--cl-palette-white);
     --cl-color-warning-subtle: var(--cl-palette-amber-50);
 
     /* Status: Danger / Error (Rose) */
     --cl-color-danger-base: var(--cl-palette-rose-600);
     --cl-color-danger-hover: var(--cl-palette-rose-700);
+    --cl-color-danger-active: var(--cl-palette-rose-800);
     --cl-color-danger-fg: var(--cl-palette-white);
     --cl-color-danger-subtle: var(--cl-palette-rose-50);
 
     /* Status: Info (Sky) */
     --cl-color-info-base: var(--cl-palette-sky-600);
     --cl-color-info-hover: var(--cl-palette-sky-700);
+    --cl-color-info-active: var(--cl-palette-sky-800);
     --cl-color-info-fg: var(--cl-palette-white);
     --cl-color-info-subtle: var(--cl-palette-sky-50);
 
@@ -86,6 +97,7 @@
     --cl-button-danger-bg: var(--cl-color-danger-base);
     --cl-button-danger-fg: var(--cl-color-danger-fg);
     --cl-button-danger-hover-bg: var(--cl-color-danger-hover);
+    --cl-button-danger-active-bg: var(--cl-color-danger-active);
 
     /* Input */
     --cl-input-bg: var(--cl-color-bg-canvas);
@@ -143,6 +155,13 @@
     --cl-color-primary-fg: var(--cl-palette-white);
     --cl-color-primary-subtle: rgba(99, 102, 241, 0.15);
 
+    /* Action: Secondary (Violet) */
+    --cl-color-secondary-base: var(--cl-palette-violet-500);
+    --cl-color-secondary-hover: var(--cl-palette-violet-400);
+    --cl-color-secondary-active: var(--cl-palette-violet-600);
+    --cl-color-secondary-fg: var(--cl-palette-white);
+    --cl-color-secondary-subtle: rgba(139, 92, 246, 0.15);
+
     /* Neutral */
     --cl-color-neutral-base: var(--cl-palette-slate-600);
     --cl-color-neutral-hover: var(--cl-palette-slate-500);
@@ -153,24 +172,28 @@
     /* Status: Success (Emerald) */
     --cl-color-success-base: var(--cl-palette-emerald-500);
     --cl-color-success-hover: var(--cl-palette-emerald-400);
+    --cl-color-success-active: var(--cl-palette-emerald-600);
     --cl-color-success-fg: var(--cl-palette-white);
     --cl-color-success-subtle: rgba(16, 185, 129, 0.15);
 
     /* Status: Warning (Amber) */
     --cl-color-warning-base: var(--cl-palette-amber-500);
     --cl-color-warning-hover: var(--cl-palette-amber-400);
+    --cl-color-warning-active: var(--cl-palette-amber-600);
     --cl-color-warning-fg: var(--cl-palette-white);
     --cl-color-warning-subtle: rgba(245, 158, 11, 0.15);
 
     /* Status: Danger / Error (Rose) */
     --cl-color-danger-base: var(--cl-palette-rose-500);
     --cl-color-danger-hover: var(--cl-palette-rose-400);
+    --cl-color-danger-active: var(--cl-palette-rose-600);
     --cl-color-danger-fg: var(--cl-palette-white);
     --cl-color-danger-subtle: rgba(244, 63, 94, 0.15);
 
     /* Status: Info (Sky) */
     --cl-color-info-base: var(--cl-palette-sky-500);
     --cl-color-info-hover: var(--cl-palette-sky-400);
+    --cl-color-info-active: var(--cl-palette-sky-600);
     --cl-color-info-fg: var(--cl-palette-white);
     --cl-color-info-subtle: rgba(14, 165, 233, 0.15);
 

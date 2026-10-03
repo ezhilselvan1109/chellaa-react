@@ -5,3 +5,5 @@
 @import "./tokens.css";
 @import "./theme.css";
 @import "./reset.css";
+@import "../components/Button/Button.styles.css";
+@import "../components/ButtonGroup/ButtonGroup.styles.css";

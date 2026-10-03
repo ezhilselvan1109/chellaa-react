@@ -1,4 +1,8 @@
-import "vitest-axe/extend-expect";
+import "@testing-library/jest-dom/vitest";
+import * as axeMatchers from "vitest-axe/matchers";
+import { expect } from "vitest";
+
+expect.extend(axeMatchers);
 
 // Provide window.matchMedia mock for jsdom environment
 if (typeof window !== "undefined") {
