@@ -1,14 +1,18 @@
 import * as React from "react";
 import { ThemeProvider } from "@chellaa/react";
 import { DocsLayout } from "./components/DocsLayout/DocsLayout";
+import { TocItem } from "./components/DocsLayout/TableOfContents";
 import { OverviewPage } from "./content/getting-started/OverviewPage";
 import { InstallationPage } from "./content/getting-started/InstallationPage";
 import { QuickStartPage } from "./content/getting-started/QuickStartPage";
 import { TokensPage } from "./content/foundations/TokensPage";
 import { ColorsPage } from "./content/foundations/ColorsPage";
 import { ThemingPage } from "./content/theming/ThemingPage";
-import { ButtonDocPage } from "./content/components/ButtonDocPage";
-import { ButtonGroupDocPage } from "./content/components/ButtonGroupDocPage";
+import { ButtonDocPage, buttonToc } from "./content/components/ButtonDocPage";
+import {
+  ButtonGroupDocPage,
+  buttonGroupToc,
+} from "./content/components/ButtonGroupDocPage";
 import { SlotCompositionPage } from "./content/guides/SlotCompositionPage";
 import { AccessibilityGuidePage } from "./content/guides/AccessibilityGuidePage";
 import { ChangelogPage } from "./content/resources/ChangelogPage";
@@ -26,6 +30,27 @@ const titleMap: Record<string, string> = {
   "#/guides/accessibility": "Accessibility Standards — Chellaa React",
   "#/changelog": "Changelog & Releases — Chellaa React",
 };
+
+const overviewToc: TocItem[] = [
+  { id: "pillars", title: "Architectural Pillars" },
+  { id: "frameworks", title: "Framework Support" },
+];
+
+const installationToc: TocItem[] = [
+  { id: "package-install", title: "Package Installation" },
+  { id: "peer-dependencies", title: "Peer Dependencies" },
+  { id: "zero-config", title: "Zero-Config Delivery" },
+];
+
+const tokensToc: TocItem[] = [
+  { id: "token-tiers", title: "3 Token Tiers" },
+  { id: "overrides", title: "Overriding in CSS" },
+];
+
+const themingToc: TocItem[] = [
+  { id: "use-theme", title: "Using useTheme" },
+  { id: "theme-script", title: "Preventing SSR FOUC" },
+];
 
 export function DocsApp() {
   const [currentPath, setCurrentPath] = React.useState<string>(() => {
@@ -47,45 +72,46 @@ export function DocsApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPath]);
 
-  const renderContent = () => {
+  const { content, toc } = React.useMemo(() => {
     switch (currentPath) {
       case "#/overview":
-        return <OverviewPage />;
+        return { content: <OverviewPage />, toc: overviewToc };
       case "#/installation":
-        return <InstallationPage />;
+        return { content: <InstallationPage />, toc: installationToc };
       case "#/quick-start":
-        return <QuickStartPage />;
+        return { content: <QuickStartPage />, toc: [] };
       case "#/tokens":
-        return <TokensPage />;
+        return { content: <TokensPage />, toc: tokensToc };
       case "#/colors":
-        return <ColorsPage />;
+        return { content: <ColorsPage />, toc: [] };
       case "#/theming":
-        return <ThemingPage />;
+        return { content: <ThemingPage />, toc: themingToc };
       case "#/components/button":
-        return <ButtonDocPage />;
+        return { content: <ButtonDocPage />, toc: buttonToc };
       case "#/components/button-group":
-        return <ButtonGroupDocPage />;
+        return { content: <ButtonGroupDocPage />, toc: buttonGroupToc };
       case "#/guides/as-child":
-        return <SlotCompositionPage />;
+        return { content: <SlotCompositionPage />, toc: [] };
       case "#/guides/accessibility":
-        return <AccessibilityGuidePage />;
+        return { content: <AccessibilityGuidePage />, toc: [] };
       case "#/changelog":
-        return <ChangelogPage />;
+        return { content: <ChangelogPage />, toc: [] };
       default:
-        return <ButtonDocPage />;
+        return { content: <ButtonDocPage />, toc: buttonToc };
     }
-  };
+  }, [currentPath]);
 
   return (
     <ThemeProvider defaultTheme="light">
       <DocsLayout
         currentPath={currentPath}
+        tocItems={toc}
         onNavigate={(path) => {
           setCurrentPath(path);
           window.location.hash = path.replace("#", "");
         }}
       >
-        {renderContent()}
+        {content}
       </DocsLayout>
     </ThemeProvider>
   );

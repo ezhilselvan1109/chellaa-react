@@ -15,8 +15,13 @@ export function TokensPage() {
         standard CSS Custom Properties.
       </p>
 
-      <section style={{ marginTop: "28px" }}>
-        <h2>The 3 Token Tiers</h2>
+      <section id="token-tiers" style={{ marginTop: "28px" }}>
+        <h2 className="docs-heading-2">
+          <span>The 3 Token Tiers</span>
+          <a href="#token-tiers" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <div
           style={{
             display: "flex",
@@ -96,8 +101,13 @@ export function TokensPage() {
         </div>
       </section>
 
-      <section style={{ marginTop: "32px" }}>
-        <h2>Overriding Tokens in CSS</h2>
+      <section id="overrides" style={{ marginTop: "32px" }}>
+        <h2 className="docs-heading-2">
+          <span>Overriding Tokens in CSS</span>
+          <a href="#overrides" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>You can customize any token at root or within a scoped container:</p>
         <CodeBlock
           code={`:root {

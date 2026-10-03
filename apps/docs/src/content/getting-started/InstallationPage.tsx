@@ -16,8 +16,13 @@ export function InstallationPage() {
         package manager.
       </p>
 
-      <section style={{ marginTop: "28px" }}>
-        <h2>1. Package Installation</h2>
+      <section id="package-install" style={{ marginTop: "28px" }}>
+        <h2 className="docs-heading-2">
+          <span>1. Package Installation</span>
+          <a href="#package-install" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <CodeBlock
           code="pnpm add @chellaa/react"
           language="bash"
@@ -35,8 +40,13 @@ export function InstallationPage() {
         />
       </section>
 
-      <section style={{ marginTop: "32px" }}>
-        <h2>2. Peer Dependencies</h2>
+      <section id="peer-dependencies" style={{ marginTop: "32px" }}>
+        <h2 className="docs-heading-2">
+          <span>2. Peer Dependencies</span>
+          <a href="#peer-dependencies" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>Chellaa React requires React 18 or 19 as peer dependencies:</p>
         <CodeBlock
           code={`{
@@ -50,8 +60,13 @@ export function InstallationPage() {
         />
       </section>
 
-      <section style={{ marginTop: "32px" }}>
-        <h2>3. Zero-Configuration Styling Delivery</h2>
+      <section id="zero-config" style={{ marginTop: "32px" }}>
+        <h2 className="docs-heading-2">
+          <span>3. Zero-Configuration Styling Delivery</span>
+          <a href="#zero-config" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Unlike legacy UI libraries, you <strong>do not</strong> need to
           manually import a global stylesheet like{" "}

@@ -26,8 +26,13 @@ export function OverviewPage() {
         </Button>
       </div>
 
-      <section style={{ marginTop: "40px" }}>
-        <h2>Core Architectural Pillars</h2>
+      <section id="pillars" style={{ marginTop: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Core Architectural Pillars</span>
+          <a href="#pillars" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <div
           style={{
             display: "grid",
@@ -134,10 +139,12 @@ export function OverviewPage() {
         </div>
       </section>
 
-      <Callout type="info" title="Framework Agnostic Consumers">
-        Chellaa React runs natively in React 18 & 19, Next.js App Router (Server
-        & Client Components), Vite, Remix, and Astro.
-      </Callout>
+      <div id="frameworks" style={{ marginTop: "32px" }}>
+        <Callout type="info" title="Framework Agnostic Consumers">
+          Chellaa React runs natively in React 18 & 19, Next.js App Router
+          (Server & Client Components), Vite, Remix, and Astro.
+        </Callout>
+      </div>
     </article>
   );
 }

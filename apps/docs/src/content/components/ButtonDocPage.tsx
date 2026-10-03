@@ -3,11 +3,24 @@ import { ApiTable, PropRow } from "../../components/ComponentDoc/ApiTable";
 import { AccessibilitySection } from "../../components/ComponentDoc/AccessibilitySection";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 import { Callout } from "../../components/Common/Callout";
+import { InteractiveButtonSandbox } from "../../components/ComponentDoc/InteractiveButtonSandbox";
 import { ButtonBasicExample } from "../../examples/button/ButtonBasicExample";
 import { ButtonVariantsExample } from "../../examples/button/ButtonVariantsExample";
 import { ButtonSizesExample } from "../../examples/button/ButtonSizesExample";
 import { ButtonStatesExample } from "../../examples/button/ButtonStatesExample";
 import { ButtonAsChildExample } from "../../examples/button/ButtonAsChildExample";
+
+export const buttonToc = [
+  { id: "interactive-sandbox", title: "Interactive Playground" },
+  { id: "import", title: "Import" },
+  { id: "variants", title: "Aesthetic Variants" },
+  { id: "colors", title: "Color Schemes" },
+  { id: "sizes", title: "Sizes Scale" },
+  { id: "states", title: "States & Loading" },
+  { id: "as-child", title: "Polymorphism (asChild)" },
+  { id: "accessibility", title: "Accessibility" },
+  { id: "api-reference", title: "API Reference" },
+];
 
 const buttonPropsData: PropRow[] = [
   {
@@ -130,16 +143,30 @@ export function ButtonDocPage() {
       version="v0.1.0"
       storybookId="components-button--default"
     >
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Import</h2>
+      <div id="interactive-sandbox">
+        <InteractiveButtonSandbox />
+      </div>
+
+      <section id="import" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Import</span>
+          <a href="#import" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <CodeBlock
           code='import { Button } from "@chellaa/react";'
           language="tsx"
         />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Aesthetic Variants</h2>
+      <section id="variants" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Aesthetic Variants</span>
+          <a href="#variants" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Use the <code>variant</code> prop to adjust the visual prominence of
           the button.
@@ -147,8 +174,13 @@ export function ButtonDocPage() {
         <ButtonBasicExample />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Color Schemes</h2>
+      <section id="colors" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Color Schemes</span>
+          <a href="#colors" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Use the <code>colorScheme</code> prop to communicate intent and
           status.
@@ -156,8 +188,13 @@ export function ButtonDocPage() {
         <ButtonVariantsExample />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Sizes Scale</h2>
+      <section id="sizes" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Sizes Scale</span>
+          <a href="#sizes" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Buttons follow the 4px/8px spatial baseline grid with heights of 28px,
           32px, 40px, 48px, and 56px.
@@ -165,8 +202,13 @@ export function ButtonDocPage() {
         <ButtonSizesExample />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Interaction & Loading States</h2>
+      <section id="states" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Interaction & Loading States</span>
+          <a href="#states" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Support for disabled and asynchronous loading states with integrated
           double-click protection.
@@ -174,9 +216,14 @@ export function ButtonDocPage() {
         <ButtonStatesExample />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>
-          Polymorphic Slot Delegation (<code>asChild</code>)
+      <section id="as-child" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>
+            Polymorphic Slot Delegation (<code>asChild</code>)
+          </span>
+          <a href="#as-child" className="docs-heading-anchor">
+            #
+          </a>
         </h2>
         <p>
           Pass <code>asChild</code> to render any custom element or router link

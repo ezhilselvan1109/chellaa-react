@@ -15,89 +15,118 @@ export function AccessibilitySection({
   keyboardKeys,
 }: AccessibilitySectionProps) {
   return (
-    <div style={{ margin: "32px 0 48px 0" }}>
-      <h2 style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "8px" }}>
-        Accessibility & Keyboard Navigation
-      </h2>
+    <div id="accessibility" style={{ margin: "48px 0" }}>
+      <h3
+        className="docs-heading-2"
+        style={{ borderBottom: "none", margin: "0 0 8px 0", padding: 0 }}
+      >
+        <span>Accessibility & Standards</span>
+      </h3>
       <p
         style={{
-          color: "var(--cl-color-text-secondary, #6b7280)",
+          color: "var(--docs-text-muted)",
           lineHeight: 1.6,
+          margin: "0 0 20px 0",
         }}
       >
-        <code>{componentName}</code> is built to comply with WCAG 2.2 AA
-        standards and includes automated <code>axe-core</code> testing for zero
-        violations.
+        <code>{componentName}</code> adheres strictly to{" "}
+        <strong>WCAG 2.2 AA</strong> specifications with complete keyboard
+        navigation, explicit focus rings, and automated axe-core validation.
       </p>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
           gap: "20px",
-          marginTop: "16px",
         }}
       >
+        {/* ARIA Roles */}
         <div
           style={{
-            border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-            borderRadius: "8px",
-            padding: "16px",
-            backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+            border: "1px solid var(--docs-border)",
+            borderRadius: "12px",
+            padding: "20px",
+            backgroundColor: "var(--docs-card)",
+            boxShadow: "var(--docs-shadow-sm)",
           }}
         >
-          <h4
-            style={{ margin: "0 0 12px 0", fontSize: "1rem", fontWeight: 700 }}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
           >
-            ARIA Attributes & Roles
-          </h4>
+            <span style={{ fontSize: "1.2rem" }}>🏷️</span>
+            <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 700 }}>
+              ARIA Semantics & Attributes
+            </h4>
+          </div>
           <ul
             style={{
               margin: 0,
-              paddingLeft: "20px",
+              paddingLeft: "18px",
               fontSize: "0.88rem",
               lineHeight: 1.6,
+              color: "var(--docs-text-muted)",
             }}
           >
             {roles.map((r) => (
-              <li key={r.attributeOrKey} style={{ marginBottom: "8px" }}>
-                <code>{r.attributeOrKey}</code>: {r.description}
+              <li key={r.attributeOrKey} style={{ marginBottom: "10px" }}>
+                <code style={{ color: "var(--docs-primary)", fontWeight: 600 }}>
+                  {r.attributeOrKey}
+                </code>
+                : {r.description}
               </li>
             ))}
           </ul>
         </div>
 
+        {/* Keyboard Interaction */}
         <div
           style={{
-            border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-            borderRadius: "8px",
-            padding: "16px",
-            backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+            border: "1px solid var(--docs-border)",
+            borderRadius: "12px",
+            padding: "20px",
+            backgroundColor: "var(--docs-card)",
+            boxShadow: "var(--docs-shadow-sm)",
           }}
         >
-          <h4
-            style={{ margin: "0 0 12px 0", fontSize: "1rem", fontWeight: 700 }}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
           >
-            Keyboard Interaction
-          </h4>
+            <span style={{ fontSize: "1.2rem" }}>⌨️</span>
+            <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 700 }}>
+              Keyboard Keymap
+            </h4>
+          </div>
           <ul
             style={{
               margin: 0,
-              paddingLeft: "20px",
+              paddingLeft: "18px",
               fontSize: "0.88rem",
               lineHeight: 1.6,
+              color: "var(--docs-text-muted)",
             }}
           >
             {keyboardKeys.map((k) => (
-              <li key={k.attributeOrKey} style={{ marginBottom: "8px" }}>
+              <li key={k.attributeOrKey} style={{ marginBottom: "10px" }}>
                 <kbd
                   style={{
                     padding: "2px 6px",
-                    background: "var(--cl-color-surface-base, #fff)",
-                    border: "1px solid var(--cl-color-border-subtle, #ccc)",
+                    background: "var(--docs-surface)",
+                    border: "1px solid var(--docs-border)",
                     borderRadius: "4px",
-                    fontFamily: "monospace",
-                    fontSize: "0.82rem",
+                    fontFamily: "JetBrains Mono, monospace",
+                    fontSize: "0.8rem",
+                    color: "var(--docs-text)",
                   }}
                 >
                   {k.attributeOrKey}

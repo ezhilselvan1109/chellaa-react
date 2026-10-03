@@ -17,9 +17,14 @@ export function ThemingPage() {
         <code>ThemeScript</code>.
       </p>
 
-      <section style={{ marginTop: "28px" }}>
-        <h2>
-          Using <code>useTheme</code>
+      <section id="use-theme" style={{ marginTop: "28px" }}>
+        <h2 className="docs-heading-2">
+          <span>
+            Using <code>useTheme</code>
+          </span>
+          <a href="#use-theme" className="docs-heading-anchor">
+            #
+          </a>
         </h2>
         <p>Access the current theme state and mutate it from any component:</p>
         <CodeBlock
@@ -42,9 +47,14 @@ export function ThemeSwitcher() {
         />
       </section>
 
-      <section style={{ marginTop: "32px" }}>
-        <h2>
-          Preventing SSR FOUC with <code>ThemeScript</code>
+      <section id="theme-script" style={{ marginTop: "32px" }}>
+        <h2 className="docs-heading-2">
+          <span>
+            Preventing SSR FOUC with <code>ThemeScript</code>
+          </span>
+          <a href="#theme-script" className="docs-heading-anchor">
+            #
+          </a>
         </h2>
         <p>
           In Next.js or SSR frameworks, inject <code>ThemeScript</code> into

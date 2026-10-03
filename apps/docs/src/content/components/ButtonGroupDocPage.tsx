@@ -5,6 +5,14 @@ import { CodeBlock } from "../../components/Common/CodeBlock";
 import { ButtonGroupBasicExample } from "../../examples/button-group/ButtonGroupBasicExample";
 import { ButtonGroupVerticalExample } from "../../examples/button-group/ButtonGroupVerticalExample";
 
+export const buttonGroupToc = [
+  { id: "import", title: "Import" },
+  { id: "attached", title: "Attached Group" },
+  { id: "vertical", title: "Vertical & Overrides" },
+  { id: "accessibility", title: "Accessibility" },
+  { id: "api-reference", title: "API Reference" },
+];
+
 const buttonGroupPropsData: PropRow[] = [
   {
     name: "isAttached",
@@ -89,16 +97,26 @@ export function ButtonGroupDocPage() {
       version="v0.1.0"
       storybookId="components-buttongroup--default"
     >
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Import</h2>
+      <section id="import" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Import</span>
+          <a href="#import" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <CodeBlock
           code='import { Button, ButtonGroup } from "@chellaa/react";'
           language="tsx"
         />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Attached Segmented Control</h2>
+      <section id="attached" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Attached Segmented Control</span>
+          <a href="#attached" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Pass <code>isAttached</code> to merge adjacent buttons into a seamless
           toolbar or segmented controller.
@@ -106,8 +124,13 @@ export function ButtonGroupDocPage() {
         <ButtonGroupBasicExample />
       </section>
 
-      <section style={{ marginBottom: "32px" }}>
-        <h2>Vertical Orientation & Child Overrides</h2>
+      <section id="vertical" style={{ marginBottom: "40px" }}>
+        <h2 className="docs-heading-2">
+          <span>Vertical Orientation & Child Overrides</span>
+          <a href="#vertical" className="docs-heading-anchor">
+            #
+          </a>
+        </h2>
         <p>
           Configure <code>orientation=&quot;vertical&quot;</code> to stack
           buttons vertically. Individual buttons can override group context
