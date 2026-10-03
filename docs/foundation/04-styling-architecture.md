@@ -171,7 +171,7 @@ CSS files are scoped locally by hashing class names (e.g., `.button` becomes `.b
 ### Candidate 5: Scoped Static CSS with Semantic CSS Custom Properties (The Winner)
 
 #### Overview
-Components author modular, standard CSS files utilizing a deterministic namespace (`cl-` prefix) and BEM-inspired naming convention. All dynamic styling, color ramps, spatial grids, and dark-mode themes are driven exclusively by **CSS Custom Properties (Variables)** compiled into a single optimized static stylesheet (`@chellaa/react/styles.css`).
+Components author modular, standard CSS files utilizing a deterministic namespace (`cl-` prefix) and BEM-inspired naming convention. All dynamic styling, color ramps, spatial grids, and dark-mode themes are driven exclusively by **CSS Custom Properties (Variables)**. Crucially, component styling is delivered automatically upon component import, eliminating any requirement for consumers to manually import a global stylesheet.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -194,8 +194,8 @@ Components author modular, standard CSS files utilizing a deterministic namespac
 │ Theming             │ Instant      │ O(1) runtime theme switching via  │
 │                     │              │ data-theme attribute on <html>.   │
 ├─────────────────────┼──────────────┼───────────────────────────────────┤
-│ Consumer DX         │ Perfect      │ Single CSS import; zero bundler   │
-│                     │              │ plugins required.                 │
+│ Consumer DX         │ Unbeatable   │ Zero manual CSS import; works     │
+│                     │              │ immediately on component import.  │
 └─────────────────────┴──────────────┴───────────────────────────────────┘
 ```
 
@@ -209,7 +209,7 @@ Components author modular, standard CSS files utilizing a deterministic namespac
 | **Theme Switch Cost** | Full re-render | Fast (CSS Vars) | Complex | Moderate | **O(1) Instant (CSS Vars)** |
 | **React 19 / RSC Compat**| Broken / Client | Fully Compatible| Fully Compatible| Fully Compatible| **Fully Compatible** |
 | **Streaming SSR Safety** | Fragile | Safe | Safe | Safe | **100% Deterministic** |
-| **Zero-Config Consumer**| Yes | No (Plugins) | No (Purge/Merge) | Yes | **Yes (Pure CSS import)** |
+| **Zero-Config Consumer**| Yes | No (Plugins) | No (Purge/Merge) | Yes | **Yes (Zero manual CSS import)** |
 | **Consumer Overrides** | Hard (Style props) | Moderate | Fragile (twMerge) | Hard (Hashed) | **Effortless (CSS Vars & BEM)**|
 | **DevTools Debugging** | Unreadable classes| Moderate | 30+ classes | Hashed classes | **Clean (.cl-button--solid)** |
 
@@ -232,12 +232,12 @@ Chellaa React selects:
    - Per component via standard class name targets without specificity battles.
 
 ### 4.3 Trade-offs & Mitigations
-- **Trade-off 1: Consumer Must Import CSS File.**  
-  *Mitigation:* Consumers add a single import (`import "@chellaa/react/styles.css"`) in their root layout. This is standard in modern web development (matching Radix Themes, Mantine, and Ant Design). In addition, package subpaths allow importing modular per-component CSS if desired.
+- **Trade-off 1: Internal CSS Delivery Orchestration Complexity.**  
+  *Challenge & Mitigation:* Under the Zero-Configuration Styling Principle, Chellaa React owns the delivery of its component styling. Instead of offloading the responsibility onto consumers via manual `<link>` tags or mandatory `import "@chellaa/react/styles.css"` statements, Chellaa React orchestrates CSS delivery internally. This requires precise build-time dependency mapping and `"sideEffects": ["*.css", "**/*.css"]` declarations so modern bundlers (Next.js, Vite, Webpack) extract and inject component styles automatically while preserving tree-shaking.
 - **Trade-off 2: Global Class Name Collisions.**  
   *Mitigation:* Every class name is strictly scoped behind the unique `cl-` prefix (e.g., `.cl-input`, `.cl-dialog__backdrop`), preventing any collision with third-party libraries or consumer code.
 - **Trade-off 3: Dead Code in CSS if Not Using Entire Library.**  
-  *Mitigation:* Minified total CSS for the entire core library is under ~30KB (uncompressed) and ~6KB gzipped. Browsers parse static CSS instantaneously. Modern consumer bundlers (Vite/Webpack) also support PurgeCSS/CSS minifiers if extreme optimization is desired.
+  *Mitigation:* Minified total CSS for the entire core library is under ~30KB (uncompressed) and ~6KB gzipped. With component-level CSS side-effect imports, consumer bundlers bundle only the CSS corresponding to imported components.
 
 ---
 
@@ -305,6 +305,113 @@ When the theme switches from Light to Dark, `--cl-color-pri-base` automatically 
 During the package build step:
 1. Individual component CSS files (`Button.css`, `Input.css`) and the core design token CSS files (`tokens.css`, `theme.css`) are compiled, autoprefixed, and minified using LightningCSS or PostCSS.
 2. The build pipeline outputs:
-   - `dist/styles.css`: Complete, unified production stylesheet containing all design tokens, base resets, and component styles.
-   - Individual component CSS files in `dist/components/<Name>/styles.css` for consumers desiring granular per-component CSS imports.
-3. The JavaScript output remains pure TypeScript-compiled code with no runtime CSS loaders or style-injection side effects.
+   - Component modules with automated CSS delivery linkage.
+   - `dist/styles.css`: Standalone unified stylesheet containing all design tokens, base resets, and component styles (maintained as an optional export for static asset extraction or legacy non-bundler setups).
+   - Modular component CSS files in `dist/components/<Name>/styles.css`.
+3. The JavaScript output remains pure TypeScript-compiled code, while preserving required CSS side-effect declarations for bundlers.
+
+---
+
+## 7. CSS Delivery Architecture (How Styles Reach the Consumer)
+
+A critical architectural distinction in Chellaa React is the separation between:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                   Styling vs. Delivery Architecture                    │
+├───────────────────────────────────┬────────────────────────────────────┤
+│ 1. Styling Architecture           │ How styles are written:            │
+│    (Authoring Model)              │ • Scoped Static CSS (.cl-*)        │
+│                                   │ • Semantic CSS Custom Properties   │
+│                                   │ • CSS @layer cl-components         │
+├───────────────────────────────────┼────────────────────────────────────┤
+│ 2. CSS Delivery Architecture      │ How styles reach the consumer:     │
+│    (Delivery Model)               │ • Zero manual stylesheet imports   │
+│                                   │ • Automatic delivery via package   │
+│                                   │   import: import { Button }        │
+└───────────────────────────────────┴────────────────────────────────────┘
+```
+
+### 7.1 The Public API Decision (Finalized)
+Consumers **never** manually import a Chellaa React global stylesheet:
+
+```tsx
+// ✅ The Chellaa React Experience:
+import { Button } from "@chellaa/react";
+
+// ❌ Never required:
+// import "@chellaa/react/styles.css";
+```
+
+Chellaa React owns the delivery of its component styling. Consumers receive a working, styled component through the standard package import without needing to understand CSS file locations, bundler configurations, or style injection order.
+
+### 7.2 Evaluation of Candidate Internal Delivery Mechanisms
+
+To implement this public API contract safely across diverse consumer environments, we evaluate four candidate delivery mechanisms:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        CSS Delivery Implementation Candidates                          │
+├─────────────────────┬──────────────┬───────────────────────────────────────────────────┤
+│ Candidate Mechanism │ Viability    │ Technical Evaluation & Trade-offs                 │
+├─────────────────────┼──────────────┼───────────────────────────────────────────────────┤
+│ A. Component-Level  │ High         │ • Pure static CSS; zero runtime JS overhead.      │
+│    Static Side-     │ (Leading     │ • Supported by Next.js, Vite, Webpack, Remix.     │
+│    Effect Imports   │ Candidate)   │ • Tree-shaking is preserved with "sideEffects".   │
+│                     │              │ • Challenge: Node.js CJS direct execution requires│
+│                     │              │   bundler or conditional export isolation.        │
+├─────────────────────┼──────────────┼───────────────────────────────────────────────────┤
+│ B. Client Runtime   │ Rejected     │ • Incompatible with React 18/19 Server Components.│
+│    DOM Style        │ (Fatal       │ • Causes FOUC during streaming SSR.               │
+│    Injection        │ Flaws)       │ • Increases JS bundle; violates strict CSPs.      │
+├─────────────────────┼──────────────┼───────────────────────────────────────────────────┤
+│ C. Mandatory        │ Rejected     │ • Violates the Zero-Config requirement.           │
+│    Bundler Plugin   │ (Consumer    │ • Forces consumers to install bespoke Vite/Next.js│
+│                     │ Friction)    │   plugins just to use a button.                   │
+├─────────────────────┼──────────────┼───────────────────────────────────────────────────┤
+│ D. Dual Automated   │ High         │ • Component-level side-effect imports by default. │
+│    Delivery with    │ (Safe        │ • Standalone dist/styles.css provided as an       │
+│    Static Fallback  │ Architecture)│   optional escape hatch for legacy/custom setups. │
+└─────────────────────┴──────────────┴───────────────────────────────────────────────────┘
+```
+
+#### Candidate A: Component-Level Static Side-Effect Imports
+- **Mechanism:** In the compiled ESM distribution, component modules include relative static CSS imports:
+  ```javascript
+  // packages/react/dist/components/Button/Button.mjs
+  import './Button.css';
+  import '../../styles/tokens.css';
+  ```
+- **Package Manifest Configuration:**
+  ```json
+  {
+    "sideEffects": ["*.css", "**/*.css"]
+  }
+  ```
+- **Evaluation Across Ecosystems:**
+  - **Vite & Webpack 5:** Detects CSS imports in npm packages and automatically bundles/injects CSS into the application's CSS chunk without consumer intervention.
+  - **Next.js App Router (RSC):** Client Components (`"use client"`) can import CSS modules and global CSS from `node_modules` seamlessly.
+  - **Tree-Shaking:** Consumers who only import `Button` will only receive `Button.css` and base `tokens.css`; unused component CSS is completely eliminated by the consumer's bundler.
+  - **CJS / Node.js Environments:** Direct `require()` in pure Node.js environments (e.g. non-bundler SSR or Jest without style mocks) throws a syntax error on raw CSS. A forward-compatible build must ensure CJS bundles or package exports handle this gracefully (e.g., conditional exports or separate Node-compatible CJS entries).
+
+#### Candidate B: Client Runtime DOM Style Tag Injection (Rejected)
+- **Mechanism:** Components call a client-side utility (`injectStyles(...)`) upon rendering.
+- **Why Rejected:** Severe architectural flaws:
+  1. Cannot execute in React Server Components or SSR streaming passes.
+  2. Causes Flash of Unstyled Content (FOUC) while waiting for JavaScript hydration.
+  3. Violates strict enterprise Content Security Policies (CSP) requiring `style-src` nonces or hashes.
+  4. Inflates JavaScript bundle size with serialized CSS string literals.
+
+#### Candidate C: Mandatory Bundler Plugin (Rejected)
+- **Mechanism:** Requires consumers to add `@chellaa/vite-plugin` or `@chellaa/next-plugin`.
+- **Why Rejected:** Violates our foundational **Zero-Configuration Consumer Standard**. Consumers should never need to modify their bundler configuration just to import a button.
+
+#### Candidate D: Dual Automated Delivery with Standalone Fallback (Recommended Strategy)
+- **Mechanism:**
+  1. **Primary Delivery (Default):** Components automatically deliver their styles via bundler-friendly static side-effect imports (Candidate A).
+  2. **Standalone Fallback Export:** `dist/styles.css` is still compiled and exported under `"./styles.css"` in `package.json` for consumers with specialized build pipelines, legacy micro-frontends, or HTML `<link>` tag requirements.
+
+### 7.3 Status of the Decision
+- **Public API Decision:** **FINALIZED.** Consumers never manually import stylesheets.
+- **Internal Delivery Implementation:** **OPEN INVESTIGATION (Phase 2).** The exact bundling and side-effect configuration will be benchmarked across Next.js (App & Pages Router), Vite SPA, Remix, and Jest/Node.js in Phase 2 before component authoring begins. Tracked in **ADR-007**.
+

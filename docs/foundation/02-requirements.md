@@ -299,7 +299,7 @@ The theme system must provide:
   - `dist/index.mjs` (ES Module bundle for modern bundlers).
   - `dist/index.cjs` (CommonJS bundle for legacy Node.js/Jest environments).
   - `dist/index.d.ts` (TypeScript type declarations).
-  - `dist/styles.css` (Pre-compiled, minified core stylesheet).
+  - `dist/styles.css` (Optional standalone pre-compiled stylesheet for static extraction or non-bundler setups).
 - Package `package.json` must feature modern conditional exports:
 
 ```json
@@ -316,6 +316,8 @@ The theme system must provide:
 }
 ```
 
+> **Style Delivery Contract:** The primary package export (`"."`) delivers both the component code and its required styling automatically. The `./styles.css` subpath export is maintained solely as an optional export for static asset extraction or legacy tooling, but is **never required** for normal component consumption.
+
 ### 10.2 Peer Dependencies
 - Peer dependencies must be strictly constrained:
   - `react: ">=18.2.0"`
@@ -326,7 +328,7 @@ The theme system must provide:
 
 ## 11. Consumer Experience (CX) Standard
 
-The overarching acceptance test for Chellaa React is the **Zero-Config Consumer Standard**:
+The overarching acceptance test for Chellaa React is the **Zero-Configuration Consumer Standard**:
 
 ```bash
 # 1. Single install command
@@ -334,10 +336,8 @@ npm install @chellaa/react
 ```
 
 ```tsx
-// 2. Global CSS import once in root layout:
-import "@chellaa/react/styles.css";
-
-// 3. Immediate, frictionless consumption anywhere in the app:
+// 2. Immediate, frictionless consumption anywhere in the app:
+// NO `import "@chellaa/react/styles.css"` required!
 import { Button, Card, ThemeProvider } from "@chellaa/react";
 
 export default function Page() {
@@ -351,4 +351,7 @@ export default function Page() {
 }
 ```
 
-No Babel plugins, no Webpack loaders, no PostCSS custom plugins, and no tailwind config gymnastics required. It works out-of-the-box in Next.js (App & Pages), Vite, Remix, Astro, and CRA.
+### 11.1 Zero-Configuration Styling Mandate
+- **No Manual Global Stylesheet Import:** Consumers must **not** be required to manually import a Chellaa React global stylesheet (`@chellaa/react/styles.css`) for normal component usage.
+- **Ownership of Style Delivery:** Chellaa React owns the delivery of its component styling. Importing `{ Button }` delivers a fully functioning, styled button with design tokens, hover/focus states, and theme variables attached.
+- **Zero Tooling Friction:** No Babel plugins, no custom Webpack loaders, no PostCSS custom plugins, and no Tailwind configuration gymnastics required. It works out-of-the-box in Next.js (App & Pages Router), Vite, Remix, Astro, and standard bundlers.

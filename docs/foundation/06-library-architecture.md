@@ -147,8 +147,9 @@ The `package.json` defines clean modern conditional exports:
 }
 ```
 
+- **Style Delivery Contract:** The primary package export (`"."`) delivers both the component code and its associated styling automatically upon import. The `"./styles.css"` export is maintained solely as an optional standalone stylesheet for non-bundler setups or static CSS extraction, but is **never required** for normal consumer usage.
 - **Encapsulation:** Consumers cannot import internal files like `@chellaa/react/src/utils/dom.js`. This preserves our ability to refactor internals without breaking consumer code.
-- **Tree-Shaking:** `"sideEffects": ["*.css", "**/*.css"]` informs bundlers that all JavaScript code is pure and eligible for aggressive dead-code elimination.
+- **Tree-Shaking:** `"sideEffects": ["*.css", "**/*.css"]` informs bundlers that all JavaScript code is pure and eligible for aggressive dead-code elimination while preserving required component CSS imports.
 
 ---
 
@@ -236,7 +237,7 @@ The `apps/test-consumer` application simulates a real-world external consumer pr
 - **Framework Diversity:** Tests Next.js App Router (Server Components + Client Components) and pure Vite SPAs.
 - **Verification Gates:**
   1. Verifies that `import { Button } from "@chellaa/react"` resolves cleanly without type errors.
-  2. Verifies that `import "@chellaa/react/styles.css"` loads without bundler errors.
+  2. Verifies that importing `{ Button }` from `@chellaa/react` automatically renders fully styled components without requiring manual import of `"@chellaa/react/styles.css"`.
   3. Verifies zero FOUC during SSR page loads.
   4. Verifies zero hydration mismatch warnings in the browser console.
   5. Verifies that dead-code components are not included in the consumer's production build.
@@ -257,7 +258,9 @@ The `apps/test-consumer` application simulates a real-world external consumer pr
 │ ADR-004 │ React 18.2+ / React 19 Target │ Finalized  │ Framework       │
 │ ADR-005 │ Collocated Component Folders  │ Finalized  │ Component Arch  │
 │ ADR-006 │ tsup Dual ESM/CJS Pipeline    │ Finalized  │ Build & Release │
+│ ADR-007 │ Zero-Config Styling Delivery  │ Finalized* │ CSS Delivery    │
 └─────────┴───────────────────────────────┴────────────┴─────────────────┘
+*Note: Public API is finalized (zero manual CSS import); internal delivery mechanism is under Phase 2 investigation.
 ```
 
 ### ADR-001: Component Styling Architecture
@@ -289,6 +292,11 @@ The `apps/test-consumer` application simulates a real-world external consumer pr
 - **Decision:** Use `tsup` for ESM/CJS compilation and LightningCSS for static stylesheet bundling, with `"sideEffects": ["*.css", "**/*.css"]`.
 - **Why It Matters:** Ensures optimal tree-shaking, sub-millisecond compile times, and complete TypeScript declaration maps.
 - **Status:** Finalized.
+
+### ADR-007: Zero-Configuration Styling Delivery
+- **Decision:** Chellaa React owns the delivery of component styling. Consumers receive styled components directly via `import { Button } from "@chellaa/react"` without manually importing a global stylesheet.
+- **Why It Matters:** Eliminates consumer setup friction, prevents unstyled component bugs, and aligns with the Zero-Friction vision.
+- **Status:** Finalized (Public API); Internal Delivery Mechanism Under Investigation.
 
 ---
 
@@ -338,13 +346,14 @@ The following technical decisions are intentionally documented as open investiga
 - **Trade-offs:** Proprietary hooks reduce external dependencies to zero, but `@floating-ui/react` solves edge-case viewport math (virtual scrolling, nested scrolling, iframes) with years of battle-testing.
 - **Recommended Next Step:** Benchmark `@floating-ui/react` bundle overhead (< 5KB) in Phase 4 against custom lightweight alternatives.
 
-### Open Decision 2: CSS Granularity Model (Single Bundle vs. Per-Component CSS)
-- **Context:** Consumers can import a single `@chellaa/react/styles.css` (simplest DX) or import granular per-component CSS (e.g., `@chellaa/react/button/styles.css`).
+### Open Decision 2: Internal CSS Delivery Mechanism & Granularity Model
+- **Context:** While the public API contract is finalized (consumers never manually import stylesheets), Chellaa React must determine the optimal internal delivery mechanism (e.g., component-level static side-effect imports vs. unified entry-point bundling) that guarantees compatibility across Next.js (App Router RSC), Vite SPA, Remix, and Node.js CJS without CSS duplication or ordering anomalies.
 - **Options:**
-  1. Distribute only the unified `@chellaa/react/styles.css` (~6KB gzip).
-  2. Distribute both the unified bundle AND modular per-component CSS files.
-- **Trade-offs:** Distributing both accommodates ultra-minimalist consumers at the cost of a slightly more complex build configuration.
-- **Recommended Next Step:** Implement unified `styles.css` as default, and benchmark modular CSS export feasibility during Phase 2 build pipeline setup.
+  1. Component-level static side-effect imports (`import "./Button.css"` in ESM modules) with `"sideEffects": ["*.css", "**/*.css"]`.
+  2. Entry-point automated CSS bundling with conditional package exports.
+  3. Dual automated delivery with a standalone `dist/styles.css` fallback export.
+- **Trade-offs:** Component-level side-effect imports optimize tree-shaking and CSS bundle sizes, but require careful handling in non-bundler Node.js CommonJS environments.
+- **Recommended Next Step:** Benchmark candidate delivery mechanisms in Phase 2 across Next.js App Router, Vite SPA, Remix, and Jest before authoring components. Tracked in ADR-007.
 
 ### Open Decision 3: Icon Ecosystem Packaging
 - **Context:** Components often require internal default icons (e.g., checkmark in Checkbox, chevron in Select, spinner in Button).
@@ -386,7 +395,7 @@ A three-tier hierarchy:
 3. **Component Tokens:** Scoped component properties (`--cl-button-primary-bg`).
 
 ### 7. How will React component styling work?
-Via **Scoped Static CSS with Semantic CSS Custom Properties**. Styles are pre-compiled into a static stylesheet (`@chellaa/react/styles.css`), scoped using the `.cl-` namespace and BEM modifiers, and protected from specificity battles via CSS `@layer cl-components`.
+Via **Scoped Static CSS with Semantic CSS Custom Properties**. Styles are authored in scoped component stylesheets (`.cl-` namespace) and protected from specificity battles via CSS `@layer cl-components`. Crucially, component styling is delivered automatically upon component import without requiring consumers to manually import a global stylesheet.
 
 ### 8. How will themes work?
 Themes represent structured token configurations mapped directly to CSS variables. Changing themes updates the CSS variables on the root container, allowing the browser's native C++ rendering engine to update visuals instantaneously.
@@ -400,12 +409,7 @@ A DOM attribute (`data-theme="light"` or `data-theme="dark"`) on `<html>` dynami
 3. Structurally via predictable class hooks (`.cl-button`) and the `asChild` composition slot.
 
 ### 11. How will the npm package be structured?
-Published as `@chellaa/react` containing:
-- `dist/index.mjs` (ESM module)
-- `dist/index.cjs` (CommonJS module)
-- `dist/index.d.ts` (TypeScript declarations)
-- `dist/styles.css` (Pre-compiled static stylesheet)
-- Modern `package.json` with conditional `exports` and `"sideEffects": ["*.css", "**/*.css"]`.
+Published as `@chellaa/react` where the primary export (`"."`) delivers both component code and styling automatically. A standalone `dist/styles.css` is maintained as an optional export for static asset extraction or non-bundler setups, but is never required for normal usage. Package includes ESM (`dist/index.mjs`), CJS (`dist/index.cjs`), TypeScript declarations (`dist/index.d.ts`), and `"sideEffects": ["*.css", "**/*.css"]`.
 
 ### 12. How will React components be organized internally?
 Each component is collocated in an isolated directory:
@@ -424,12 +428,12 @@ Resides in `apps/docs` within the monorepo, consuming `@chellaa/react` via local
 Resides in `apps/playground` as a lightweight Vite + React app linked to the local workspace package, offering instant Hot Module Replacement for rapid prototyping, token stress-testing, and responsive viewport testing.
 
 ### 17. How will a real external consumer validate the package?
-Via `apps/test-consumer`, an automated test application simulating an external consumer. It builds against `npm pack` tarballs in Next.js App Router and Vite to validate real-world installation, bundling, tree-shaking, typing, and zero-FOUC SSR rendering.
+Via `apps/test-consumer`, an automated test application simulating an external consumer. It builds against `npm pack` tarballs in Next.js App Router and Vite to validate real-world installation, bundling, tree-shaking, typing, zero-configuration automatic styling delivery, and zero-FOUC SSR rendering.
 
 ### 18. What architectural decisions still need to be resolved?
 Three targeted investigations documented in Section 13:
 1. Benchmarking `@floating-ui/react` vs. proprietary lightweight overlay math hooks.
-2. Unified `styles.css` distribution vs. dual unified + per-component modular CSS export.
+2. Internal CSS delivery mechanism benchmarking across Next.js App Router, Vite, Remix, and Node CJS (ADR-007).
 3. Inline SVGs vs. an independent `@chellaa/icons` package.
 
 ---

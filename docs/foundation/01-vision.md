@@ -19,6 +19,7 @@ Modern React teams frequently struggle with a painful compromise:
 
 Chellaa React establishes a unified, distributed design system library that delivers:
 - **Zero-runtime-overhead styling** powered by semantic CSS custom properties and scoped static CSS.
+- **Zero-configuration styling delivery:** Working styles and design tokens are automatically delivered with component imports—zero manual stylesheet imports required.
 - **Accessible-by-default component primitives** adhering strictly to W3C WAI-ARIA Authoring Practices (APG).
 - **Sub-millisecond theme switching** (Light, Dark, System, and Multi-Brand Custom Themes) with zero React component tree re-renders.
 - **First-class TypeScript architecture** offering complete autocompletion, polymorphic ergonomics, and zero loose `any` types.
@@ -37,7 +38,7 @@ Modern web development requires teams to ship accessible, cohesive, brand-aligne
 4. **Poor Dark Mode & Multi-Brand Architectures:** The majority of libraries handle dark mode by conditionally switching class names or recalculating JavaScript theme objects across the entire component tree, causing massive re-renders and visible layout flashes during page hydration.
 
 ### 2.2 The Problem Chellaa React Solves
-Chellaa React provides a **governed, installable, zero-runtime-styled component foundation** that couples the accessibility rigor of headless primitives with a refined, customizable design token system. It delivers out-of-the-box visual excellence with zero configuration overhead, while maintaining full token-driven customizability for enterprise multi-brand systems.
+Chellaa React provides a **governed, installable, zero-runtime-styled component foundation** that couples the accessibility rigor of headless primitives with a refined, customizable design token system. It delivers out-of-the-box visual excellence with zero configuration overhead, automatically delivering its own styling without requiring separate global CSS imports, while maintaining full token-driven customizability for enterprise multi-brand systems.
 
 ---
 
@@ -78,7 +79,7 @@ Chellaa React is engineered intentionally for five primary personas:
 └───────────────────┴───────────────────┴────────────────────────────────┘
 ```
 
-1. **React Developers:** Require expressive, intuitive component APIs that "just work" without requiring wrapping providers for every single primitive or wrestling with CSS specificity battles.
+1. **React Developers:** Require expressive, intuitive component APIs that "just work" without requiring manual stylesheet imports, wrapping providers for every single primitive, or wrestling with CSS specificity battles.
 2. **TypeScript Engineers:** Demand accurate intellisense, strict type boundaries, generic components (e.g., Select, Table) that preserve data types, and transparent prop inheritance without type gymnastics.
 3. **Frontend & Infrastructure Teams:** Focus on web vitals, bundle budgets, tree-shaking efficacy, zero FOUC during server-side rendering, and frictionless CI/CD dependency management.
 4. **Product Teams & Designers:** Demand a clean, premium visual language with cohesive spacing, sophisticated color ramps, smooth micro-interactions, and accessible contrast ratios across both light and dark themes.
@@ -94,23 +95,28 @@ Developer experience is not an afterthought; it is a core technical constraint. 
 Consumers should be able to install the package and immediately import components with standard modern syntax:
 
 ```tsx
-import { Button, Stack, ThemeProvider } from "@chellaa/react";
+import { Button } from "@chellaa/react";
 
 export function App() {
   return (
-    <ThemeProvider defaultMode="system">
-      <Stack direction="row" spacing="md">
-        <Button variant="primary" size="md">
-          Get Started
-        </Button>
-        <Button variant="outline" size="md">
-          Documentation
-        </Button>
-      </Stack>
-    </ThemeProvider>
+    <Button variant="primary" size="md">
+      Get Started
+    </Button>
   );
 }
 ```
+
+#### The Zero-Configuration Styling Principle
+> **Chellaa React owns the delivery of its component styling. Consumers should receive a working styled component through the normal package import without requiring a separate global stylesheet import.**
+
+The consumer should never need to understand:
+- Where the library CSS files are physically located
+- How component CSS is bundled or linked
+- Which stylesheet must be imported
+- How styles are initialized in client or server environments
+- How theme variables are loaded
+
+The styling simply works out of the box through `import { Button } from "@chellaa/react"`.
 
 ### 5.2 Deterministic API Conventions
 Every component in Chellaa React adheres to uniform naming conventions:
@@ -202,7 +208,7 @@ Every component must execute cleanly in Node.js server environments, supporting 
 3. **Zero-FOUC Dark Mode:** Provide an SSR-safe theme provider and inline script mechanism that guarantees zero Flash of Unstyled Content when switching or loading light/dark modes.
 4. **Strict Bundle Budget:** Ensure the core bundle remains exceptionally lean, with individual components adding negligible overhead (e.g., Button < 2.5KB minified + gzipped).
 5. **100% WAI-ARIA APG Conformance:** Every interactive component strictly satisfies the corresponding W3C pattern.
-6. **Zero Required Build Tooling Plugins:** Consumers should be able to consume Chellaa React in Next.js, Vite, Remix, Create React App, or custom Webpack setups without requiring proprietary Babel or bundler plugins.
+6. **Zero Required Build Tooling Plugins & Zero Manual CSS Setup:** Consumers should be able to consume Chellaa React in Next.js, Vite, Remix, Create React App, or custom Webpack setups without requiring proprietary Babel/bundler plugins or manual stylesheet imports.
 
 ---
 
