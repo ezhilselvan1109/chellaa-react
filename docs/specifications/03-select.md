@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,11 +25,13 @@ Related Components: Combobox, Menu, FormControl
 The `Select` component allows users to pick a single value from a collapsible list of options. It solves the styling and layout limitations of the native HTML `<select>` element by offering rich custom option designs, floating overlay placement, and full WAI-ARIA APG Listbox compliance.
 
 ### When to Use
+
 - Selecting a single value from a list of 5 to 50 options (countries, roles, themes, statuses).
 - Form inputs requiring custom option layouts with icons, subtitles, or badges.
 - When an accessible, custom-styled dropdown picker is required.
 
 ### When NOT to Use
+
 - **Do NOT use for fewer than 4 options.** Use `RadioGroup` or `SegmentedControl` for higher visibility and single-click speed.
 - **Do NOT use for large, searchable datasets (> 50 items).** Use `Combobox` / `Autocomplete` to allow filtering and typing.
 - **Do NOT use for multi-selection.** Use `MultiSelect` or `CheckboxGroup`.
@@ -39,6 +41,7 @@ The `Select` component allows users to pick a single value from a collapsible li
 ## 3. Scope
 
 ### In Scope
+
 - Compound component architecture (`Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Portal`, `Select.Content`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, `Select.Group`, `Select.Label`, `Select.Separator`).
 - 3 visual variants: `outline` (default), `filled`, `flushed`.
 - 5 standardized sizes: `xs`, `sm`, `md`, `lg`, `xl` (matching `Input` and `Button` heights).
@@ -101,6 +104,7 @@ Select (Root Context Provider)
 ## 7. Public API
 
 ### `Select.Root` Props
+
 ```typescript
 export interface SelectRootProps<TValue extends string = string> {
   value?: TValue;
@@ -175,8 +179,7 @@ export interface SelectRootProps<TValue extends string = string> {
   children: React.ReactNode;
 }
 
-export interface SelectTriggerProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SelectTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
 }
 
@@ -184,14 +187,14 @@ export interface SelectValueProps {
   placeholder?: string;
 }
 
-export interface SelectContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface SelectContentProps extends React.HTMLAttributes<HTMLDivElement> {
   position?: "popper" | "item-aligned";
   sideOffset?: number;
 }
 
-export interface SelectItemProps<TValue extends string = string>
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface SelectItemProps<
+  TValue extends string = string,
+> extends React.HTMLAttributes<HTMLDivElement> {
   value: TValue;
   isDisabled?: boolean;
 }
@@ -210,6 +213,7 @@ export interface SelectItemProps<TValue extends string = string>
 ## 10. Sizes
 
 Trigger button heights match standard interactive elements (`Button`, `Input`):
+
 - `xs`: 28px height, 12px font size.
 - `sm`: 32px height, 14px font size.
 - `md` (Default): 40px height, 14px font size.
@@ -233,40 +237,43 @@ Trigger button heights match standard interactive elements (`Button`, `Input`):
 ## 12. Behavior
 
 ### State Transition Matrix
-| Current State | User Action | Next State | Effect |
-|---|---|---|---|
-| Closed | Click Trigger | Open | Mount Portal, focus active item |
-| Closed | Press Down / Enter / Space on Trigger | Open | Open menu, highlight first item |
-| Open | Press Escape | Closed | Close menu, return focus to Trigger |
-| Open | Click outside dropdown | Closed | Close menu, trigger onOpenChange(false) |
-| Open | Click Select.Item | Closed | Select value, fire onValueChange, close |
-| Open | Press ArrowDown | Open | Highlight next non-disabled item |
-| Open | Press ArrowUp | Open | Highlight previous item |
-| Open | Type character (e.g. "B") | Open | Jump highlight to item starting with "B" |
+
+| Current State | User Action                           | Next State | Effect                                   |
+| ------------- | ------------------------------------- | ---------- | ---------------------------------------- |
+| Closed        | Click Trigger                         | Open       | Mount Portal, focus active item          |
+| Closed        | Press Down / Enter / Space on Trigger | Open       | Open menu, highlight first item          |
+| Open          | Press Escape                          | Closed     | Close menu, return focus to Trigger      |
+| Open          | Click outside dropdown                | Closed     | Close menu, trigger onOpenChange(false)  |
+| Open          | Click Select.Item                     | Closed     | Select value, fire onValueChange, close  |
+| Open          | Press ArrowDown                       | Open       | Highlight next non-disabled item         |
+| Open          | Press ArrowUp                         | Open       | Highlight previous item                  |
+| Open          | Type character (e.g. "B")             | Open       | Jump highlight to item starting with "B" |
 
 ---
 
 ## 13. Controlled / Uncontrolled
 
 ### Controlled
+
 ```tsx
 const [val, setVal] = useState("apple");
 <Select.Root value={val} onValueChange={setVal}>
-  <Select.Trigger><Select.Value /></Select.Trigger>
+  <Select.Trigger>
+    <Select.Value />
+  </Select.Trigger>
   <Select.Portal>
     <Select.Content>
       <Select.Item value="apple">Apple</Select.Item>
       <Select.Item value="banana">Banana</Select.Item>
     </Select.Content>
   </Select.Portal>
-</Select.Root>
+</Select.Root>;
 ```
 
 ### Uncontrolled
+
 ```tsx
-<Select.Root defaultValue="apple">
-  ...
-</Select.Root>
+<Select.Root defaultValue="apple">...</Select.Root>
 ```
 
 ---
@@ -309,11 +316,13 @@ const [val, setVal] = useState("apple");
 ## 17. Accessibility
 
 ### 17.1 WAI-ARIA APG Roles
+
 - Trigger: `<button role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId}>`.
 - Content: `<div role="listbox" id={listboxId} aria-labelledby={triggerId}>`.
 - Item: `<div role="option" aria-selected={isSelected} aria-disabled={disabled}>`.
 
 ### 17.2 Focus Management
+
 - Opening the listbox places virtual focus on the selected option or first available item.
 - Dismissing the listbox (via Escape or item selection) **must restore keyboard focus to the Trigger button**.
 
@@ -408,6 +417,7 @@ const [val, setVal] = useState("apple");
 ## 22. Motion
 
 Under `@media (prefers-reduced-motion: reduce)`:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   .cl-select__content {

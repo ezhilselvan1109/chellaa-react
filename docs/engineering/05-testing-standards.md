@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 05: Testing Architecture & Quality Assurance Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**Test Stack:** Vitest, React Testing Library, `@testing-library/user-event`, `vitest-axe`  
+**Test Stack:** Vitest, React Testing Library, `@testing-library/user-event`, `vitest-axe`
 
 ---
 
@@ -114,13 +115,18 @@ Example Applicability Rationale (Component: Badge):
 ```
 
 ### 4.1 Category 1: Rendering & Pass-through Tests
+
 Verifies that the component forwards standard HTML attributes, custom `className`, inline `style`, and the React `ref`:
 
 ```tsx
 it("forwards className and style props to the root DOM node", () => {
-  render(<Button className="custom-class" style={{ zIndex: 10 }}>Click</Button>);
+  render(
+    <Button className="custom-class" style={{ zIndex: 10 }}>
+      Click
+    </Button>,
+  );
   const button = screen.getByRole("button", { name: "Click" });
-  
+
   expect(button.classList.contains("custom-class")).toBe(true);
   expect(button.classList.contains("cl-button")).toBe(true);
   expect(button.style.zIndex).toBe("10");
@@ -134,6 +140,7 @@ it("correctly attaches the forwarded ref to the HTMLButtonElement", () => {
 ```
 
 ### 4.2 Category 2: User Interaction Tests
+
 All interactions must use `userEvent.setup()` rather than `fireEvent`:
 
 ```tsx
@@ -148,12 +155,13 @@ it("fires onClick handler when clicked by user", async () => {
 ```
 
 ### 4.3 Category 3: Automated Accessibility (A11y) Tests
+
 ```tsx
 it("has zero accessibility violations according to axe-core", async () => {
   const { container } = render(
     <Button variant="solid" colorScheme="primary">
       Accessible Action
-    </Button>
+    </Button>,
   );
   const results = await axe(container);
   expect(results).toHaveNoViolations();
@@ -161,6 +169,7 @@ it("has zero accessibility violations according to axe-core", async () => {
 ```
 
 ### 4.4 Category 4: Keyboard Navigation Physics
+
 Verifies APG compliance:
 
 ```tsx
@@ -182,13 +191,18 @@ it("activates on Space and Enter key presses", async () => {
 ```
 
 ### 4.5 Category 5: Controlled vs. Uncontrolled State Tests
+
 For components with internal state (`useControllableState`):
 
 ```tsx
 it("functions correctly in uncontrolled mode with defaultValue", async () => {
   const user = userEvent.setup();
   const handleChange = vi.fn();
-  render(<Checkbox defaultValue={false} onValueChange={handleChange}>Accept</Checkbox>);
+  render(
+    <Checkbox defaultValue={false} onValueChange={handleChange}>
+      Accept
+    </Checkbox>,
+  );
 
   const checkbox = screen.getByRole("checkbox", { name: "Accept" });
   expect(checkbox).not.toBeChecked();
@@ -202,7 +216,9 @@ it("functions correctly in controlled mode when value prop is passed", async () 
   const user = userEvent.setup();
   const handleChange = vi.fn();
   const { rerender } = render(
-    <Checkbox value={true} onValueChange={handleChange}>Accept</Checkbox>
+    <Checkbox value={true} onValueChange={handleChange}>
+      Accept
+    </Checkbox>,
   );
 
   const checkbox = screen.getByRole("checkbox", { name: "Accept" });
@@ -214,19 +230,28 @@ it("functions correctly in controlled mode when value prop is passed", async () 
   expect(handleChange).toHaveBeenCalledWith(false);
 
   // Parent updates state:
-  rerender(<Checkbox value={false} onValueChange={handleChange}>Accept</Checkbox>);
+  rerender(
+    <Checkbox value={false} onValueChange={handleChange}>
+      Accept
+    </Checkbox>,
+  );
   expect(checkbox).not.toBeChecked();
 });
 ```
 
 ### 4.6 Category 6: Disabled & Loading Guard Tests
+
 Verifies that disabled components do not execute click events, form submissions, or focus rings:
 
 ```tsx
 it("does not fire onClick when isDisabled is true", async () => {
   const user = userEvent.setup();
   const handleClick = vi.fn();
-  render(<Button isDisabled onClick={handleClick}>Disabled</Button>);
+  render(
+    <Button isDisabled onClick={handleClick}>
+      Disabled
+    </Button>,
+  );
 
   const button = screen.getByRole("button", { name: "Disabled" });
   expect(button).toBeDisabled();
@@ -236,7 +261,11 @@ it("does not fire onClick when isDisabled is true", async () => {
 });
 
 it("renders loading spinner and sets aria-busy when isLoading is true", () => {
-  render(<Button isLoading loadingText="Saving...">Save</Button>);
+  render(
+    <Button isLoading loadingText="Saving...">
+      Save
+    </Button>,
+  );
   const button = screen.getByRole("button");
 
   expect(button).toHaveAttribute("aria-busy", "true");
@@ -246,6 +275,7 @@ it("renders loading spinner and sets aria-busy when isLoading is true", () => {
 ```
 
 ### 4.7 Category 7: SSR Server Rendering Smoke Test
+
 Ensures zero crashes in Node.js server environments:
 
 ```tsx
@@ -261,6 +291,7 @@ it("renders to static HTML on the server without throwing exceptions", () => {
 ```
 
 ### 4.8 React Server Components (RSC) & Real Consumer Integration Validation
+
 Unit tests passing in jsdom do **not** prove React Server Component (RSC) compatibility. Chellaa React requires an integration validation gate in `apps/test-consumer` testing against a real Next.js App Router production build:
 
 ```text
@@ -274,6 +305,7 @@ Production Build (`next build`)
 ```
 
 **Mandatory Validation Checklist:**
+
 1. **Zero Server/Client Boundary Errors:** Server components rendering Chellaa React components must compile and render without runtime errors or missing directive warnings.
 2. **Zero Hydration Mismatches:** Static markup generated on the server must cleanly match the client hydrated DOM without warnings or layout flashes.
 3. **Zero Browser-Global Access:** Components must not read `window`, `document`, or `localStorage` during initial server evaluation.
@@ -286,6 +318,7 @@ Production Build (`next build`)
 ## 5. Test Isolation & Environment Mocks
 
 ### 5.1 Clean Test Isolation
+
 - All tests must run in complete isolation.
 - Vitest resets DOM state between tests automatically via RTL's `cleanup()`.
 - Global mocks must be cleared in `afterEach`:
@@ -297,7 +330,9 @@ Production Build (`next build`)
   ```
 
 ### 5.2 Environment Setup Mocks (`setupTests.ts`)
+
 Standard browser APIs missing in jsdom must be mocked globally in `packages/react/src/test/setupTests.ts`:
+
 - **`window.matchMedia`:** Provides mock implementation for OS theme detection tests.
 - **`ResizeObserver`:** Mocked for component measurement tests.
 - **`IntersectionObserver`:** Mocked for viewport triggers.

@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,12 +25,14 @@ Related Components: IconButton, ButtonGroup
 The `Button` component is the fundamental interactive primitive for triggering immediate user actions, submitting forms, opening dialogs, and initiating asynchronous processes.
 
 ### When to Use
+
 - Triggering immediate actions ("Save", "Delete", "Add to Cart").
 - Submitting or resetting HTML forms (`type="submit"`, `type="reset"`).
 - Opening modals, dialogs, drawers, and menus.
 - Navigating to another page when composed with an anchor or router link using `asChild`.
 
 ### When NOT to Use
+
 - **Do NOT use for plain hyperlinked navigation** without `asChild`. Renders must be semantic links.
 - **Do NOT use as a passive text pill or status indicator.** Use `Badge` instead.
 - **Do NOT nest inside another interactive control** (e.g. inside an anchor tag or clickable card).
@@ -40,6 +42,7 @@ The `Button` component is the fundamental interactive primitive for triggering i
 ## 3. Scope
 
 ### In Scope
+
 - 5 visual variants: `solid`, `outline`, `ghost`, `subtle`, `link`.
 - 5 standardized sizes: `xs`, `sm`, `md`, `lg`, `xl` (matching `Input` heights).
 - 6 semantic color schemes: `primary`, `secondary`, `success`, `warning`, `danger`, `info`.
@@ -108,8 +111,7 @@ Button (HTML <button> or delegated asChild element)
 ## 7. Public API
 
 ```typescript
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   colorScheme?: ButtonColorScheme;
@@ -166,16 +168,10 @@ export interface ButtonProps
 export type ButtonVariant = "solid" | "outline" | "ghost" | "subtle" | "link";
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type ButtonColorScheme =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "warning"
-  | "danger"
-  | "info";
+  "primary" | "secondary" | "success" | "warning" | "danger" | "info";
 export type ButtonLoadingPosition = "start" | "end" | "center";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Visual aesthetic treatment of the button.
    * @default "solid"
@@ -306,15 +302,16 @@ export interface ButtonProps
 ## 12. Behavior
 
 ### State Transition Matrix
-| Current State | User Action | Next State | Effect |
-|---|---|---|---|
-| Resting | Hover over button | Hovered | Apply hover color token; pointer cursor |
-| Hovered | Pointer down | Active | Apply active color token; scale(0.98) |
-| Active | Pointer release | Hovered | Fire `onClick` event |
-| Resting | Tab focus | Focused | Render visible 2px focus ring |
-| Focused | Enter / Space press | Active | Fire `onClick` event |
-| Any | `isDisabled=true` | Disabled | Suppress clicks; attach native disabled |
-| Any | `isLoading=true` | Loading | Display spinner; set `aria-busy="true"` |
+
+| Current State | User Action         | Next State | Effect                                  |
+| ------------- | ------------------- | ---------- | --------------------------------------- |
+| Resting       | Hover over button   | Hovered    | Apply hover color token; pointer cursor |
+| Hovered       | Pointer down        | Active     | Apply active color token; scale(0.98)   |
+| Active        | Pointer release     | Hovered    | Fire `onClick` event                    |
+| Resting       | Tab focus           | Focused    | Render visible 2px focus ring           |
+| Focused       | Enter / Space press | Active     | Fire `onClick` event                    |
+| Any           | `isDisabled=true`   | Disabled   | Suppress clicks; attach native disabled |
+| Any           | `isLoading=true`    | Loading    | Display spinner; set `aria-busy="true"` |
 
 ---
 
@@ -353,12 +350,15 @@ N/A — Button is a stateless action primitive. It does not manage internal valu
 ## 15. Composition
 
 ### `asChild` Slot Delegation
+
 `Button` supports `asChild` for zero-DOM router link delegation:
+
 ```tsx
 <Button asChild variant="primary" size="md">
   <Link href="/analytics">View Analytics</Link>
 </Button>
 ```
+
 - Merges `.cl-button` classes onto child element.
 - Composes synthetic event handlers (`onClick`, `onKeyDown`).
 - Merges forwarded DOM ref via `mergeRefs`.
@@ -376,9 +376,11 @@ N/A — Button is a stateless action primitive. It does not manage internal valu
 ## 17. Accessibility
 
 ### 17.1 Semantic HTML
+
 Renders native `<button type="button">` by default.
 
 ### 17.2 Accessible Names
+
 - Derived automatically from children text content.
 - **Icon-Only Rule:** If children contain no visible text, developer must supply `aria-label`:
   ```tsx
@@ -386,6 +388,7 @@ Renders native `<button type="button">` by default.
   ```
 
 ### 17.3 ARIA Attributes
+
 - `aria-busy="true"` when `isLoading=true`.
 - `aria-hidden="true"` automatically attached to icons (`startIcon`, `endIcon`).
 
@@ -427,9 +430,10 @@ Renders native `<button type="button">` by default.
     border: 1px solid transparent;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color var(--cl-duration-fast) var(--cl-ease-default),
-                border-color var(--cl-duration-fast) var(--cl-ease-default),
-                transform var(--cl-duration-fast) var(--cl-ease-default);
+    transition:
+      background-color var(--cl-duration-fast) var(--cl-ease-default),
+      border-color var(--cl-duration-fast) var(--cl-ease-default),
+      transform var(--cl-duration-fast) var(--cl-ease-default);
   }
 
   .cl-button:focus-visible {
@@ -486,6 +490,7 @@ Renders native `<button type="button">` by default.
 ## 22. Motion
 
 Under `@media (prefers-reduced-motion: reduce)`:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   .cl-button,
@@ -533,6 +538,7 @@ Under `@media (prefers-reduced-motion: reduce)`:
 ## 24. Storybook
 
 Mandatory stories in `Button.stories.tsx`:
+
 1. `Default`: Interactive playground with Storybook controls.
 2. `AllVariants`: Side-by-side comparison of `solid`, `outline`, `ghost`, `subtle`, `link`.
 3. `AllSizes`: Matrix across `xs`, `sm`, `md`, `lg`, `xl`.

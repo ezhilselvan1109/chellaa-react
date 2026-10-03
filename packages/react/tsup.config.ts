@@ -10,5 +10,9 @@ export default defineConfig({
   treeshake: true,
   target: "es2022",
   external: ["react", "react-dom"],
-  injectStyle: false,
+  outExtension({ format }) {
+    return {
+      js: format === "esm" ? ".mjs" : ".cjs",
+    };
+  },
 });

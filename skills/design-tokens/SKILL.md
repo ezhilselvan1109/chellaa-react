@@ -16,6 +16,7 @@ Tier 3: Component Tokens  (--cl-button-primary-bg, --cl-input-border)
 ```
 
 ## Token Naming Rules
+
 1. **Namespace:** Every token starts with `--cl-`.
 2. **Category Prefix:**
    - Colors: `--cl-color-*`
@@ -27,5 +28,6 @@ Tier 3: Component Tokens  (--cl-button-primary-bg, --cl-input-border)
    - Z-Index: `--cl-z-*`
 
 ## Theme Modes
+
 - Swapped via `data-theme="light"` or `data-theme="dark"` on DOM roots.
 - Zero runtime JavaScript calculation; values swap via native CSS cascade.

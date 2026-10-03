@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -19,6 +19,7 @@ Related Components: AlertDialog, Drawer, Popover
 ```
 
 ### Canonical Name Formalization
+
 In Chellaa React, **`Dialog` is the canonical component name**, strictly conforming to the W3C WAI-ARIA APG Dialog (Modal) pattern and HTML `<dialog>` semantics. `Modal` is exported as an exact compatibility alias (`export const Modal = Dialog; export type ModalProps = DialogProps;`) to support developer familiarity with zero friction.
 
 ---
@@ -28,11 +29,13 @@ In Chellaa React, **`Dialog` is the canonical component name**, strictly conform
 The `Dialog` component interrupts the user's current workflow to present critical information, prompt for an immediate decision, or encapsulate a focused sub-task without navigating away from the active screen.
 
 ### When to Use
+
 - Critical user confirmations (destructive actions, unsaved changes).
 - Focused multi-step workflows (creating a resource, editing complex profile settings).
 - Self-contained forms requiring isolated user attention.
 
 ### When NOT to Use
+
 - **Do NOT use for non-critical notifications.** Use `Toast` or `Notification`.
 - **Do NOT use for lightweight contextual menus or pickers.** Use `Popover`, `Menu`, or `Tooltip`.
 - **Do NOT stack more than 2 dialogs deeply.** Deeply nested dialogs degrade UX and create confusing focus hierarchies.
@@ -42,6 +45,7 @@ The `Dialog` component interrupts the user's current workflow to present critica
 ## 3. Scope
 
 ### In Scope
+
 - Compound component structure (`Dialog.Root`, `Dialog.Trigger`, `Dialog.Portal`, `Dialog.Overlay`, `Dialog.Content`, `Dialog.Header`, `Dialog.Title`, `Dialog.Description`, `Dialog.Body`, `Dialog.Footer`, `Dialog.Close`).
 - Controlled (`isOpen`, `onClose`) and uncontrolled (`defaultOpen`) visibility states.
 - Automated **Focus Trapping**: Tab and Shift+Tab constrained within dialog container.
@@ -103,6 +107,7 @@ Dialog.Root (State & Context Provider)
 ## 7. Public API
 
 ### `Dialog.Root` Props
+
 ```typescript
 export interface DialogRootProps {
   isOpen?: boolean;
@@ -219,6 +224,7 @@ export interface DialogOverlayProps extends React.HTMLAttributes<HTMLDivElement>
 ## 9. Variants
 
 Dialog variants are expressed through spatial max-widths:
+
 - `sm`: Max-width 400px (Confirmations, alerts).
 - `md` (Default): Max-width 560px (Standard forms).
 - `lg`: Max-width 720px (Multi-column content).
@@ -230,6 +236,7 @@ Dialog variants are expressed through spatial max-widths:
 ## 10. Sizes
 
 Constrained by design tokens:
+
 - `sm`: 400px max-width, 16px padding.
 - `md`: 560px max-width, 20px padding.
 - `lg`: 720px max-width, 24px padding.
@@ -249,20 +256,22 @@ Constrained by design tokens:
 ## 12. Behavior
 
 ### State Transition Matrix
-| Current State | User Action | Next State | Effect |
-|---|---|---|---|
-| Closed | Trigger clicked | Open | Lock scroll; mount portal; trap focus; focus first node |
-| Open | Escape key pressed | Closed | Unmount portal; unlock scroll; restore focus to trigger |
-| Open | Overlay clicked | Closed | Trigger `onClose()`; dismiss modal |
-| Open | Close button clicked | Closed | Trigger `onClose()`; dismiss modal |
-| Open | Tab on last element | Open | Cycle focus to first focusable element inside modal |
-| Open | Shift+Tab on first element | Open | Cycle focus to last focusable element inside modal |
+
+| Current State | User Action                | Next State | Effect                                                  |
+| ------------- | -------------------------- | ---------- | ------------------------------------------------------- |
+| Closed        | Trigger clicked            | Open       | Lock scroll; mount portal; trap focus; focus first node |
+| Open          | Escape key pressed         | Closed     | Unmount portal; unlock scroll; restore focus to trigger |
+| Open          | Overlay clicked            | Closed     | Trigger `onClose()`; dismiss modal                      |
+| Open          | Close button clicked       | Closed     | Trigger `onClose()`; dismiss modal                      |
+| Open          | Tab on last element        | Open       | Cycle focus to first focusable element inside modal     |
+| Open          | Shift+Tab on first element | Open       | Cycle focus to last focusable element inside modal      |
 
 ---
 
 ## 13. Controlled / Uncontrolled
 
 ### Controlled Usage
+
 ```tsx
 const [isOpen, setIsOpen] = useState(false);
 <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
@@ -318,15 +327,18 @@ const [isOpen, setIsOpen] = useState(false);
 ## 17. Accessibility
 
 ### 17.1 WAI-ARIA APG Roles
+
 - Root container: `<div role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descId}>`.
 - Automatic ID linkage: `Dialog.Title` automatically binds `aria-labelledby`.
 - `Dialog.Description` automatically binds `aria-describedby`.
 
 ### 17.2 Focus Trapping Mandate
+
 - Keyboard Tab navigation must **never leak to the background document**.
 - Background elements outside the portal are marked `inert` or `aria-hidden="true"`.
 
 ### 17.3 Focus Restoration Mandate
+
 - Upon closing, focus **must be returned to the exact element that opened the dialog**.
 
 ---
@@ -428,6 +440,7 @@ const [isOpen, setIsOpen] = useState(false);
 ## 22. Motion
 
 Under `prefers-reduced-motion: reduce`:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   .cl-dialog__overlay,

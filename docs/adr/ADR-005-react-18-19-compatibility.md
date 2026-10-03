@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, React Specialist  
+**Deciders:** Principal Architect, React Specialist
 
 ---
 
@@ -13,6 +13,7 @@ The React ecosystem is transitioning from React 18 to React 19. Many enterprise 
 A modern component library must provide seamless support for both major versions without peer dependency warnings, runtime crashes, or deprecation log spam.
 
 Key differences between React 18 and React 19 include:
+
 1. **Ref Passing:** React 19 supports `ref` directly as a regular prop on functional components and deprecates `React.forwardRef`.
 2. **Context Provider:** React 19 supports `<Context>` directly instead of `<Context.Provider>`.
 3. **TypeScript Types:** React 19 refactors `@types/react` (e.g. removal of `React.FC`, narrowing of `React.ReactNode` return types).
@@ -43,10 +44,12 @@ Key differences between React 18 and React 19 include:
 ## 3. Consequences
 
 ### Positive
+
 - **Broad Adoption:** Consumers can upgrade their projects to React 19 without waiting for `@chellaa/react` to drop React 18 support.
 - **Zero Peer Warnings:** `npm install` and `pnpm add` complete cleanly in both React 18 and 19 projects.
 
 ### Negative
+
 - **Requires Dual CI Matrix:** CI must test unit tests and test consumers against both React 18 and React 19.
 
 ---

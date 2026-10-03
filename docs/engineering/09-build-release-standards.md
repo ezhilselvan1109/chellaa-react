@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 09: Build, Packaging & Release Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**Build Tooling:** tsup, LightningCSS, Turborepo, pnpm  
+**Build Tooling:** tsup, LightningCSS, Turborepo, pnpm
 
 ---
 
@@ -65,15 +66,19 @@ export default defineConfig({
 ```
 
 ### 3.1 RSC-Compatible Architecture Principle
+
 Global `"use client"` banners (such as `options.banner = { js: '"use client";' }`) are **strictly prohibited**. A global client banner forces the entire library into a client bundle, preventing consumers from rendering Chellaa React components inside React Server Components and breaking SSR streaming in Next.js App Router.
 
 **Guiding Principles:**
+
 1. **RSC-Compatible by Default:** Chellaa React must remain RSC-compatible by default. Presentational or static layout components (e.g. `Box`, `Stack`) must remain capable of executing as Server Components.
 2. **Intentional Client Boundaries:** Only components or modules that actually require client-side React behavior (hooks like `useState`, `useEffect`, or event listeners) should be marked as client components (`"use client"`).
 3. **Benchmark Validation:** The exact mechanism for preserving component-level client boundaries in the compiled bundle must be validated during the real Next.js App Router test-consumer benchmark.
 
 ### 3.2 CSS Processing with LightningCSS
+
 Static stylesheets (`src/styles/*.css` and `src/components/**/*.styles.css`) are compiled using LightningCSS:
+
 - Preserves modern CSS `@layer cl-components`.
 - Autoprefixes for target browsers (Chrome, Edge, Firefox, Safari 15.4+).
 - Minifies structural whitespace and comments.
@@ -102,23 +107,17 @@ The `packages/react/package.json` enforces strict modern conditional exports:
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },
-  "sideEffects": [
-    "*.css",
-    "**/*.css"
-  ],
+  "sideEffects": ["*.css", "**/*.css"],
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ]
+  "files": ["dist", "README.md", "LICENSE"]
 }
 ```
 
 ### 4.1 The Critical `sideEffects` Rule
+
 - **Mandate:** `package.json` must explicitly declare `"sideEffects": ["*.css", "**/*.css"]`.
 - **Strict Prohibition:** Setting `"sideEffects": false` is strictly prohibited anywhere in the repository.
 - **Rationale:** CSS imports are runtime-relevant package side effects. Marking the package side-effect-free (`"sideEffects": false`) causes consumer bundlers (Webpack, Vite, Rollup) to tree-shake and discard required CSS imports during dead-code elimination, producing unstyled components in production!
@@ -163,6 +162,7 @@ Production Build (`next build`)
 ```
 
 ### 6.1 Mandatory Real-World Verification Matrix
+
 1. **Zero Server/Client Boundary Errors:** Server components rendering Chellaa React components must compile and execute without unexpected boundary errors.
 2. **Zero Hydration Mismatches:** Server-rendered markup must match client DOM without hydration warnings.
 3. **Zero Browser-Global Access during SSR:** No access to `window`, `document`, or `navigator` during server evaluation.

@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, React Core Team  
+**Deciders:** Principal Architect, React Core Team
 
 ---
 
@@ -11,12 +11,16 @@
 In React Server Components (RSC) architecture (e.g. Next.js App Router), components default to executing on the server unless explicitly designated with the `"use client"` directive.
 
 Many early React component libraries took a naive approach: adding a global `"use client"` banner to the top of their entire compiled bundle via their bundler config:
+
 ```javascript
 // AVOID:
-banner: { js: '"use client";' }
+banner: {
+  js: '"use client";';
+}
 ```
 
 This brute-force approach has devastating architectural consequences:
+
 1. It forces the entire component library into the client bundle.
 2. It prevents consumers from rendering presentational components (e.g., `Card`, `Table`, `Badge`) inside React Server Components.
 3. It breaks streaming SSR and increases the initial JavaScript payload downloaded by the client browser.
@@ -44,10 +48,12 @@ This brute-force approach has devastating architectural consequences:
 ## 3. Consequences
 
 ### Positive
+
 - **Optimal Client Bundle Size:** Pure presentational components (`Card`, `Badge`, `Table`) contribute 0 KB of JavaScript to the consumer's client bundle when rendered in Server Components.
 - **Flawless Next.js App Router Support:** Eliminates client boundary errors and enables Next.js server streaming.
 
 ### Negative
+
 - **Build Precision Required:** Requires careful module splitting or entry configuration during build to ensure client directives are preserved accurately.
 
 ---

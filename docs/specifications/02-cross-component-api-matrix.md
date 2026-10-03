@@ -1,11 +1,12 @@
 # Chellaa React — Component Specifications
+
 ## Document 02: Cross-Component API Consistency Matrix
 
 **Document Status:** 🟢 COMPLETE & CERTIFIED  
 **Phase:** 16 — Cross-Component API Consistency  
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** Document 01 Universal API Conventions  
+**Governing Standard:** Document 01 Universal API Conventions
 
 ---
 
@@ -14,6 +15,7 @@
 A hallmark of a mature, production-grade component library is **universal API predictability**. A developer learning the prop conventions of `Button` must be able to transfer that mental model directly to `Input`, `Select`, `Dialog`, `Card`, `Badge`, and `Table` without consulting documentation for basic conventions.
 
 This matrix validates cross-component API consistency across all 7 foundational components, strictly auditing 13 universal prop and convention dimensions:
+
 1. `variant`
 2. `size`
 3. `colorScheme`
@@ -81,6 +83,7 @@ This matrix validates cross-component API consistency across all 7 foundational 
 ## 3. Strict Consistency Rules & Invariant Proofs
 
 ### 3.1 Strict Boolean Prefixing (`is*`)
+
 - **Mandate:** All component state flags must use the `is*` prefix:
   - `isDisabled` (NEVER `disabled`)
   - `isInvalid` (NEVER `invalid` or `error`)
@@ -90,12 +93,14 @@ This matrix validates cross-component API consistency across all 7 foundational 
 - **Internal Mapping:** Components automatically map `isDisabled` to native HTML `disabled={isDisabled}` and `aria-disabled={isDisabled}`.
 
 ### 3.2 Icon Slot Consistency (`startIcon` / `endIcon`)
+
 - **Strict Prohibition:** Prop names `leftIcon`, `rightIcon`, `prefixIcon`, `suffixIcon` are **strictly prohibited** across all components.
 - **Mandate:** Directional icon props must use logical bidirectional naming:
   - `startIcon`: Icon positioned before children (respects LTR/RTL reading direction).
   - `endIcon`: Icon positioned after children.
 
 ### 3.3 Polymorphism & Child Slotting (`asChild`)
+
 - Dynamic polymorphic `as` props (e.g. `<Button as="a">`) are **banned library-wide**.
 - Delegation is achieved exclusively via `@radix-ui/react-slot` / internal `Slot` primitive using `asChild`.
 - **Prohibited on Void and Strict Semantic Elements:**
@@ -103,6 +108,7 @@ This matrix validates cross-component API consistency across all 7 foundational 
   - `Table`: Browser HTML table parsers (`HTMLTableElement`) reject arbitrary non-table tag structures. Therefore, `asChild` is prohibited on `Table`, `Tr`, `Th`, and `Td`.
 
 ### 3.4 Scoped State Class Naming
+
 - All CSS class modifiers follow the strict `.cl-<component>--<state>` naming convention:
   - `.cl-button--loading`
   - `.cl-input--invalid`

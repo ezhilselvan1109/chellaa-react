@@ -1,10 +1,11 @@
 # Chellaa React — Component Specifications
+
 ## Document 01: Universal API Conventions & Cross-Component Vocabulary
 
 **Document Status:** Approved  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** Phase 1 Foundation & Phase 2 Engineering Standards  
+**Governing Standard:** Phase 1 Foundation & Phase 2 Engineering Standards
 
 ---
 
@@ -94,6 +95,7 @@ All custom boolean properties must feature the `is` or `has` prefix.
 ```
 
 ### Native HTML Attribute Passthrough Rule
+
 When a Chellaa React component extends native HTML attributes (e.g. `React.ButtonHTMLAttributes<HTMLButtonElement>`), native attributes such as `disabled` are supported as pass-throughs for backwards compatibility with third-party libraries, but the official Chellaa API is strictly `isDisabled`.
 
 ---
@@ -125,10 +127,13 @@ Stateful components must adhere to the standard React two-prop contract:
 ## 5. Composition & Polymorphism: `asChild` vs. `as`
 
 ### 5.1 Absolute Prohibition of `as="..."`
+
 The dynamic polymorphic `as` prop (e.g. `<Button as={Link} />`) is **strictly prohibited**. It creates TypeScript performance degradation, type explosions, and runtime prop collisions.
 
 ### 5.2 The `asChild` Composition Pattern
+
 Polymorphic composition is achieved exclusively via `asChild`:
+
 ```tsx
 <Button asChild variant="primary">
   <Link href="/dashboard">Go to Dashboard</Link>
@@ -136,7 +141,9 @@ Polymorphic composition is achieved exclusively via `asChild`:
 ```
 
 ### 5.3 The `asChild` Semantic Safety Boundary
+
 `asChild` must **NOT** be blindly attached to every component. It is permitted only where composition is semantically safe:
+
 - **PERMITTED ON:**
   - `Button`: Delegates rendering to `<a>` or router `<Link>`.
   - `Card`: Delegates root to `<article>`, `<section>`, or `<nav>`.
@@ -169,10 +176,14 @@ export const Dialog = Object.assign(DialogRoot, {
 ```
 
 ### Context Guarding Rule
+
 Every sub-component must verify that it is rendered inside its parent root context. If rendered outside, it must throw an explicit error:
+
 ```typescript
 if (!context) {
-  throw new Error("[Chellaa]: <Dialog.Content> must be rendered within a <Dialog> root.");
+  throw new Error(
+    "[Chellaa]: <Dialog.Content> must be rendered within a <Dialog> root.",
+  );
 }
 ```
 

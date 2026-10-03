@@ -1,9 +1,10 @@
 # Chellaa React — Engineering Standards
+
 ## Document 06: Component Design & Lifecycle Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -13,7 +14,7 @@ Every component in Chellaa React is crafted to the same standard of visual excel
 
 This document establishes the official component anatomy, collocated file structure, prop conventions, compound component guidelines, Storybook expectations, and the 11-step **Component Development Lifecycle**.
 
-*(Note: In accordance with Phase 2 constraints, this document defines the standards; actual component implementation occurs in Phase 6).*
+_(Note: In accordance with Phase 2 constraints, this document defines the standards; actual component implementation occurs in Phase 6)._
 
 ---
 
@@ -122,6 +123,7 @@ export const Dialog = Object.assign(DialogRoot, {
 ```
 
 ### 4.1 Compound Component Guidelines
+
 1. **Shared Context:** State (such as `open`, `activeTab`, `selectedIndex`) is passed down silently through a scoped React Context.
 2. **Context Guarding:** Sub-components must throw a descriptive error if rendered outside their parent root:
    `"Chellaa: <Dialog.Content> must be rendered within a <Dialog> root."`
@@ -142,9 +144,15 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ["autodocs"],
   argTypes: {
-    variant: { control: "select", options: ["solid", "outline", "ghost", "subtle", "link"] },
+    variant: {
+      control: "select",
+      options: ["solid", "outline", "ghost", "subtle", "link"],
+    },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
-    colorScheme: { control: "select", options: ["primary", "secondary", "success", "warning", "danger", "info"] },
+    colorScheme: {
+      control: "select",
+      options: ["primary", "secondary", "success", "warning", "danger", "info"],
+    },
     isDisabled: { control: "boolean" },
     isLoading: { control: "boolean" },
   },
@@ -155,6 +163,7 @@ type Story = StoryObj<typeof Button>;
 ```
 
 ### 5.1 Mandatory Stories per Component
+
 1. **Default / Playground:** Fully interactive story connected to Storybook Controls.
 2. **All Variants Matrix:** Renders all visual variants side-by-side.
 3. **All Sizes Matrix:** Renders all sizes (`xs` through `xl`) side-by-side to verify optical alignment.

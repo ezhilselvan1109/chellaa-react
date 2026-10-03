@@ -1,8 +1,9 @@
 # Chellaa React — Engineering Workflows
+
 ## Workflow 04: Automated Release & NPM Publishing
 
 **Document Status:** 🟢 COMPLETE & ENFORCED  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -31,6 +32,7 @@ GitHub Release published with collated changelog
 ## 2. Emergency Hotfix Procedure
 
 If a critical regression is discovered in a published release:
+
 1. Create a `fix/hotfix-<issue>` branch from `main`.
 2. Implement the fix and write a regression test.
 3. Run `pnpm changeset` and select `patch`.

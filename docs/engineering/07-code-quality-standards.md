@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 07: Code Quality, Linting & Maintainability Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**Tooling Baseline:** ESLint, Prettier, Stylelint, TypeScript Strict  
+**Tooling Baseline:** ESLint, Prettier, Stylelint, TypeScript Strict
 
 ---
 
@@ -19,12 +20,15 @@ This document establishes the official code quality standards: ESLint configurat
 ## 2. Tooling Configuration & Zero-Warning Policy
 
 ### 2.1 The Zero-Warning Mandate
+
 In Chellaa React CI pipelines, warnings are treated as fatal errors:
 `pnpm lint --max-warnings 0`
 No code may be merged to `main` with active lint warnings or TypeScript compiler notices.
 
 ### 2.2 ESLint Core Ruleset
+
 The monorepo uses ESLint Flat Config (`eslint.config.js`) extending:
+
 - `@typescript-eslint/recommended-type-checked`
 - `eslint-plugin-react`
 - `eslint-plugin-react-hooks`
@@ -32,6 +36,7 @@ The monorepo uses ESLint Flat Config (`eslint.config.js`) extending:
 - `eslint-config-prettier`
 
 Critical rules enforced as `error`:
+
 - `@typescript-eslint/no-explicit-any: "error"`
 - `@typescript-eslint/no-floating-promises: "error"`
 - `react-hooks/rules-of-hooks: "error"`
@@ -41,6 +46,7 @@ Critical rules enforced as `error`:
 - `jsx-a11y/role-has-required-aria-props: "error"`
 
 ### 2.3 Prettier Formatting Baseline
+
 Code formatting is strictly handled by Prettier. Developers never debate whitespace in code reviews.
 
 ```json
@@ -117,16 +123,18 @@ Enforced automatically via `eslint-plugin-import` order rules.
 ## 5. Commenting & TSDoc Standards
 
 ### 5.1 TSDoc on Public APIs (Mandatory)
+
 TSDoc is **mandatory for all public API symbols**. This ensures rich IDE intellisense, autocomplete documentation, and automated API reference generation.
 
 **Mandatory Public TSDoc Scope:**
+
 - Exported React components and compound sub-components
 - Exported component props interfaces and property fields
 - Exported custom hooks and their return objects
 - Exported theme APIs and design token utilities
 - Exported public types and enum-like unions
 
-```typescript
+````typescript
 /**
  * Interactive button component supporting multiple visual variants,
  * accessible loading states, and polymorphic slot composition (`asChild`).
@@ -142,24 +150,29 @@ TSDoc is **mandatory for all public API symbols**. This ensures rich IDE intelli
  * ```
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(...);
-```
+````
 
 ### 5.2 Internal Implementation Symbols Policy
+
 Internal implementation helpers, unexported utilities, and local variables **do not require TSDoc boilerplate**.
 
 Do NOT write meaningless boilerplate comments such as:
+
 ```typescript
 // ❌ PROHIBITED BOILERPLATE:
 /** Button component */
 export function Button() {}
 
 /** Returns true */
-function isTrue() { return true; }
+function isTrue() {
+  return true;
+}
 ```
 
 Internal comments are expected only when explaining non-obvious algorithms, edge-case browser workarounds, or accessibility mechanics.
 
 ### 5.3 Inline Code Comments Policy
+
 - **Never state the obvious:**
   ```typescript
   // ❌ BAD:
@@ -178,10 +191,14 @@ Internal comments are expected only when explaining non-obvious algorithms, edge
 ## 6. Error Handling & Invariant Assertions
 
 ### 6.1 Descriptive Error Messages
+
 Chellaa React error messages must always be prefixed with `[Chellaa]` and guide the developer toward the immediate fix:
 
 ```typescript
-export function invariant(condition: boolean, message: string): asserts condition {
+export function invariant(
+  condition: boolean,
+  message: string,
+): asserts condition {
   if (!condition) {
     throw new Error(`[Chellaa]: ${message}`);
   }
@@ -190,7 +207,7 @@ export function invariant(condition: boolean, message: string): asserts conditio
 // Usage in compound component:
 invariant(
   context !== null,
-  "<Dialog.Content> must be rendered within a <Dialog> root component."
+  "<Dialog.Content> must be rendered within a <Dialog> root component.",
 );
 ```
 
@@ -199,6 +216,7 @@ invariant(
 ## 7. Abstraction Disciplines & The "Rule of Three"
 
 ### 7.1 Prohibition of Premature Abstraction
+
 Engineers often introduce complex abstraction layers to avoid repeating 3 lines of code. In Chellaa React, **premature abstraction is strictly prohibited**.
 
 ```

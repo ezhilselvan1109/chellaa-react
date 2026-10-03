@@ -1,10 +1,11 @@
 # Chellaa React — Foundation Architecture
+
 ## Document 05: Theme Architecture & Runtime Engine
 
 **Document Status:** Approved & Baseline  
 **Phase:** 1 — Foundation  
 **Version:** 1.0.0  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -51,16 +52,37 @@ export interface ColorTokens {
 export interface TypographyTokens {
   fontSans: string;
   fontMono: string;
-  fontSizes: Record<"xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl", string>;
+  fontSizes: Record<
+    "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl",
+    string
+  >;
   fontWeights: Record<"regular" | "medium" | "semibold" | "bold", number>;
   lineHeights: Record<"tight" | "snug" | "normal" | "relaxed", string | number>;
 }
 
 export interface SpatialTokens {
-  spacing: Record<"0" | "1" | "2" | "3" | "4" | "5" | "6" | "8" | "10" | "12" | "16", string>;
-  radii: Record<"none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full", string>;
+  spacing: Record<
+    "0" | "1" | "2" | "3" | "4" | "5" | "6" | "8" | "10" | "12" | "16",
+    string
+  >;
+  radii: Record<
+    "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full",
+    string
+  >;
   shadows: Record<"sm" | "md" | "lg" | "xl", string>;
-  zIndex: Record<"deep" | "base" | "raised" | "dropdown" | "sticky" | "backdrop" | "modal" | "popover" | "toast" | "tooltip", number>;
+  zIndex: Record<
+    | "deep"
+    | "base"
+    | "raised"
+    | "dropdown"
+    | "sticky"
+    | "backdrop"
+    | "modal"
+    | "popover"
+    | "toast"
+    | "tooltip",
+    number
+  >;
 }
 
 export interface ThemeConfig {
@@ -102,6 +124,7 @@ Chellaa React translates TypeScript theme definitions into native CSS custom pro
 ```
 
 ### 3.1 CSS Variable Naming Convention
+
 All variables follow a strict, collision-proof hierarchy:
 `--cl-<category>-<semantic-identifier>-<state>`
 
@@ -117,6 +140,7 @@ All variables follow a strict, collision-proof hierarchy:
 ## 4. ThemeProvider & Runtime Switching
 
 ### 4.1 Responsibilities of ThemeProvider
+
 The `ThemeProvider` serves as the centralized orchestrator for theme state management.
 
 ```
@@ -138,9 +162,11 @@ The `ThemeProvider` serves as the centralized orchestrator for theme state manag
 ```
 
 ### 4.2 Zero Re-Render Runtime Theme Switching
+
 In traditional React libraries, toggling dark mode triggers a full virtual DOM reconciliation and re-render of every component that consumes the theme.
 
 Chellaa React eliminates this performance penalty entirely:
+
 1. When `setMode("dark")` is called, the `ThemeProvider` mutates the DOM attribute on the document root:
    ```javascript
    document.documentElement.setAttribute("data-theme", "dark");
@@ -170,6 +196,7 @@ export interface UseThemeReturn {
 ```
 
 ### 5.1 Usage Example
+
 ```tsx
 import { useTheme } from "@chellaa/react";
 
@@ -251,13 +278,18 @@ Chellaa React solves this with a two-part SSR-safe architecture:
 ```
 
 ### 8.1 The `ThemeScript` Component
+
 Chellaa React exports a lightweight, minified `<ThemeScript />` component designed to be inserted in the application's root document (e.g., `app/layout.tsx` in Next.js):
 
 ```tsx
 // Next.js App Router Root Layout example:
 import { ThemeScript } from "@chellaa/react";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -270,17 +302,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 The injected inline script executes in < 1ms:
+
 ```javascript
-(function() {
+(function () {
   try {
-    var key = 'cl-theme-mode';
+    var key = "cl-theme-mode";
     var stored = localStorage.getItem(key);
-    var mode = stored || 'system';
+    var mode = stored || "system";
     var resolved = mode;
-    if (mode === 'system') {
-      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (mode === "system") {
+      resolved = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
     }
-    document.documentElement.setAttribute('data-theme', resolved);
+    document.documentElement.setAttribute("data-theme", resolved);
   } catch (e) {}
 })();
 ```
@@ -300,7 +335,7 @@ export const brandTheme = createTheme({
   name: "acme-corp",
   colors: {
     light: {
-      primaryBase: "#0284c7",    // Acme Sky Blue
+      primaryBase: "#0284c7", // Acme Sky Blue
       primaryHover: "#0369a1",
       primaryForeground: "#ffffff",
     },
@@ -319,6 +354,7 @@ export const brandTheme = createTheme({
 ```
 
 ### 9.1 Theme Merging Logic
+
 - `createTheme()` accepts a partial theme configuration.
 - It performs a deep recursive merge against Chellaa React's default baseline tokens.
 - It compiles the custom tokens into a static CSS variable string or runtime `<style>` injection when applied to the root `<ThemeProvider theme={brandTheme}>`.
@@ -348,4 +384,5 @@ Chellaa React supports arbitrary theme nesting without architectural friction:
 ```
 
 ### 10.1 Why Subtree Theming Works Flawlessly
+
 Because Chellaa React relies on standard CSS variable cascading, placing `data-theme="dark"` on any DOM element re-scopes all descendant `--cl-*` variables locally. No additional React context or state wrapping is necessary.

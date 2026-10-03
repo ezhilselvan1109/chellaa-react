@@ -1,4 +1,5 @@
 # Chellaa React — Package Architecture
+
 ## Document 02: NPM Package Architecture & Consumer Contract
 
 **Document Status:** 🟢 COMPLETE & VALIDATED  
@@ -6,13 +7,14 @@
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
 **Distribution Registry:** npm (`https://registry.npmjs.org/`)  
-**Package Scope:** `@chellaa`  
+**Package Scope:** `@chellaa`
 
 ---
 
 ## 1. Executive Summary & Package Contract
 
 `@chellaa/react` is distributed as a first-class npm package designed to deliver an uncompromising developer experience. As an enterprise React component library, its package contract must guarantee:
+
 1. **Zero-Configuration Styling:** Importing a component automatically delivers its styling without requiring a separate global stylesheet import.
 2. **Dual-Format Interoperability:** Clean modern ESM (`.mjs`) alongside robust CommonJS (`.cjs`) compatibility for legacy toolchains and Node testing harnesses.
 3. **Exact TypeScript Types:** Flawless type definitions (`.d.ts` and `.d.ts.map`) satisfying strict modern resolution modes (`Node16`, `NodeNext`, `Bundler`).
@@ -66,15 +68,8 @@ The following `package.json` represents the validated distribution contract for 
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "sideEffects": [
-    "*.css",
-    "**/*.css"
-  ],
+  "files": ["dist", "README.md", "LICENSE"],
+  "sideEffects": ["*.css", "**/*.css"],
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0"
@@ -154,6 +149,7 @@ The following `package.json` represents the validated distribution contract for 
 ## 4. Consumer Developer Experience (DX)
 
 ### 4.1 Installation
+
 Consumers install via standard package managers:
 
 ```bash
@@ -171,6 +167,7 @@ bun add @chellaa/react
 ```
 
 ### 4.2 Standard Consumer Usage
+
 ```tsx
 import { Button, Input, Card } from "@chellaa/react";
 
@@ -185,11 +182,12 @@ export function LoginForm() {
 ```
 
 ### 4.3 Zero-Configuration Styling Guarantee
+
 - **Default Experience:** The consumer imports components directly. The styles are delivered automatically.
 - **No Manual Import Required:**
   ```tsx
   // THIS IS NOT REQUIRED:
-  import "@chellaa/react/styles.css"; 
+  import "@chellaa/react/styles.css";
   ```
 - **Fallback Escape Hatch:** The standalone stylesheet is compiled and exported under `@chellaa/react/styles.css` strictly for non-bundler setups, static HTML CDN usage, or custom CSS pipelines.
 
@@ -198,12 +196,14 @@ export function LoginForm() {
 ## 5. CSS Delivery & CSS Tree-Shaking Architecture
 
 ### 5.1 CSS Delivery Mechanics
+
 The package implements the **Dual Delivery with Component-Level Side-Effects** model (ADR-007):
+
 1. **Component-Level Side-Effect Imports:**
    - In the compiled ESM distribution, component modules include relative static CSS imports:
      ```javascript
      // dist/components/Button/Button.mjs
-     import './Button.css';
+     import "./Button.css";
      ```
    - Bundlers (Vite, Webpack 5, Next.js App Router, Remix) intercept these CSS imports in npm dependencies, aggregate them, and inject them into the HTML document.
 2. **Deterministic Specificity:**
@@ -216,6 +216,7 @@ The package implements the **Dual Delivery with Component-Level Side-Effects** m
    - This guarantees that CSS specificity is determined by stylesheet layers, not by the random order in which components are imported by consumer code.
 
 ### 5.2 CSS Tree-Shaking Verification
+
 - When a consumer imports only `{ Button }` from `@chellaa/react`:
   - Bundlers analyze the ESM dependency graph.
   - The unused component JS (`Input.mjs`, `Dialog.mjs`, `Table.mjs`) is discarded.
@@ -251,7 +252,9 @@ Bundle sizes are enforced via `@size-limit/preset-small-lib` across individual i
 ## 7. Distribution Tarball Verification (`npm pack`)
 
 ### 7.1 Permitted Contents in Tarball
+
 When `npm pack` is executed, the resulting `.tgz` archive must contain **only** the following paths:
+
 ```text
 dist/
 ├── index.mjs               # Root ESM bundle
@@ -272,7 +275,9 @@ package.json                # Package manifest
 ```
 
 ### 7.2 Strictly Forbidden Contents
+
 The tarball **must never** contain:
+
 - `src/` (Source TypeScript and raw CSS)
 - `tests/` or `*.test.tsx` (Vitest suites)
 - `stories/` or `*.stories.tsx` (Storybook files)
@@ -281,6 +286,7 @@ The tarball **must never** contain:
 - `.github/` workflows or internal documentation
 
 Tarball contents will be validated on every release build via an automated script:
+
 ```bash
 pnpm pack --dry-run
 ```
@@ -292,11 +298,13 @@ pnpm pack --dry-run
 Before any release, the built package must pass two industry-standard validation gates:
 
 ### 8.1 `publint`
+
 - Validates the `package.json` export map, ensuring paths resolve correctly and deprecations are avoided.
 - Command: `pnpm dlx publint`
 - Gate: Must pass with **0 errors and 0 warnings**.
 
 ### 8.2 `@arethetypeswrong/cli` (attw)
+
 - Validates that TypeScript declaration files align across all modern resolution modes:
   - `node10`
   - `node16 (cjs)`

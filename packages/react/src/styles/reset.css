@@ -1,0 +1,27 @@
+/**
+ * Chellaa React — Scoped CSS Reset
+ * Minimal, non-destructive reset scoped strictly to Chellaa React component elements.
+ * Never pollutes consumer application tags or un-scoped DOM.
+ */
+@layer cl-reset {
+  [class^="cl-"],
+  [class*=" cl-"],
+  [class^="cl-"] *,
+  [class*=" cl-"] *,
+  [class^="cl-"] *::before,
+  [class*=" cl-"] *::before,
+  [class^="cl-"] *::after,
+  [class*=" cl-"] *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+  }
+
+  [class^="cl-"],
+  [class*=" cl-"] {
+    font-family: var(--cl-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

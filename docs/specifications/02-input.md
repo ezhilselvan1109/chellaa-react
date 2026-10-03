@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,11 +25,13 @@ Related Components: FormControl, FormLabel, FormErrorMessage, InputGroup, Textar
 The `Input` component is the foundational single-line text entry primitive. It enables users to type, edit, and submit text data (names, emails, search queries, passwords, numbers) within forms and toolbars.
 
 ### When to Use
+
 - Single-line textual input fields (names, email addresses, passwords, search queries).
 - Numeric input fields (`type="number"`).
 - Composed within `FormControl` for automatic label, helper text, and validation messaging.
 
 ### When NOT to Use
+
 - **Do NOT use for multi-line text input.** Use `Textarea` for comments, bios, and descriptions.
 - **Do NOT use for picking from predefined lists.** Use `Select`, `Combobox`, or `RadioGroup`.
 - **Do NOT use for toggling boolean flags.** Use `Checkbox` or `Switch`.
@@ -39,6 +41,7 @@ The `Input` component is the foundational single-line text entry primitive. It e
 ## 3. Scope
 
 ### In Scope
+
 - Native single-line input types (`text`, `email`, `password`, `number`, `search`, `tel`, `url`).
 - 4 visual variants: `outline` (default), `filled`, `flushed`, `unstyled`.
 - 5 standardized sizes: `xs`, `sm`, `md`, `lg`, `xl` (matching `Button` heights).
@@ -93,6 +96,7 @@ Input (HTML <input className="cl-input">)
 ```
 
 When composed with `InputGroup` for adornments:
+
 ```text
 InputGroup (.cl-input-group)
 ├── [InputLeftElement]  (.cl-input-group__element--start)
@@ -105,8 +109,10 @@ InputGroup (.cl-input-group)
 ## 7. Public API
 
 ```typescript
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   variant?: InputVariant;
   size?: InputSize;
   isDisabled?: boolean;
@@ -148,8 +154,10 @@ export interface InputProps
 export type InputVariant = "outline" | "filled" | "flushed" | "unstyled";
 export type InputSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   /**
    * Visual aesthetic treatment of the input field.
    * @default "outline"
@@ -250,26 +258,29 @@ export interface InputProps
 ## 12. Behavior
 
 ### State Transition Matrix
-| Current State | User Action | Next State | Effect |
-|---|---|---|---|
-| Resting | Pointer enters input | Hovered | Border color shifts to border-str |
-| Hovered / Resting | Pointer click or Tab | Focused | Focus ring visible; caret active |
-| Focused | Keystroke typed | Focused | Value updated; `onChange` fires |
-| Focused | Tab exit or blur | Resting | Hide focus ring; `onBlur` fires |
-| Any | `isInvalid=true` | Invalid | Render danger border & aria-invalid |
-| Any | `isDisabled=true` | Disabled | Suppress clicks and keyboard inputs |
+
+| Current State     | User Action          | Next State | Effect                              |
+| ----------------- | -------------------- | ---------- | ----------------------------------- |
+| Resting           | Pointer enters input | Hovered    | Border color shifts to border-str   |
+| Hovered / Resting | Pointer click or Tab | Focused    | Focus ring visible; caret active    |
+| Focused           | Keystroke typed      | Focused    | Value updated; `onChange` fires     |
+| Focused           | Tab exit or blur     | Resting    | Hide focus ring; `onBlur` fires     |
+| Any               | `isInvalid=true`     | Invalid    | Render danger border & aria-invalid |
+| Any               | `isDisabled=true`    | Disabled   | Suppress clicks and keyboard inputs |
 
 ---
 
 ## 13. Controlled / Uncontrolled
 
 ### Controlled
+
 ```tsx
 const [value, setValue] = useState("");
-<Input value={value} onChange={(e) => setValue(e.target.value)} />
+<Input value={value} onChange={(e) => setValue(e.target.value)} />;
 ```
 
 ### Uncontrolled
+
 ```tsx
 <Input defaultValue="Initial text" ref={inputRef} />
 ```
@@ -302,9 +313,13 @@ const [value, setValue] = useState("");
 - Composed with `InputGroup` for prefix/suffix elements:
   ```tsx
   <InputGroup size="md">
-    <InputLeftElement><SearchIcon /></InputLeftElement>
+    <InputLeftElement>
+      <SearchIcon />
+    </InputLeftElement>
     <Input placeholder="Search records..." />
-    <InputRightElement><ClearButton /></InputRightElement>
+    <InputRightElement>
+      <ClearButton />
+    </InputRightElement>
   </InputGroup>
   ```
 
@@ -321,9 +336,11 @@ const [value, setValue] = useState("");
 ## 17. Accessibility
 
 ### 17.1 Semantic Element
+
 Renders native `<input>` element with specified `type`.
 
 ### 17.2 Accessible Labeling
+
 - Every input **must** be connected to an accessible label via `id` and `htmlFor`:
   ```tsx
   <label htmlFor="user-email">Email Address</label>
@@ -332,6 +349,7 @@ Renders native `<input>` element with specified `type`.
 - If rendered without visible label text, an explicit `aria-label` or `aria-labelledby` is mandatory.
 
 ### 17.3 ARIA Validation Links
+
 - `aria-invalid="true"` when `isInvalid={true}`.
 - `aria-required="true"` when `isRequired={true}`.
 - `aria-describedby` links to helper text or error messages.
@@ -370,8 +388,9 @@ Renders native `<input>` element with specified `type`.
     background-color: var(--cl-color-bg-canvas);
     border: 1px solid var(--cl-color-border-def);
     border-radius: var(--cl-rad-md);
-    transition: border-color var(--cl-duration-fast) var(--cl-ease-default),
-                box-shadow var(--cl-duration-fast) var(--cl-ease-default);
+    transition:
+      border-color var(--cl-duration-fast) var(--cl-ease-default),
+      box-shadow var(--cl-duration-fast) var(--cl-ease-default);
   }
 
   .cl-input:hover:not(.cl-input--disabled):not([readonly]) {
@@ -424,6 +443,7 @@ Renders native `<input>` element with specified `type`.
 ## 22. Motion
 
 Under `@media (prefers-reduced-motion: reduce)`:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   .cl-input {

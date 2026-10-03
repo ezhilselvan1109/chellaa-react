@@ -1,4 +1,5 @@
 # Chellaa React — Foundation Architecture Audit
+
 ## Document 01: Comprehensive Foundation Audit & Consistency Certification
 
 **Document Status:** 🟢 COMPLETE & VERIFIED  
@@ -6,6 +7,7 @@
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
 **Governing Documents Audited:**
+
 - `docs/foundation/01-vision.md`
 - `docs/foundation/02-requirements.md`
 - `docs/foundation/03-design-system.md`
@@ -68,12 +70,14 @@ All six foundation documents have been analyzed across 14 vital architectural di
 ## 3. Deep-Dive Audit of Architectural Dimensions
 
 ### 3.1 Package Identity
+
 - **Canonical Package Name:** `@chellaa/react`
 - **Repository:** `chellaa-react`
 - **Scope Verification:** Scoped under `@chellaa`. Requires npm organization permissions or `--access public` upon initial publishing.
 - **Consistency Check:** Aligned across `01-vision.md` through `06-library-architecture.md`.
 
 ### 3.2 Supported React Versions
+
 - **Baseline:** `react: ">=18.2.0"`, `react-dom: ">=18.2.0"`.
 - **Upper Target:** Full compatibility with React 19.x.
 - **Key API Dependencies:**
@@ -82,6 +86,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `02-requirements.md` and `06-library-architecture.md`.
 
 ### 3.3 TypeScript Version & Settings
+
 - **Compiler Version:** TypeScript 5.0+.
 - **Strictness Flags:**
   - `"strict": true`
@@ -93,6 +98,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `01-typescript-standards.md` and `06-library-architecture.md`.
 
 ### 3.4 Browser Support Baseline
+
 - **Minimum Evergreen Baseline:**
   - Google Chrome 100+
   - Mozilla Firefox 100+
@@ -102,6 +108,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `02-requirements.md` and `04-styling-architecture.md`.
 
 ### 3.5 Accessibility Target (WCAG 2.2 Level AA)
+
 - **Standard:** WCAG 2.2 Level AA compliance is a non-negotiable architectural requirement.
 - **Key Tenets:**
   - Color contrast ratio >= 4.5:1 for normal text, >= 3:1 for large text and UI components.
@@ -113,6 +120,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `02-requirements.md`, `04-accessibility-standards.md`, and all component specifications.
 
 ### 3.6 Styling Architecture
+
 - **Paradigm:** Scoped Static CSS with Semantic CSS Custom Properties.
 - **Cascade Control:** All library component styles are enclosed in CSS `@layer cl-components`.
 - **Namespacing:** Strict `.cl-*` class names (e.g., `.cl-button`, `.cl-input`).
@@ -121,12 +129,14 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `04-styling-architecture.md` and `03-css-standards.md`.
 
 ### 3.7 Theme Architecture
+
 - **Engine:** Dynamic CSS custom property overriding driven by DOM attributes (`data-theme="light|dark|custom"`).
 - **Complexity:** $O(1)$ theme switching without React virtual DOM re-renders or context re-evaluations.
 - **Hydration & SSR:** `<ThemeScript />` executes synchronously in HTML `<head>` to inspect `localStorage` or `matchMedia` and apply `data-theme` before first paint, preventing dark mode FOUC.
 - **Consistency Check:** Aligned across `05-theme-architecture.md` and `06-library-architecture.md`.
 
 ### 3.8 Monorepo Architecture
+
 - **Package Manager:** `pnpm` (workspaces).
 - **Task Orchestrator:** `Turborepo` (`turbo.json`).
 - **Workspace Topology:**
@@ -137,6 +147,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `06-library-architecture.md` and `09-build-release-standards.md`.
 
 ### 3.9 Package Architecture & Export Maps
+
 - **Manifest Standards:**
   - `"main": "./dist/index.cjs"`
   - `"module": "./dist/index.mjs"`
@@ -150,6 +161,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `06-library-architecture.md` and `09-build-release-standards.md`.
 
 ### 3.10 Build Architecture
+
 - **Bundler:** `tsup` (esbuild).
 - **Formats:** Dual ESM (`.mjs`) and CJS (`.cjs`).
 - **CSS Compiler:** `LightningCSS` for autoprefixing, `@layer` preservation, and minification.
@@ -157,6 +169,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `06-library-architecture.md` and `09-build-release-standards.md`.
 
 ### 3.11 CSS Ownership & Automatic Delivery
+
 - **Contract:** The library owns CSS delivery. The consumer does NOT need:
   ```tsx
   import "@chellaa/react/styles.css"; // Not required!
@@ -166,18 +179,21 @@ All six foundation documents have been analyzed across 14 vital architectural di
 - **Consistency Check:** Aligned across `007-zero-configuration-styling.md`, `04-styling-architecture.md`, and `06-library-architecture.md`.
 
 ### 3.12 Public API Expectations
+
 - **Root Entry Imports:** Components, hooks, and types imported directly from `@chellaa/react`.
 - **Encapsulation:** Deep internal imports (`@chellaa/react/src/...`) are strictly blocked by package exports.
 - **Polymorphism:** Exclusively handled via `asChild` slot delegation. Dynamic `as` props are prohibited.
 - **Consistency Check:** Aligned across `01-api-conventions.md` and `06-component-standards.md`.
 
 ### 3.13 SSR / RSC Requirements
+
 - **No Browser Globals at Root:** No access to `window`, `document`, or `navigator` in root execution paths.
 - **Deterministic IDs:** React 18 `useId()` ensures matched client/server DOM element IDs.
 - **RSC Compatibility:** Static components (`Card`, `Badge`, `Table`) render cleanly in Server Components without forcing client hydration.
 - **Consistency Check:** Aligned across `02-react-standards.md` and `09-build-release-standards.md`.
 
 ### 3.14 Distribution & Quality Verification
+
 - **Pre-publish Validation Tools:**
   - `publint`: Validates `package.json` exports and packaging structure.
   - `@arethetypeswrong/cli`: Validates TypeScript declarations across Node10, Node16, and Bundler.
@@ -191,6 +207,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
 ## 4. Cross-Document Contradiction Resolution Summary
 
 The audit confirmed that all previously documented contradictions between Phase 1 and Phase 2 have been resolved:
+
 1. **Side-Effects Resolution:** Standardized to `"sideEffects": ["*.css", "**/*.css"]` throughout all documents. `"sideEffects": false` is permanently eliminated.
 2. **Global Client Banner Resolution:** Banned across all documents. Components declare client boundaries individually.
 3. **Card Interactivity Resolution:** Removed `isInteractive` hazard; standardized on `<Card asChild><a ...>`.

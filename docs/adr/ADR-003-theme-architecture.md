@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, Design Systems Lead, Frontend Core Team  
+**Deciders:** Principal Architect, Design Systems Lead, Frontend Core Team
 
 ---
 
@@ -33,11 +33,13 @@ Furthermore, client-side theme initialization frequently causes a Flash of Unsty
 ## 3. Consequences
 
 ### Positive
+
 - **Instantaneous Theme Switching:** Zero virtual DOM re-renders during light/dark transitions.
 - **Zero FOUC:** Perfect SSR hydration without white-flash in dark mode.
 - **Nested Theming:** Supports localized theme containers (e.g. `<div data-theme="dark">` inside a light-themed page).
 
 ### Negative
+
 - **Context Separation:** Components cannot read raw theme token values as JavaScript objects during render; tokens exist in the CSS layer. (Design tokens are exposed via typed constants where programmatic access is needed).
 
 ---

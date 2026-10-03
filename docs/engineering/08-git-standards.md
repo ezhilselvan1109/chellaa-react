@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 08: Git Workflow, Commits & Changeset Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**Workflow Engine:** GitHub Flow + Changesets  
+**Workflow Engine:** GitHub Flow + Changesets
 
 ---
 
@@ -37,6 +38,7 @@ All feature and bug-fix branches must branch from `main` and adhere to a strict 
 ```
 
 ### 2.1 Branch Type Dictionary
+
 - `feat/`: Introduces a new component, prop, or user-facing feature.
 - `fix/`: Resolves a bug, accessibility violation, or unintended behavior.
 - `docs/`: Adds or updates architectural documents, API guides, or stories.
@@ -52,6 +54,7 @@ All feature and bug-fix branches must branch from `main` and adhere to a strict 
 Commit messages must follow the **Conventional Commits 1.0.0** specification. These messages are parsed automatically by tooling to generate changelogs.
 
 ### 3.1 Format Specification
+
 ```text
 <type>(<scope>): <imperative description>
 
@@ -61,6 +64,7 @@ Commit messages must follow the **Conventional Commits 1.0.0** specification. Th
 ```
 
 ### 3.2 Canonical Chellaa React Examples
+
 ```text
 feat(button): add asChild slot composition support
 
@@ -82,11 +86,14 @@ satisfying WCAG 2.2 Success Criterion 2.4.3.
 ## 4. Pull Request (PR) Standards & Review Mandate
 
 ### 4.1 PR Sizing Policy
+
 - **Small & Focused:** Pull requests must target fewer than **400 lines of diff** wherever possible.
 - Mega-PRs containing multiple unrelated components or large rewrites will be closed and requested to be split.
 
 ### 4.2 Pull Request Template Checklist
+
 Every PR description must include:
+
 1. **Summary of Changes:** What was implemented and why.
 2. **Linked Issue:** E.g., `Resolves #108`.
 3. **Accessibility Verification:** Confirms automated `axe-core` tests pass and keyboard navigation was tested.
@@ -94,6 +101,7 @@ Every PR description must include:
 5. **Changeset Inclusion:** Confirmation that a changeset was added (if applicable).
 
 ### 4.3 Review & Merge Policy
+
 - **Minimum Approvals:** Every PR requires at least **one approved review** from a core maintainer.
 - **Merge Strategy:** **Squash and Merge** is enforced on `main`. This maintains a linear, clean commit history on the default branch.
 - **Conflict Resolution:** Developers must rebase their branch onto `origin/main` (`git fetch origin && git rebase origin/main`). Merge commits (`Merge branch 'main' into ...`) are prohibited.
@@ -105,6 +113,7 @@ Every PR description must include:
 Chellaa React uses **Changesets** (`@changesets/cli`) to manage semantic versioning, automated changelogs, and npm distribution.
 
 ### 5.1 When is a Changeset Required?
+
 A changeset is **mandatory** for any PR that modifies publishable code in `packages/react`:
 
 ```
@@ -128,10 +137,13 @@ A changeset is **mandatory** for any PR that modifies publishable code in `packa
 ```
 
 ### 5.2 Creating a Changeset
+
 Run the interactive CLI from the repository root:
+
 ```bash
 pnpm changeset
 ```
+
 Follow the prompts to select packages (`@chellaa/react`), choose the SemVer bump (`patch`, `minor`, `major`), and write a user-facing markdown summary of the change.
 
 ---
@@ -198,6 +210,7 @@ GitHub Release Generated with Changelog
 ## 8. Branch Protection & Main Branch Governance
 
 The `main` branch is the production source of truth and must be protected by the following repository rules:
+
 1. **Require Pull Request Reviews:** Minimum 1 approving review from a core maintainer before merging.
 2. **Require Status Checks to Pass:** CI workflow (`ci.yml`) must pass completely:
    - Typecheck
@@ -210,4 +223,3 @@ The `main` branch is the production source of truth and must be protected by the
 3. **Require Linear History:** Merges must use **Squash and Merge**. Direct merge commits are blocked.
 4. **Require Branches to be Up-to-Date:** PR branch must be rebased onto latest `origin/main` before merge.
 5. **No Direct Pushes:** Direct pushes to `main` are strictly prohibited for all developers and maintainers.
-

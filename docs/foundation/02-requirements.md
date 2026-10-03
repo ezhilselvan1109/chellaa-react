@@ -1,10 +1,11 @@
 # Chellaa React — Foundation Architecture
+
 ## Document 02: Functional and Technical Requirements
 
 **Document Status:** Approved & Baseline  
 **Phase:** 1 — Foundation  
 **Version:** 1.0.0  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -17,7 +18,9 @@ This document establishes the comprehensive functional and non-functional engine
 ## 2. React Ecosystem Requirements
 
 ### 2.1 Supported React Versions
+
 Chellaa React officially supports:
+
 - **React 18.2.0+**
 - **React 19.x**
 
@@ -41,12 +44,14 @@ Chellaa React officially supports:
 ```
 
 #### Rationale for React Baseline
+
 1. **`useId` Hook Requirement:** Accessible components requiring unique DOM IDs for ARIA associations (e.g., `aria-labelledby`, `aria-describedby`) cannot rely on client-side counters or `Math.random()`, which cause catastrophic SSR hydration mismatch errors. React 18's native `useId` provides deterministic cross-boundary hydration IDs.
 2. **Concurrent Features:** Chellaa React must not block React's concurrent scheduler. Offloading styling recalculations to the browser CSS engine (via CSS custom properties) ensures transitions (`useTransition`) and deferred values (`useDeferredValue`) remain responsive.
 3. **React 19 Ref Transition Strategy:** In React 19, `forwardRef` is deprecated in favor of passing `ref` as a standard prop. Chellaa React must implement a forward-compatible ref forwarding wrapper or pattern that seamlessly accepts `ref` across both React 18 (via `React.forwardRef`) and React 19 without issuing console deprecation warnings.
 4. **React Server Components (RSC) Boundaries:** Interactive components using state, effects, or DOM event listeners must be annotated with the `"use client"` directive at the module boundary. Static layout components (e.g., `Container`, `Grid`, `Box`) should remain RSC-compatible server components where possible.
 
 ### 2.2 Component API Conventions
+
 - **Composition over Inheritance:** Components must utilize compound component architectures and the `asChild` composition pattern.
 - **Polymorphism via `asChild`:** Avoid dynamic polymorphic `as` props (e.g., `<Button as={Link} />`). Dynamic `as` props create severe TypeScript performance degradation, fragile generic type parameter explosions, and prop-clobbering runtime bugs. Instead, Chellaa React mandates the `asChild` slot delegation pattern:
 
@@ -87,6 +92,7 @@ Chellaa React is a TypeScript-native library. TypeScript is not an afterthought;
 ```
 
 ### 3.1 Public Type Definitions
+
 1. Every component must export its primary prop interface:
    - `ButtonProps` from `@chellaa/react`
    - `InputProps` from `@chellaa/react`
@@ -95,6 +101,7 @@ Chellaa React is a TypeScript-native library. TypeScript is not an afterthought;
 3. Zero internal implementation types (e.g., intermediate bundler types, internal utility types) should leak into root barrel exports.
 
 ### 3.2 Generics and Type Inference
+
 - Complex data-driven components (e.g., `Select<T>`, `Combobox<T>`, `Table<TData>`) must accept generic types, providing type safety for option objects, item selections, and cell values.
 - Discriminated unions must be used for mutually exclusive states:
 
@@ -106,6 +113,7 @@ type ButtonContentProps =
 ```
 
 ### 3.3 Declaration File Generation
+
 - Types must be emitted alongside code during build: `.d.ts` and `.d.ts.map` files must be distributed in the npm package.
 - Type declarations must be verified using `attw` (`@arethetypeswrong/cli`) to guarantee flawless resolution across ESM and CommonJS consumer projects.
 
@@ -114,6 +122,7 @@ type ButtonContentProps =
 ## 4. Browser & Platform Compatibility Requirements
 
 ### 4.1 Target Browsers
+
 Chellaa React targets modern evergreen browsers, matching the official browserslist baseline:
 
 ```
@@ -131,7 +140,9 @@ Chellaa React targets modern evergreen browsers, matching the official browsersl
 ```
 
 ### 4.2 Baseline CSS Feature Set
+
 The styling architecture relies strictly on standardized, universally supported CSS capabilities:
+
 - **CSS Custom Properties (Variables):** Level 1 support (100% evergreen support).
 - **CSS `:focus-visible` pseudo-class:** Native keyboard focus detection.
 - **CSS Flexbox & Modern Grid:** Standard subgrid/grid layouts.
@@ -140,6 +151,7 @@ The styling architecture relies strictly on standardized, universally supported 
 - **CSS `@media (prefers-color-scheme)`:** Native OS theme hook.
 
 ### 4.3 Polyfill Policy
+
 - Chellaa React **ships zero polyfills** in its distribution bundle to preserve minimal bundle size.
 - If a consumer application must support legacy browsers, the consumer application is responsible for providing necessary polyfills (e.g., `ResizeObserver`, `IntersectionObserver`).
 
@@ -177,6 +189,7 @@ Accessibility is a non-negotiable core requirement. Every interactive element mu
 ```
 
 ### 5.1 Keyboard Navigation Standards
+
 - **Tab & Shift+Tab:** Move sequentially through reachable interactive elements.
 - **Enter & Space:** Activate buttons, toggle checkboxes, open dropdowns.
 - **Arrow Keys (Up/Down/Left/Right):** Navigate inside composite widgets (Menu, RadioGroup, Tabs, Select) using the **Roving Tabindex** or **Active Descendant** pattern.
@@ -184,21 +197,25 @@ Accessibility is a non-negotiable core requirement. Every interactive element mu
 - **Home & End:** Jump to first/last item in lists, menus, and tabs.
 
 ### 5.2 Focus Trapping and Restoration
+
 - **Dialogs & Modals:** Focus must be trapped inside the modal container when open. Background elements must be marked with `aria-hidden="true"` or HTML `inert`. When the modal closes, focus must be returned to the triggering element.
 - **Initial Focus:** Modals and Popovers must focus the first interactive child, or an explicitly designated element via an `initialFocusRef` prop.
 
 ### 5.3 Form Accessibility
+
 - Every input component (`Input`, `Select`, `Textarea`, `Checkbox`, `Radio`) must integrate with `FormField` / `FormControl` wrappers.
 - Dynamic error messages must be linked to inputs using `aria-describedby` and flagged with `aria-invalid="true"`.
 - Required fields must specify `aria-required="true"`.
 - Labels must be programmatically associated with inputs via `htmlFor` and matching `id`.
 
 ### 5.4 Screen Reader Compatibility
+
 - Use semantic HTML elements first (`<button>`, `<input>`, `<nav>`, `<main>`, `<dialog>`).
 - Supplement with ARIA attributes only where semantic HTML is insufficient (`aria-expanded`, `aria-haspopup`, `aria-controls`, `aria-checked`, `aria-selected`).
 - Announcements for asynchronous updates (toasts, alerts) must utilize `aria-live="polite"` or `aria-live="assertive"`.
 
 ### 5.5 Focus Rings & Reduced Motion
+
 - **Focus Rings:** All interactive controls must render a clearly discernible focus ring via `:focus-visible`. A 2px solid primary ring with a 2px offset (transparent gap) ensures visibility against any surface background.
 - **Reduced Motion:** If `prefers-reduced-motion: reduce` is detected, all transitions and animations must collapse to `0ms` duration or instantaneous opacity fades.
 
@@ -223,11 +240,13 @@ Chellaa React must deliver instantaneous rendering and lean bundle footprints.
 ```
 
 ### 6.1 Runtime Overhead Elimination
+
 - **Zero Runtime Style Invalidation:** No CSS parsing, hash generation, or dynamic `<style>` injection during JavaScript render passes.
 - **CSS Variable Rendering:** Dynamic theming, colors, and spatial adjustments are resolved natively by the browser CSS engine via custom properties.
 - **Zero Re-Render Theme Toggling:** Toggling between light and dark modes must execute in **O(1)** time by modifying a DOM attribute (`data-theme`), requiring **zero component re-renders** in React.
 
 ### 6.2 Tree Shaking & Module Architecture
+
 - The package must be marked with `"sideEffects": ["*.css", "**/*.css"]`.
 - JavaScript modules must be pure. Importing `{ Button }` from `@chellaa/react` must bundle **only** the Button code and its direct dependencies. The bundler must completely eliminate unreferenced components (e.g., Modal, DatePicker, Table).
 - Component-level tree-shaking must be verified using automated bundle-analyzer tests in CI.
@@ -237,12 +256,14 @@ Chellaa React must deliver instantaneous rendering and lean bundle footprints.
 ## 7. Server-Side Rendering (SSR) & RSC Requirements
 
 ### 7.1 Hydration Safety & Determinism
+
 - **No Direct Browser API Access during Render:** Components must never access `window`, `document`, `navigator`, or `localStorage` during initial render. All browser API interactions must be deferred to `useEffect` / `useLayoutEffect` (or an SSR-safe `useIsomorphicLayoutEffect`).
 - **Zero Hydration Mismatch:** Generated HTML on the server must match client-rendered HTML character-for-character. Deterministic IDs from React 18's `useId()` must be used for all DOM associations.
 
 ### 7.2 Zero-Flash Theme Initialization (FOUC Prevention)
+
 - Theme initialization must support an inline script snippet (`ThemeScript`) rendered in the `<head>` of the consumer's HTML document (e.g., in Next.js `layout.tsx` or Remix `root.tsx`).
-- This script reads the user's stored theme preference from `localStorage` or evaluates `window.matchMedia('(prefers-color-scheme: dark)')` and sets the `data-theme` attribute on the root `<html>` element *before* the browser paints the first pixel. This eliminates the Flash of Unstyled Content (FOUC).
+- This script reads the user's stored theme preference from `localStorage` or evaluates `window.matchMedia('(prefers-color-scheme: dark)')` and sets the `data-theme` attribute on the root `<html>` element _before_ the browser paints the first pixel. This eliminates the Flash of Unstyled Content (FOUC).
 
 ---
 
@@ -278,6 +299,7 @@ Consumers must be able to customize the design system at every layer without mod
 ## 9. Theme Architecture Requirements
 
 The theme system must provide:
+
 - **Light Mode:** Default high-contrast, accessible light palette.
 - **Dark Mode:** Carefully balanced, low-glare dark palette with true surface elevation.
 - **System Preference:** Automatic synchronization with OS `prefers-color-scheme` settings.
@@ -294,6 +316,7 @@ The theme system must provide:
 ## 10. Package Distribution & Tooling Requirements
 
 ### 10.1 NPM Package Structure
+
 - Primary package: `@chellaa/react`.
 - Published artifacts must include:
   - `dist/index.mjs` (ES Module bundle for modern bundlers).
@@ -319,6 +342,7 @@ The theme system must provide:
 > **Style Delivery Contract:** The primary package export (`"."`) delivers both the component code and its required styling automatically. The `./styles.css` subpath export is maintained solely as an optional export for static asset extraction or legacy tooling, but is **never required** for normal component consumption.
 
 ### 10.2 Peer Dependencies
+
 - Peer dependencies must be strictly constrained:
   - `react: ">=18.2.0"`
   - `react-dom: ">=18.2.0"`
@@ -352,6 +376,7 @@ export default function Page() {
 ```
 
 ### 11.1 Zero-Configuration Styling Mandate
+
 - **No Manual Global Stylesheet Import:** Consumers must **not** be required to manually import a Chellaa React global stylesheet (`@chellaa/react/styles.css`) for normal component usage.
 - **Ownership of Style Delivery:** Chellaa React owns the delivery of its component styling. Importing `{ Button }` delivers a fully functioning, styled button with design tokens, hover/focus states, and theme variables attached.
 - **Zero Tooling Friction:** No Babel plugins, no custom Webpack loaders, no PostCSS custom plugins, and no Tailwind configuration gymnastics required. It works out-of-the-box in Next.js (App & Pages Router), Vite, Remix, Astro, and standard bundlers.

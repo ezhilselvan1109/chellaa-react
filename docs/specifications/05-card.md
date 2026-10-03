@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,11 +25,13 @@ Related Components: Box, Stack, Container
 The `Card` component is a structured content container that groups related visual assets, text descriptions, and interactive triggers into a single discernible physical surface.
 
 ### When to Use
+
 - Displaying self-contained units of content (user profiles, dashboard metrics, product listings, articles).
 - Organizing complex page sections into clear visual modules.
 - Presenting summarized information tiles.
 
 ### When NOT to Use
+
 - **Do NOT use as an arbitrary interactive container.** Wrapping an entire card in a click handler without semantic anchor tags creates inaccessible DOM. Use internal links or `<Card asChild><a href="...">...</a></Card>` instead.
 - **Do NOT use as a replacement for raw layout containers.** Use `Box` or `Stack` if no distinct surface background, border, or elevation is required.
 - **Do NOT nest cards deeply** (e.g. card inside card), which creates visual clutter and muddy elevation layers.
@@ -39,6 +41,7 @@ The `Card` component is a structured content container that groups related visua
 ## 3. Scope
 
 ### In Scope
+
 - Compound component structure (`Card.Root`, `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body`, `Card.Footer`).
 - 3 visual variants: `elevated` (default), `outline`, `filled`.
 - 3 spatial padding scales: `sm`, `md` (default), `lg`.
@@ -94,6 +97,7 @@ Card (HTML <div className="cl-card"> or delegated asChild element)
 ## 7. Public API
 
 ### `Card.Root` Props
+
 ```typescript
 export interface CardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
@@ -172,6 +176,7 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 ## 10. Sizes
 
 Padding scales applied across `Card.Header`, `Card.Body`, and `Card.Footer`:
+
 - `sm`: 12px (space-3) padding, compact gap.
 - `md` (Default): 16px (space-4) padding, standard gap.
 - `lg`: 24px (space-6) padding, generous airy gap.
@@ -181,6 +186,7 @@ Padding scales applied across `Card.Header`, `Card.Body`, and `Card.Footer`:
 ## 11. States
 
 Card is a presentational surface.
+
 - **Resting:** Renders according to variant and size tokens.
 - **Hover / Focus:** Controlled by internal interactive children (buttons, links).
 
@@ -211,6 +217,7 @@ Inherits standard React DOM event handlers (`onClick`, `onMouseEnter`, `onMouseL
 ## 15. Composition
 
 Supports `asChild` to delegate the root node to semantic HTML elements:
+
 ```tsx
 <Card asChild variant="outline">
   <article>
@@ -233,10 +240,12 @@ Supports `asChild` to delegate the root node to semantic HTML elements:
 ## 17. Accessibility
 
 ### 17.1 Semantic HTML
+
 - Recommended: Render as `<article>` or `<section>` when representing standalone document content.
 - `Card.Title` renders semantic `<h3>` by default; use `asChild` to render `<h2>` or `<h4>` without polymorphic prop anti-patterns.
 
 ### 17.2 Elimination of Clickable Container Hazard
+
 Chellaa React rejects `isInteractive` on cards. Making an entire multi-element `<div>` clickable creates screen reader confusion and breaks keyboard navigation. Instead, interactive actions are rendered as distinct `<Button>` or `<Link>` controls inside the card.
 
 ---

@@ -1,10 +1,11 @@
 # Chellaa React — Foundation Architecture
+
 ## Document 01: Vision, Principles, and Strategy
 
 **Document Status:** Approved & Baseline  
 **Phase:** 1 — Foundation  
 **Version:** 1.0.0  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -13,11 +14,13 @@
 **Chellaa React** is an enterprise-grade, accessible, and high-performance React component library and design system engine. Built from first principles, Chellaa React bridges the persistent gap between uncompromising accessibility (WCAG 2.2 AA / WAI-ARIA compliance), elite developer experience (frictionless TypeScript inference, clean composability), and state-of-the-art visual design.
 
 Modern React teams frequently struggle with a painful compromise:
+
 1. Adopt heavy runtime CSS-in-JS component suites (like legacy versions of MUI or Chakra UI) that suffer from significant runtime overhead, hydration mismatches, and poor compatibility with React 18/19 Server Components and streaming SSR.
 2. Adopt headless primitive libraries (like Radix UI or React Aria) which provide accessibility, but offload hundreds of hours of design-token structuring, visual styling, focus-ring states, animation engineering, and component ergonomics onto application teams.
 3. Adopt utility-heavy libraries or copy-paste collections (like shadcn/ui) that litter application codebases with sprawling boilerplate, make centralized theme governance difficult, and create versioning/maintenance debt across enterprise micro-frontends and multi-repo teams.
 
 Chellaa React establishes a unified, distributed design system library that delivers:
+
 - **Zero-runtime-overhead styling** powered by semantic CSS custom properties and scoped static CSS.
 - **Zero-configuration styling delivery:** Working styles and design tokens are automatically delivered with component imports—zero manual stylesheet imports required.
 - **Accessible-by-default component primitives** adhering strictly to W3C WAI-ARIA Authoring Practices (APG).
@@ -30,6 +33,7 @@ Chellaa React establishes a unified, distributed design system library that deli
 ## 2. Purpose
 
 ### 2.1 Why Does Chellaa React Exist?
+
 Modern web development requires teams to ship accessible, cohesive, brand-aligned interfaces at high velocity. However, the ecosystem has fractured into fragmented extremes:
 
 1. **The Runtime Performance Tax:** Many incumbent component libraries rely on runtime CSS-in-JS engines (Emotion, styled-components). These inject `<style>` tags during render cycles, causing CPU spikes, layout recalculations, increased JavaScript bundle size, and incompatibility with modern React Server Components (RSC) and streaming SSR architectures.
@@ -38,6 +42,7 @@ Modern web development requires teams to ship accessible, cohesive, brand-aligne
 4. **Poor Dark Mode & Multi-Brand Architectures:** The majority of libraries handle dark mode by conditionally switching class names or recalculating JavaScript theme objects across the entire component tree, causing massive re-renders and visible layout flashes during page hydration.
 
 ### 2.2 The Problem Chellaa React Solves
+
 Chellaa React provides a **governed, installable, zero-runtime-styled component foundation** that couples the accessibility rigor of headless primitives with a refined, customizable design token system. It delivers out-of-the-box visual excellence with zero configuration overhead, automatically delivering its own styling without requiring separate global CSS imports, while maintaining full token-driven customizability for enterprise multi-brand systems.
 
 ---
@@ -45,7 +50,9 @@ Chellaa React provides a **governed, installable, zero-runtime-styled component 
 ## 3. Vision
 
 ### 3.1 Long-term Aspirations
+
 Chellaa React aims to be the gold standard foundation for modern React web applications, SaaS platforms, and enterprise design systems. In the long term, Chellaa React will:
+
 - Act as the single source of truth for UI components across web products, ensuring that any engineer can assemble a polished, fully accessible, and accessible-tested interface in minutes.
 - Serve as the engine powering enterprise multi-tenant and multi-brand platforms, where switching brands or themes requires only a single CSS custom property layer switch rather than rewriting component styles.
 - Provide a modular, tiered architecture where teams can consume either high-level pre-styled components (`@chellaa/react`) or lower-level headless primitives, styling utilities, and icons.
@@ -92,6 +99,7 @@ Chellaa React is engineered intentionally for five primary personas:
 Developer experience is not an afterthought; it is a core technical constraint. Chellaa React is designed around the principle of **Zero-Friction Adoption**:
 
 ### 5.1 Intuitive, Predictable Consumption
+
 Consumers should be able to install the package and immediately import components with standard modern syntax:
 
 ```tsx
@@ -107,9 +115,11 @@ export function App() {
 ```
 
 #### The Zero-Configuration Styling Principle
+
 > **Chellaa React owns the delivery of its component styling. Consumers should receive a working styled component through the normal package import without requiring a separate global stylesheet import.**
 
 The consumer should never need to understand:
+
 - Where the library CSS files are physically located
 - How component CSS is bundled or linked
 - Which stylesheet must be imported
@@ -119,7 +129,9 @@ The consumer should never need to understand:
 The styling simply works out of the box through `import { Button } from "@chellaa/react"`.
 
 ### 5.2 Deterministic API Conventions
+
 Every component in Chellaa React adheres to uniform naming conventions:
+
 - **Variants:** Consistent visual variants (`solid`, `outline`, `ghost`, `subtle`, `link`) across interactive components.
 - **Sizes:** Standardized size hierarchy (`xs`, `sm`, `md`, `lg`, `xl`) aligned to an 8px/4px spatial grid.
 - **Color Schemes / Intents:** Predictable semantic intentions (`primary`, `secondary`, `success`, `warning`, `danger`, `info`).
@@ -127,6 +139,7 @@ Every component in Chellaa React adheres to uniform naming conventions:
 - **Composition / Polymorphism:** Safe, type-checked composition via an explicit `asChild` pattern, eliminating the runtime type hazards and ref-forwarding pitfalls of dynamic `as` props.
 
 ### 5.3 Discoverability & Autocompletion
+
 - All props are strictly typed and accompanied by TSDoc comments explaining purpose, default values, and accessibility implications.
 - Component exports are clean and tree-shakeable. Auto-imports resolve instantly without lag in IDEs (VS Code, WebStorm).
 
@@ -170,33 +183,42 @@ The technical and visual architecture of Chellaa React is guided by nine foundat
 ```
 
 ### 6.1 Accessibility (A11y) First
+
 Accessibility is not an enhancement; it is an uncompromising acceptance criterion.
+
 - Components must comply with **WCAG 2.2 Level AA** standards.
 - Every interactive element must support full keyboard navigation (Tab, Shift+Tab, Enter, Space, Arrows, Escape, Home, End) matching W3C APG specifications.
 - Focus rings are never hidden; they utilize a distinct, high-contrast, double-ring offset system visible in both light and dark modes.
 - Screen readers receive appropriate ARIA roles, states, and live announcements.
 
 ### 6.2 Consistency
+
 If a developer learns how to configure `size`, `variant`, `isDisabled`, or event handlers on `Button`, they immediately understand how to configure `IconButton`, `Input`, `Select`, `Checkbox`, and `Badge`.
 
 ### 6.3 Composability
+
 Chellaa React favors composable compound components (e.g., `Dialog`, `Dialog.Trigger`, `Dialog.Portal`, `Dialog.Content`, `Dialog.Title`, `Dialog.Close`) over monolithic components with 50 configuration props. This gives consumers total control over layout, transitions, and DOM structure.
 
 ### 6.4 Simplicity & Clarity
+
 Simple tasks must be trivial; complex tasks must be possible. Default states require zero configuration. Sensible defaults handle 90% of use cases out-of-the-box.
 
 ### 6.5 Customizability Without Specificity Wars
+
 Consumers must never be forced to use `!important` or hack nested CSS selectors. Customization operates cleanly through:
+
 1. **Design Tokens:** Overriding CSS variables at the root or component level.
 2. **Class Names:** Predictable, scoped class name hooks (e.g., `.cl-button`).
 3. **Inline Styles:** Safe `style` prop pass-through.
 4. **Slot Props:** Targeted styling of sub-elements.
 
 ### 6.6 High Performance & Tree-Shaking
+
 - Runtime JavaScript overhead is minimized by offloading all layout and dynamic theming to CSS custom properties and browser-native styling engines.
 - Strict ES module exports and `"sideEffects": ["*.css", "**/*.css"]` ensure that importing `Button` does not bundle `DatePicker`, `Modal`, or unused icons, while guaranteeing that essential component styles are preserved by consumer bundlers.
 
 ### 6.7 SSR & Next.js/Remix Compatibility
+
 Every component must execute cleanly in Node.js server environments, supporting React 18/19 streaming SSR, Next.js App Router Server Components (`"use client"` marked where interactive hooks are needed), and static site generation without `window is not defined` crashes.
 
 ---
@@ -260,14 +282,14 @@ As Chellaa React matures, the ecosystem will scale systematically across four di
 
 ## 10. Summary Matrix
 
-| Attribute | Specification |
-| :--- | :--- |
-| **Package Name** | `@chellaa/react` |
-| **Target Framework** | React 18.2.0+ and React 19.x |
-| **Language Target** | TypeScript 5.0+ (Strict Mode) |
-| **Styling Paradigm** | Scoped Static CSS + Semantic CSS Custom Properties (Zero-Runtime JS) |
-| **Theming Strategy** | CSS Variable Mapping (`data-theme="light|dark|custom"`) |
-| **Accessibility Target** | WCAG 2.2 AA / WAI-ARIA APG |
-| **SSR Support** | Streaming SSR, Next.js App Router (RSC compatible), Remix, Vite |
-| **Module Format** | ESM (Primary) + CJS (Compatibility) with Type Declarations |
-| **License** | MIT |
+| Attribute                | Specification                                                        |
+| :----------------------- | :------------------------------------------------------------------- |
+| **Package Name**         | `@chellaa/react`                                                     |
+| **Target Framework**     | React 18.2.0+ and React 19.x                                         |
+| **Language Target**      | TypeScript 5.0+ (Strict Mode)                                        |
+| **Styling Paradigm**     | Scoped Static CSS + Semantic CSS Custom Properties (Zero-Runtime JS) |
+| **Theming Strategy**     | CSS Variable Mapping (`data-theme="light                             | dark | custom"`) |
+| **Accessibility Target** | WCAG 2.2 AA / WAI-ARIA APG                                           |
+| **SSR Support**          | Streaming SSR, Next.js App Router (RSC compatible), Remix, Vite      |
+| **Module Format**        | ESM (Primary) + CJS (Compatibility) with Type Declarations           |
+| **License**              | MIT                                                                  |

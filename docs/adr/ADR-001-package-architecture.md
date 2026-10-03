@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, Core Engineering Team  
+**Deciders:** Principal Architect, Core Engineering Team
 
 ---
 
@@ -42,11 +42,13 @@ We must decide the package naming, monorepo structure, entry-point architecture,
 ## 3. Consequences
 
 ### Positive
+
 - **Pristine Public Boundary:** Private implementation helpers and uncompiled code cannot be imported by consumers, preventing breaking changes during internal refactoring.
 - **Flawless Tree-Shaking:** Pure ES module exports enable modern bundlers (Webpack, Vite, Rollup) to eliminate unreferenced components.
 - **Maintainability:** Collocated component directories allow contributors to inspect, test, and maintain components in one isolated location.
 
 ### Negative
+
 - **Root Index Bundling:** Requires careful build orchestration via `tsup` to prevent accidental bundling of all components into a monolithic non-tree-shakeable chunk.
 
 ---

@@ -1,10 +1,11 @@
 # Chellaa React — Component Specifications
+
 ## Document 00: Component Feature Matrix & Reference Analysis
 
 **Document Status:** Approved  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** Phase 1 Foundation & Phase 2 Engineering Standards  
+**Governing Standard:** Phase 1 Foundation & Phase 2 Engineering Standards
 
 ---
 
@@ -114,6 +115,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
 ## 4. Component-by-Component Decision Records
 
 ### 4.1 Button
+
 - **Reference Analysis:**
   - MUI provides `variant="contained" | "outlined" | "text"`, `startIcon`, `endIcon`, `fullWidth`, `loading` via `@mui/lab` or v5 button, and `disableRipple`.
   - Ant Design provides `type="primary" | "default" | "dashed" | "link" | "text"`, `danger`, `ghost`, `block`, and `shape="circle" | "round"`.
@@ -127,6 +129,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **Rejected / Deferred:** Material ripples (tactile micro-scale `scale(0.98)` preferred), arbitrary `sx` props.
 
 ### 4.2 Input
+
 - **Reference Analysis:**
   - MUI combines label, helper text, and input into a monolithic `TextField`, while exposing a raw `InputBase`.
   - Ant Design bundles status, prefixes, suffixes, and `allowClear` into a single `<Input />`.
@@ -138,6 +141,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **Rejected:** `asChild` (an `<input>` is a void element; delegating children is invalid HTML and breaks accessibility); `errorBorderColor` / `focusBorderColor` props (customization is handled through semantic theme tokens).
 
 ### 4.3 Select
+
 - **Reference Analysis:**
   - Native `<select>` provides poor visual styling and limited desktop customization.
   - MUI offers `Select` and `Autocomplete`. Ant Design provides an options-array driven `Select` with integrated tags.
@@ -148,6 +152,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **Deferred:** Multi-select with tags (deferred to `MultiSelect` in Phase 6).
 
 ### 4.4 Modal / Dialog
+
 - **Reference Analysis:**
   - Terminology confusion in the industry: MUI calls it `Dialog`, Ant Design calls it `Modal`.
 - **Chellaa React Synthesis:**
@@ -157,6 +162,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **Sizes:** `sm` (400px), `md` (560px), `lg` (720px), `xl` (960px), `full` (100vw/100vh).
 
 ### 4.5 Card
+
 - **Reference Analysis:**
   - MUI `Card` has `CardActionArea` creating an interactive container. Ant Design provides `hoverable`.
 - **Chellaa React Synthesis:**
@@ -166,6 +172,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **Variants:** `elevated` (default), `outline`, `filled`.
 
 ### 4.6 Badge
+
 - **Reference Analysis:**
   - MUI `Badge` wraps children and positions a badge in the top-right corner. Ant Design provides both standalone tags and avatar-overlapping badges.
 - **Chellaa React Synthesis:**
@@ -176,6 +183,7 @@ All components adhere to the Chellaa React spatial, visual, and semantic standar
   - **WCAG SC 1.4.1 Compliance:** Badges must always feature textual copy; color alone cannot convey meaning.
 
 ### 4.7 Table
+
 - **Reference Analysis:**
   - MUI provides composite table primitives (`Table`, `TableHead`, `TableRow`, `TableCell`). Ant Design provides a heavy JSON-configured table with built-in sorting/pagination.
 - **Chellaa React Synthesis:**

@@ -1,0 +1,241 @@
+/**
+ * Chellaa React — Tier 1 Primitive Design Tokens
+ * Global, static, context-free mathematical and palette scales.
+ */
+@layer cl-tokens {
+  :root {
+    /* -------------------------------------------------------------------------
+     * Color Palettes (Harmonic 10-step ramps)
+     * ----------------------------------------------------------------------- */
+    /* Slate (Neutral) */
+    --cl-palette-slate-50: #f8fafc;
+    --cl-palette-slate-100: #f1f5f9;
+    --cl-palette-slate-200: #e2e8f0;
+    --cl-palette-slate-300: #cbd5e1;
+    --cl-palette-slate-400: #94a3b8;
+    --cl-palette-slate-500: #64748b;
+    --cl-palette-slate-600: #475569;
+    --cl-palette-slate-700: #334155;
+    --cl-palette-slate-800: #1e293b;
+    --cl-palette-slate-900: #0f172a;
+    --cl-palette-slate-950: #090d16;
+
+    /* Indigo (Primary Default) */
+    --cl-palette-indigo-50: #eef2ff;
+    --cl-palette-indigo-100: #e0e7ff;
+    --cl-palette-indigo-200: #c7d2fe;
+    --cl-palette-indigo-300: #a5b4fc;
+    --cl-palette-indigo-400: #818cf8;
+    --cl-palette-indigo-500: #6366f1;
+    --cl-palette-indigo-600: #4f46e5;
+    --cl-palette-indigo-700: #4338ca;
+    --cl-palette-indigo-800: #3730a3;
+    --cl-palette-indigo-900: #312e81;
+    --cl-palette-indigo-950: #1e1b4b;
+
+    /* Violet (Secondary / Accent) */
+    --cl-palette-violet-50: #f5f3ff;
+    --cl-palette-violet-100: #ede9fe;
+    --cl-palette-violet-200: #ddd6fe;
+    --cl-palette-violet-300: #c4b5fd;
+    --cl-palette-violet-400: #a78bfa;
+    --cl-palette-violet-500: #8b5cf6;
+    --cl-palette-violet-600: #7c3aed;
+    --cl-palette-violet-700: #6d28d9;
+    --cl-palette-violet-800: #5b21b6;
+    --cl-palette-violet-900: #4c1d95;
+    --cl-palette-violet-950: #2e1065;
+
+    /* Emerald (Success) */
+    --cl-palette-emerald-50: #ecfdf5;
+    --cl-palette-emerald-100: #d1fae5;
+    --cl-palette-emerald-200: #a7f3d0;
+    --cl-palette-emerald-300: #6ee7b7;
+    --cl-palette-emerald-400: #34d399;
+    --cl-palette-emerald-500: #10b981;
+    --cl-palette-emerald-600: #059669;
+    --cl-palette-emerald-700: #047857;
+    --cl-palette-emerald-800: #065f46;
+    --cl-palette-emerald-900: #064e3b;
+    --cl-palette-emerald-950: #022c22;
+
+    /* Amber (Warning) */
+    --cl-palette-amber-50: #fffbeb;
+    --cl-palette-amber-100: #fef3c7;
+    --cl-palette-amber-200: #fde68a;
+    --cl-palette-amber-300: #fcd34d;
+    --cl-palette-amber-400: #fbbf24;
+    --cl-palette-amber-500: #f59e0b;
+    --cl-palette-amber-600: #d97706;
+    --cl-palette-amber-700: #b45309;
+    --cl-palette-amber-800: #92400e;
+    --cl-palette-amber-900: #78350f;
+    --cl-palette-amber-950: #451a03;
+
+    /* Rose (Danger / Error) */
+    --cl-palette-rose-50: #fff1f2;
+    --cl-palette-rose-100: #ffe4e6;
+    --cl-palette-rose-200: #fecdd3;
+    --cl-palette-rose-300: #fda4af;
+    --cl-palette-rose-400: #fb7185;
+    --cl-palette-rose-500: #f43f5e;
+    --cl-palette-rose-600: #e11d48;
+    --cl-palette-rose-700: #be123c;
+    --cl-palette-rose-800: #9f1239;
+    --cl-palette-rose-900: #881337;
+    --cl-palette-rose-950: #4c0519;
+
+    /* Sky (Info) */
+    --cl-palette-sky-50: #f0f9ff;
+    --cl-palette-sky-100: #e0f2fe;
+    --cl-palette-sky-200: #bae6fd;
+    --cl-palette-sky-300: #7dd3fc;
+    --cl-palette-sky-400: #38bdf8;
+    --cl-palette-sky-500: #0ea5e9;
+    --cl-palette-sky-600: #0284c7;
+    --cl-palette-sky-700: #0369a1;
+    --cl-palette-sky-800: #075985;
+    --cl-palette-sky-900: #0c4a6e;
+    --cl-palette-sky-950: #082f49;
+
+    /* Common Pure Colors */
+    --cl-palette-white: #ffffff;
+    --cl-palette-black: #000000;
+
+    /* -------------------------------------------------------------------------
+     * Spacing Scale (4px/8px Baseline Grid)
+     * ----------------------------------------------------------------------- */
+    --cl-space-0: 0rem;
+    --cl-space-1: 0.25rem; /* 4px */
+    --cl-space-2: 0.5rem; /* 8px */
+    --cl-space-3: 0.75rem; /* 12px */
+    --cl-space-4: 1rem; /* 16px */
+    --cl-space-5: 1.25rem; /* 20px */
+    --cl-space-6: 1.5rem; /* 24px */
+    --cl-space-8: 2rem; /* 32px */
+    --cl-space-10: 2.5rem; /* 40px */
+    --cl-space-12: 3rem; /* 48px */
+    --cl-space-16: 4rem; /* 64px */
+
+    /* -------------------------------------------------------------------------
+     * Typography Stacks, Sizes & Weights
+     * ----------------------------------------------------------------------- */
+    --cl-font-sans:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --cl-font-mono:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+
+    --cl-font-xs: 0.75rem; /* 12px */
+    --cl-line-height-xs: 1rem;
+    --cl-letter-spacing-xs: 0.01em;
+
+    --cl-font-sm: 0.875rem; /* 14px */
+    --cl-line-height-sm: 1.25rem;
+    --cl-letter-spacing-sm: 0;
+
+    --cl-font-base: 1rem; /* 16px */
+    --cl-line-height-base: 1.5rem;
+    --cl-letter-spacing-base: 0;
+
+    --cl-font-lg: 1.125rem; /* 18px */
+    --cl-line-height-lg: 1.75rem;
+    --cl-letter-spacing-lg: -0.01em;
+
+    --cl-font-xl: 1.25rem; /* 20px */
+    --cl-line-height-xl: 1.75rem;
+    --cl-letter-spacing-xl: -0.015em;
+
+    --cl-font-2xl: 1.5rem; /* 24px */
+    --cl-line-height-2xl: 2rem;
+    --cl-letter-spacing-2xl: -0.02em;
+
+    --cl-font-3xl: 1.875rem; /* 30px */
+    --cl-line-height-3xl: 2.25rem;
+    --cl-letter-spacing-3xl: -0.025em;
+
+    --cl-font-4xl: 2.25rem; /* 36px */
+    --cl-line-height-4xl: 2.5rem;
+    --cl-letter-spacing-4xl: -0.03em;
+
+    --cl-font-5xl: 3rem; /* 48px */
+    --cl-line-height-5xl: 1.15;
+    --cl-letter-spacing-5xl: -0.035em;
+
+    --cl-font-weight-regular: 400;
+    --cl-font-weight-medium: 500;
+    --cl-font-weight-semibold: 600;
+    --cl-font-weight-bold: 700;
+
+    /* -------------------------------------------------------------------------
+     * Border Radii
+     * ----------------------------------------------------------------------- */
+    --cl-rad-none: 0px;
+    --cl-rad-xs: 2px;
+    --cl-rad-sm: 4px;
+    --cl-rad-md: 6px;
+    --cl-rad-lg: 8px;
+    --cl-rad-xl: 12px;
+    --cl-rad-2xl: 16px;
+    --cl-rad-full: 9999px;
+
+    /* -------------------------------------------------------------------------
+     * Elevation Shadows (Light baseline)
+     * ----------------------------------------------------------------------- */
+    --cl-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --cl-shadow-md:
+      0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --cl-shadow-lg:
+      0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    --cl-shadow-xl:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+    /* -------------------------------------------------------------------------
+     * Z-Index Scale
+     * ----------------------------------------------------------------------- */
+    --cl-z-deep: -1;
+    --cl-z-base: 0;
+    --cl-z-raised: 10;
+    --cl-z-dropdown: 1000;
+    --cl-z-sticky: 1100;
+    --cl-z-backdrop: 1200;
+    --cl-z-modal: 1300;
+    --cl-z-popover: 1400;
+    --cl-z-toast: 1500;
+    --cl-z-tooltip: 1600;
+
+    /* -------------------------------------------------------------------------
+     * Motion & Transitions
+     * ----------------------------------------------------------------------- */
+    --cl-duration-fast: 150ms;
+    --cl-duration-normal: 250ms;
+    --cl-duration-slow: 350ms;
+
+    --cl-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --cl-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --cl-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --cl-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --cl-transition-colors:
+      color var(--cl-duration-fast) var(--cl-ease-default),
+      background-color var(--cl-duration-fast) var(--cl-ease-default),
+      border-color var(--cl-duration-fast) var(--cl-ease-default);
+    --cl-transition-transform: transform var(--cl-duration-fast)
+      var(--cl-ease-default);
+    --cl-transition-opacity: opacity var(--cl-duration-fast)
+      var(--cl-ease-default);
+  }
+
+  /* Accessibility Exception: Prefers Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --cl-duration-fast: 0ms !important;
+      --cl-duration-normal: 0ms !important;
+      --cl-duration-slow: 0ms !important;
+      --cl-transition-colors: none !important;
+      --cl-transition-transform: none !important;
+      --cl-transition-opacity: none !important;
+    }
+  }
+}

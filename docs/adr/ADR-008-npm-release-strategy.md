@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, DevOps & Release Engineering  
+**Deciders:** Principal Architect, DevOps & Release Engineering
 
 ---
 
@@ -35,11 +35,13 @@ A production-grade open-source component library must implement an immutable, au
 ## 3. Consequences
 
 ### Positive
+
 - **Supply Chain Security:** Consumers can verify cryptographic provenance on npm.
 - **Auditability:** Every release maps directly to a merged PR and Git commit.
 - **Consistency:** Changelogs, Git tags, GitHub releases, and npm versions are updated in lockstep.
 
 ### Negative
+
 - **Requires OIDC Token Configuration:** Requires npm organization permissions configured for GitHub Actions OIDC trust.
 
 ---

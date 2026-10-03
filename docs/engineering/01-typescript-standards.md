@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 01: TypeScript Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**TypeScript Version:** >= 5.0  
+**TypeScript Version:** >= 5.0
 
 ---
 
@@ -55,6 +56,7 @@ All packages and applications in the repository inherit from a centralized base 
 ```
 
 ### 2.2 Rationale for Critical Flags
+
 - **`isolatedDeclarations: true`:** Enforces explicit type annotations on exported boundaries. Enables lightning-fast declaration emitting across monorepo builds and guarantees clean, readable `.d.ts` files for consumers.
 - **`noUncheckedIndexedAccess: true`:** Treats dictionary and array index lookups as `T | undefined`, eliminating subtle runtime `Cannot read property of undefined` crashes.
 - **`exactOptionalPropertyTypes: true`:** Distinguishes between a property being omitted versus explicitly passed as `undefined` (`{ prop?: string }` cannot be passed `{ prop: undefined }`).
@@ -64,6 +66,7 @@ All packages and applications in the repository inherit from a centralized base 
 ## 3. Type Primitives & Strictness
 
 ### 3.1 Strict Prohibition of `any`
+
 - The `any` type is **strictly prohibited** in any source code, test utility, or type declaration.
 - The use of `any` triggers an immediate CI failure via ESLint rule `@typescript-eslint/no-explicit-any: error`.
 - If a value has an unknown shape, developers **must** use `unknown` and narrow it via runtime type guards:
@@ -84,6 +87,7 @@ function parseValue(value: unknown): string {
 ```
 
 ### 3.2 Exhaustive Type Checking with `never`
+
 Whenever handling discriminated unions, developers must implement exhaustive checking using `never`:
 
 ```typescript
@@ -136,6 +140,7 @@ Chellaa React enforces clear, deterministic rules on when to use `interface` ver
 ```
 
 ### 4.1 Component Props Rule
+
 Component props must always be declared as an exported `interface` ending in `Props`:
 
 ```typescript
@@ -155,7 +160,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 ## 5. Unions and Discriminated Unions
 
 ### 5.1 Enums are Strictly Prohibited
+
 TypeScript `enum` constructs are **prohibited**. Enums generate bloated, non-standard runtime JavaScript objects and have known typing quirks.
+
 - **Rule:** Use `const` object maps or string union types:
 
 ```typescript
@@ -172,6 +179,7 @@ export type ButtonSize = (typeof BUTTON_SIZES)[number];
 ```
 
 ### 5.2 Discriminated Unions for Mutually Exclusive States
+
 When a component cannot logically exist in two states simultaneously, enforce mutual exclusion via discriminated unions:
 
 ```typescript
@@ -194,9 +202,11 @@ export type ButtonContentProps =
 ## 6. Generics & Type Inference
 
 ### 6.1 Generic Component Design
+
 Complex data-driven components (`Select`, `Combobox`, `Table`, `Tabs`) must be generic to preserve consumer data types without unsafe type assertions.
 
 #### Rules for Generics:
+
 1. **Meaningful Parameter Names:** Use descriptive names (`TValue`, `TOption`, `TData`) rather than opaque single-letter identifiers (`T`, `K`, `U`).
 2. **Sensible Defaults:** Always provide a standard fallback constraint:
 
@@ -212,7 +222,10 @@ export interface SelectProps<TValue = string> {
 3. **Type Inference First:** Design APIs such that the consumer rarely has to specify generic arguments manually:
    ```tsx
    // Consumer gets automatic type inference of value as number:
-   <Select options={[{ label: "One", value: 1 }]} onValueChange={(val) => console.log(val.toFixed(2))} />
+   <Select
+     options={[{ label: "One", value: 1 }]}
+     onValueChange={(val) => console.log(val.toFixed(2))}
+   />
    ```
 
 ---
@@ -220,14 +233,17 @@ export interface SelectProps<TValue = string> {
 ## 7. Component Props & Polymorphic Types
 
 ### 7.1 The `asChild` Pattern (Mandated)
+
 Chellaa React **strictly prohibits** dynamic polymorphic `as` props (e.g., `<Button as="a" href="..." />` or `<Button as={NextLink} />`).
 
 #### Why Dynamic `as` is Prohibited:
+
 1. Causes catastrophic TypeScript compile lag and memory leaks due to recursive generic prop resolution.
 2. Clutters IDE intellisense with thousands of irrelevant DOM attributes.
 3. Leads to broken ref-forwarding and property clobbering at runtime.
 
 #### The Mandated `asChild` Architecture:
+
 Chellaa React components support composition via the `asChild` boolean prop, delegating rendering to the direct child element while merging props, event handlers, and refs:
 
 ```typescript
@@ -247,6 +263,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 ## 8. Event Handlers and Ref Types
 
 ### 8.1 Event Handler Typing
+
 - Event handler props must explicitly type the event parameter using React's synthetic event system:
   - Mouse: `React.MouseEvent<HTMLElement>`
   - Keyboard: `React.KeyboardEvent<HTMLElement>`
@@ -256,6 +273,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   - `onValueChange?: (value: string) => void;`
 
 ### 8.2 Ref Typing
+
 - Forward-compatible ref types must support both React 18 and React 19:
   ```typescript
   export type ComponentRef<T extends HTMLElement> = React.Ref<T>;
@@ -266,6 +284,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 ## 9. Type Assertions & Escape Hatches
 
 ### 9.1 Non-Null Assertion Operator (`!`)
+
 - The non-null assertion operator `!` is **prohibited** in all production component code.
 - If a value is guaranteed to exist at runtime (e.g. an element fetched via DOM query or context hook), use an explicit invariant assertion utility:
 
@@ -278,6 +297,7 @@ const ctx = useThemeContext(); // Throws descriptive error if outside provider
 ```
 
 ### 9.2 The `as` Keyword
+
 - `as` type casting should be avoided wherever possible.
 - When transforming objects or parsing JSON, use type guards or Zod/schema validation instead of blunt `as T` casting.
 - `as const` is explicitly permitted and encouraged for literal arrays and tuples.
@@ -295,7 +315,9 @@ Component/
 ```
 
 ### 10.1 Public Exports Checklist
+
 From `Component/index.ts` and root `packages/react/src/index.ts`:
+
 - **Must Export:**
   - Component primary props interface: `export type { ButtonProps } from './Button.types';`
   - Component variant / option types: `export type { ButtonVariant, ButtonSize } from './Button.types';`
@@ -306,7 +328,9 @@ From `Component/index.ts` and root `packages/react/src/index.ts`:
 ### 10.2 TSDoc Scope & Documentation Standards
 
 #### Mandatory Public API Scope
+
 TSDoc is **mandatory for public API symbols**:
+
 - Exported React components (`Button`, `Dialog`)
 - Exported component props interfaces (`ButtonProps`)
 - Exported custom hooks (`useTheme`, `useControllableState`)
@@ -315,7 +339,9 @@ TSDoc is **mandatory for public API symbols**:
 - Exported theme APIs
 
 #### Meaningful Documentation Mandate
+
 Do **not** write meaningless boilerplate comments such as:
+
 ```typescript
 // ❌ PROHIBITED: Meaningless boilerplate
 /** Button component */
@@ -323,6 +349,7 @@ export function Button() {}
 ```
 
 Prefer meaningful, actionable documentation describing:
+
 - **Purpose and Behavior:** What the component or prop accomplishes.
 - **Supported Values & Defaults:** Expected inputs and fallback states.
 - **Accessibility Impact:** Roles, ARIA attributes, and keyboard behavior.
@@ -352,6 +379,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 ```
 
 #### Internal Implementation Scope
+
 Internal implementation helpers and intermediate private functions do **not** require TSDoc unless their behavior is non-obvious or the comment explains an important architectural decision or browser workaround.
 
 ---
@@ -359,6 +387,7 @@ Internal implementation helpers and intermediate private functions do **not** re
 ## 11. Declaration Generation & Package Verification
 
 During package builds:
+
 1. `isolatedDeclarations: true` enforces that every exported function and component has explicit return types and prop types.
 2. `tsup` emits `.d.ts` and `.d.ts.map` files to `dist/`.
 3. Every build in CI is audited with `@arethetypeswrong/cli` (`attw`):
@@ -396,8 +425,8 @@ During package builds:
 ## 13. Quality Gates & Definition of Done
 
 A component contribution is rejected if:
+
 1. `pnpm typecheck` emits a single error or warning.
 2. Any `any` type is introduced.
 3. Exported public component symbols lack explicit, meaningful TSDoc comments.
 4. `attw` package verification produces unresolved module resolution warnings.
-

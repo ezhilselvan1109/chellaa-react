@@ -17,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chellaa/chellaa-react.git",
+    "url": "git+https://github.com/chellaa/chellaa-react.git",
     "directory": "packages/react"
   },
   "homepage": "https://chellaa.dev",
@@ -31,15 +31,31 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
-    "./styles.css": "./dist/styles.css",
+    "./styles.css": {
+      "import": {
+        "types": "./dist/styles.css.d.ts",
+        "default": "./dist/styles.css"
+      },
+      "require": {
+        "types": "./dist/styles.css.d.cts",
+        "default": "./dist/styles.css"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "styles.css",
+    "styles.css.d.ts",
     "README.md",
     "LICENSE"
   ],
@@ -52,7 +68,7 @@
     "react-dom": ">=18.2.0"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/build-css.mjs",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
@@ -66,8 +82,8 @@
     "@size-limit/preset-small-lib": "^11.1.4",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.10",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "jsdom": "^25.0.1",
     "lightningcss": "^1.26.0",
     "publint": "^0.2.11",

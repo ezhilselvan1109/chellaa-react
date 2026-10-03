@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,11 +25,13 @@ Related Components: Tag, AvatarBadge, NotificationBadge
 The `Badge` component is a compact visual indicator that communicates status, categorization, numeric counts, or metadata labels alongside larger components or within tables and cards.
 
 ### When to Use
+
 - Displaying status indicators (e.g. "Active", "Pending", "Failed", "New").
 - Indicating count metrics (e.g. "12 unread", "v2.0.4").
 - Highlighting feature flags or category chips.
 
 ### When NOT to Use
+
 - **Do NOT use as an interactive action button.** Badges are passive status labels. If an action or filter is required, use `Button` or `Chip`.
 - **Do NOT use for dismissible user input tags.** Use `Tag` (with an accessible remove button).
 
@@ -38,6 +40,7 @@ The `Badge` component is a compact visual indicator that communicates status, ca
 ## 3. Scope
 
 ### In Scope
+
 - 3 visual variants: `subtle` (default), `solid`, `outline`.
 - 3 standardized sizes: `sm`, `md` (default), `lg`.
 - 7 semantic color schemes: `primary`, `secondary`, `success`, `warning`, `danger`, `info`, `neutral`.
@@ -210,6 +213,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 ## 11. States
 
 Badges are non-interactive presentational indicators.
+
 - **Default:** Static resting visual state.
 - **Hover / Focus:** N/A (Badges do not receive keyboard focus or pointer hover transitions).
 
@@ -253,9 +257,11 @@ Supports `asChild` to wrap custom elements or inline spans.
 ## 17. Accessibility
 
 ### 17.1 Semantic Element
+
 Renders a semantic `<span>`.
 
 ### 17.2 Color Independence (WCAG 2.2 SC 1.4.1)
+
 - Color must **never** be the sole visual indicator of state.
 - A badge indicating success must contain clear text copy (e.g. `<Badge colorScheme="success">Approved</Badge>`).
 - If `hasDot={true}` is enabled, the dot is marked `aria-hidden="true"` as decorative adornment.

@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, Core Maintainers  
+**Deciders:** Principal Architect, Core Maintainers
 
 ---
 
@@ -33,10 +33,12 @@ We must formalize the exact semantic versioning rules governing Chellaa React.
 ## 3. Consequences
 
 ### Positive
+
 - **Consumer Trust:** Consumers can safely configure automated patch/minor dependency updates without fear of breaking production.
 - **Clear Migration Paths:** Deprecation warnings give teams ample time to adapt before breaking updates.
 
 ### Negative
+
 - **Requires Developer Discipline:** Contributors must understand the SemVer impact of their changes and commit accurate changesets.
 
 ---

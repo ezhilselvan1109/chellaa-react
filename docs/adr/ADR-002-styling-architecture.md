@@ -2,13 +2,14 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, CSS Architecture Specialist, Performance Team  
+**Deciders:** Principal Architect, CSS Architecture Specialist, Performance Team
 
 ---
 
 ## 1. Context and Problem Statement
 
 Legacy React component libraries heavily relied on runtime CSS-in-JS libraries (Emotion, styled-components). In modern React (React 18 concurrent features, React 19, React Server Components, streaming SSR), runtime CSS-in-JS incurs fatal drawbacks:
+
 - Substantial runtime JavaScript execution overhead.
 - Incompatibility with React Server Components (RSC cannot inject `<style>` tags dynamically at runtime).
 - Flash of Unstyled Content (FOUC) and complex hydration sync issues.
@@ -38,11 +39,13 @@ Conversely, utility-first CSS frameworks like Tailwind CSS, while popular for ap
 ## 3. Consequences
 
 ### Positive
+
 - **Maximum Performance:** Styling evaluation is handled entirely by the browser's native C++ rendering engine.
 - **RSC & SSR Native:** Works identically on the server and client without style-collector wrappers or hydration mismatch risks.
 - **Consumer Flexibility:** Consumers can override styles easily via CSS custom properties or simple application CSS rules without specificity wars.
 
 ### Negative
+
 - **Requires Modern Browser Baseline:** Safari 15.4+ is required for `@layer` support (older browsers without `@layer` are obsolete and unsupported).
 
 ---

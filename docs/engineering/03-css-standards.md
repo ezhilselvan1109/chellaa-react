@@ -1,10 +1,11 @@
 # Chellaa React — Engineering Standards
+
 ## Document 03: CSS Architecture & Styling Standards
 
 **Document Status:** Ready to Freeze  
 **Phase:** 2 — Engineering Standards  
 **Target Package:** `@chellaa/react`  
-**Styling Paradigm:** Scoped Static CSS + Semantic CSS Custom Properties  
+**Styling Paradigm:** Scoped Static CSS + Semantic CSS Custom Properties
 
 ---
 
@@ -41,6 +42,7 @@ All CSS classes in Chellaa React strictly utilize the namespaced prefix **`.cl-`
 ```
 
 ### 2.1 File Organization & Collocation
+
 - Component-specific styles are collocated directly inside the component folder:
   `src/components/Button/Button.styles.css`
 - Global design token definitions and theme layers live in:
@@ -53,6 +55,7 @@ All CSS classes in Chellaa React strictly utilize the namespaced prefix **`.cl-`
 ## 3. Design Token Disciplines: The `--cl-*` System
 
 ### 3.1 Design System Values vs. Intrinsic CSS Mechanism Values
+
 To balance design consistency with browser reality, Chellaa React strictly distinguishes between **reusable design-system decisions** and **intrinsic CSS mechanism values**:
 
 ```
@@ -73,7 +76,9 @@ To balance design consistency with browser reality, Chellaa React strictly disti
 ```
 
 #### Prohibited Raw Values
+
 Raw values are **prohibited** when they represent reusable design-system decisions:
+
 - Spacing (`padding: 16px;` -> must use `var(--cl-space-4)`)
 - Colors (`color: #4f46e5;` -> must use `var(--cl-color-pri-base)`)
 - Typography (`font-size: 14px;` -> must use `var(--cl-font-size-sm)`)
@@ -81,7 +86,9 @@ Raw values are **prohibited** when they represent reusable design-system decisio
 - Elevation (`box-shadow: 0 4px 6px ...;` -> must use `var(--cl-shadow-md)`)
 
 #### Permitted Intrinsic Mechanism Values
+
 Intrinsic CSS mechanism values are **permitted** when required for:
+
 - Accessibility outlines: `outline: 2px solid var(--cl-color-pri-base); outline-offset: 2px;`
 - Hairline borders: `border: 1px solid var(--cl-color-border-sub);`
 - Animation & reduced-motion resets: `transition-duration: 0.01ms;`
@@ -91,6 +98,7 @@ Intrinsic CSS mechanism values are **permitted** when required for:
 Such intrinsic values must remain local and should not become reusable design tokens unless the design system intentionally elevates them as a global token scale.
 
 ### 3.1 Standard Token Prefixes
+
 - Colors: `--cl-color-<semantic-intent>-<state>`
 - Typography: `--cl-font-sans`, `--cl-font-size-<scale>`, `--cl-line-height-<scale>`
 - Spacing: `--cl-space-<step>` (e.g., `--cl-space-1` = 4px, `--cl-space-4` = 16px)
@@ -106,6 +114,7 @@ Such intrinsic values must remain local and should not become reusable design to
 To permanently eliminate CSS specificity wars and prevent consumer application overrides from breaking:
 
 ### 4.1 CSS Layer Isolation
+
 All Chellaa React component styles must be authored within the `@layer cl-components` declaration:
 
 ```css
@@ -126,9 +135,11 @@ All Chellaa React component styles must be authored within the `@layer cl-compon
 ```
 
 #### Why `@layer` is Mandated:
+
 According to the CSS Cascading and Inheritance Level 5 specification, styles declared in an explicit `@layer` have lower cascade priority than unlayered styles. As a result, any custom CSS authored by consumer applications (e.g., `.my-custom-button { background: red; }`) **automatically overrides Chellaa React styles without requiring `!important`**.
 
 ### 4.2 Specificity Ceiling
+
 - **Rule:** Selector depth must not exceed 2 classes (`.cl-button--solid.cl-button--primary`).
 - Never write deeply nested descendent selectors (e.g., `.cl-card > div > ul > li > .cl-button`).
 - Never target bare HTML tag names globally (`button`, `input`, `div`).
@@ -138,6 +149,7 @@ According to the CSS Cascading and Inheritance Level 5 specification, styles dec
 ## 5. Focus Visibility, Motion & State Styling
 
 ### 5.1 Focus Visibility Standard
+
 - Chellaa React components must render a high-contrast focus ring exclusively on keyboard focus via `:focus-visible`.
 - **Prohibition:** `outline: none` is **strictly prohibited** unless accompanied by a visible focus ring replacement.
 - Standard focus ring rule:
@@ -149,13 +161,16 @@ According to the CSS Cascading and Inheritance Level 5 specification, styles dec
   ```
 
 ### 5.2 Motion & Narrowly Scoped `!important` Accessibility Exception
+
 All transitions and animations must use standard motion tokens and strictly respect `@media (prefers-reduced-motion: reduce)`.
 
 #### The `!important` Rule & Narrow Exception
+
 - `!important` is **strictly prohibited by default** across all component styling.
 - A narrowly scoped exception is **permitted exclusively** when required for accessibility safety under `prefers-reduced-motion: reduce` to ensure non-essential animations cannot override user motion sensitivity preferences.
 
 The accessibility exception must:
+
 1. Remain strictly inside the component/style layer within a reduced-motion media query.
 2. Be directly related to the accessibility safety requirement.
 3. Include a clear code comment explaining why it is required.
@@ -180,7 +195,9 @@ The accessibility exception must:
 ```
 
 ### 5.3 Disabled State Rules
+
 When a component is disabled (`:disabled` or `[aria-disabled='true']` or `.is-disabled`):
+
 - Cursor must be `cursor: not-allowed;`
 - Pointer events on pseudo-elements must be disabled.
 - Opacity should be set using `--cl-opacity-disabled: 0.6;`
@@ -218,6 +235,7 @@ When a component is disabled (`:disabled` or `[aria-disabled='true']` or `.is-di
 ## 7. Automatic CSS Delivery & Benchmarking Framework (ADR-007)
 
 ### 7.1 Public Contract (Finalized)
+
 Per **ADR-007**, consumers **never** manually import `@chellaa/react/styles.css`. Importing a component delivers its styles automatically:
 
 ```tsx
@@ -225,19 +243,23 @@ import { Button } from "@chellaa/react"; // Automatically styled!
 ```
 
 ### 7.2 Internal Delivery Mechanism (Open Benchmark Decision)
+
 While the public contract is finalized, the internal delivery mechanism is **NOT finalized** until empirical benchmark evidence is established across target consumer environments.
 
 #### Leading Candidate
+
 - **Component-Level Static Side-Effect Imports:**
   - Component ESM files include relative static CSS imports (`import './Button.css'`).
   - Package manifest declares `"sideEffects": ["*.css", "**/*.css"]`.
   - **Explicit Prohibition:** `"sideEffects": false` is strictly prohibited. CSS imports are runtime-relevant side effects. Marking the package side-effect-free causes consumer bundlers to tree-shake required CSS, resulting in unstyled components.
 
 #### Rejected Directions (Do Not Reintroduce)
+
 1. **Client Runtime DOM Style Injection:** Incompatible with React Server Components, causes streaming SSR FOUC, inflates JS bundle, violates strict CSPs.
 2. **Mandatory Bundler Plugins:** Violates the zero-configuration consumer standard.
 
 ### 7.3 Benchmark Matrix & Evaluation Criteria
+
 Before finalizing the internal delivery configuration in Phase 3, the architecture must pass this comprehensive benchmark matrix:
 
 ```
@@ -267,6 +289,7 @@ Before finalizing the internal delivery configuration in Phase 3, the architectu
 ```
 
 #### Evaluation Metrics:
+
 - Automatic CSS delivery reliability
 - SSR and RSC compatibility
 - CSS cascade ordering under `@layer cl-components`

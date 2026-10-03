@@ -1,8 +1,9 @@
 # Chellaa React — Engineering Workflows
+
 ## Workflow 03: Testing, Accessibility & QA Standards
 
 **Document Status:** 🟢 COMPLETE & ENFORCED  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -30,6 +31,7 @@ pnpm test -- --grep "accessibility"
 ## 3. Mandatory Test Coverage Checklist
 
 Every component must satisfy:
+
 1. **DOM Structure:** Component renders proper HTML elements with expected semantic roles.
 2. **Keyboard Operability:** Every interactive element can be focused and activated via Tab, Enter, Space, and Arrow keys.
 3. **Screen Reader Attributes:** States reflect via ARIA attributes (`aria-expanded`, `aria-busy`, `aria-invalid`, `aria-disabled`).

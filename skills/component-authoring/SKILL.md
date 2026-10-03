@@ -11,6 +11,7 @@ When creating or refactoring a component in `@chellaa/react`:
    Always reference the approved 30-section specification in `docs/specifications/` and the Universal API Conventions in `docs/specifications/01-api-conventions.md`.
 
 2. **Follow Collocated 6-File Structure:**
+
    ```text
    packages/react/src/components/<ComponentName>/
    ├── <ComponentName>.tsx

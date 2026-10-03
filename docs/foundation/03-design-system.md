@@ -1,10 +1,11 @@
 # Chellaa React — Foundation Architecture
+
 ## Document 03: Design System & Token Foundation
 
 **Document Status:** Approved & Baseline  
 **Phase:** 1 — Foundation  
 **Version:** 1.0.0  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
@@ -71,16 +72,19 @@ Chellaa React implements a strict **Three-Tier Design Token Architecture**:
 ```
 
 ### 3.1 Tier 1: Primitive Tokens (Global)
+
 - **Role:** Pure mathematical and raw color values without semantic meaning.
 - **Naming Pattern:** `--cl-<category>-<scale>` (e.g., `--cl-palette-blue-500`, `--cl-raw-space-16`).
 - **Characteristics:** Static across themes. A raw hex value like `#3b82f6` or raw dimension `16px` never changes based on mode or context.
 
 ### 3.2 Tier 2: Semantic Tokens (System Context)
+
 - **Role:** Map primitives to architectural intent (surfaces, text, interactive actions, feedback).
 - **Naming Pattern:** `--cl-<category>-<role>-<variant>` (e.g., `--cl-color-bg-canvas`, `--cl-color-fg-muted`, `--cl-color-primary-base`).
 - **Characteristics:** Theme-dependent. When switching from light to dark mode, `--cl-color-bg-canvas` swaps from white (`#ffffff`) to deep slate (`#090d16`), but component code never changes.
 
 ### 3.3 Tier 3: Component Tokens (Component Scope)
+
 - **Role:** Scoped variables mapped directly to a specific component's visual properties.
 - **Naming Pattern:** `--cl-<component>-<element>-<property>` (e.g., `--cl-button-primary-bg`, `--cl-dialog-backdrop-blur`).
 - **Characteristics:** Enable targeted component customization without altering the global semantic tokens.
@@ -90,7 +94,9 @@ Chellaa React implements a strict **Three-Tier Design Token Architecture**:
 ## 4. Color System
 
 ### 4.1 Primitive Palette Scales
+
 Chellaa React defines 10-step harmonic color ramps (50 to 950) generated in OKLCH/HSL color spaces for uniform perceptual luminance:
+
 - **Slate (Neutral):** Base for surfaces, text, and borders.
 - **Indigo (Primary Default):** Core brand and primary interactive action.
 - **Violet (Secondary Default):** Accent and secondary actions.
@@ -140,6 +146,7 @@ Chellaa React defines 10-step harmonic color ramps (50 to 950) generated in OKLC
 ## 5. Typography
 
 ### 5.1 Font Family Strategy
+
 Chellaa React uses clean, high-performance system font stacks by default to eliminate layout shifts (CLS) and network latency. Consumers can override the font stack globally via a single CSS variable.
 
 - **Sans-Serif (Default UI Stack):**  
@@ -148,6 +155,7 @@ Chellaa React uses clean, high-performance system font stacks by default to elim
   `--cl-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;`
 
 ### 5.2 Type Scale
+
 The typographic scale utilizes a modern rem-based modular scale (1rem = 16px default browser baseline):
 
 ```
@@ -169,6 +177,7 @@ The typographic scale utilizes a modern rem-based modular scale (1rem = 16px def
 ```
 
 ### 5.3 Font Weights & Hierarchy
+
 - **Regular (400):** Default body copy, descriptions, input field text.
 - **Medium (500):** Interactive labels, buttons, navigation items, table headers.
 - **Semi-bold (600):** Section headings (H3–H6), card titles, modal headers.
@@ -252,14 +261,18 @@ Chellaa React uses a balanced corner curvature scale that provides modern, frien
 Elevation communicates depth, hierarchy, and surface stacking.
 
 ### 9.1 Light Mode Shadows
+
 Light mode utilizes dual-layer shadows combining a crisp directional drop with a soft, diffused ambient occlusion:
+
 - `--cl-shadow-sm:` `0 1px 2px 0 rgba(0, 0, 0, 0.05)`
 - `--cl-shadow-md:` `0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05)`
 - `--cl-shadow-lg:` `0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04)`
 - `--cl-shadow-xl:` `0 20px 25px -5px rgba(0, 0, 0, 0.10), 0 8px 10px -6px rgba(0, 0, 0, 0.04)`
 
 ### 9.2 Dark Mode Elevation Strategy
+
 In dark themes, traditional black drop-shadows become invisible against dark surfaces. Chellaa React solves this using:
+
 1. **Luminance Stacking:** Higher elevation layers utilize subtly lighter surface background tokens.
 2. **Hairline Border Stroke:** A 1px border with 8–15% white opacity (`rgba(255, 255, 255, 0.08)`).
 3. **Subtle Ambient Rim Glow:** Soft deep shadows (`0 0 0 1px rgba(255,255,255,0.08), 0 8px 24px -4px rgba(0,0,0,0.4)`).
@@ -316,17 +329,20 @@ To permanently prevent z-index collision bugs across overlays, tooltips, dialogs
 Micro-interactions must feel responsive, organic, and purposeful.
 
 ### 12.1 Durations
+
 - `--cl-duration-fast: 150ms` (Micro-interactions: buttons, checkbox toggles, hover effects).
 - `--cl-duration-normal: 250ms` (Component state transitions: dropdown openings, tab switches).
 - `--cl-duration-slow: 350ms` (Large surface movements: modal dialog reveals, slide-in drawers).
 
 ### 12.2 Easing Curves
+
 - `--cl-ease-default: cubic-bezier(0.4, 0.0, 0.2, 1)` (Standard smooth acceleration & deceleration).
 - `--cl-ease-out: cubic-bezier(0.0, 0.0, 0.2, 1)` (Decelerating curve for entering elements).
 - `--cl-ease-in: cubic-bezier(0.4, 0.0, 1.0, 1)` (Accelerating curve for exiting elements).
 - `--cl-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1)` (Elastic pop for badges and checkmarks).
 
 ### 12.3 Reduced Motion Standard
+
 All animation and transition tokens automatically collapse to zero or gentle opacity fades when the user has requested reduced motion:
 
 ```css

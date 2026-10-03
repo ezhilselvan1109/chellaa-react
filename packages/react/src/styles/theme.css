@@ -1,0 +1,199 @@
+/**
+ * Chellaa React — Tier 2 Semantic & Tier 3 Component Design Tokens
+ * Driven by CSS variables and dynamically swapped via data-theme="light|dark".
+ */
+@layer cl-theme {
+  /* ---------------------------------------------------------------------------
+   * Light Theme (Default)
+   * ------------------------------------------------------------------------- */
+  :root,
+  [data-theme="light"] {
+    /* Surfaces */
+    --cl-color-bg-canvas: var(--cl-palette-white);
+    --cl-color-bg-surface: var(--cl-palette-slate-50);
+    --cl-color-bg-elev: var(--cl-palette-white);
+    --cl-color-bg-muted: var(--cl-palette-slate-100);
+
+    /* Typography / Foregrounds */
+    --cl-color-fg-primary: var(--cl-palette-slate-900);
+    --cl-color-fg-secondary: var(--cl-palette-slate-700);
+    --cl-color-fg-muted: var(--cl-palette-slate-500);
+    --cl-color-fg-inverse: var(--cl-palette-white);
+
+    /* Borders */
+    --cl-color-border-subtle: var(--cl-palette-slate-200);
+    --cl-color-border-default: var(--cl-palette-slate-300);
+    --cl-color-border-strong: var(--cl-palette-slate-400);
+
+    /* Action: Primary (Indigo) */
+    --cl-color-primary-base: var(--cl-palette-indigo-600);
+    --cl-color-primary-hover: var(--cl-palette-indigo-700);
+    --cl-color-primary-active: var(--cl-palette-indigo-800);
+    --cl-color-primary-fg: var(--cl-palette-white);
+    --cl-color-primary-subtle: var(--cl-palette-indigo-50);
+
+    /* Neutral */
+    --cl-color-neutral-base: var(--cl-palette-slate-700);
+    --cl-color-neutral-hover: var(--cl-palette-slate-800);
+    --cl-color-neutral-active: var(--cl-palette-slate-900);
+    --cl-color-neutral-fg: var(--cl-palette-white);
+    --cl-color-neutral-subtle: var(--cl-palette-slate-100);
+
+    /* Status: Success (Emerald) */
+    --cl-color-success-base: var(--cl-palette-emerald-600);
+    --cl-color-success-hover: var(--cl-palette-emerald-700);
+    --cl-color-success-fg: var(--cl-palette-white);
+    --cl-color-success-subtle: var(--cl-palette-emerald-50);
+
+    /* Status: Warning (Amber) */
+    --cl-color-warning-base: var(--cl-palette-amber-600);
+    --cl-color-warning-hover: var(--cl-palette-amber-700);
+    --cl-color-warning-fg: var(--cl-palette-white);
+    --cl-color-warning-subtle: var(--cl-palette-amber-50);
+
+    /* Status: Danger / Error (Rose) */
+    --cl-color-danger-base: var(--cl-palette-rose-600);
+    --cl-color-danger-hover: var(--cl-palette-rose-700);
+    --cl-color-danger-fg: var(--cl-palette-white);
+    --cl-color-danger-subtle: var(--cl-palette-rose-50);
+
+    /* Status: Info (Sky) */
+    --cl-color-info-base: var(--cl-palette-sky-600);
+    --cl-color-info-hover: var(--cl-palette-sky-700);
+    --cl-color-info-fg: var(--cl-palette-white);
+    --cl-color-info-subtle: var(--cl-palette-sky-50);
+
+    /* Focus Ring */
+    --cl-color-focus-ring: rgba(99, 102, 241, 0.45);
+
+    /* Overlay Backdrop */
+    --cl-color-backdrop: rgba(15, 23, 42, 0.5);
+
+    /* -------------------------------------------------------------------------
+     * Tier 3 Component Token Mappings (Resolving through Semantic Tokens)
+     * ----------------------------------------------------------------------- */
+    /* Button */
+    --cl-button-primary-bg: var(--cl-color-primary-base);
+    --cl-button-primary-fg: var(--cl-color-primary-fg);
+    --cl-button-primary-hover-bg: var(--cl-color-primary-hover);
+    --cl-button-primary-active-bg: var(--cl-color-primary-active);
+
+    --cl-button-neutral-bg: var(--cl-color-neutral-base);
+    --cl-button-neutral-fg: var(--cl-color-neutral-fg);
+    --cl-button-neutral-hover-bg: var(--cl-color-neutral-hover);
+    --cl-button-neutral-active-bg: var(--cl-color-neutral-active);
+
+    --cl-button-danger-bg: var(--cl-color-danger-base);
+    --cl-button-danger-fg: var(--cl-color-danger-fg);
+    --cl-button-danger-hover-bg: var(--cl-color-danger-hover);
+
+    /* Input */
+    --cl-input-bg: var(--cl-color-bg-canvas);
+    --cl-input-fg: var(--cl-color-fg-primary);
+    --cl-input-border: var(--cl-color-border-default);
+    --cl-input-focus-border: var(--cl-color-primary-base);
+    --cl-input-invalid-border: var(--cl-color-danger-base);
+    --cl-input-placeholder: var(--cl-color-fg-muted);
+
+    /* Card */
+    --cl-card-bg: var(--cl-color-bg-canvas);
+    --cl-card-border: var(--cl-color-border-subtle);
+    --cl-card-elevated-bg: var(--cl-color-bg-elev);
+
+    /* Dialog */
+    --cl-dialog-bg: var(--cl-color-bg-elev);
+    --cl-dialog-border: var(--cl-color-border-subtle);
+    --cl-dialog-backdrop: var(--cl-color-backdrop);
+
+    /* Badge */
+    --cl-badge-default-bg: var(--cl-color-primary-subtle);
+    --cl-badge-default-fg: var(--cl-color-primary-base);
+
+    /* Table */
+    --cl-table-border: var(--cl-color-border-subtle);
+    --cl-table-header-bg: var(--cl-color-bg-surface);
+    --cl-table-row-hover-bg: var(--cl-color-bg-muted);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Dark Theme
+   * ------------------------------------------------------------------------- */
+  [data-theme="dark"] {
+    /* Surfaces */
+    --cl-color-bg-canvas: var(--cl-palette-slate-950);
+    --cl-color-bg-surface: #131b2e;
+    --cl-color-bg-elev: var(--cl-palette-slate-800);
+    --cl-color-bg-muted: var(--cl-palette-slate-800);
+
+    /* Typography / Foregrounds */
+    --cl-color-fg-primary: var(--cl-palette-slate-50);
+    --cl-color-fg-secondary: var(--cl-palette-slate-300);
+    --cl-color-fg-muted: var(--cl-palette-slate-400);
+    --cl-color-fg-inverse: var(--cl-palette-slate-900);
+
+    /* Borders */
+    --cl-color-border-subtle: var(--cl-palette-slate-800);
+    --cl-color-border-default: var(--cl-palette-slate-700);
+    --cl-color-border-strong: var(--cl-palette-slate-600);
+
+    /* Action: Primary (Indigo) */
+    --cl-color-primary-base: var(--cl-palette-indigo-500);
+    --cl-color-primary-hover: var(--cl-palette-indigo-400);
+    --cl-color-primary-active: var(--cl-palette-indigo-600);
+    --cl-color-primary-fg: var(--cl-palette-white);
+    --cl-color-primary-subtle: rgba(99, 102, 241, 0.15);
+
+    /* Neutral */
+    --cl-color-neutral-base: var(--cl-palette-slate-600);
+    --cl-color-neutral-hover: var(--cl-palette-slate-500);
+    --cl-color-neutral-active: var(--cl-palette-slate-400);
+    --cl-color-neutral-fg: var(--cl-palette-white);
+    --cl-color-neutral-subtle: rgba(255, 255, 255, 0.08);
+
+    /* Status: Success (Emerald) */
+    --cl-color-success-base: var(--cl-palette-emerald-500);
+    --cl-color-success-hover: var(--cl-palette-emerald-400);
+    --cl-color-success-fg: var(--cl-palette-white);
+    --cl-color-success-subtle: rgba(16, 185, 129, 0.15);
+
+    /* Status: Warning (Amber) */
+    --cl-color-warning-base: var(--cl-palette-amber-500);
+    --cl-color-warning-hover: var(--cl-palette-amber-400);
+    --cl-color-warning-fg: var(--cl-palette-white);
+    --cl-color-warning-subtle: rgba(245, 158, 11, 0.15);
+
+    /* Status: Danger / Error (Rose) */
+    --cl-color-danger-base: var(--cl-palette-rose-500);
+    --cl-color-danger-hover: var(--cl-palette-rose-400);
+    --cl-color-danger-fg: var(--cl-palette-white);
+    --cl-color-danger-subtle: rgba(244, 63, 94, 0.15);
+
+    /* Status: Info (Sky) */
+    --cl-color-info-base: var(--cl-palette-sky-500);
+    --cl-color-info-hover: var(--cl-palette-sky-400);
+    --cl-color-info-fg: var(--cl-palette-white);
+    --cl-color-info-subtle: rgba(14, 165, 233, 0.15);
+
+    /* Focus Ring */
+    --cl-color-focus-ring: rgba(129, 140, 248, 0.55);
+
+    /* Overlay Backdrop */
+    --cl-color-backdrop: rgba(0, 0, 0, 0.7);
+
+    /* Dark Mode Elevation Lighting */
+    --cl-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --cl-shadow-md:
+      0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    --cl-shadow-lg:
+      0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+    --cl-shadow-xl:
+      0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+
+    /* Component Overrides for Dark Mode */
+    --cl-input-bg: var(--cl-palette-slate-900);
+    --cl-card-bg: var(--cl-palette-slate-900);
+    --cl-card-elevated-bg: var(--cl-palette-slate-800);
+    --cl-dialog-bg: var(--cl-palette-slate-900);
+    --cl-dialog-border: var(--cl-palette-slate-800);
+  }
+}

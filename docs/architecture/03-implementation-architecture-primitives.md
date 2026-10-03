@@ -1,16 +1,17 @@
 # Chellaa React — Implementation Architecture
+
 ## Document 03: Internal Shared Primitives & Foundation Utilities
 
 **Document Status:** 🟢 COMPLETE & SPECIFIED  
 **Phase:** 14 & 15 — Implementation Architecture & Foundation Utilities  
 **Date:** 2026-10-03  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
 ## 1. Executive Summary
 
-To maintain clean separation of concerns, eliminate code duplication, and guarantee zero-runtime bloat, Chellaa React defines a minimal, vetted set of internal foundation primitives. 
+To maintain clean separation of concerns, eliminate code duplication, and guarantee zero-runtime bloat, Chellaa React defines a minimal, vetted set of internal foundation primitives.
 
 Rather than adopting heavy monolithic headless libraries, Chellaa React either implements micro-utilities natively or encapsulates minimal, focused utilities.
 
@@ -60,6 +61,7 @@ This document audits the required primitives for the 7 foundation components (`B
 ## 3. Detailed Specification of Foundation Primitives
 
 ### 3.1 `Slot` (The `asChild` Primitive)
+
 - **Purpose:** Enables polymorphism without dynamic `as` props by merging props, event handlers, and refs onto its immediate child element.
 - **API:**
   ```tsx
@@ -77,6 +79,7 @@ This document audits the required primitives for the 7 foundation components (`B
   - Respect `event.defaultPrevented`.
 
 ### 3.2 `Portal`
+
 - **Purpose:** Renders overlay children into a designated DOM container (default: `document.body`) outside the parent DOM hierarchy to bypass `overflow: hidden` and z-index stacking context restrictions.
 - **API:**
   ```tsx
@@ -84,7 +87,10 @@ This document audits the required primitives for the 7 foundation components (`B
     children: React.ReactNode;
     container?: HTMLElement | null;
   }
-  export function Portal({ children, container }: PortalProps): React.ReactPortal | null;
+  export function Portal({
+    children,
+    container,
+  }: PortalProps): React.ReactPortal | null;
   ```
 - **SSR Behavior:** Returns `null` on the server and during initial hydration pass; mounts into DOM container in `useEffect` to prevent hydration mismatches.
 - **Test Requirements:**
@@ -93,6 +99,7 @@ This document audits the required primitives for the 7 foundation components (`B
   - Removes node on unmount.
 
 ### 3.3 `useControllableState`
+
 - **Purpose:** Synchronizes state between controlled mode (`value` + `onChange`) and uncontrolled mode (`defaultValue`), providing a unified state getter and setter.
 - **API:**
   ```tsx
@@ -113,10 +120,13 @@ This document audits the required primitives for the 7 foundation components (`B
   - Calls `onChange` on state updates with previous value parity.
 
 ### 3.4 `useMergeRefs`
+
 - **Purpose:** Combines multiple React refs (callback refs and `RefObject`s) into a single ref callback.
 - **API:**
   ```tsx
-  export function useMergeRefs<T>(...refs: (React.Ref<T> | undefined)[]): React.RefCallback<T>;
+  export function useMergeRefs<T>(
+    ...refs: (React.Ref<T> | undefined)[]
+  ): React.RefCallback<T>;
   ```
 - **SSR Behavior:** Pure hook; safe for SSR.
 - **Test Requirements:**
@@ -124,13 +134,14 @@ This document audits the required primitives for the 7 foundation components (`B
   - Handles nullification on unmount.
 
 ### 3.5 `composeEventHandlers`
+
 - **Purpose:** Chains consumer event handlers with internal component event handlers while respecting `event.preventDefault()`.
 - **API:**
   ```tsx
   export function composeEventHandlers<E extends React.SyntheticEvent>(
     originalHandler?: (event: E) => void,
     ourHandler?: (event: E) => void,
-    { checkForDefaultPrevented = true } = {}
+    { checkForDefaultPrevented = true } = {},
   ): (event: E) => void;
   ```
 - **SSR Behavior:** Pure function; zero SSR footprint.
@@ -139,10 +150,13 @@ This document audits the required primitives for the 7 foundation components (`B
   - Bypasses `ourHandler` if `originalHandler` called `event.preventDefault()`.
 
 ### 3.6 `classNames` (Zero-Dependency Class Composer)
+
 - **Purpose:** Composes conditional CSS classes into a sanitized string with 0 runtime dependencies (eliminates `clsx`).
 - **API:**
   ```tsx
-  export function classNames(...inputs: (string | boolean | null | undefined)[]): string;
+  export function classNames(
+    ...inputs: (string | boolean | null | undefined)[]
+  ): string;
   ```
 - **SSR Behavior:** Pure string formatting function.
 - **Test Requirements:**
@@ -154,6 +168,7 @@ This document audits the required primitives for the 7 foundation components (`B
 ## 4. Primitives Implementation Directory Topology
 
 Within `packages/react/src/`:
+
 ```text
 src/
 ├── primitives/

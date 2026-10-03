@@ -1,4 +1,5 @@
 # Chellaa React — Architecture & Engineering Lifecycle
+
 ## Document 00: Complete Project Discovery & Gap Analysis
 
 **Document Status:** 🟢 COMPLETE & AUDITED  
@@ -6,17 +7,18 @@
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
 **Repository:** `chellaa-react`  
-**Lead Architect:** Principal Architect & Engineering Lead  
+**Lead Architect:** Principal Architect & Engineering Lead
 
 ---
 
 ## 1. Executive Summary & Purpose
 
-Chellaa React (`@chellaa/react`) is envisioned as an enterprise-grade, production-ready React component library comparable architecturally to industry benchmarks like MUI, Ant Design, Chakra UI, and Radix UI. 
+Chellaa React (`@chellaa/react`) is envisioned as an enterprise-grade, production-ready React component library comparable architecturally to industry benchmarks like MUI, Ant Design, Chakra UI, and Radix UI.
 
 Per the **Chellaa React Complete Engineering Lifecycle Master Prompt**, no implementation or publication may proceed without establishing absolute architectural integrity. This document constitutes the **Full Project Discovery and Gap Analysis**, serving as the authoritative baseline across all 32 lifecycle stages.
 
 This analysis audits:
+
 1. Every file, directory, and git commit in the workspace.
 2. The complete hierarchy of governing documents across `docs/foundation/`, `docs/adr/`, `docs/engineering/`, and `docs/specifications/`.
 3. Every architectural assumption, contradiction, missing manifest, unconfigured toolchain, and open technical question.
@@ -28,12 +30,14 @@ This analysis audits:
 A physical scan of the workspace (`d:/learning/Microservice/ui-componenet/chellaa-react`) reveals the following assets:
 
 ### 2.1 Git Repository & Root Artifacts
+
 - `.git/`: Initialized Git repository, active branch `main`, 4 commits ahead of `origin/main`.
 - `.gitignore`: Standard Node/JavaScript ignore patterns (covers `node_modules`, `dist`, `.turbo`, etc.).
 - `LICENSE`: MIT License (Copyright 2026 Chellaa React Contributors).
 - `README.md`: Minimal 15-byte placeholder (`# chellaa-react`).
 
 ### 2.2 Foundation Documentation (`docs/foundation/`) — 6 Documents
+
 1. `01-vision.md` (24.6 KB): Defines project vision, mission, target audience, non-goals, 8 core design principles, competitor architectural comparison, and accessibility commitment.
 2. `02-requirements.md` (27.3 KB): Detailed functional, non-functional, accessibility (WCAG 2.2 AA), browser support, React version targets (18.2+ and 19.x), and performance metrics.
 3. `03-design-system.md` (28.3 KB): Three-tier design token hierarchy (Primitives, Semantics, Component tokens), 4px spatial grid, typography scales, elevation system, motion scales, and z-index strata.
@@ -42,9 +46,11 @@ A physical scan of the workspace (`d:/learning/Microservice/ui-componenet/chella
 6. `06-library-architecture.md` (30.9 KB): Target monorepo layout, collocated component folder anatomy, public API boundary, dependency classification, build pipeline (tsup + LightningCSS), apps topology (`docs`, `playground`, `test-consumer`), ADR summary table, and authoritative answers to the 18 foundation questions.
 
 ### 2.3 Architecture Decision Records (`docs/adr/`) — 1 Document
+
 1. `007-zero-configuration-styling.md` (10.6 KB): Documents the decision that consumers must not manually import stylesheets (`import "@chellaa/react/styles.css"` is deprecated as a requirement). Establishes public API contract as finalized and details 4 candidate internal delivery mechanisms.
 
 ### 2.4 Engineering Standards (`docs/engineering/`) — 9 Documents
+
 1. `01-typescript-standards.md` (16.9 KB): TypeScript 5+ strict standards, compiler options, explicit type declarations, ref typing, generic patterns, and prohibition of `any`.
 2. `02-react-standards.md` (16.0 KB): React 18/19 compatibility, hook standards, controlled/uncontrolled state patterns, ref forwarding, `asChild` Slot delegation, and prohibition of global `"use client"` banners.
 3. `03-css-standards.md` (21.7 KB): Authoring standards for `.styles.css`, `@layer cl-components`, BEM naming, CSS variables usage, distinction between intrinsic CSS constants and design tokens, and reduced-motion `!important` exception.
@@ -56,6 +62,7 @@ A physical scan of the workspace (`d:/learning/Microservice/ui-componenet/chella
 9. `09-build-release-standards.md` (10.1 KB): Turborepo configuration, `tsup` configuration, LightningCSS processing, export maps, bundle size budgets with `size-limit`, `"sideEffects": ["*.css", "**/*.css"]`, and test-consumer verification matrix.
 
 ### 2.5 Component Specifications (`docs/specifications/`) — 11 Documents
+
 1. `00-component-feature-matrix.md` (22.1 KB): Cross-component comparison matrix for the 7 foundation components across 12 architectural dimensions.
 2. `00-component-specification-standard.md` (14.3 KB): Mandatory 30-section specification template required for all component specifications.
 3. `01-api-conventions.md` (18.2 KB): Universal API naming conventions (`variant`, `size`, `colorScheme`, `isDisabled`, `isInvalid`, `isLoading`, `isReadOnly`, `isRequired`, `asChild`, `ref`, icon slot naming).
@@ -148,7 +155,8 @@ Despite thorough architectural prose, significant portions of the project lifecy
 The audit revealed the following cross-document contradictions that must be formally resolved:
 
 ### 5.1 ADR Numbering & Catalog Taxonomy Mismatch
-- **Issue:** `docs/foundation/06-library-architecture.md` (lines 250-264) catalogues ADRs 001 through 007 with specific titles (e.g., ADR-001 is "Scoped Static CSS + CSS Vars", ADR-002 is "CSS Variable Runtime Theming", ADR-006 is "tsup Dual ESM/CJS Pipeline").  
+
+- **Issue:** `docs/foundation/06-library-architecture.md` (lines 250-264) catalogues ADRs 001 through 007 with specific titles (e.g., ADR-001 is "Scoped Static CSS + CSS Vars", ADR-002 is "CSS Variable Runtime Theming", ADR-006 is "tsup Dual ESM/CJS Pipeline").
 - However, Master Prompt Section 34 defines:
   ```text
   ADR-001-package-architecture.md
@@ -165,14 +173,17 @@ The audit revealed the following cross-document contradictions that must be form
 - **Resolution:** Align the ADR directory with standard prefixed naming (`ADR-001-package-architecture.md` through `ADR-009-versioning-strategy.md`). Author formal standalone ADR documents for all 9 decisions.
 
 ### 5.2 CSS Delivery Mechanism: Finalized vs. Empirical Investigation
+
 - **Issue:** Several sections in `docs/foundation/04-styling-architecture.md` and `docs/engineering/03-css-standards.md` suggest component-level side-effect imports (`import './Button.css'`) are already the final mechanism. However, ADR-007 explicitly states that while the **public API contract** (zero manual CSS import) is finalized, the **internal delivery mechanism** is an open investigation pending multi-bundler benchmarking in `apps/test-consumer`. Master Prompt Section 13 mandates an empirical benchmark across Vite SPA, Next.js App Router, Remix, Vitest ESM, Jest CJS, and Node.
 - **Resolution:** Maintain the distinction: Public contract is immutable (zero manual CSS import). The internal mechanism must be empirically benchmarked and confirmed before component bundling is finalized.
 
 ### 5.3 Modal vs. Dialog File Naming
+
 - **Issue:** The specification review `docs/specifications/02-specification-review.md` confirmed that `Dialog` is the canonical component name, with `Modal` exported as an alias. However, the specification file itself is named `04-modal.md`.
 - **Resolution:** Acknowledge in documentation that `04-modal.md` covers both `Dialog` (canonical) and `Modal` (alias). Future docs references should cite `Dialog (Modal)`.
 
 ### 5.4 Cross-Component Matrix Documentation Path
+
 - **Issue:** Master Prompt Section 16 asks for `docs/specifications/02-cross-component-api-matrix.md`. The repository currently contains `docs/specifications/00-component-feature-matrix.md` and `docs/specifications/01-api-conventions.md`, while `02-specification-review.md` contains the review audit.
 - **Resolution:** Synthesize and ensure the cross-component API comparison is consolidated or cross-linked in `docs/specifications/02-cross-component-api-matrix.md` without duplicating or corrupting existing files.
 
@@ -272,6 +283,7 @@ There is currently **no `.github/` directory** and zero automated workflows:
 Zero component or framework code currently exists on disk. Implementation must be tackled systematically across three tiers:
 
 ### 10.1 Tier 1: Monorepo & Core Infrastructure
+
 - Root `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`.
 - `packages/react/` package scaffolding (`package.json`, `tsconfig.json`, `tsup.config.ts`).
 - Shared internal utilities:
@@ -284,6 +296,7 @@ Zero component or framework code currently exists on disk. Implementation must b
   - `classNames` (zero-dependency class composer).
 
 ### 10.2 Tier 2: Token Engine & Theming System
+
 - `packages/react/src/styles/tokens.css` (Primitive token CSS variables).
 - `packages/react/src/styles/theme.css` (Semantic token CSS variables mapped to light/dark).
 - `packages/react/src/styles/reset.css` (Scoped box-sizing and font resets).
@@ -294,6 +307,7 @@ Zero component or framework code currently exists on disk. Implementation must b
 - `packages/react/src/theme/createTheme.ts` (Theme generator).
 
 ### 10.3 Tier 3: Foundation UI Components (7 Components)
+
 1. `Button` (`packages/react/src/components/Button/`)
 2. `Input` (`packages/react/src/components/Input/`)
 3. `Select` (`packages/react/src/components/Select/`)
@@ -303,6 +317,7 @@ Zero component or framework code currently exists on disk. Implementation must b
 7. `Table` (`packages/react/src/components/Table/`)
 
 ### 10.4 Tier 4: Applications
+
 - `apps/test-consumer/` (Next.js App Router RSC, Vite SPA, and Node consumer validation).
 - `apps/playground/` (Vite + React interactive sandbox).
 - `apps/docs/` (Official documentation web application).

@@ -3,7 +3,7 @@
 **Document Status:** Approved & Baseline  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)  
+**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
 
 ---
 
@@ -25,11 +25,13 @@ Related Components: Card, Badge, Pagination
 The `Table` component organizes dense, multi-dimensional datasets into structured rows and columns, enabling users to scan, compare, and analyze complex information efficiently.
 
 ### When to Use
+
 - Displaying tabular data records (invoices, customer lists, audit logs, system metrics).
 - Presenting comparative datasets where alignment across rows and columns is critical.
 - Integrating with headless data grid libraries (such as TanStack Table).
 
 ### When NOT to Use
+
 - **Do NOT use tables for page layout or grid alignment.** Use `Flex`, `Grid`, or `Stack`.
 - **Do NOT use when data is non-tabular or purely hierarchical.** Use `Tree` or nested `List`.
 
@@ -38,6 +40,7 @@ The `Table` component organizes dense, multi-dimensional datasets into structure
 ## 3. Scope
 
 ### In Scope
+
 - Compound sub-component architecture (`Table.Root`, `Table.Container`, `Table.Caption`, `Table.Thead`, `Table.Tbody`, `Table.Tfoot`, `Table.Tr`, `Table.Th`, `Table.Td`).
 - 3 visual variants: `simple` (default), `striped`, `bordered`.
 - 3 spatial density scales: `sm` (dense), `md` (default), `lg` (spacious).
@@ -97,9 +100,9 @@ Table.Container (.cl-table__container) (Overflow scroll wrapper)
 ## 7. Public API
 
 ### `Table.Root` Props
+
 ```typescript
-export interface TableRootProps
-  extends React.TableHTMLAttributes<HTMLTableElement> {
+export interface TableRootProps extends React.TableHTMLAttributes<HTMLTableElement> {
   variant?: TableVariant;
   size?: TableSize;
   isHoverable?: boolean;
@@ -131,8 +134,7 @@ export interface TableRootProps
 export type TableVariant = "simple" | "striped" | "bordered";
 export type TableSize = "sm" | "md" | "lg";
 
-export interface TableRootProps
-  extends React.TableHTMLAttributes<HTMLTableElement> {
+export interface TableRootProps extends React.TableHTMLAttributes<HTMLTableElement> {
   /**
    * Visual aesthetic treatment of the table.
    * @default "simple"
@@ -158,11 +160,9 @@ export interface TableRootProps
   isStickyHeader?: boolean;
 }
 
-export interface TableContainerProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+export interface TableContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export interface TableCellProps
-  extends React.TdHTMLAttributes<HTMLTableCellElement> {
+export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
   /**
    * If true, aligns text to the right and applies tabular-nums font styling.
    * @default false
@@ -170,8 +170,7 @@ export interface TableCellProps
   isNumeric?: boolean;
 }
 
-export interface TableHeaderCellProps
-  extends React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface TableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
   /**
    * If true, aligns text to the right and applies tabular-nums font styling.
    * @default false
@@ -179,8 +178,7 @@ export interface TableHeaderCellProps
   isNumeric?: boolean;
 }
 
-export interface TableRowProps
-  extends React.HTMLAttributes<HTMLTableRowElement> {
+export interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   /**
    * Standard React mouse click event on table row.
    */
@@ -201,6 +199,7 @@ export interface TableRowProps
 ## 10. Sizes
 
 Cell padding scale governing `Table.Th` and `Table.Td`:
+
 - `sm`: 6px 12px padding; 12px typography (dense data grids).
 - `md` (Default): 12px 16px padding; 14px typography (standard enterprise).
 - `lg`: 16px 24px padding; 16px typography (featured displays).
@@ -240,6 +239,7 @@ N/A — Table is a presentational tabular DOM container. Data sorting and filter
 ## 15. Composition
 
 Compound export binding:
+
 ```tsx
 export const Table = Object.assign(TableRoot, {
   Container: TableContainer,
@@ -253,7 +253,7 @@ export const Table = Object.assign(TableRoot, {
 });
 ```
 
-*(Note: `asChild` is intentionally prohibited on table elements to prevent invalid HTML markup).*
+_(Note: `asChild` is intentionally prohibited on table elements to prevent invalid HTML markup)._
 
 ---
 
@@ -267,6 +267,7 @@ export const Table = Object.assign(TableRoot, {
 ## 17. Accessibility
 
 ### 17.1 Semantic Structure
+
 - Uses native semantic HTML table tags: `<table>`, `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, `<tr>`, `<th>`, `<td>`.
 - `Table.Th` automatically sets `scope="col"`.
 - `Table.Caption` provides an accessible programmatic description of table contents for screen reader users.

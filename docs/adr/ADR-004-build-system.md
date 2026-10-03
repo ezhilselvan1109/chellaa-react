@@ -2,13 +2,14 @@
 
 **Status:** Accepted  
 **Date:** 2026-10-03  
-**Deciders:** Principal Architect, Tooling & DevOps Lead  
+**Deciders:** Principal Architect, Tooling & DevOps Lead
 
 ---
 
 ## 1. Context and Problem Statement
 
 Building a production-grade TypeScript React component library requires:
+
 - Sub-second build times for high-velocity local developer experience.
 - Clean dual ESM (`.mjs`) and CommonJS (`.cjs`) outputs.
 - High-fidelity TypeScript declarations (`.d.ts`) and sourcemaps.
@@ -39,11 +40,13 @@ Building a production-grade TypeScript React component library requires:
 ## 3. Consequences
 
 ### Positive
+
 - **Blazing Compilation Speed:** `tsup` and `LightningCSS` compile the entire library in milliseconds.
 - **Reliable TypeScript Ecosystem:** Emitted `.d.ts` files pass strict type checking across all resolution strategies (`Node10`, `Node16`, `Bundler`).
 - **Reproducible Monorepo Pipeline:** Turborepo ensures incremental builds are instant when inputs have not changed.
 
 ### Negative
+
 - **Dual Formats Maintenance:** Requires testing both ESM and CJS consumer targets to avoid subtle dual-package hazard bugs.
 
 ---

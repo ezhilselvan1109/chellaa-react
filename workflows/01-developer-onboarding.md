@@ -1,12 +1,14 @@
 # Chellaa React — Engineering Workflows
+
 ## Workflow 01: Developer Onboarding & Environment Setup
 
 **Document Status:** 🟢 COMPLETE & ENFORCED  
-**Target Package:** `@chellaa/react`  
+**Target Package:** `@chellaa/react`
 
 ---
 
 ## 1. Prerequisites
+
 - **Node.js:** `v20.x` or higher (LTS recommended).
 - **Corepack / pnpm:** `pnpm v9.12.0` or higher.
 - **Git:** `2.40+`.
@@ -52,6 +54,7 @@ pnpm run lint
 ---
 
 ## 4. Branching & PR Guidelines
+
 - Always branch from `main`: `git checkout -b feat/my-component-name`.
 - Use Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`).
 - For changes to publishable code, run `pnpm changeset` and commit the generated markdown file.
