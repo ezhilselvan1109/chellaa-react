@@ -22,13 +22,14 @@ const results = [
   runStep("Node CommonJS Require", "node benchmark-node-cjs.cjs"),
   runStep("Server-Side Rendering (SSR)", "node benchmark-ssr.mjs"),
   runStep("CSS Stylesheet Integrity", "node benchmark-css.mjs"),
+  runStep("NPM Package Archive Integrity", "node benchmark-pack.mjs"),
 ];
 
 const allPassed = results.every((r) => r.pass);
 
 console.log("=================================================");
 if (allPassed) {
-  console.log("ALL BENCHMARK GATES PASSED (4/4)");
+  console.log("ALL BENCHMARK GATES PASSED (5/5)");
   process.exit(0);
 } else {
   console.error("SOME BENCHMARK GATES FAILED");

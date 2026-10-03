@@ -31,5 +31,11 @@ if (!stylesCss.includes("--cl-color-primary-base") && !indexCss.includes("--cl-c
 if (!stylesCss.includes("prefers-reduced-motion") && !indexCss.includes("prefers-reduced-motion")) {
   throw new Error("CSS missing prefers-reduced-motion accessibility rule");
 }
+if (!stylesCss.includes("cl-button") && !indexCss.includes("cl-button")) {
+  throw new Error("CSS missing cl-button component class");
+}
+if (!stylesCss.includes("cl-button-group") && !indexCss.includes("cl-button-group")) {
+  throw new Error("CSS missing cl-button-group component class");
+}
 
 console.log("[Benchmark CSS] PASSED: Stylesheets contain all verified cascade layers, semantic tokens, and a11y rules.");

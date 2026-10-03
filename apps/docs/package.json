@@ -5,12 +5,16 @@
   "description": "Chellaa React official documentation portal",
   "type": "module",
   "scripts": {
-    "dev": "echo 'Docs portal dev server'",
-    "build": "echo 'Docs portal build'"
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.8"
   }
 }

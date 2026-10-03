@@ -1,0 +1,25 @@
+{
+  "name": "@chellaa/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Isolated component development and visual validation environment for Chellaa React",
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build"
+  },
+  "dependencies": {
+    "@chellaa/react": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.3.5",
+    "@storybook/addon-interactions": "^8.3.5",
+    "@storybook/addon-links": "^8.3.5",
+    "@storybook/react": "^8.3.5",
+    "@storybook/react-vite": "^8.3.5",
+    "storybook": "^8.3.5",
+    "vite": "^5.4.8"
+  }
+}
