@@ -153,7 +153,7 @@ The technical and visual architecture of Chellaa React is guided by nine foundat
 │                         │ generics, and exported interfaces.           │
 ├─────────────────────────┼──────────────────────────────────────────────┤
 │ 5. Performance          │ Zero runtime styling overhead; minimal JS    │
-│                         │ payload; strict sideEffects: false packaging.│
+│                         │ payload; sideEffects: ["*.css"] packaging.   │
 ├─────────────────────────┼──────────────────────────────────────────────┤
 │ 6. Seamless Theming     │ Token-driven CSS custom properties enabling  │
 │                         │ instant dark mode and multi-brand support.   │
@@ -194,7 +194,7 @@ Consumers must never be forced to use `!important` or hack nested CSS selectors.
 
 ### 6.6 High Performance & Tree-Shaking
 - Runtime JavaScript overhead is minimized by offloading all layout and dynamic theming to CSS custom properties and browser-native styling engines.
-- Strict ES module exports and `"sideEffects": false` ensure that importing `Button` does not bundle `DatePicker`, `Modal`, or unused icons.
+- Strict ES module exports and `"sideEffects": ["*.css", "**/*.css"]` ensure that importing `Button` does not bundle `DatePicker`, `Modal`, or unused icons, while guaranteeing that essential component styles are preserved by consumer bundlers.
 
 ### 6.7 SSR & Next.js/Remix Compatibility
 Every component must execute cleanly in Node.js server environments, supporting React 18/19 streaming SSR, Next.js App Router Server Components (`"use client"` marked where interactive hooks are needed), and static site generation without `window is not defined` crashes.
