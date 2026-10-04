@@ -8,8 +8,8 @@
 
 export const STORYBOOK_URL =
   (import.meta.env.VITE_STORYBOOK_URL as string | undefined) ||
-  "http://localhost:6006";
+  (import.meta.env.PROD ? "/storybook" : "http://localhost:6006");
 
 export const PLAYGROUND_URL =
   (import.meta.env.VITE_PLAYGROUND_URL as string | undefined) ||
-  "http://localhost:5173";
+  (import.meta.env.PROD ? "/playground" : "http://localhost:5173");

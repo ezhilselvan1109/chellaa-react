@@ -16,6 +16,12 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  async viteFinal(config) {
+    if (process.env.VERCEL) {
+      config.base = "/storybook/";
+    }
+    return config;
+  },
 };
 
 export default config;

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "docs": {
+      "root": "apps/docs",
+      "framework": "vite"
+    },
+    "playground": {
+      "root": "apps/playground",
+      "framework": "vite"
+    },
+    "storybook": {
+      "root": "apps/storybook",
+      "outputDirectory": "storybook-static",
+      "buildCommand": "pnpm run build"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/playground/(.*)",
+      "destination": {
+        "service": "playground"
+      }
+    },
+    {
+      "source": "/playground",
+      "destination": {
+        "service": "playground"
+      }
+    },
+    {
+      "source": "/storybook/(.*)",
+      "destination": {
+        "service": "storybook"
+      }
+    },
+    {
+      "source": "/storybook",
+      "destination": {
+        "service": "storybook"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "docs"
+      }
+    }
+  ]
+}
