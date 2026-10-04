@@ -36,6 +36,17 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
     }
   };
 
+  const [stepPkg, setStepPkg] = React.useState<
+    "pnpm" | "npm" | "yarn" | "bun"
+  >("pnpm");
+
+  const stepCommands = {
+    pnpm: "pnpm add @chellaa/react",
+    npm: "npm install @chellaa/react",
+    yarn: "yarn add @chellaa/react",
+    bun: "bun add @chellaa/react",
+  };
+
   return (
     <div className="landing-container">
       <div className="landing-aurora" />
@@ -290,12 +301,40 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <h3 className="landing-step-title">Install the Package</h3>
               <p className="landing-step-desc">
                 Add <code>@chellaa/react</code> to your existing React 18 or 19
-                project.
+                project using your package manager of choice.
               </p>
+              <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
+                {(["pnpm", "npm", "yarn", "bun"] as const).map((pkg) => (
+                  <button
+                    key={pkg}
+                    type="button"
+                    onClick={() => setStepPkg(pkg)}
+                    style={{
+                      padding: "5px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid var(--docs-border)",
+                      backgroundColor:
+                        stepPkg === pkg
+                          ? "var(--docs-primary-bg)"
+                          : "var(--docs-surface)",
+                      color:
+                        stepPkg === pkg
+                          ? "var(--docs-primary)"
+                          : "var(--docs-text-muted)",
+                      fontWeight: stepPkg === pkg ? 700 : 500,
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                  >
+                    {pkg.toUpperCase()}
+                  </button>
+                ))}
+              </div>
               <CodeBlock
-                code="pnpm add @chellaa/react"
+                code={stepCommands[stepPkg]}
                 language="bash"
-                title="Terminal"
+                title={`${stepPkg.toUpperCase()} TERMINAL`}
               />
             </div>
           </div>
@@ -349,6 +388,56 @@ export function ActionToolbar() {
                 language="tsx"
                 title="ActionToolbar.tsx"
               />
+
+              {/* Live Rendered Component Result */}
+              <div
+                style={{
+                  marginTop: "12px",
+                  padding: "16px 20px",
+                  borderRadius: "10px",
+                  background: "var(--docs-surface)",
+                  border: "1px solid var(--docs-border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      backgroundColor: "#10b981",
+                      boxShadow: "0 0 8px #10b981",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "0.82rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.04em",
+                      color: "var(--docs-text-muted)",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Live Rendered Component
+                  </span>
+                </div>
+
+                <ButtonGroup isAttached variant="solid" colorScheme="primary">
+                  <Button size="sm">Create</Button>
+                  <Button size="sm">Edit</Button>
+                  <Button size="sm" colorScheme="danger">
+                    Delete
+                  </Button>
+                </ButtonGroup>
+              </div>
             </div>
           </div>
         </div>

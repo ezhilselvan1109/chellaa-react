@@ -1,0 +1,149 @@
+/* Modern Terminal Code Block */
+.code-block-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #0b101b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  margin: 16px 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.code-block-container:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.45);
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-block-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.code-block-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.code-block-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.code-block-dot-red {
+  background-color: #ef4444;
+}
+
+.code-block-dot-yellow {
+  background-color: #f59e0b;
+}
+
+.code-block-dot-green {
+  background-color: #10b981;
+}
+
+.code-block-title {
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+}
+
+.code-block-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.code-block-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.code-block-copy-btn.copied {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: #34d399;
+}
+
+.code-block-pre {
+  margin: 0 !important;
+  padding: 16px 20px !important;
+  overflow-x: auto;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 0.9rem !important;
+  line-height: 1.65 !important;
+  color: #f8fafc !important;
+  background-color: transparent !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.code-block-code {
+  color: #f8fafc !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Syntax Token Highlighting */
+.token-keyword {
+  color: #c084fc !important;
+  font-weight: 600;
+}
+
+.token-string {
+  color: #34d399 !important;
+}
+
+.token-component {
+  color: #38bdf8 !important;
+  font-weight: 600;
+}
+
+.token-prop {
+  color: #fbbf24 !important;
+}
+
+.token-comment {
+  color: #64748b !important;
+  font-style: italic;
+}
+
+.token-punct {
+  color: #94a3b8 !important;
+}
+
+.token-shell-prompt {
+  color: #818cf8 !important;
+  font-weight: 700;
+  user-select: none;
+  margin-right: 8px;
+}
