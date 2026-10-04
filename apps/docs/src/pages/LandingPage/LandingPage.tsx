@@ -76,7 +76,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           onClick={() => onNavigate("#/overview")}
         >
           <span className="landing-badge-pill">NEW</span>
-          <span>Chellaa React v0.1.1 Released — Zero-Config Styling</span>
+          <span>Chellaa React v0.2.0 Released — Zero-Config Styling</span>
           <FiArrowRight size={13} />
         </a>
 

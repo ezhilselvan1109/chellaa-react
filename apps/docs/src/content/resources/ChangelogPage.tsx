@@ -25,7 +25,7 @@ export function ChangelogPage() {
             marginBottom: "8px",
           }}
         >
-          <h2 style={{ margin: 0 }}>v0.1.1</h2>
+          <h2 style={{ margin: 0 }}>v0.2.0</h2>
           <span
             style={{
               padding: "2px 8px",
