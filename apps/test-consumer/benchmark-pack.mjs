@@ -24,6 +24,8 @@ const mandatoryFiles = [
   "styles.css",
   "styles.css.d.ts",
   "package.json",
+  "README.md",
+  "LICENSE",
 ];
 
 for (const required of mandatoryFiles) {
