@@ -129,7 +129,12 @@ function highlightCode(code: string, language: string): React.ReactNode {
   });
 }
 
-export function CodeBlock({ code, language = "tsx", title }: CodeBlockProps) {
+export function CodeBlock({
+  code,
+  language = "tsx",
+  title,
+  flush = false,
+}: CodeBlockProps) {
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
