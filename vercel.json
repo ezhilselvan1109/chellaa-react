@@ -12,7 +12,7 @@
     "storybook": {
       "root": "apps/storybook",
       "framework": "vite",
-      "outputDirectory": "storybook-static",
+      "outputDirectory": "dist",
       "buildCommand": "pnpm run build"
     }
   },

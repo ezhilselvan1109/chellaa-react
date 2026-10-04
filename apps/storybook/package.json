@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "prebuild": "pnpm --filter @chellaa/react build",
-    "build": "storybook build"
+    "build": "storybook build -o dist"
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
