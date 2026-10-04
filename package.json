@@ -6,6 +6,9 @@
   "packageManager": "pnpm@9.12.0",
   "scripts": {
     "build": "turbo run build",
+    "build:docs": "turbo run build --filter=@chellaa/docs...",
+    "build:playground": "turbo run build --filter=@chellaa/playground...",
+    "build:storybook": "turbo run build --filter=@chellaa/storybook...",
     "dev": "turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",

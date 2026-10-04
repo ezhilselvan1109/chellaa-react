@@ -8,6 +8,7 @@ import {
   FiMoon,
 } from "react-icons/fi";
 import { LuSparkles } from "react-icons/lu";
+import { STORYBOOK_URL, PLAYGROUND_URL } from "../../config/env";
 
 interface HeaderProps {
   currentPath?: string | undefined;
@@ -121,7 +122,7 @@ export function Header({
 
       <div className="docs-header-right">
         <a
-          href="http://localhost:6006"
+          href={STORYBOOK_URL}
           target="_blank"
           rel="noreferrer"
           className="docs-icon-btn"
@@ -132,7 +133,7 @@ export function Header({
         </a>
 
         <a
-          href="http://localhost:5173"
+          href={PLAYGROUND_URL}
           target="_blank"
           rel="noreferrer"
           className="docs-icon-btn"

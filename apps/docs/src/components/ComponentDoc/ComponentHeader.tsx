@@ -2,6 +2,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { Button } from "@chellaa/react";
 import { ComponentStatus } from "../../navigation/types";
 import { StatusBadge } from "../Common/StatusBadge";
+import { STORYBOOK_URL, PLAYGROUND_URL } from "../../config/env";
 
 interface ComponentHeaderProps {
   title: string;
@@ -68,7 +69,7 @@ export function ComponentHeader({
             endIcon={<FiExternalLink size={13} />}
           >
             <a
-              href={`http://localhost:6006/?path=/story/${storybookId}`}
+              href={`${STORYBOOK_URL}/?path=/story/${storybookId}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -82,7 +83,7 @@ export function ComponentHeader({
           size="sm"
           endIcon={<FiExternalLink size={13} />}
         >
-          <a href="http://localhost:5173" target="_blank" rel="noreferrer">
+          <a href={PLAYGROUND_URL} target="_blank" rel="noreferrer">
             Open in Playground
           </a>
         </Button>

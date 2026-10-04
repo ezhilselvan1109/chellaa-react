@@ -14,6 +14,7 @@ import { LuPalette } from "react-icons/lu";
 import { Header } from "../../components/DocsLayout/Header";
 import { SearchModal } from "../../search/SearchModal";
 import { CodeBlock } from "../../components/Common/CodeBlock";
+import { STORYBOOK_URL, PLAYGROUND_URL } from "../../config/env";
 import "./LandingPage.css";
 
 interface LandingPageProps {
@@ -547,7 +548,7 @@ export function ActionToolbar() {
             Components
           </a>
           <a
-            href="http://localhost:6006"
+            href={STORYBOOK_URL}
             target="_blank"
             rel="noreferrer"
             className="landing-footer-link"
@@ -555,7 +556,7 @@ export function ActionToolbar() {
             Storybook Lab
           </a>
           <a
-            href="http://localhost:5173"
+            href={PLAYGROUND_URL}
             target="_blank"
             rel="noreferrer"
             className="landing-footer-link"
