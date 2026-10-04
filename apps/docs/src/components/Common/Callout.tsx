@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FiInfo, FiAlertTriangle, FiCheckCircle, FiZap } from "react-icons/fi";
 
 interface CalloutProps {
   type?: "info" | "warning" | "success" | "tip";
@@ -11,25 +12,25 @@ export function Callout({ type = "info", title, children }: CalloutProps) {
     info: {
       border: "var(--cl-color-primary-base, #3b82f6)",
       bg: "rgba(59, 130, 246, 0.08)",
-      icon: "ℹ️",
+      icon: <FiInfo size={18} style={{ color: "#3b82f6" }} />,
       title: title || "Note",
     },
     warning: {
       border: "var(--cl-color-warning-base, #f59e0b)",
       bg: "rgba(245, 158, 11, 0.08)",
-      icon: "⚠️",
+      icon: <FiAlertTriangle size={18} style={{ color: "#f59e0b" }} />,
       title: title || "Important",
     },
     success: {
       border: "var(--cl-color-success-base, #10b981)",
       bg: "rgba(16, 185, 129, 0.08)",
-      icon: "✅",
+      icon: <FiCheckCircle size={18} style={{ color: "#10b981" }} />,
       title: title || "Best Practice",
     },
     tip: {
       border: "var(--cl-color-secondary-base, #8b5cf6)",
       bg: "rgba(139, 92, 246, 0.08)",
-      icon: "💡",
+      icon: <FiZap size={18} style={{ color: "#8b5cf6" }} />,
       title: title || "Tip",
     },
   };

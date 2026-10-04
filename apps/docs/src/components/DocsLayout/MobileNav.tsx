@@ -1,3 +1,4 @@
+import { FiX } from "react-icons/fi";
 import { Sidebar } from "./Sidebar";
 
 interface MobileNavProps {
@@ -30,7 +31,7 @@ export function MobileNav({ isOpen, onClose, currentPath }: MobileNavProps) {
             onClick={onClose}
             aria-label="Close menu"
           >
-            ✕
+            <FiX size={18} />
           </button>
         </div>
         <div className="docs-mobile-nav-body">

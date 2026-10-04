@@ -1,4 +1,12 @@
 import { Button, useTheme } from "@chellaa/react";
+import {
+  FiMenu,
+  FiSearch,
+  FiBookOpen,
+  FiPlay,
+  FiSun,
+  FiMoon,
+} from "react-icons/fi";
 
 interface HeaderProps {
   currentPath?: string | undefined;
@@ -38,7 +46,7 @@ export function Header({
           onClick={onToggleMobileMenu}
           aria-label="Toggle navigation menu"
         >
-          ☰
+          <FiMenu size={18} />
         </button>
         <a href="#/" className="docs-logo">
           <svg
@@ -112,9 +120,11 @@ export function Header({
           onClick={onOpenSearch}
           aria-label="Search documentation (Press Cmd+K or Ctrl+K)"
         >
-          <span aria-hidden="true" style={{ fontSize: "0.95rem" }}>
-            🔍
-          </span>
+          <FiSearch
+            size={16}
+            aria-hidden="true"
+            style={{ color: "var(--docs-text-dim)" }}
+          />
           <span className="docs-search-trigger-text">
             Search components, tokens, guides...
           </span>
@@ -131,9 +141,7 @@ export function Header({
           title="Open Storybook Lab"
           aria-label="Storybook"
         >
-          <span role="img" aria-label="Storybook">
-            📕
-          </span>
+          <FiBookOpen size={16} />
         </a>
 
         <a
@@ -144,9 +152,7 @@ export function Header({
           title="Open Application Playground"
           aria-label="Playground"
         >
-          <span role="img" aria-label="Playground">
-            ⚡
-          </span>
+          <FiPlay size={15} />
         </a>
 
         <Button
@@ -154,8 +160,10 @@ export function Header({
           variant="outline"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
         >
-          {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+          {theme === "dark" ? <FiSun size={15} /> : <FiMoon size={15} />}
+          <span>{theme === "dark" ? "Light" : "Dark"}</span>
         </Button>
       </div>
     </header>

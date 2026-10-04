@@ -547,6 +547,7 @@
 }
 
 /* Mobile Responsiveness */
+/* Mobile Responsiveness */
 @media (max-width: 1200px) {
   .docs-toc-container {
     display: none;
@@ -556,12 +557,18 @@
   }
 }
 
-@media (max-width: 900px) {
-  .docs-sidebar {
+@media (max-width: 1080px) {
+  .docs-top-nav {
     display: none;
   }
   .docs-mobile-menu-btn {
     display: flex;
+  }
+}
+
+@media (max-width: 900px) {
+  .docs-sidebar {
+    display: none;
   }
   .docs-header-center {
     display: none;
@@ -571,5 +578,20 @@
   }
   .docs-header {
     padding: 0 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .docs-header {
+    padding: 0 12px;
+  }
+  .docs-version-tag {
+    display: none;
+  }
+  .docs-header-right {
+    gap: 6px;
+  }
+  .docs-preview-stage {
+    padding: 24px 16px;
   }
 }

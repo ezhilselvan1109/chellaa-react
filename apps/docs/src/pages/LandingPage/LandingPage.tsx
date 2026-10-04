@@ -1,5 +1,15 @@
 import * as React from "react";
 import { Button, ButtonGroup } from "@chellaa/react";
+import {
+  FiZap,
+  FiShield,
+  FiLayers,
+  FiMoon,
+  FiPackage,
+  FiCopy,
+  FiCheck,
+} from "react-icons/fi";
+import { LuPalette } from "react-icons/lu";
 import { Header } from "../../components/DocsLayout/Header";
 import { SearchModal } from "../../search/SearchModal";
 import { CodeBlock } from "../../components/Common/CodeBlock";
@@ -108,8 +118,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             tabIndex={0}
           >
             <span>$ pnpm add @chellaa/react</span>
-            <span className="landing-install-copy-btn">
-              {copiedInstall ? "✓ Copied" : "📋"}
+            <span className="landing-install-copy-btn" aria-label="Copy install command">
+              {copiedInstall ? (
+                <FiCheck size={14} style={{ color: "#34d399" }} />
+              ) : (
+                <FiCopy size={14} />
+              )}
             </span>
           </div>
         </div>
@@ -215,7 +229,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         <div className="landing-bento-grid">
           {/* Card 1 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">⚡</div>
+            <div className="landing-bento-icon">
+              <FiZap size={22} style={{ color: "var(--docs-primary)" }} />
+            </div>
             <h3 className="landing-bento-title">Zero-Configuration Styling</h3>
             <p className="landing-bento-desc">
               Importing components automatically delivers styling via modern{" "}
@@ -226,7 +242,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
           {/* Card 2 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">♿</div>
+            <div className="landing-bento-icon">
+              <FiShield size={22} style={{ color: "#10b981" }} />
+            </div>
             <h3 className="landing-bento-title">WCAG 2.2 AA by Default</h3>
             <p className="landing-bento-desc">
               Native HTML semantics first, complete keyboard keymaps, visible{" "}
@@ -237,7 +255,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
           {/* Card 3 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">🎨</div>
+            <div className="landing-bento-icon">
+              <LuPalette size={22} style={{ color: "#f59e0b" }} />
+            </div>
             <h3 className="landing-bento-title">3-Tier Design Tokens</h3>
             <p className="landing-bento-desc">
               Primitive, semantic, and component tokens powered by standard CSS
@@ -248,7 +268,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
           {/* Card 4 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">🧩</div>
+            <div className="landing-bento-icon">
+              <FiLayers size={22} style={{ color: "#7c3aed" }} />
+            </div>
             <h3 className="landing-bento-title">Polymorphic Slot (asChild)</h3>
             <p className="landing-bento-desc">
               Compose seamlessly with Next.js <code>&lt;Link&gt;</code> or React
@@ -259,7 +281,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
           {/* Card 5 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">🌙</div>
+            <div className="landing-bento-icon">
+              <FiMoon size={22} style={{ color: "#38bdf8" }} />
+            </div>
             <h3 className="landing-bento-title">Zero-FOUC SSR Theming</h3>
             <p className="landing-bento-desc">
               <code>ThemeProvider</code> and <code>ThemeScript</code> work
@@ -270,7 +294,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
           {/* Card 6 */}
           <div className="landing-bento-card">
-            <div className="landing-bento-icon">📦</div>
+            <div className="landing-bento-icon">
+              <FiPackage size={22} style={{ color: "#ec4899" }} />
+            </div>
             <h3 className="landing-bento-title">Micro Bundle Footprint</h3>
             <p className="landing-bento-desc">
               Engineered with strict tree-shaking and aggressive size budgets.

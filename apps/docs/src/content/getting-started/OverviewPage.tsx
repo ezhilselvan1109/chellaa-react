@@ -1,5 +1,7 @@
 import { Callout } from "../../components/Common/Callout";
 import { Button } from "@chellaa/react";
+import { FiZap, FiShield, FiLayers } from "react-icons/fi";
+import { LuPalette } from "react-icons/lu";
 
 export function OverviewPage() {
   return (
@@ -43,21 +45,37 @@ export function OverviewPage() {
         >
           <div
             style={{
-              padding: "20px",
-              borderRadius: "10px",
-              border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-              backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+              padding: "24px",
+              borderRadius: "12px",
+              border: "1px solid var(--docs-border)",
+              backgroundColor: "var(--docs-card)",
+              boxShadow: "var(--docs-shadow-sm)",
             }}
           >
-            <h3 style={{ margin: "0 0 8px 0" }}>
-              ⚡ Zero-Configuration Styling
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(37, 99, 235, 0.1)",
+                color: "var(--docs-primary)",
+                marginBottom: "12px",
+              }}
+            >
+              <FiZap size={20} />
+            </div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "1.1rem" }}>
+              Zero-Configuration Styling
             </h3>
             <p
               style={{
                 margin: 0,
                 fontSize: "0.9rem",
-                color: "var(--cl-color-text-secondary, #6b7280)",
-                lineHeight: 1.5,
+                color: "var(--docs-text-muted)",
+                lineHeight: 1.6,
               }}
             >
               Styles are delivered automatically alongside component imports. No
@@ -68,19 +86,37 @@ export function OverviewPage() {
 
           <div
             style={{
-              padding: "20px",
-              borderRadius: "10px",
-              border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-              backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+              padding: "24px",
+              borderRadius: "12px",
+              border: "1px solid var(--docs-border)",
+              backgroundColor: "var(--docs-card)",
+              boxShadow: "var(--docs-shadow-sm)",
             }}
           >
-            <h3 style={{ margin: "0 0 8px 0" }}>♿ WCAG 2.2 AA by Default</h3>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(16, 185, 129, 0.1)",
+                color: "#10b981",
+                marginBottom: "12px",
+              }}
+            >
+              <FiShield size={20} />
+            </div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "1.1rem" }}>
+              WCAG 2.2 AA by Default
+            </h3>
             <p
               style={{
                 margin: 0,
                 fontSize: "0.9rem",
-                color: "var(--cl-color-text-secondary, #6b7280)",
-                lineHeight: 1.5,
+                color: "var(--docs-text-muted)",
+                lineHeight: 1.6,
               }}
             >
               Every component is built on accessible HTML semantics, supports
@@ -91,21 +127,37 @@ export function OverviewPage() {
 
           <div
             style={{
-              padding: "20px",
-              borderRadius: "10px",
-              border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-              backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+              padding: "24px",
+              borderRadius: "12px",
+              border: "1px solid var(--docs-border)",
+              backgroundColor: "var(--docs-card)",
+              boxShadow: "var(--docs-shadow-sm)",
             }}
           >
-            <h3 style={{ margin: "0 0 8px 0" }}>
-              🧩 Polymorphic Slot Delegation
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(124, 58, 237, 0.1)",
+                color: "#7c3aed",
+                marginBottom: "12px",
+              }}
+            >
+              <FiLayers size={20} />
+            </div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "1.1rem" }}>
+              Polymorphic Slot Delegation
             </h3>
             <p
               style={{
                 margin: 0,
                 fontSize: "0.9rem",
-                color: "var(--cl-color-text-secondary, #6b7280)",
-                lineHeight: 1.5,
+                color: "var(--docs-text-muted)",
+                lineHeight: 1.6,
               }}
             >
               Compose cleanly with Next.js or React Router using the{" "}
@@ -116,19 +168,37 @@ export function OverviewPage() {
 
           <div
             style={{
-              padding: "20px",
-              borderRadius: "10px",
-              border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-              backgroundColor: "var(--cl-color-surface-subtle, #f9fafb)",
+              padding: "24px",
+              borderRadius: "12px",
+              border: "1px solid var(--docs-border)",
+              backgroundColor: "var(--docs-card)",
+              boxShadow: "var(--docs-shadow-sm)",
             }}
           >
-            <h3 style={{ margin: "0 0 8px 0" }}>🎨 3-Tier Design Tokens</h3>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(245, 158, 11, 0.1)",
+                color: "#f59e0b",
+                marginBottom: "12px",
+              }}
+            >
+              <LuPalette size={20} />
+            </div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "1.1rem" }}>
+              3-Tier Design Tokens
+            </h3>
             <p
               style={{
                 margin: 0,
                 fontSize: "0.9rem",
-                color: "var(--cl-color-text-secondary, #6b7280)",
-                lineHeight: 1.5,
+                color: "var(--docs-text-muted)",
+                lineHeight: 1.6,
               }}
             >
               Primitive, semantic, and component tokens driven by standard CSS

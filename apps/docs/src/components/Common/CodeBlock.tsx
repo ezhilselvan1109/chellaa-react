@@ -1,10 +1,12 @@
 import * as React from "react";
+import { FiCopy, FiCheck } from "react-icons/fi";
 import "./CodeBlock.css";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
   title?: string;
+  flush?: boolean;
 }
 
 // Tokenize code for clean, lightweight syntax highlighting
@@ -164,7 +166,7 @@ export function CodeBlock({ code, language = "tsx", title }: CodeBlockProps) {
   const displayTitle = title || (language ? language.toUpperCase() : "CODE");
 
   return (
-    <div className="code-block-container">
+    <div className={`code-block-container ${flush ? "flush" : ""}`}>
       <div className="code-block-header">
         <div className="code-block-header-left">
           <div className="code-block-dots" aria-hidden="true">
@@ -181,7 +183,17 @@ export function CodeBlock({ code, language = "tsx", title }: CodeBlockProps) {
           className={`code-block-copy-btn ${copied ? "copied" : ""}`}
           aria-label={copied ? "Code copied to clipboard" : "Copy code"}
         >
-          {copied ? "✓ Copied" : "📋 Copy"}
+          {copied ? (
+            <>
+              <FiCheck size={14} style={{ color: "#34d399" }} />
+              <span>Copied</span>
+            </>
+          ) : (
+            <>
+              <FiCopy size={13} />
+              <span>Copy</span>
+            </>
+          )}
         </button>
       </div>
 

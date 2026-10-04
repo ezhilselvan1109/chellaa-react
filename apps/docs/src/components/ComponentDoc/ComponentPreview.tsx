@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FiEye, FiCode } from "react-icons/fi";
 import { CodeBlock } from "../Common/CodeBlock";
 
 interface ComponentPreviewProps {
@@ -32,16 +33,20 @@ export function ComponentPreview({
             className={`docs-preview-tab-btn ${activeTab === "preview" ? "active" : ""}`}
             onClick={() => setActiveTab("preview")}
             aria-label="Show Preview"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
           >
-            👁️ Preview
+            <FiEye size={14} />
+            <span>Preview</span>
           </button>
           <button
             type="button"
             className={`docs-preview-tab-btn ${activeTab === "code" ? "active" : ""}`}
             onClick={() => setActiveTab("code")}
             aria-label="Show Code"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
           >
-            💻 Code
+            <FiCode size={14} />
+            <span>Code</span>
           </button>
         </div>
       </div>
