@@ -1,6 +1,6 @@
 {
   "name": "@chellaa/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Production-grade, accessible, high-performance React component library and design system engine built with zero-runtime CSS custom properties.",
   "keywords": [
     "react",
