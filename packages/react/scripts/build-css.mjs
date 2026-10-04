@@ -35,3 +35,22 @@ const cssDtsContent = `declare const styles: string;\nexport default styles;\n`;
 fs.writeFileSync(dtsFile, cssDtsContent);
 fs.writeFileSync(dctsFile, cssDtsContent);
 console.log(`[TypeScript] Emitted ${dtsFile} and ${dctsFile}`);
+
+// Zero-Configuration Styling Delivery Automation (ADR-007):
+// 1. Create dist/index.node.mjs without CSS imports for pure Node.js runtime.
+// 2. Ensure dist/index.mjs has `import "./styles.css";` at the top for browser bundlers.
+const indexMjsPath = path.resolve("dist/index.mjs");
+const indexNodeMjsPath = path.resolve("dist/index.node.mjs");
+
+if (fs.existsSync(indexMjsPath)) {
+  const originalCode = fs.readFileSync(indexMjsPath, "utf-8");
+  // Clean Node version without CSS side-effect imports
+  const codeWithoutCss = originalCode.replace(/^import\s+['"][^'"]+\.css['"];?\s*\n?/gm, "");
+  fs.writeFileSync(indexNodeMjsPath, codeWithoutCss, "utf-8");
+  console.log(`[Zero-Config] Emitted ${indexNodeMjsPath} for Node.js runtime`);
+
+  // Browser/Bundler version with automatic CSS delivery
+  const codeWithCss = `import "./styles.css";\n` + codeWithoutCss;
+  fs.writeFileSync(indexMjsPath, codeWithCss, "utf-8");
+  console.log(`[Zero-Config] Injected styles.css into ${indexMjsPath} for Browser/Bundlers`);
+}
