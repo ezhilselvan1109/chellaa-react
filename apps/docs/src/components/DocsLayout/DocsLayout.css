@@ -102,6 +102,34 @@
   letter-spacing: 0.02em;
 }
 
+.docs-top-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 20px;
+}
+
+.docs-top-nav-link {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--docs-text-muted);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.docs-top-nav-link:hover {
+  color: var(--docs-text);
+  background: var(--docs-surface);
+}
+
+.docs-top-nav-link.active {
+  color: var(--docs-primary);
+  font-weight: 600;
+  background: var(--docs-primary-bg);
+}
+
 .docs-header-center {
   flex: 1;
   max-width: 480px;

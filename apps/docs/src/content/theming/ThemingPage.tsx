@@ -1,23 +1,101 @@
+import { Button, useTheme } from "@chellaa/react";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 import { Callout } from "../../components/Common/Callout";
 
 export function ThemingPage() {
+  const { theme, setTheme, systemTheme } = useTheme();
+
   return (
     <article className="docs-page">
-      <h1>Theming & Dark Mode</h1>
-      <p
-        style={{
-          fontSize: "1.1rem",
-          lineHeight: 1.6,
-          color: "var(--cl-color-text-secondary, #4b5563)",
-        }}
-      >
+      <h1 className="docs-page-title">Theming &amp; Dark Mode</h1>
+      <p className="docs-page-desc">
         Chellaa React includes a battle-tested Theme Engine featuring{" "}
         <code>ThemeProvider</code>, <code>useTheme</code>, and zero-FOUC{" "}
         <code>ThemeScript</code>.
       </p>
 
-      <section id="use-theme" style={{ marginTop: "28px" }}>
+      {/* Live Interactive Simulator */}
+      <section
+        style={{
+          margin: "32px 0 48px 0",
+          padding: "28px",
+          border: "1px solid var(--docs-border)",
+          borderRadius: "16px",
+          backgroundColor: "var(--docs-card)",
+          boxShadow: "var(--docs-shadow-md)",
+        }}
+      >
+        <h3 style={{ margin: "0 0 8px 0", fontSize: "1.15rem" }}>
+          Live Theme Controller
+        </h3>
+        <p
+          style={{
+            margin: "0 0 20px 0",
+            color: "var(--docs-text-muted)",
+            fontSize: "0.9rem",
+          }}
+        >
+          Toggle the theme below to watch this documentation site and all live
+          components react instantly:
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: "20px",
+          }}
+        >
+          <Button
+            variant={theme === "light" ? "solid" : "outline"}
+            colorScheme="primary"
+            onClick={() => setTheme("light")}
+          >
+            ☀️ Force Light
+          </Button>
+
+          <Button
+            variant={theme === "dark" ? "solid" : "outline"}
+            colorScheme="primary"
+            onClick={() => setTheme("dark")}
+          >
+            🌙 Force Dark
+          </Button>
+
+          <Button
+            variant={theme === "system" ? "solid" : "outline"}
+            colorScheme="neutral"
+            onClick={() => setTheme("system")}
+          >
+            💻 Follow System ({systemTheme})
+          </Button>
+        </div>
+
+        <div
+          style={{
+            padding: "14px 18px",
+            borderRadius: "8px",
+            backgroundColor: "var(--docs-surface)",
+            border: "1px solid var(--docs-border)",
+            display: "flex",
+            gap: "24px",
+            fontSize: "0.88rem",
+          }}
+        >
+          <div>
+            Current Theme:{" "}
+            <strong style={{ color: "var(--docs-primary)" }}>{theme}</strong>
+          </div>
+          <div>
+            System Preference: <strong>{systemTheme}</strong>
+          </div>
+        </div>
+      </section>
+
+      {/* Using useTheme */}
+      <section id="use-theme" style={{ marginTop: "40px" }}>
         <h2 className="docs-heading-2">
           <span>
             Using <code>useTheme</code>
@@ -26,7 +104,10 @@ export function ThemingPage() {
             #
           </a>
         </h2>
-        <p>Access the current theme state and mutate it from any component:</p>
+        <p style={{ color: "var(--docs-text-muted)" }}>
+          Access the current theme state and mutate it from any component in
+          your application tree:
+        </p>
         <CodeBlock
           code={`import { useTheme, Button } from "@chellaa/react";
 
@@ -47,7 +128,8 @@ export function ThemeSwitcher() {
         />
       </section>
 
-      <section id="theme-script" style={{ marginTop: "32px" }}>
+      {/* Preventing FOUC */}
+      <section id="theme-script" style={{ marginTop: "40px" }}>
         <h2 className="docs-heading-2">
           <span>
             Preventing SSR FOUC with <code>ThemeScript</code>
@@ -56,10 +138,10 @@ export function ThemeSwitcher() {
             #
           </a>
         </h2>
-        <p>
-          In Next.js or SSR frameworks, inject <code>ThemeScript</code> into
-          your document <code>&lt;head&gt;</code> to prevent flash of wrong
-          theme before hydration:
+        <p style={{ color: "var(--docs-text-muted)" }}>
+          In Next.js App Router or SSR frameworks, inject{" "}
+          <code>ThemeScript</code> into your document <code>&lt;head&gt;</code>{" "}
+          to prevent visual flash before client hydration:
         </p>
         <CodeBlock
           code={`import { ThemeScript } from "@chellaa/react";

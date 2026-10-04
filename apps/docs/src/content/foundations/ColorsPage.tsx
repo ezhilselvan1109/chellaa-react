@@ -1,107 +1,337 @@
+import * as React from "react";
+import { Button } from "@chellaa/react";
+
+interface ColorItem {
+  name: string;
+  token: string;
+  lightHex: string;
+  darkHex: string;
+  role: string;
+}
+
 export function ColorsPage() {
-  const ramps = [
+  const [copiedToken, setCopiedToken] = React.useState<string | null>(null);
+
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedToken(text);
+      setTimeout(() => setCopiedToken(null), 2000);
+    } catch {
+      setCopiedToken(text);
+      setTimeout(() => setCopiedToken(null), 2000);
+    }
+  };
+
+  const palettes: { title: string; desc: string; colors: ColorItem[] }[] = [
     {
-      name: "Primary (Brand)",
-      token: "--cl-color-primary-base",
-      hex: "#2563eb",
-      role: "Primary interactive CTAs and active states",
+      title: "Brand & Primary Ramps",
+      desc: "Used for primary interactive actions, focus rings, and brand identity.",
+      colors: [
+        {
+          name: "Primary Base",
+          token: "--cl-color-primary-base",
+          lightHex: "#2563eb",
+          darkHex: "#3b82f6",
+          role: "Primary CTAs & active buttons",
+        },
+        {
+          name: "Primary Hover",
+          token: "--cl-color-primary-hover",
+          lightHex: "#1d4ed8",
+          darkHex: "#60a5fa",
+          role: "Button hover states",
+        },
+        {
+          name: "Primary Active",
+          token: "--cl-color-primary-active",
+          lightHex: "#1e40af",
+          darkHex: "#93c5fd",
+          role: "Button pressed states",
+        },
+        {
+          name: "Primary Subtle",
+          token: "--cl-color-primary-subtle",
+          lightHex: "#dbeafe",
+          darkHex: "rgba(59, 130, 246, 0.15)",
+          role: "Light background tint",
+        },
+      ],
     },
     {
-      name: "Secondary (Accent)",
-      token: "--cl-color-secondary-base",
-      hex: "#7c3aed",
-      role: "Secondary highlights and badges",
+      title: "Accent & Secondary Ramps",
+      desc: "Used for secondary highlights, badge tags, and accent visual elements.",
+      colors: [
+        {
+          name: "Secondary Base",
+          token: "--cl-color-secondary-base",
+          lightHex: "#7c3aed",
+          darkHex: "#8b5cf6",
+          role: "Secondary actions & accents",
+        },
+        {
+          name: "Secondary Hover",
+          token: "--cl-color-secondary-hover",
+          lightHex: "#6d28d9",
+          darkHex: "#a78bfa",
+          role: "Secondary button hover",
+        },
+        {
+          name: "Secondary Subtle",
+          token: "--cl-color-secondary-subtle",
+          lightHex: "#ede9fe",
+          darkHex: "rgba(139, 92, 246, 0.15)",
+          role: "Secondary background tint",
+        },
+      ],
     },
     {
-      name: "Neutral (Surface/Text)",
-      token: "--cl-color-surface-base",
-      hex: "#ffffff",
-      role: "Main background and surface card tones",
+      title: "Semantic Status Ramps",
+      desc: "Used for feedback, validation states, toasts, and status indicators.",
+      colors: [
+        {
+          name: "Success Base",
+          token: "--cl-color-success-base",
+          lightHex: "#10b981",
+          darkHex: "#34d399",
+          role: "Confirmations & success toasts",
+        },
+        {
+          name: "Warning Base",
+          token: "--cl-color-warning-base",
+          lightHex: "#f59e0b",
+          darkHex: "#fbbf24",
+          role: "Caution alerts & warnings",
+        },
+        {
+          name: "Danger Base",
+          token: "--cl-color-danger-base",
+          lightHex: "#ef4444",
+          darkHex: "#f87171",
+          role: "Destructive actions & errors",
+        },
+        {
+          name: "Info Base",
+          token: "--cl-color-info-base",
+          lightHex: "#06b6d4",
+          darkHex: "#22d3ee",
+          role: "Informational callouts",
+        },
+      ],
     },
     {
-      name: "Success",
-      token: "--cl-color-success-base",
-      hex: "#10b981",
-      role: "Completed operations and affirmative confirmations",
-    },
-    {
-      name: "Warning",
-      token: "--cl-color-warning-base",
-      hex: "#f59e0b",
-      role: "Non-blocking alerts and caution indicators",
-    },
-    {
-      name: "Danger",
-      token: "--cl-color-danger-base",
-      hex: "#ef4444",
-      role: "Destructive actions and critical errors",
-    },
-    {
-      name: "Info",
-      token: "--cl-color-info-base",
-      hex: "#06b6d4",
-      role: "Informational callouts and guidance notes",
+      title: "Surface & Neutral Ramps",
+      desc: "Used for backgrounds, borders, card surfaces, and text contrast hierarchy.",
+      colors: [
+        {
+          name: "Surface Base",
+          token: "--cl-color-surface-base",
+          lightHex: "#ffffff",
+          darkHex: "#090d16",
+          role: "Main application background",
+        },
+        {
+          name: "Surface Card",
+          token: "--cl-color-surface-subtle",
+          lightHex: "#f8fafc",
+          darkHex: "#111726",
+          role: "Card & modal surfaces",
+        },
+        {
+          name: "Border Subtle",
+          token: "--cl-color-border-subtle",
+          lightHex: "#e2e8f0",
+          darkHex: "rgba(255, 255, 255, 0.08)",
+          role: "Dividers & card outlines",
+        },
+        {
+          name: "Text Primary",
+          token: "--cl-color-text-primary",
+          lightHex: "#0f172a",
+          darkHex: "#f8fafc",
+          role: "High-contrast headings & body",
+        },
+      ],
     },
   ];
 
   return (
     <article className="docs-page">
-      <h1>Colors & Semantic Ramps</h1>
-      <p
-        style={{
-          fontSize: "1.1rem",
-          lineHeight: 1.6,
-          color: "var(--cl-color-text-secondary, #4b5563)",
-        }}
-      >
-        All colors in Chellaa React are structured as semantic ramps that
-        automatically adapt between light and dark modes.
+      <h1 className="docs-page-title">Colors &amp; Semantic Palettes</h1>
+      <p className="docs-page-desc">
+        Chellaa React uses a curated, accessible color system with dedicated
+        light and dark mode variants. Click any swatch or token to copy the CSS
+        variable.
       </p>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "16px",
-          marginTop: "24px",
-        }}
-      >
-        {ramps.map((ramp) => (
-          <div
-            key={ramp.token}
+      {palettes.map((section) => (
+        <section key={section.title} style={{ marginBottom: "48px" }}>
+          <h2 className="docs-heading-2">
+            <span>{section.title}</span>
+          </h2>
+          <p
             style={{
-              border: "1px solid var(--cl-color-border-subtle, #e5e7eb)",
-              borderRadius: "8px",
-              overflow: "hidden",
+              color: "var(--docs-text-muted)",
+              margin: "0 0 20px 0",
+              fontSize: "0.95rem",
             }}
           >
-            <div style={{ height: "64px", backgroundColor: ramp.hex }} />
-            <div style={{ padding: "12px 16px" }}>
-              <div style={{ fontWeight: 700, marginBottom: "4px" }}>
-                {ramp.name}
-              </div>
-              <div
-                style={{
-                  fontSize: "0.82rem",
-                  color: "var(--cl-color-text-secondary, #6b7280)",
-                  marginBottom: "4px",
-                }}
-              >
-                <code>{ramp.token}</code>
-              </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  color: "var(--cl-color-text-secondary, #6b7280)",
-                  lineHeight: 1.4,
-                }}
-              >
-                {ramp.role}
-              </div>
-            </div>
+            {section.desc}
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+              gap: "18px",
+            }}
+          >
+            {section.colors.map((c) => {
+              const isCopied = copiedToken === c.token;
+              return (
+                <div
+                  key={c.token}
+                  onClick={() => handleCopy(c.token)}
+                  style={{
+                    border: "1px solid var(--docs-border)",
+                    borderRadius: "14px",
+                    overflow: "hidden",
+                    backgroundColor: "var(--docs-card)",
+                    boxShadow: "var(--docs-shadow-sm)",
+                    cursor: "pointer",
+                    transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                  className="docs-color-card"
+                  title="Click to copy CSS custom property"
+                >
+                  {/* Swatch Header */}
+                  <div
+                    style={{
+                      height: "76px",
+                      backgroundColor: c.lightHex,
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "flex-end",
+                      padding: "8px 12px",
+                      position: "relative",
+                    }}
+                  >
+                    <span
+                      style={{
+                        padding: "2px 8px",
+                        borderRadius: "9999px",
+                        backgroundColor: "rgba(0, 0, 0, 0.4)",
+                        color: "#ffffff",
+                        fontSize: "0.72rem",
+                        fontFamily: "JetBrains Mono, monospace",
+                        backdropFilter: "blur(4px)",
+                      }}
+                    >
+                      {c.lightHex}
+                    </span>
+                  </div>
+
+                  {/* Swatch Info */}
+                  <div style={{ padding: "14px 16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
+                        {c.name}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.75rem",
+                          color: isCopied
+                            ? "var(--docs-primary)"
+                            : "var(--docs-text-dim)",
+                        }}
+                      >
+                        {isCopied ? "✓ Copied" : "Copy"}
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        fontFamily: "JetBrains Mono, monospace",
+                        fontSize: "0.78rem",
+                        color: "var(--docs-primary)",
+                        marginBottom: "6px",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {c.token}
+                    </div>
+
+                    <div
+                      style={{
+                        fontSize: "0.82rem",
+                        color: "var(--docs-text-muted)",
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {c.role}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
-      </div>
+        </section>
+      ))}
+
+      {/* Interactive Color Tester */}
+      <section
+        style={{
+          marginTop: "40px",
+          padding: "28px 32px",
+          border: "1px solid var(--docs-border)",
+          borderRadius: "16px",
+          backgroundColor: "var(--docs-surface)",
+        }}
+      >
+        <h3 style={{ margin: "0 0 10px 0", fontSize: "1.2rem" }}>
+          Interactive Semantic Button Preview
+        </h3>
+        <p
+          style={{
+            margin: "0 0 20px 0",
+            color: "var(--docs-text-muted)",
+            fontSize: "0.9rem",
+          }}
+        >
+          Inspect how these color ramps map directly to live Chellaa Button
+          components:
+        </p>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <Button colorScheme="primary" variant="solid">
+            Primary
+          </Button>
+          <Button colorScheme="secondary" variant="solid">
+            Secondary
+          </Button>
+          <Button colorScheme="neutral" variant="outline">
+            Neutral
+          </Button>
+          <Button colorScheme="success" variant="solid">
+            Success
+          </Button>
+          <Button colorScheme="warning" variant="solid">
+            Warning
+          </Button>
+          <Button colorScheme="danger" variant="solid">
+            Danger
+          </Button>
+          <Button colorScheme="info" variant="solid">
+            Info
+          </Button>
+        </div>
+      </section>
     </article>
   );
 }

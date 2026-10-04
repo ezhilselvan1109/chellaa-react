@@ -1,16 +1,33 @@
 import { Button, useTheme } from "@chellaa/react";
 
 interface HeaderProps {
+  currentPath?: string | undefined;
   onOpenSearch: () => void;
   onToggleMobileMenu: () => void;
 }
 
-export function Header({ onOpenSearch, onToggleMobileMenu }: HeaderProps) {
+export function Header({
+  currentPath = "",
+  onOpenSearch,
+  onToggleMobileMenu,
+}: HeaderProps) {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const isHome =
+    currentPath === "#/" || currentPath === "" || currentPath === "#";
+  const isDocs =
+    currentPath.startsWith("#/overview") ||
+    currentPath.startsWith("#/installation") ||
+    currentPath.startsWith("#/quick-start");
+  const isComponents = currentPath.startsWith("#/components");
+  const isFoundations =
+    currentPath.startsWith("#/tokens") ||
+    currentPath.startsWith("#/colors") ||
+    currentPath.startsWith("#/theming");
 
   return (
     <header className="docs-header" role="banner">
@@ -23,20 +40,20 @@ export function Header({ onOpenSearch, onToggleMobileMenu }: HeaderProps) {
         >
           ☰
         </button>
-        <a href="#/overview" className="docs-logo">
+        <a href="#/" className="docs-logo">
           <svg
-            width="26"
-            height="26"
+            width="28"
+            height="28"
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ borderRadius: "6px" }}
+            style={{ borderRadius: "8px" }}
           >
             <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
             <path
               d="M10 16L14 20L22 12"
               stroke="white"
-              strokeWidth="3"
+              strokeWidth="3.2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -58,6 +75,34 @@ export function Header({ onOpenSearch, onToggleMobileMenu }: HeaderProps) {
           <span className="docs-logo-react">React</span>
           <span className="docs-version-tag">v0.1.0</span>
         </a>
+
+        {/* Primary Navigation Links */}
+        <nav className="docs-top-nav" aria-label="Main Navigation">
+          <a
+            href="#/"
+            className={`docs-top-nav-link ${isHome ? "active" : ""}`}
+          >
+            Home
+          </a>
+          <a
+            href="#/overview"
+            className={`docs-top-nav-link ${isDocs ? "active" : ""}`}
+          >
+            Docs
+          </a>
+          <a
+            href="#/components/button"
+            className={`docs-top-nav-link ${isComponents ? "active" : ""}`}
+          >
+            Components
+          </a>
+          <a
+            href="#/tokens"
+            className={`docs-top-nav-link ${isFoundations ? "active" : ""}`}
+          >
+            Tokens
+          </a>
+        </nav>
       </div>
 
       <div className="docs-header-center">

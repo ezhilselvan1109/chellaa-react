@@ -59,6 +59,7 @@ export function DocsLayout({
       </a>
 
       <Header
+        currentPath={currentPath}
         onOpenSearch={() => setIsSearchOpen(true)}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ThemeProvider } from "@chellaa/react";
 import { DocsLayout } from "./components/DocsLayout/DocsLayout";
+import { LandingPage } from "./pages/LandingPage/LandingPage";
 import { TocItem } from "./components/DocsLayout/TableOfContents";
 import { OverviewPage } from "./content/getting-started/OverviewPage";
 import { InstallationPage } from "./content/getting-started/InstallationPage";
@@ -18,6 +19,7 @@ import { AccessibilityGuidePage } from "./content/guides/AccessibilityGuidePage"
 import { ChangelogPage } from "./content/resources/ChangelogPage";
 
 const titleMap: Record<string, string> = {
+  "#/": "Chellaa React — Production Component Library",
   "#/overview": "Overview — Chellaa React",
   "#/installation": "Installation — Chellaa React",
   "#/quick-start": "Quick Start — Chellaa React",
@@ -54,12 +56,12 @@ const themingToc: TocItem[] = [
 
 export function DocsApp() {
   const [currentPath, setCurrentPath] = React.useState<string>(() => {
-    return window.location.hash || "#/components/button";
+    return window.location.hash || "#/";
   });
 
   React.useEffect(() => {
     const handleHashChange = () => {
-      setCurrentPath(window.location.hash || "#/components/button");
+      setCurrentPath(window.location.hash || "#/");
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -71,6 +73,9 @@ export function DocsApp() {
     document.title = title;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPath]);
+
+  const isLandingPage =
+    currentPath === "#/" || currentPath === "" || currentPath === "#";
 
   const { content, toc } = React.useMemo(() => {
     switch (currentPath) {
@@ -97,22 +102,31 @@ export function DocsApp() {
       case "#/changelog":
         return { content: <ChangelogPage />, toc: [] };
       default:
-        return { content: <ButtonDocPage />, toc: buttonToc };
+        return { content: <OverviewPage />, toc: overviewToc };
     }
   }, [currentPath]);
 
   return (
     <ThemeProvider defaultTheme="light">
-      <DocsLayout
-        currentPath={currentPath}
-        tocItems={toc}
-        onNavigate={(path) => {
-          setCurrentPath(path);
-          window.location.hash = path.replace("#", "");
-        }}
-      >
-        {content}
-      </DocsLayout>
+      {isLandingPage ? (
+        <LandingPage
+          onNavigate={(path) => {
+            setCurrentPath(path);
+            window.location.hash = path.replace("#", "");
+          }}
+        />
+      ) : (
+        <DocsLayout
+          currentPath={currentPath}
+          tocItems={toc}
+          onNavigate={(path) => {
+            setCurrentPath(path);
+            window.location.hash = path.replace("#", "");
+          }}
+        >
+          {content}
+        </DocsLayout>
+      )}
     </ThemeProvider>
   );
 }
