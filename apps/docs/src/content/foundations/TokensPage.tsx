@@ -1,3 +1,4 @@
+import { FiLayers, FiTarget, FiBox } from "react-icons/fi";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 
 export function TokensPage() {
@@ -77,7 +78,20 @@ export function TokensPage() {
               backgroundColor: "var(--docs-card)",
             }}
           >
-            <div style={{ fontSize: "1.5rem", marginBottom: "8px" }}>🧱</div>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(37, 99, 235, 0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "14px",
+              }}
+            >
+              <FiLayers size={20} color="#2563eb" />
+            </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
@@ -111,7 +125,20 @@ export function TokensPage() {
               backgroundColor: "var(--docs-card)",
             }}
           >
-            <div style={{ fontSize: "1.5rem", marginBottom: "8px" }}>🎯</div>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(16, 185, 129, 0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "14px",
+              }}
+            >
+              <FiTarget size={20} color="#10b981" />
+            </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
@@ -145,7 +172,20 @@ export function TokensPage() {
               backgroundColor: "var(--docs-card)",
             }}
           >
-            <div style={{ fontSize: "1.5rem", marginBottom: "8px" }}>🧩</div>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "rgba(139, 92, 246, 0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "14px",
+              }}
+            >
+              <FiBox size={20} color="#8b5cf6" />
+            </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
@@ -172,6 +212,7 @@ export function TokensPage() {
           </div>
         </div>
       </section>
+
 
       {/* Spacing Ruler */}
       <section style={{ marginTop: "48px" }}>

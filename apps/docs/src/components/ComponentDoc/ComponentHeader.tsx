@@ -1,3 +1,4 @@
+import { FiExternalLink } from "react-icons/fi";
 import { Button } from "@chellaa/react";
 import { ComponentStatus } from "../../navigation/types";
 import { StatusBadge } from "../Common/StatusBadge";
@@ -60,22 +61,33 @@ export function ComponentHeader({
 
       <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
         {storybookId && (
-          <Button asChild variant="outline" size="sm">
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            endIcon={<FiExternalLink size={13} />}
+          >
             <a
               href={`http://localhost:6006/?path=/story/${storybookId}`}
               target="_blank"
               rel="noreferrer"
             >
-              Open in Storybook ↗
+              Open in Storybook
             </a>
           </Button>
         )}
-        <Button asChild variant="ghost" size="sm">
+        <Button
+          asChild
+          variant="ghost"
+          size="sm"
+          endIcon={<FiExternalLink size={13} />}
+        >
           <a href="http://localhost:5173" target="_blank" rel="noreferrer">
-            Open in Playground ↗
+            Open in Playground
           </a>
         </Button>
       </div>
     </div>
   );
 }
+

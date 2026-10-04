@@ -59,11 +59,7 @@ function highlightCode(code: string, language: string): React.ReactNode {
   // Tokenize TSX / JavaScript
   const lines = code.split("\n");
   const keywordRegex =
-    /\b(import|export|function|return|const|let|var|from|as|default|type|interface|class|extends|new|if|else|switch|case|break)\b/;
-  const componentRegex =
-    /\b(Button|ButtonGroup|ThemeProvider|ThemeScript|AppRoot|ActionToolbar|React)\b/;
-  const propRegex =
-    /\b(variant|colorScheme|size|isAttached|isLoading|loadingPosition|isDisabled|isFullWidth|defaultTheme|storageKey|attribute|enableSystem|children)\b/;
+    /^(import|export|function|return|const|let|var|from|as|default|type|interface|class|extends|new|if|else|switch|case|break|true|false|null|undefined|async|await)$/;
 
   return lines.map((line, lineIdx) => {
     // Comments
@@ -75,14 +71,15 @@ function highlightCode(code: string, language: string): React.ReactNode {
       );
     }
 
-    // Tokenizer matching strings, keywords, components, tags, and symbols
+    // Match strings, tag delimiters, words, punctuation, whitespace
     const tokenPattern =
-      /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|<\/?[\w]+|[{}()[\];,=:]|\s+|\b\w+\b|[^\s\w]+)/g;
+      /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|<\/|<\/?>|[<>={}[\]();,.:!&|?+\-*/%^~]|(?:\b[a-zA-Z_$][a-zA-Z0-9_$-]*\b)|\s+|[^\s\w]+)/g;
     const tokens = line.match(tokenPattern) || [line];
 
     return (
       <div key={lineIdx}>
         {tokens.map((token, tIdx) => {
+          // Strings
           if (
             token.startsWith('"') ||
             token.startsWith("'") ||
@@ -94,6 +91,8 @@ function highlightCode(code: string, language: string): React.ReactNode {
               </span>
             );
           }
+
+          // Keywords
           if (keywordRegex.test(token)) {
             return (
               <span key={tIdx} className="token-keyword">
@@ -101,33 +100,72 @@ function highlightCode(code: string, language: string): React.ReactNode {
               </span>
             );
           }
-          if (token.startsWith("<") || componentRegex.test(token)) {
+
+          // Component or HTML Tag after < or </
+          const prevNonWs = tokens
+            .slice(0, tIdx)
+            .reverse()
+            .find((t) => t.trim().length > 0);
+          const isAfterTagOpen = prevNonWs === "<" || prevNonWs === "</";
+
+          if (isAfterTagOpen) {
             return (
               <span key={tIdx} className="token-component">
                 {token}
               </span>
             );
           }
-          if (propRegex.test(token)) {
+
+          // PascalCase identifier (Component/Icon)
+          if (/^[A-Z][a-zA-Z0-9]*$/.test(token)) {
+            return (
+              <span key={tIdx} className="token-component">
+                {token}
+              </span>
+            );
+          }
+
+          // Prop name before =
+          const nextNonWs = tokens
+            .slice(tIdx + 1)
+            .find((t) => t.trim().length > 0);
+          if (nextNonWs === "=" && /^[a-zA-Z][a-zA-Z0-9_-]*$/.test(token)) {
             return (
               <span key={tIdx} className="token-prop">
                 {token}
               </span>
             );
           }
-          if (/^[{}()[\];,=:]$/.test(token)) {
+
+          // Standalone JSX boolean props
+          if (
+            /^(asChild|isLoading|isDisabled|isFullWidth|isAttached|disabled|required|autoFocus|readOnly|checked)$/.test(
+              token,
+            )
+          ) {
+            return (
+              <span key={tIdx} className="token-prop">
+                {token}
+              </span>
+            );
+          }
+
+          // Punctuation
+          if (/^[<>={}[\]();,.:!&|?+\-*/%^~]|<\/$|<\/?>$/.test(token)) {
             return (
               <span key={tIdx} className="token-punct">
                 {token}
               </span>
             );
           }
+
           return <span key={tIdx}>{token}</span>;
         })}
       </div>
     );
   });
 }
+
 
 export function CodeBlock({
   code,

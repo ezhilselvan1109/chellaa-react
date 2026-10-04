@@ -7,6 +7,7 @@ import {
   FiSun,
   FiMoon,
 } from "react-icons/fi";
+import { LuSparkles } from "react-icons/lu";
 
 interface HeaderProps {
   currentPath?: string | undefined;
@@ -49,36 +50,22 @@ export function Header({
           <FiMenu size={18} />
         </button>
         <a href="#/" className="docs-logo">
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ borderRadius: "8px" }}
+          <div
+            style={{
+              width: "28px",
+              height: "28px",
+              borderRadius: "8px",
+              background: "linear-gradient(135deg, #2563eb, #7c3aed)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#ffffff",
+              boxShadow: "0 2px 8px rgba(37, 99, 235, 0.3)",
+              flexShrink: 0,
+            }}
           >
-            <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
-            <path
-              d="M10 16L14 20L22 12"
-              stroke="white"
-              strokeWidth="3.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <defs>
-              <linearGradient
-                id="brand-grad"
-                x1="0"
-                y1="0"
-                x2="32"
-                y2="32"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#2563eb" />
-                <stop offset="1" stopColor="#7c3aed" />
-              </linearGradient>
-            </defs>
-          </svg>
+            <LuSparkles size={16} />
+          </div>
           <span className="docs-logo-brand">Chellaa</span>
           <span className="docs-logo-react">React</span>
           <span className="docs-version-tag">v0.1.0</span>

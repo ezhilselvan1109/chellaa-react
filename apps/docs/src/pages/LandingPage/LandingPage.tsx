@@ -8,6 +8,7 @@ import {
   FiPackage,
   FiCopy,
   FiCheck,
+  FiArrowRight,
 } from "react-icons/fi";
 import { LuPalette } from "react-icons/lu";
 import { Header } from "../../components/DocsLayout/Header";
@@ -76,7 +77,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         >
           <span className="landing-badge-pill">NEW</span>
           <span>Chellaa React v0.1.0 Released — Zero-Config Styling</span>
-          <span>→</span>
+          <FiArrowRight size={13} />
         </a>
 
         <h1 className="landing-title">
@@ -97,9 +98,10 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             size="lg"
             variant="solid"
             colorScheme="primary"
+            endIcon={<FiArrowRight size={16} />}
             onClick={() => onNavigate("#/overview")}
           >
-            Get Started →
+            Get Started
           </Button>
 
           <Button
@@ -504,9 +506,10 @@ export function ActionToolbar() {
               size="lg"
               variant="solid"
               colorScheme="primary"
+              endIcon={<FiArrowRight size={16} />}
               onClick={() => onNavigate("#/overview")}
             >
-              Read Documentation →
+              Read Documentation
             </Button>
             <Button
               size="lg"

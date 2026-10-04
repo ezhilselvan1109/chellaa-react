@@ -1,13 +1,21 @@
 import { Button } from "@chellaa/react";
+import { FiExternalLink } from "react-icons/fi";
 import { ComponentPreview } from "../../components/ComponentDoc/ComponentPreview";
 
 const code = `import { Button } from "@chellaa/react";
+import { FiExternalLink } from "react-icons/fi";
 
 export function ButtonAsChild() {
   return (
     <Button asChild variant="outline" colorScheme="primary">
-      <a href="https://github.com" target="_blank" rel="noreferrer">
-        External Anchor Link ↗
+      <a
+        href="https://github.com"
+        target="_blank"
+        rel="noreferrer"
+        style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+      >
+        <span>External Anchor Link</span>
+        <FiExternalLink size={14} />
       </a>
     </Button>
   );
@@ -21,10 +29,17 @@ export function ButtonAsChildExample() {
       code={code}
     >
       <Button asChild variant="outline" colorScheme="primary">
-        <a href="https://github.com" target="_blank" rel="noreferrer">
-          External Anchor Link ↗
+        <a
+          href="https://github.com"
+          target="_blank"
+          rel="noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          <span>External Anchor Link</span>
+          <FiExternalLink size={14} />
         </a>
       </Button>
     </ComponentPreview>
   );
 }
+

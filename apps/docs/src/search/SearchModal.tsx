@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FiSearch } from "react-icons/fi";
 import { searchIndex, SearchRecord } from "./searchIndex";
 import "./SearchModal.css";
 
@@ -85,7 +86,7 @@ export function SearchModal({ isOpen, onClose, onSelect }: SearchModalProps) {
       >
         <div className="docs-search-header">
           <span className="docs-search-icon" aria-hidden="true">
-            🔍
+            <FiSearch size={18} />
           </span>
           <input
             ref={inputRef}
@@ -125,9 +126,9 @@ export function SearchModal({ isOpen, onClose, onSelect }: SearchModalProps) {
         </div>
 
         <div className="docs-search-footer">
-          <span>Navigate with ↑ and ↓</span>
-          <span>Select with ↵</span>
-          <span>Close with Esc</span>
+          <span>Navigate <kbd>↑</kbd> <kbd>↓</kbd></span>
+          <span>Select <kbd>↵</kbd></span>
+          <span>Close <kbd>Esc</kbd></span>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Callout } from "../../components/Common/Callout";
 import { Button } from "@chellaa/react";
-import { FiZap, FiShield, FiLayers } from "react-icons/fi";
+import { FiZap, FiShield, FiLayers, FiArrowRight } from "react-icons/fi";
 import { LuPalette } from "react-icons/lu";
 
 export function OverviewPage() {
@@ -20,8 +20,13 @@ export function OverviewPage() {
       </p>
 
       <div style={{ display: "flex", gap: "16px", margin: "24px 0" }}>
-        <Button asChild variant="solid" colorScheme="primary">
-          <a href="#/installation">Get Started →</a>
+        <Button
+          asChild
+          variant="solid"
+          colorScheme="primary"
+          endIcon={<FiArrowRight size={14} />}
+        >
+          <a href="#/installation">Get Started</a>
         </Button>
         <Button asChild variant="outline">
           <a href="#/components/button">Explore Components</a>

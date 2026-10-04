@@ -55,9 +55,10 @@ export function ComponentPreview({
         <div className="docs-preview-stage">{children}</div>
       ) : (
         <div className="docs-preview-code-panel">
-          <CodeBlock code={code} language="tsx" />
+          <CodeBlock code={code} language="tsx" flush />
         </div>
       )}
     </div>
   );
 }
+

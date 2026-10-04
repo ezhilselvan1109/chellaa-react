@@ -1,3 +1,6 @@
+import { LuSparkles } from "react-icons/lu";
+import { FiShield } from "react-icons/fi";
+
 export function ChangelogPage() {
   return (
     <article className="docs-page">
@@ -53,8 +56,18 @@ export function ChangelogPage() {
             marginTop: "12px",
           }}
         >
-          <h3 style={{ margin: "0 0 8px 0", fontSize: "1rem" }}>
-            ✨ New Components
+          <h3
+            style={{
+              margin: "0 0 8px 0",
+              fontSize: "1rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              color: "var(--docs-primary)",
+            }}
+          >
+            <LuSparkles size={16} />
+            <span>New Components</span>
           </h3>
           <ul
             style={{
@@ -83,8 +96,18 @@ export function ChangelogPage() {
             </li>
           </ul>
 
-          <h3 style={{ margin: "0 0 8px 0", fontSize: "1rem" }}>
-            🛡️ Architecture & Infrastructure
+          <h3
+            style={{
+              margin: "0 0 8px 0",
+              fontSize: "1rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              color: "var(--docs-primary)",
+            }}
+          >
+            <FiShield size={16} />
+            <span>Architecture & Infrastructure</span>
           </h3>
           <ul
             style={{

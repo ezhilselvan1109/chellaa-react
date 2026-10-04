@@ -1,3 +1,5 @@
+import { FiTag, FiCommand } from "react-icons/fi";
+
 interface A11yItem {
   attributeOrKey: string;
   description: string;
@@ -55,11 +57,24 @@ export function AccessibilitySection({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "10px",
               marginBottom: "16px",
             }}
           >
-            <span style={{ fontSize: "1.2rem" }}>🏷️</span>
+            <div
+              style={{
+                width: "28px",
+                height: "28px",
+                borderRadius: "6px",
+                backgroundColor: "var(--docs-primary-bg)",
+                color: "var(--docs-primary)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FiTag size={15} />
+            </div>
             <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 700 }}>
               ARIA Semantics & Attributes
             </h4>
@@ -98,11 +113,24 @@ export function AccessibilitySection({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "10px",
               marginBottom: "16px",
             }}
           >
-            <span style={{ fontSize: "1.2rem" }}>⌨️</span>
+            <div
+              style={{
+                width: "28px",
+                height: "28px",
+                borderRadius: "6px",
+                backgroundColor: "var(--docs-primary-bg)",
+                color: "var(--docs-primary)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FiCommand size={15} />
+            </div>
             <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 700 }}>
               Keyboard Keymap
             </h4>

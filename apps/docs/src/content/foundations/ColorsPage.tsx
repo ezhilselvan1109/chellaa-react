@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FiCopy, FiCheck } from "react-icons/fi";
 import { Button } from "@chellaa/react";
 
 interface ColorItem {
@@ -247,12 +248,25 @@ export function ColorsPage() {
                       <span
                         style={{
                           fontSize: "0.75rem",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
                           color: isCopied
                             ? "var(--docs-primary)"
                             : "var(--docs-text-dim)",
                         }}
                       >
-                        {isCopied ? "✓ Copied" : "Copy"}
+                        {isCopied ? (
+                          <>
+                            <FiCheck size={12} color="#10b981" />
+                            <span>Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <FiCopy size={12} />
+                            <span>Copy</span>
+                          </>
+                        )}
                       </span>
                     </div>
 

@@ -543,7 +543,23 @@
 
 .docs-preview-code-panel {
   margin: 0;
+  padding: 0;
   border-top: 1px solid var(--docs-border);
+  background-color: #0b101b;
+}
+
+.docs-preview-code-panel .code-block-container {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.docs-preview-code-panel .code-block-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 8px 16px;
 }
 
 /* Mobile Responsiveness */

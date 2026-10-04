@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { TableOfContents, TocItem } from "./TableOfContents";
@@ -100,7 +101,17 @@ export function DocsLayout({
                   className="docs-pagination-card"
                   onClick={() => onNavigate(prevItem.path)}
                 >
-                  <span className="docs-pagination-sub">← Previous</span>
+                  <span
+                    className="docs-pagination-sub"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    <FiArrowLeft size={13} />
+                    <span>Previous</span>
+                  </span>
                   <span className="docs-pagination-title">
                     {prevItem.title}
                   </span>
@@ -116,7 +127,18 @@ export function DocsLayout({
                   style={{ textAlign: "right" }}
                   onClick={() => onNavigate(nextItem.path)}
                 >
-                  <span className="docs-pagination-sub">Next →</span>
+                  <span
+                    className="docs-pagination-sub"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <span>Next</span>
+                    <FiArrowRight size={13} />
+                  </span>
                   <span className="docs-pagination-title">
                     {nextItem.title}
                   </span>

@@ -33,12 +33,13 @@ export function SlotCompositionPage() {
         <CodeBlock
           code={`import Link from "next/link";
 import { Button } from "@chellaa/react";
+import { FiArrowRight } from "react-icons/fi";
 
 export function NavigationCTA() {
   return (
-    <Button asChild variant="solid" colorScheme="primary">
+    <Button asChild variant="solid" colorScheme="primary" endIcon={<FiArrowRight />}>
       <Link href="/dashboard">
-        Go to Dashboard →
+        Go to Dashboard
       </Link>
     </Button>
   );

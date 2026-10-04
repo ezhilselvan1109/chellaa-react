@@ -1,4 +1,5 @@
 import { Button, useTheme } from "@chellaa/react";
+import { FiSun, FiMoon, FiMonitor } from "react-icons/fi";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 import { Callout } from "../../components/Common/Callout";
 
@@ -51,25 +52,28 @@ export function ThemingPage() {
           <Button
             variant={theme === "light" ? "solid" : "outline"}
             colorScheme="primary"
+            startIcon={<FiSun size={15} />}
             onClick={() => setTheme("light")}
           >
-            ☀️ Force Light
+            Force Light
           </Button>
 
           <Button
             variant={theme === "dark" ? "solid" : "outline"}
             colorScheme="primary"
+            startIcon={<FiMoon size={15} />}
             onClick={() => setTheme("dark")}
           >
-            🌙 Force Dark
+            Force Dark
           </Button>
 
           <Button
             variant={theme === "system" ? "solid" : "outline"}
             colorScheme="neutral"
+            startIcon={<FiMonitor size={15} />}
             onClick={() => setTheme("system")}
           >
-            💻 Follow System ({systemTheme})
+            Follow System ({systemTheme})
           </Button>
         </div>
 
