@@ -188,6 +188,14 @@ export {
   type RadioOwnerState,
   type RadioContextValue,
 } from "./components/Radio";
+export {
+  Switch,
+  type SwitchProps,
+  type SwitchSize,
+  type SwitchColorScheme,
+  type SwitchLabelPlacement,
+  type SwitchOwnerState,
+} from "./components/Switch";
 
 // Material Elevation Surfaces
 export {
