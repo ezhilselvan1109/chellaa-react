@@ -143,6 +143,14 @@ export {
   InputAdornment,
   type InputAdornmentProps,
 } from "./components/Input";
+export {
+  Textarea,
+  type TextareaProps,
+  type TextareaOwnerState,
+  type TextareaVariant,
+  type TextareaSize,
+  type TextareaResize,
+} from "./components/Textarea";
 
 // Material Elevation Surfaces
 export {
