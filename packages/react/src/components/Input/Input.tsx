@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { useFormField } from "../FormField/FormFieldContext";
 
 export type InputVariant = "outlined" | "filled" | "standard" | "unstyled";
 export type InputSize = "sm" | "md" | "lg";
@@ -253,6 +254,8 @@ const ClearButton = styled("button")(({ theme }) => ({
  */
 export const Input = React.forwardRef<HTMLDivElement, InputProps>(
   function Input(props, ref) {
+    const formField = useFormField();
+
     const {
       asChild = false,
       component,
@@ -260,9 +263,10 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       variant = "outlined",
       size = "md",
       fullWidth = false,
-      error = false,
-      disabled = false,
-      readOnly = false,
+      error: errorProp,
+      disabled: disabledProp,
+      readOnly: readOnlyProp,
+      required: requiredProp,
       startAdornment,
       endAdornment,
       clearable = false,
@@ -272,12 +276,27 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       defaultValue,
       onChange,
       type = "text",
-      id,
+      id: idProp,
       className,
       style,
       sx,
+      "aria-describedby": ariaDescribedByProp,
       ...restInputProps
     } = props;
+
+    const id = idProp ?? formField?.id;
+    const error = errorProp ?? formField?.error ?? false;
+    const disabled = disabledProp ?? formField?.disabled ?? false;
+    const readOnly = readOnlyProp ?? formField?.readOnly ?? false;
+    const required = requiredProp ?? formField?.required ?? false;
+
+    const ariaDescribedBy = [
+      ariaDescribedByProp,
+      formField?.error && formField?.hasErrorMessage ? formField.errorMessageId : null,
+      formField?.hasHelperText ? formField.helperTextId : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
     // Value tracking for clearable button
     const [internalValue, setInternalValue] = React.useState<string>(() => {
@@ -385,6 +404,8 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
             type={type}
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
+            aria-describedby={ariaDescribedBy}
             value={valueProp}
             defaultValue={defaultValue}
             onChange={handleChange}
@@ -414,6 +435,8 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
           type={type}
           disabled={disabled}
           readOnly={readOnly}
+          required={required}
+          aria-describedby={ariaDescribedBy}
           value={valueProp}
           defaultValue={defaultValue}
           onChange={handleChange}

@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { useFormField } from "../FormField/FormFieldContext";
 
 export type TextareaVariant = "outlined" | "filled" | "standard" | "unstyled";
 export type TextareaSize = "sm" | "md" | "lg";
@@ -228,6 +229,8 @@ const StyledCharacterCount = styled("div", {
  */
 export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
   function Textarea(props, ref) {
+    const formField = useFormField();
+
     const {
       asChild = false,
       component,
@@ -235,9 +238,10 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
       variant = "outlined",
       size = "md",
       fullWidth = false,
-      error = false,
-      disabled = false,
-      readOnly = false,
+      error: errorProp,
+      disabled: disabledProp,
+      readOnly: readOnlyProp,
+      required: requiredProp,
       autoResize = false,
       minRows = 3,
       maxRows,
@@ -249,12 +253,27 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
       defaultValue,
       onChange,
       rows = 3,
-      id,
+      id: idProp,
       className,
       style,
       sx,
+      "aria-describedby": ariaDescribedByProp,
       ...restTextareaProps
     } = props;
+
+    const id = idProp ?? formField?.id;
+    const error = errorProp ?? formField?.error ?? false;
+    const disabled = disabledProp ?? formField?.disabled ?? false;
+    const readOnly = readOnlyProp ?? formField?.readOnly ?? false;
+    const required = requiredProp ?? formField?.required ?? false;
+
+    const ariaDescribedBy = [
+      ariaDescribedByProp,
+      formField?.error && formField?.hasErrorMessage ? formField.errorMessageId : null,
+      formField?.hasHelperText ? formField.helperTextId : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
     const [internalValue, setInternalValue] = React.useState<string>(() => {
       if (valueProp !== undefined) return String(valueProp);
@@ -349,6 +368,8 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
             rows={rows}
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
+            aria-describedby={ariaDescribedBy}
             value={valueProp}
             defaultValue={defaultValue}
             onChange={handleChange}
@@ -376,6 +397,8 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
           rows={rows}
           disabled={disabled}
           readOnly={readOnly}
+          required={required}
+          aria-describedby={ariaDescribedBy}
           value={valueProp}
           defaultValue={defaultValue}
           onChange={handleChange}
