@@ -90,3 +90,23 @@ export {
   type GridWrap,
 } from "./components/Grid";
 
+// Material Elevation Surfaces
+export {
+  Paper,
+  type PaperProps,
+  type PaperOwnerState,
+  type PaperVariant,
+} from "./components/Paper";
+
+// Material Touch Ripple & Tactile Feedback
+export {
+  TouchRipple,
+  type TouchRippleProps,
+  type TouchRippleRef,
+  type RippleItem,
+  useRipple,
+  type UseRippleOptions,
+  type UseRippleReturn,
+} from "./ripple";
+
+
