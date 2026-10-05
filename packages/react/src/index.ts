@@ -131,6 +131,18 @@ export {
   type KbdModifier,
   MODIFIER_SYMBOLS,
 } from "./components/Kbd";
+export {
+  Input,
+  InputBase,
+  type InputProps,
+  type InputOwnerState,
+  type InputVariant,
+  type InputSize,
+  TextField,
+  type TextFieldProps,
+  InputAdornment,
+  type InputAdornmentProps,
+} from "./components/Input";
 
 // Material Elevation Surfaces
 export {
