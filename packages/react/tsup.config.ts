@@ -9,7 +9,10 @@ export default defineConfig({
   minify: false,
   treeshake: true,
   target: "es2022",
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom", "@emotion/react", "@emotion/styled"],
+  banner: {
+    js: '"use client";',
+  },
   outExtension({ format }) {
     return {
       js: format === "esm" ? ".mjs" : ".cjs",

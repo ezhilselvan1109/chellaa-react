@@ -1,6 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
+import { ChellaaTheme, ThemeOptions, ColorMode } from "./types";
+import { createTheme, defaultTheme, defaultDarkTheme } from "./createTheme";
+
+// Ambient type augmentation for @emotion/react
+declare module "@emotion/react" {
+  export interface Theme extends ChellaaTheme {}
+}
 
 export type ThemeMode = "light" | "dark" | "system" | string;
 
@@ -9,14 +17,18 @@ export interface ThemeContextValue {
   setTheme: (theme: ThemeMode) => void;
   resolvedTheme: "light" | "dark";
   systemTheme: "light" | "dark" | undefined;
+  activeTheme: ChellaaTheme;
+  colorMode: ColorMode;
+  setColorMode: (mode: ColorMode) => void;
 }
 
 export const ThemeContext = React.createContext<ThemeContextValue | undefined>(
-  undefined,
+  undefined
 );
 
 export interface ThemeProviderProps {
   children?: React.ReactNode;
+  theme?: ChellaaTheme | ThemeOptions;
   defaultTheme?: ThemeMode;
   storageKey?: string;
   enableSystem?: boolean;
@@ -28,21 +40,21 @@ const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  theme: customThemeProp,
+  defaultTheme: defaultThemeMode = "system",
   storageKey = "chellaa-theme",
   enableSystem = true,
   tokens,
   attribute = "data-theme",
 }: ThemeProviderProps) {
-  // Check if we are inside a parent ThemeProvider (nested scope)
   const parentContext = React.useContext(ThemeContext);
 
-  const [theme, setThemeState] = React.useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return defaultTheme;
+  const [themeMode, setThemeModeState] = React.useState<ThemeMode>(() => {
+    if (typeof window === "undefined") return defaultThemeMode;
     try {
-      return (localStorage.getItem(storageKey) as ThemeMode) || defaultTheme;
+      return (localStorage.getItem(storageKey) as ThemeMode) || defaultThemeMode;
     } catch {
-      return defaultTheme;
+      return defaultThemeMode;
     }
   });
 
@@ -59,13 +71,13 @@ export function ThemeProvider({
     return window.matchMedia(COLOR_SCHEME_QUERY).matches ? "dark" : "light";
   });
 
-  // Calculate resolved theme
+  // Calculate resolved theme (light or dark)
   const resolvedTheme: "light" | "dark" = React.useMemo(() => {
-    if (theme === "system") {
+    if (themeMode === "system") {
       return systemTheme ?? "light";
     }
-    return theme === "dark" ? "dark" : "light";
-  }, [theme, systemTheme]);
+    return themeMode === "dark" ? "dark" : "light";
+  }, [themeMode, systemTheme]);
 
   // Listen for OS system theme changes
   React.useEffect(() => {
@@ -92,7 +104,6 @@ export function ThemeProvider({
         }
       ).addListener === "function"
     ) {
-      // Legacy Safari / older browser fallback
       (
         mediaQuery as {
           addListener: (cb: (e: MediaQueryListEvent) => void) => void;
@@ -107,11 +118,25 @@ export function ThemeProvider({
     }
   }, [enableSystem]);
 
-  // Apply theme to DOM
+  // Compute active Emotion ChellaaTheme
+  const activeTheme = React.useMemo<ChellaaTheme>(() => {
+    if (customThemeProp) {
+      // If full ChellaaTheme passed, respect its palette mode or override with resolvedTheme
+      return createTheme({
+        ...(customThemeProp as any),
+        palette: {
+          mode: resolvedTheme,
+          ...((customThemeProp as any).palette || {}),
+        },
+      });
+    }
+    return resolvedTheme === "dark" ? defaultDarkTheme : defaultTheme;
+  }, [customThemeProp, resolvedTheme]);
+
+  // Apply data-theme attribute and CSS tokens to DOM
   React.useEffect(() => {
     if (typeof document === "undefined") return;
 
-    // If root ThemeProvider, apply to documentElement
     if (!parentContext) {
       const root = document.documentElement;
       root.setAttribute(attribute, resolvedTheme);
@@ -126,46 +151,59 @@ export function ThemeProvider({
 
   const setTheme = React.useCallback(
     (newTheme: ThemeMode) => {
-      setThemeState(newTheme);
+      setThemeModeState(newTheme);
       try {
         localStorage.setItem(storageKey, newTheme);
       } catch {
         // Ignore localStorage errors (e.g. private browsing mode)
       }
     },
-    [storageKey],
+    [storageKey]
   );
 
-  const value = React.useMemo<ThemeContextValue>(
+  const setColorMode = React.useCallback(
+    (mode: ColorMode) => {
+      setTheme(mode);
+    },
+    [setTheme]
+  );
+
+  const contextValue = React.useMemo<ThemeContextValue>(
     () => ({
-      theme,
+      theme: themeMode,
       setTheme,
       resolvedTheme,
       systemTheme,
+      activeTheme,
+      colorMode: resolvedTheme,
+      setColorMode,
     }),
-    [theme, setTheme, resolvedTheme, systemTheme],
+    [themeMode, setTheme, resolvedTheme, systemTheme, activeTheme, setColorMode]
   );
 
-  // If this is a nested ThemeProvider, render a container element with the local theme attribute
   if (parentContext) {
     const styleObj = tokens
       ? (tokens as unknown as React.CSSProperties)
       : undefined;
 
     return (
-      <ThemeContext.Provider value={value}>
-        <div
-          {...{ [attribute]: resolvedTheme }}
-          style={styleObj}
-          className="cl-theme-scope"
-        >
-          {children}
-        </div>
+      <ThemeContext.Provider value={contextValue}>
+        <EmotionThemeProvider theme={activeTheme}>
+          <div
+            {...{ [attribute]: resolvedTheme }}
+            style={styleObj}
+            className="cl-theme-scope"
+          >
+            {children}
+          </div>
+        </EmotionThemeProvider>
       </ThemeContext.Provider>
     );
   }
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={contextValue}>
+      <EmotionThemeProvider theme={activeTheme}>{children}</EmotionThemeProvider>
+    </ThemeContext.Provider>
   );
 }
