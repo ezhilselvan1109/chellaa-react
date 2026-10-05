@@ -46,6 +46,9 @@ export {
   type DeepPartial,
 } from "./theme";
 
+// Public Styling Engine APIs
+export * from "./system";
+
 // Public Component APIs
 export {
   Button,
