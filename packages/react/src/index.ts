@@ -176,6 +176,18 @@ export {
   type CheckboxOwnerState,
   type CheckboxContextValue,
 } from "./components/Checkbox";
+export {
+  Radio,
+  type RadioProps,
+  RadioGroup,
+  type RadioGroupProps,
+  RadioContext,
+  useRadioGroup,
+  type RadioSize,
+  type RadioColorScheme,
+  type RadioOwnerState,
+  type RadioContextValue,
+} from "./components/Radio";
 
 // Material Elevation Surfaces
 export {

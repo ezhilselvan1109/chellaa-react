@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
 import { useControllableState } from "../../hooks/useControllableState";
+import { useFormField } from "../FormField/FormFieldContext";
 import { CheckboxContext } from "./CheckboxContext";
 import type { CheckboxGroupProps, CheckboxContextValue } from "./Checkbox.types";
 
@@ -50,18 +51,20 @@ export const CheckboxGroup = React.forwardRef<
   HTMLDivElement,
   CheckboxGroupProps
 >(function CheckboxGroup(props, ref) {
+  const formField = useFormField();
+
   const {
     value: valueProp,
     defaultValue = [],
     onChange: onChangeProp,
-    name,
+    name: nameProp,
     size = "md",
     colorScheme = "primary",
     orientation = "vertical",
     spacing = 2,
-    disabled = false,
-    readOnly = false,
-    error = false,
+    disabled: disabledProp,
+    readOnly: readOnlyProp,
+    error: errorProp,
     asChild = false,
     component,
     as,
@@ -71,6 +74,11 @@ export const CheckboxGroup = React.forwardRef<
     sx,
     ...rest
   } = props;
+
+  const name = nameProp ?? formField?.name;
+  const disabled = disabledProp ?? formField?.disabled ?? false;
+  const readOnly = readOnlyProp ?? formField?.readOnly ?? false;
+  const error = errorProp ?? formField?.error ?? false;
 
   const [value, setValue] = useControllableState<string[]>({
     value: valueProp,
