@@ -103,6 +103,25 @@ export {
   type DividerTextAlign,
   type DividerLineStyle,
 } from "./components/Divider";
+export {
+  Typography,
+  type TypographyProps,
+  type TypographyOwnerState,
+  type TypographyAlign,
+  Heading,
+  type HeadingProps,
+  type HeadingLevel,
+  Text,
+  type TextProps,
+  type TextSize,
+  Paragraph,
+  type ParagraphProps,
+  Code,
+  type CodeProps,
+  type CodeOwnerState,
+  type CodeColorScheme,
+  resolveTypographyColor,
+} from "./components/Typography";
 
 // Material Elevation Surfaces
 export {
