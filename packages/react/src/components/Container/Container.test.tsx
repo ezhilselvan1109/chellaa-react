@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import { Container } from "./Container";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
@@ -75,5 +76,27 @@ describe("Container Component", () => {
     const elem = screen.getByTestId("container-themed");
     expect(elem).toBeInTheDocument();
     expect(elem).not.toHaveAttribute("sx");
+  });
+
+  it("supports fixed prop without leaking to DOM", () => {
+    render(
+      <Container fixed maxWidth="md" data-testid="container-fixed">
+        Fixed Content
+      </Container>
+    );
+    const elem = screen.getByTestId("container-fixed");
+    expect(elem).toBeInTheDocument();
+    expect(elem).not.toHaveAttribute("fixed");
+  });
+
+  it("passes axe accessibility checks with 0 violations", async () => {
+    const { container } = render(
+      <Container component="main" maxWidth="lg">
+        <h1>Accessible Heading</h1>
+        <p>Accessible paragraph within container.</p>
+      </Container>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });
