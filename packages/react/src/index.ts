@@ -205,6 +205,25 @@ export {
   type PaperVariant,
 } from "./components/Paper";
 
+// Card Compound Surface
+export {
+  Card,
+  type CardProps,
+  type CardOwnerState,
+  type CardVariant,
+  type CardSize,
+  CardHeader,
+  type CardHeaderProps,
+  CardMedia,
+  type CardMediaProps,
+  CardBody,
+  type CardBodyProps,
+  CardFooter,
+  type CardFooterProps,
+  CardActions,
+  type CardActionsProps,
+} from "./components/Card";
+
 // Material Touch Ripple & Tactile Feedback
 export {
   TouchRipple,
