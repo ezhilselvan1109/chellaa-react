@@ -77,6 +77,11 @@ export {
   type StackOwnerState,
 } from "./components/Stack";
 export {
+  Flex,
+  type FlexProps,
+  type FlexOwnerState,
+} from "./components/Flex";
+export {
   Container,
   type ContainerProps,
   type ContainerOwnerState,
