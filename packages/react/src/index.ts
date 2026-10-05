@@ -164,6 +164,18 @@ export {
   useFormField,
   type FormFieldContextValue,
 } from "./components/FormField";
+export {
+  Checkbox,
+  type CheckboxProps,
+  CheckboxGroup,
+  type CheckboxGroupProps,
+  CheckboxContext,
+  useCheckboxGroup,
+  type CheckboxSize,
+  type CheckboxColorScheme,
+  type CheckboxOwnerState,
+  type CheckboxContextValue,
+} from "./components/Checkbox";
 
 // Material Elevation Surfaces
 export {
