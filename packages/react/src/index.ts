@@ -122,6 +122,15 @@ export {
   type CodeColorScheme,
   resolveTypographyColor,
 } from "./components/Typography";
+export {
+  Kbd,
+  type KbdProps,
+  type KbdOwnerState,
+  type KbdSize,
+  type KbdVariant,
+  type KbdModifier,
+  MODIFIER_SYMBOLS,
+} from "./components/Kbd";
 
 // Material Elevation Surfaces
 export {
