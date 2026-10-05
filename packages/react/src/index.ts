@@ -94,6 +94,15 @@ export {
   type GridDirection,
   type GridWrap,
 } from "./components/Grid";
+export {
+  Divider,
+  type DividerProps,
+  type DividerOwnerState,
+  type DividerOrientation,
+  type DividerVariant,
+  type DividerTextAlign,
+  type DividerLineStyle,
+} from "./components/Divider";
 
 // Material Elevation Surfaces
 export {
