@@ -67,3 +67,26 @@ export {
   ButtonGroupContext,
   useButtonGroupContext,
 } from "./components/ButtonGroup";
+
+// Material DOM Composition Primitives
+export { Box, type BoxProps } from "./components/Box";
+export {
+  Stack,
+  type StackProps,
+  type StackDirection,
+  type StackOwnerState,
+} from "./components/Stack";
+export {
+  Container,
+  type ContainerProps,
+  type ContainerOwnerState,
+} from "./components/Container";
+export {
+  Grid,
+  type GridProps,
+  type GridOwnerState,
+  type GridSize,
+  type GridDirection,
+  type GridWrap,
+} from "./components/Grid";
+

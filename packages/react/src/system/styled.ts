@@ -66,14 +66,30 @@ export function styled<
 
   const emotionCreator = emotionStyled(component as any, emotionOptions);
 
-  return (
+  return <Props extends object = ExtraProps>(
     ...interpolations: StyleInterpolation<
-      ExtraProps & { sx?: SxProps; as?: React.ElementType }
+      Props & { sx?: SxProps; as?: React.ElementType }
     >[]
   ) => {
+    const wrappedInterpolations = interpolations.map((interpolation) => {
+      if (typeof interpolation === "function") {
+        return (rawProps: any) => {
+          const activeTheme =
+            rawProps.theme && typeof rawProps.theme.spacing === "function"
+              ? (rawProps.theme as ChellaaTheme)
+              : defaultTheme;
+          return interpolation({
+            ...rawProps,
+            theme: activeTheme,
+          });
+        };
+      }
+      return interpolation;
+    });
+
     return emotionCreator(
       // 1. Base component styles
-      ...(interpolations as any[]),
+      ...(wrappedInterpolations as any[]),
 
       // 2. Global theme overrides from theme.components[name].styleOverrides[slot]
       (props: any) => {
