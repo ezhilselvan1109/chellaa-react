@@ -14,6 +14,10 @@ import {
   ButtonGroupDocPage,
   buttonGroupToc,
 } from "./content/components/ButtonGroupDocPage";
+import {
+  MaterialPrimitivesDocPage,
+  materialPrimitivesToc,
+} from "./content/components/MaterialPrimitivesDocPage";
 import { SlotCompositionPage } from "./content/guides/SlotCompositionPage";
 import { AccessibilityGuidePage } from "./content/guides/AccessibilityGuidePage";
 import { ChangelogPage } from "./content/resources/ChangelogPage";
@@ -28,6 +32,7 @@ const titleMap: Record<string, string> = {
   "#/theming": "Theming & Dark Mode — Chellaa React",
   "#/components/button": "Button Component — Chellaa React",
   "#/components/button-group": "ButtonGroup Component — Chellaa React",
+  "#/components/material-primitives": "Material Primitives — Chellaa React",
   "#/guides/as-child": "Polymorphism (asChild) — Chellaa React",
   "#/guides/accessibility": "Accessibility Standards — Chellaa React",
   "#/changelog": "Changelog & Releases — Chellaa React",
@@ -95,6 +100,11 @@ export function DocsApp() {
         return { content: <ButtonDocPage />, toc: buttonToc };
       case "#/components/button-group":
         return { content: <ButtonGroupDocPage />, toc: buttonGroupToc };
+      case "#/components/material-primitives":
+        return {
+          content: <MaterialPrimitivesDocPage />,
+          toc: materialPrimitivesToc,
+        };
       case "#/guides/as-child":
         return { content: <SlotCompositionPage />, toc: [] };
       case "#/guides/accessibility":

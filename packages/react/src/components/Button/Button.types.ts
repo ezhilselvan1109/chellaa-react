@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { SxProps } from "../../system/types";
 
 export type ButtonVariant = "solid" | "outline" | "ghost" | "subtle" | "link";
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -79,6 +80,17 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    * @default false
    */
   asChild?: boolean;
+
+  /**
+   * If true, disables the tactile touch ripple effect.
+   * @default false
+   */
+  disableRipple?: boolean | undefined;
+
+  /**
+   * System-aware sx styling prop
+   */
+  sx?: SxProps;
 
   /**
    * Button content or label.

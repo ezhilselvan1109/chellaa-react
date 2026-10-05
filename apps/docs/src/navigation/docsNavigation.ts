@@ -37,6 +37,12 @@ export const docsNavigation: NavSection[] = [
         path: "#/components/button-group",
         status: "stable",
       },
+      {
+        id: "material-primitives",
+        title: "Material Primitives",
+        path: "#/components/material-primitives",
+        status: "new",
+      },
     ],
   },
   {

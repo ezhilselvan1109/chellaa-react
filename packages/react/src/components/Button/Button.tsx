@@ -4,6 +4,9 @@ import * as React from "react";
 import { Slot } from "../../primitives/Slot";
 import { classNames } from "../../utils/classNames";
 import { useButtonGroupContext } from "../ButtonGroup/ButtonGroupContext";
+import { styled } from "../../system/styled";
+import { TouchRipple } from "../../ripple/TouchRipple";
+import { useRipple } from "../../ripple/useRipple";
 import type { ButtonProps } from "./Button.types";
 
 /**
@@ -36,11 +39,29 @@ function ButtonSpinner() {
   );
 }
 
+const StyledButtonRoot = styled("button", {
+  name: "ChellaaButton",
+  slot: "Root",
+  shouldForwardProp: (prop) =>
+    prop !== "variant" &&
+    prop !== "colorScheme" &&
+    prop !== "isFullWidth" &&
+    prop !== "isLoading" &&
+    prop !== "isDisabled" &&
+    prop !== "loadingText" &&
+    prop !== "loadingPosition" &&
+    prop !== "startIcon" &&
+    prop !== "endIcon" &&
+    prop !== "disableRipple" &&
+    prop !== "asChild",
+})({});
+
 /**
  * Chellaa React Button component.
  *
  * Fundamental action primitive supporting 5 variants, 5 sizes, 7 color schemes,
- * loading states, icons, keyboard interaction, and polymorphic slot delegation via `asChild`.
+ * tactile touch ripple feedback, loading states, icons, keyboard interaction,
+ * theme overrides, and polymorphic slot delegation via `asChild`.
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, forwardedRef) {
@@ -62,6 +83,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       type = "button",
       onClick,
       onKeyDown,
+      disableRipple = false,
+      sx,
       ...restProps
     } = props;
 
@@ -74,6 +97,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled =
       isDisabledProp ?? disabledProp ?? buttonGroup?.isDisabled ?? false;
     const isEffectivelyDisabled = isDisabled || isLoading;
+
+    const { rippleProps, getRippleHandlers } = useRipple({
+      disabled: isEffectivelyDisabled,
+      disableRipple,
+    });
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       if (isEffectivelyDisabled) {
@@ -111,11 +139,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // When asChild is enabled, delegate root rendering to child via Slot
     if (asChild) {
       return (
-        <Slot
+        <StyledButtonRoot
+          as={Slot}
           ref={forwardedRef as React.Ref<HTMLElement>}
           className={buttonClassName}
           aria-disabled={isEffectivelyDisabled ? true : undefined}
           aria-busy={isLoading ? true : undefined}
+          sx={sx}
           onClick={
             handleClick as unknown as React.MouseEventHandler<HTMLElement>
           }
@@ -125,24 +155,29 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {...restProps}
         >
           {children}
-        </Slot>
+        </StyledButtonRoot>
       );
     }
 
     // Center loading state: keep button dimensions identical by visually hiding label
     const isCenterLoading = isLoading && loadingPosition === "center";
 
+    const buttonHandlers = getRippleHandlers({
+      onClick: handleClick,
+      onKeyDown: handleKeyDown,
+      ...restProps,
+    });
+
     return (
-      <button
+      <StyledButtonRoot
         ref={forwardedRef}
         type={type}
         disabled={isEffectivelyDisabled ? true : undefined}
         aria-disabled={isEffectivelyDisabled ? true : undefined}
         aria-busy={isLoading ? true : undefined}
         className={buttonClassName}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        {...restProps}
+        sx={sx}
+        {...buttonHandlers}
       >
         {isCenterLoading ? (
           <>
@@ -198,7 +233,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             )}
           </>
         )}
-      </button>
+        {!disableRipple && !isEffectivelyDisabled && (
+          <TouchRipple {...rippleProps} />
+        )}
+      </StyledButtonRoot>
     );
   },
 );
