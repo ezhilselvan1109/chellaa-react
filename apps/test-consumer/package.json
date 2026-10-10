@@ -5,7 +5,9 @@
   "description": "Automated regression firewall and consumer simulation app",
   "type": "module",
   "scripts": {
-    "test": "node index.test.mjs"
+    "test": "node index.test.mjs",
+    "lint": "eslint \"**/*.{js,mjs,cjs}\"",
+    "typecheck": "node -e \"process.exit(0)\""
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",

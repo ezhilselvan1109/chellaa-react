@@ -9,7 +9,7 @@
     "prebuild": "pnpm --filter @chellaa/react build",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "lint": "tsc --noEmit"
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",

@@ -9,7 +9,7 @@
     "prebuild": "pnpm --filter @chellaa/react build",
     "build": "storybook build -o dist",
     "typecheck": "tsc --noEmit",
-    "lint": "tsc --noEmit"
+    "lint": "eslint \".storybook/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
