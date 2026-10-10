@@ -55,6 +55,12 @@ describe("Box Component", () => {
     expect(elem).not.toHaveAttribute("sx");
   });
 
+  it("applies static cl-box class", () => {
+    render(<Box data-testid="box-static">Static Box</Box>);
+    const elem = screen.getByTestId("box-static");
+    expect(elem).toHaveClass("cl-box");
+  });
+
   it("forwards standard HTML attributes and ref", () => {
     const ref = React.createRef<HTMLDivElement>();
     render(
@@ -73,6 +79,7 @@ describe("Box Component", () => {
     expect(elem).toHaveAttribute("id", "custom-box");
     expect(elem).toHaveAttribute("role", "region");
     expect(elem).toHaveAttribute("aria-label", "Test Region");
+    expect(elem).toHaveClass("cl-box");
     expect(ref.current).toBe(elem);
   });
 });

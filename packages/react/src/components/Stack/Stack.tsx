@@ -1,9 +1,12 @@
+"use client";
+
 import * as React from "react";
 import type { CSSProperties } from "react";
 import { styled } from "../../system/styled";
 import { parseSx } from "../../system/sx";
 import type { ResponsiveValue, SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type StackDirection = "row" | "row-reverse" | "column" | "column-reverse";
 
@@ -55,23 +58,22 @@ const StyledStackRoot = styled("div", {
     prop !== "asChild" &&
     prop !== "component",
 })<{ ownerState: StackOwnerState }>(({ theme, ownerState }) => {
-  const styles: Record<string, any> = {
-    display: "flex",
-    boxSizing: "border-box",
-  };
+  const styles: Record<string, any> = {};
 
-  // 1. Responsive direction
-  const parsedDirection = parseSx(theme, {
-    flexDirection: ownerState.direction ?? "column",
-  });
-  Object.assign(styles, parsedDirection);
+  // 1. Responsive direction (if array or object or non-default)
+  if (typeof ownerState.direction === "object") {
+    Object.assign(
+      styles,
+      parseSx(theme, { flexDirection: ownerState.direction })
+    );
+  }
 
   // 2. Responsive spacing (gap)
-  if (ownerState.spacing !== undefined) {
-    const parsedGap = parseSx(theme, {
-      gap: ownerState.spacing,
-    });
-    Object.assign(styles, parsedGap);
+  if (ownerState.spacing !== undefined && ownerState.spacing !== 0) {
+    Object.assign(
+      styles,
+      parseSx(theme, { gap: ownerState.spacing })
+    );
   }
 
   // 3. Alignment and wrapping
@@ -119,6 +121,9 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       flexWrap,
       useFlexGap = true,
       divider,
+      className,
+      style,
+      sx,
       children,
       ...rest
     } = props;
@@ -131,6 +136,14 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       flexWrap,
       useFlexGap,
     };
+
+    const isSimpleDirection = typeof direction === "string";
+
+    const stackClassName = classNames(
+      "cl-stack",
+      isSimpleDirection && `cl-stack--${direction}`,
+      className
+    );
 
     const targetTag = component || as;
 
@@ -165,7 +178,10 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
         <StyledStackRoot
           as={Slot}
           ref={ref as any}
+          className={stackClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
         >
           {renderedChildren}
@@ -178,7 +194,10 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
         <StyledStackRoot
           as={targetTag}
           ref={ref as any}
+          className={stackClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
         >
           {renderedChildren}
@@ -189,7 +208,10 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
     return (
       <StyledStackRoot
         ref={ref as any}
+        className={stackClassName}
+        style={style}
         ownerState={ownerState}
+        sx={sx}
         {...rest}
       >
         {renderedChildren}

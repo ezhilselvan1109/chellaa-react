@@ -1,0 +1,16 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Stack Component Styles
+     ========================================================================== */
+
+  .cl-stack {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+  }
+
+  .cl-stack--row { flex-direction: row; }
+  .cl-stack--row-reverse { flex-direction: row-reverse; }
+  .cl-stack--column { flex-direction: column; }
+  .cl-stack--column-reverse { flex-direction: column-reverse; }
+}

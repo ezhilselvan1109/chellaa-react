@@ -15,6 +15,7 @@ describe("Divider Component", () => {
       const elem = screen.getByTestId("divider-root");
       expect(elem).toBeInTheDocument();
       expect(elem.tagName).toBe("HR");
+      expect(elem).toHaveClass("cl-divider", "cl-divider--horizontal");
       expect(elem).not.toHaveAttribute("orientation");
       expect(elem).not.toHaveAttribute("variant");
     });
@@ -29,6 +30,7 @@ describe("Divider Component", () => {
       const elem = screen.getByTestId("divider-vertical");
       expect(elem).toBeInTheDocument();
       expect(elem.tagName).toBe("DIV");
+      expect(elem).toHaveClass("cl-divider", "cl-divider--vertical");
       expect(elem).toHaveAttribute("role", "separator");
       expect(elem).toHaveAttribute("aria-orientation", "vertical");
       expect(elem).not.toHaveAttribute("orientation");
@@ -38,8 +40,9 @@ describe("Divider Component", () => {
       render(<Divider data-testid="divider-label">OR</Divider>);
       const elem = screen.getByTestId("divider-label");
       expect(elem.tagName).toBe("DIV");
+      expect(elem).toHaveClass("cl-divider", "cl-divider--with-children", "cl-divider--align-center");
       expect(elem).toHaveTextContent("OR");
-      const wrapper = elem.querySelector(".ChellaaDivider-wrapper");
+      const wrapper = elem.querySelector(".cl-divider__wrapper");
       expect(wrapper).toBeInTheDocument();
       expect(wrapper).toHaveTextContent("OR");
     });
@@ -53,6 +56,7 @@ describe("Divider Component", () => {
       render(<Divider variant="inset" data-testid="divider-inset" />);
       const elem = screen.getByTestId("divider-inset");
       expect(elem).toBeInTheDocument();
+      expect(elem).toHaveClass("cl-divider", "cl-divider--inset");
       expect(elem).not.toHaveAttribute("variant");
     });
 
@@ -60,6 +64,7 @@ describe("Divider Component", () => {
       render(<Divider variant="middle" data-testid="divider-middle" />);
       const elem = screen.getByTestId("divider-middle");
       expect(elem).toBeInTheDocument();
+      expect(elem).toHaveClass("cl-divider", "cl-divider--middle");
       expect(elem).not.toHaveAttribute("variant");
     });
 
@@ -73,6 +78,7 @@ describe("Divider Component", () => {
       );
       const elem = screen.getByTestId("divider-flexitem");
       expect(elem).toBeInTheDocument();
+      expect(elem).toHaveClass("cl-divider", "cl-divider--flex-item");
       expect(elem).not.toHaveAttribute("flexItem");
     });
 
@@ -85,6 +91,7 @@ describe("Divider Component", () => {
       );
       const elem = screen.getByTestId("divider-dashed");
       expect(elem).toBeInTheDocument();
+      expect(elem).toHaveClass("cl-divider", "cl-divider--dashed");
       expect(elem).not.toHaveAttribute("lineStyle");
     });
 
@@ -96,6 +103,7 @@ describe("Divider Component", () => {
       );
       const elem = screen.getByTestId("divider-text-left");
       expect(elem).toBeInTheDocument();
+      expect(elem).toHaveClass("cl-divider", "cl-divider--align-left");
       expect(elem).not.toHaveAttribute("textAlign");
       expect(elem).toHaveTextContent("Left Label");
     });

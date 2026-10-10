@@ -15,6 +15,7 @@ describe("Flex Component", () => {
 
     const elem = screen.getByTestId("flex-root");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-flex", "cl-flex--row");
     expect(elem.children.length).toBe(2);
   });
 
@@ -27,6 +28,7 @@ describe("Flex Component", () => {
 
     const elem = screen.getByTestId("flex-center");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-flex", "cl-flex--center");
     expect(elem).not.toHaveAttribute("center");
   });
 
@@ -39,6 +41,7 @@ describe("Flex Component", () => {
 
     const elem = screen.getByTestId("flex-inline");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-flex", "cl-flex--inline");
     expect(elem).not.toHaveAttribute("inline");
   });
 

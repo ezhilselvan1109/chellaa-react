@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
   /**
@@ -27,9 +30,7 @@ const StyledBoxRoot = styled("div", {
   name: "ChellaaBox",
   slot: "Root",
   shouldForwardProp: (prop) => prop !== "asChild" && prop !== "component",
-})({
-  boxSizing: "border-box",
-});
+})({});
 
 /**
  * Universal polymorphic layout container with theme-aware `sx` styling and `asChild` composition.
@@ -41,22 +42,51 @@ const StyledBoxRoot = styled("div", {
  */
 export const Box = React.forwardRef<HTMLElement, BoxProps>(
   function Box(props, ref) {
-    const { asChild = false, component, as, ...rest } = props;
+    const { asChild = false, component, as, className, style, sx, children, ...rest } = props;
     const targetTag = component || as;
+    const boxClassName = classNames("cl-box", className);
 
     if (asChild) {
       return (
-        <StyledBoxRoot as={Slot} ref={ref as any} {...rest} />
+        <StyledBoxRoot
+          as={Slot}
+          ref={ref as any}
+          className={boxClassName}
+          style={style}
+          sx={sx}
+          {...rest}
+        >
+          {children}
+        </StyledBoxRoot>
       );
     }
 
     if (targetTag) {
       return (
-        <StyledBoxRoot as={targetTag} ref={ref as any} {...rest} />
+        <StyledBoxRoot
+          as={targetTag}
+          ref={ref as any}
+          className={boxClassName}
+          style={style}
+          sx={sx}
+          {...rest}
+        >
+          {children}
+        </StyledBoxRoot>
       );
     }
 
-    return <StyledBoxRoot ref={ref as any} {...rest} />;
+    return (
+      <StyledBoxRoot
+        ref={ref as any}
+        className={boxClassName}
+        style={style}
+        sx={sx}
+        {...rest}
+      >
+        {children}
+      </StyledBoxRoot>
+    );
   }
 );
 

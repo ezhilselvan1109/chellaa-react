@@ -1,9 +1,12 @@
+"use client";
+
 import * as React from "react";
 import type { CSSProperties } from "react";
 import { styled } from "../../system/styled";
 import { parseSx } from "../../system/sx";
 import type { ResponsiveValue, SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import type { StackDirection } from "../Stack";
 
 export interface FlexOwnerState {
@@ -64,17 +67,16 @@ const StyledFlexRoot = styled("div", {
     prop !== "asChild" &&
     prop !== "component",
 })<{ ownerState: FlexOwnerState }>(({ theme, ownerState }) => {
-  const isInline = ownerState.inline ?? false;
   const isCenter = ownerState.center ?? false;
+  const styles: Record<string, any> = {};
 
-  const styles: Record<string, any> = {
-    display: isInline ? "inline-flex" : "flex",
-    boxSizing: "border-box",
-  };
-
-  // 1. Responsive direction (default: 'row')
-  const direction = ownerState.direction ?? "row";
-  Object.assign(styles, parseSx(theme, { flexDirection: direction }));
+  // 1. Responsive direction (if array or object)
+  if (typeof ownerState.direction === "object") {
+    Object.assign(
+      styles,
+      parseSx(theme, { flexDirection: ownerState.direction })
+    );
+  }
 
   // 2. Responsive gap / spacing
   const gapValue = ownerState.gap ?? ownerState.spacing;
@@ -82,15 +84,17 @@ const StyledFlexRoot = styled("div", {
     Object.assign(styles, parseSx(theme, { gap: gapValue }));
   }
 
-  // 3. Align & Justify
-  const alignVal = isCenter ? "center" : (ownerState.align ?? ownerState.alignItems);
-  if (alignVal !== undefined) {
-    Object.assign(styles, parseSx(theme, { alignItems: alignVal }));
-  }
+  // 3. Align & Justify (if not center shorthand)
+  if (!isCenter) {
+    const alignVal = ownerState.align ?? ownerState.alignItems;
+    if (alignVal !== undefined) {
+      Object.assign(styles, parseSx(theme, { alignItems: alignVal }));
+    }
 
-  const justifyVal = isCenter ? "center" : (ownerState.justify ?? ownerState.justifyContent);
-  if (justifyVal !== undefined) {
-    Object.assign(styles, parseSx(theme, { justifyContent: justifyVal }));
+    const justifyVal = ownerState.justify ?? ownerState.justifyContent;
+    if (justifyVal !== undefined) {
+      Object.assign(styles, parseSx(theme, { justifyContent: justifyVal }));
+    }
   }
 
   // 4. Wrapping
@@ -130,6 +134,9 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       inline = false,
       center = false,
       divider,
+      className,
+      style,
+      sx,
       children,
       ...rest
     } = props;
@@ -147,6 +154,16 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       inline,
       center,
     };
+
+    const isSimpleDirection = typeof direction === "string";
+
+    const flexClassName = classNames(
+      "cl-flex",
+      inline && "cl-flex--inline",
+      center && "cl-flex--center",
+      isSimpleDirection && `cl-flex--${direction}`,
+      className
+    );
 
     const targetTag = component || as;
 
@@ -178,7 +195,10 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
         <StyledFlexRoot
           as={Slot}
           ref={ref as any}
+          className={flexClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
         >
           {renderedChildren}
@@ -191,7 +211,10 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
         <StyledFlexRoot
           as={targetTag}
           ref={ref as any}
+          className={flexClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
         >
           {renderedChildren}
@@ -202,7 +225,10 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
     return (
       <StyledFlexRoot
         ref={ref as any}
+        className={flexClassName}
+        style={style}
         ownerState={ownerState}
+        sx={sx}
         {...rest}
       >
         {renderedChildren}

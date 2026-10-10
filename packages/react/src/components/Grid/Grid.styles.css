@@ -1,0 +1,29 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Grid Component Styles
+     ========================================================================== */
+
+  .cl-grid {
+    box-sizing: border-box;
+  }
+
+  .cl-grid--container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .cl-grid--item {
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .cl-grid--nowrap { flex-wrap: nowrap; }
+  .cl-grid--wrap { flex-wrap: wrap; }
+  .cl-grid--wrap-reverse { flex-wrap: wrap-reverse; }
+
+  .cl-grid--direction-row { flex-direction: row; }
+  .cl-grid--direction-row-reverse { flex-direction: row-reverse; }
+  .cl-grid--direction-column { flex-direction: column; }
+  .cl-grid--direction-column-reverse { flex-direction: column-reverse; }
+}

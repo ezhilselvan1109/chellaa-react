@@ -1,0 +1,25 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Flex Component Styles
+     ========================================================================== */
+
+  .cl-flex {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+  }
+
+  .cl-flex--inline {
+    display: inline-flex;
+  }
+
+  .cl-flex--center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cl-flex--row { flex-direction: row; }
+  .cl-flex--row-reverse { flex-direction: row-reverse; }
+  .cl-flex--column { flex-direction: column; }
+  .cl-flex--column-reverse { flex-direction: column-reverse; }
+}

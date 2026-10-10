@@ -15,7 +15,11 @@ describe("Grid Component", () => {
 
     const container = screen.getByTestId("grid-container");
     expect(container).toBeInTheDocument();
+    expect(container).toHaveClass("cl-grid", "cl-grid--container");
     expect(container.children.length).toBe(2);
+
+    const item1 = screen.getByTestId("grid-item-1");
+    expect(item1).toHaveClass("cl-grid", "cl-grid--item");
   });
 
   it("handles responsive column spans (xs, sm, md, lg, xl)", () => {
@@ -27,6 +31,7 @@ describe("Grid Component", () => {
 
     const item = screen.getByTestId("responsive-item");
     expect(item).toBeInTheDocument();
+    expect(item).toHaveClass("cl-grid", "cl-grid--item");
     expect(item).not.toHaveAttribute("xs");
     expect(item).not.toHaveAttribute("sm");
     expect(item).not.toHaveAttribute("md");

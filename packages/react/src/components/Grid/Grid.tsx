@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import type { CSSProperties } from "react";
 import { styled } from "../../system/styled";
@@ -6,6 +8,7 @@ import type { ResponsiveValue, SxProps } from "../../system/types";
 import type { BreakpointKey } from "../../theme/types";
 import { breakpointKeys } from "../../theme/breakpoints";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type GridSize = boolean | "auto" | number;
 export type GridWrap = "nowrap" | "wrap" | "wrap-reverse";
@@ -105,19 +108,12 @@ const StyledGridRoot = styled("div", {
     prop !== "asChild" &&
     prop !== "component",
 })<{ ownerState: GridOwnerState }>(({ theme, ownerState }) => {
-  const styles: Record<string, any> = {
-    boxSizing: "border-box",
-  };
-
+  const styles: Record<string, any> = {};
   const columns = ownerState.columns ?? 12;
 
-  // 1. Container styles
+  // 1. Container responsive styles
   if (ownerState.container) {
-    styles.display = "flex";
-    styles.flexWrap = ownerState.wrap ?? "wrap";
-    styles.width = "100%";
-
-    if (ownerState.direction) {
+    if (typeof ownerState.direction === "object") {
       Object.assign(
         styles,
         parseSx(theme, { flexDirection: ownerState.direction })
@@ -208,6 +204,10 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       md,
       lg,
       xl,
+      className,
+      style,
+      sx,
+      children,
       ...rest
     } = props;
 
@@ -229,6 +229,17 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       xl,
     };
 
+    const isSimpleDirection = typeof direction === "string";
+
+    const gridClassName = classNames(
+      "cl-grid",
+      container && "cl-grid--container",
+      item && "cl-grid--item",
+      wrap && `cl-grid--${wrap}`,
+      isSimpleDirection && `cl-grid--direction-${direction}`,
+      className
+    );
+
     const targetTag = component || as;
 
     if (asChild) {
@@ -236,9 +247,14 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
         <StyledGridRoot
           as={Slot}
           ref={ref as any}
+          className={gridClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
-        />
+        >
+          {children}
+        </StyledGridRoot>
       );
     }
 
@@ -247,18 +263,28 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
         <StyledGridRoot
           as={targetTag}
           ref={ref as any}
+          className={gridClassName}
+          style={style}
           ownerState={ownerState}
+          sx={sx}
           {...rest}
-        />
+        >
+          {children}
+        </StyledGridRoot>
       );
     }
 
     return (
       <StyledGridRoot
         ref={ref as any}
+        className={gridClassName}
+        style={style}
         ownerState={ownerState}
+        sx={sx}
         {...rest}
-      />
+      >
+        {children}
+      </StyledGridRoot>
     );
   }
 );

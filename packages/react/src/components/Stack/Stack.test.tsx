@@ -15,6 +15,7 @@ describe("Stack Component", () => {
 
     const elem = screen.getByTestId("stack-root");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-stack", "cl-stack--column");
     expect(elem.children.length).toBe(2);
   });
 
@@ -28,6 +29,7 @@ describe("Stack Component", () => {
 
     const elem = screen.getByTestId("stack-row");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-stack", "cl-stack--row");
   });
 
   it("inserts custom divider element between children", () => {

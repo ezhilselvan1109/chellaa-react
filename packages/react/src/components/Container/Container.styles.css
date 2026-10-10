@@ -1,0 +1,40 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Container Component Styles
+     ========================================================================== */
+
+  .cl-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    display: block;
+    padding-left: var(--cl-space-4, 16px);
+    padding-right: var(--cl-space-4, 16px);
+  }
+
+  @media (min-width: 600px) {
+    .cl-container {
+      padding-left: var(--cl-space-6, 24px);
+      padding-right: var(--cl-space-6, 24px);
+    }
+  }
+
+  .cl-container--disable-gutters {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Max width breakpoints */
+  .cl-container--xs { max-width: var(--cl-breakpoint-xs, 0px); }
+  .cl-container--sm { max-width: var(--cl-breakpoint-sm, 600px); }
+  .cl-container--md { max-width: var(--cl-breakpoint-md, 900px); }
+  .cl-container--lg { max-width: var(--cl-breakpoint-lg, 1200px); }
+  .cl-container--xl { max-width: var(--cl-breakpoint-xl, 1536px); }
+
+  /* Fixed container variant */
+  .cl-container--fixed.cl-container--sm { max-width: var(--cl-breakpoint-sm, 600px); }
+  .cl-container--fixed.cl-container--md { max-width: var(--cl-breakpoint-md, 900px); }
+  .cl-container--fixed.cl-container--lg { max-width: var(--cl-breakpoint-lg, 1200px); }
+  .cl-container--fixed.cl-container--xl { max-width: var(--cl-breakpoint-xl, 1536px); }
+}

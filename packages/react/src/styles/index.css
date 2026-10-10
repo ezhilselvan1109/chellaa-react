@@ -19,3 +19,9 @@
 @import "../components/Card/Card.styles.css";
 @import "../components/Typography/Typography.styles.css";
 @import "../components/Kbd/Kbd.styles.css";
+@import "../components/Box/Box.styles.css";
+@import "../components/Container/Container.styles.css";
+@import "../components/Divider/Divider.styles.css";
+@import "../components/Stack/Stack.styles.css";
+@import "../components/Flex/Flex.styles.css";
+@import "../components/Grid/Grid.styles.css";

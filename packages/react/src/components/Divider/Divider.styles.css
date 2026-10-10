@@ -1,0 +1,115 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Divider Component Styles
+     ========================================================================== */
+
+  .cl-divider {
+    margin: 0;
+    flex-shrink: 0;
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--cl-color-border-subtle, rgba(0, 0, 0, 0.12));
+    box-sizing: border-box;
+  }
+
+  /* Horizontal */
+  .cl-divider--horizontal {
+    border-bottom-width: 1px;
+    width: 100%;
+    display: block;
+    height: 0;
+  }
+
+  .cl-divider--horizontal.cl-divider--inset {
+    margin-left: 72px;
+  }
+
+  .cl-divider--horizontal.cl-divider--middle {
+    margin-left: var(--cl-space-4, 16px);
+    margin-right: var(--cl-space-4, 16px);
+    width: calc(100% - var(--cl-space-8, 32px));
+  }
+
+  /* Vertical */
+  .cl-divider--vertical {
+    border-right-width: 1px;
+    height: auto;
+    display: inline-block;
+    width: 0;
+  }
+
+  .cl-divider--vertical.cl-divider--flex-item {
+    align-self: stretch;
+    height: auto;
+  }
+
+  .cl-divider--vertical.cl-divider--middle {
+    margin-top: var(--cl-space-2, 8px);
+    margin-bottom: var(--cl-space-2, 8px);
+  }
+
+  /* Line styles */
+  .cl-divider--dashed { border-style: dashed; }
+  .cl-divider--dotted { border-style: dotted; }
+
+  /* Light variant */
+  .cl-divider--light {
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  [data-theme="dark"] .cl-divider--light {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Divider with children / label */
+  .cl-divider--with-children {
+    display: flex;
+    align-items: center;
+    border: none;
+    width: 100%;
+    height: auto;
+  }
+
+  .cl-divider--with-children::before,
+  .cl-divider--with-children::after {
+    content: "";
+    border-bottom: 1px solid var(--cl-color-border-subtle, rgba(0, 0, 0, 0.12));
+  }
+
+  .cl-divider--dashed.cl-divider--with-children::before,
+  .cl-divider--dashed.cl-divider--with-children::after {
+    border-bottom-style: dashed;
+  }
+
+  .cl-divider--dotted.cl-divider--with-children::before,
+  .cl-divider--dotted.cl-divider--with-children::after {
+    border-bottom-style: dotted;
+  }
+
+  .cl-divider--align-center::before,
+  .cl-divider--align-center::after {
+    flex: 1;
+  }
+
+  .cl-divider--align-left::before {
+    flex: 0.05;
+  }
+  .cl-divider--align-left::after {
+    flex: 0.95;
+  }
+
+  .cl-divider--align-right::before {
+    flex: 0.95;
+  }
+  .cl-divider--align-right::after {
+    flex: 0.05;
+  }
+
+  .cl-divider__wrapper,
+  .ChellaaDivider-wrapper {
+    display: inline-block;
+    padding-left: var(--cl-space-3, 12px);
+    padding-right: var(--cl-space-3, 12px);
+    white-space: nowrap;
+  }
+}

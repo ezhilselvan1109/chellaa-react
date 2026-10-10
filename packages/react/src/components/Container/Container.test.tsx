@@ -17,6 +17,7 @@ describe("Container Component", () => {
     expect(elem).toBeInTheDocument();
     expect(elem.tagName).toBe("DIV");
     expect(elem).toHaveTextContent("Container Content");
+    expect(elem).toHaveClass("cl-container", "cl-container--lg");
   });
 
   it("supports maxWidth prop (sm, md, lg, xl, false)", () => {
@@ -27,6 +28,7 @@ describe("Container Component", () => {
     );
     const elem = screen.getByTestId("container-md");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-container", "cl-container--md");
     expect(elem).not.toHaveAttribute("maxWidth");
   });
 
@@ -38,6 +40,7 @@ describe("Container Component", () => {
     );
     const elem = screen.getByTestId("container-nogutters");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-container", "cl-container--disable-gutters");
     expect(elem).not.toHaveAttribute("disableGutters");
   });
 
@@ -86,6 +89,7 @@ describe("Container Component", () => {
     );
     const elem = screen.getByTestId("container-fixed");
     expect(elem).toBeInTheDocument();
+    expect(elem).toHaveClass("cl-container", "cl-container--fixed");
     expect(elem).not.toHaveAttribute("fixed");
   });
 

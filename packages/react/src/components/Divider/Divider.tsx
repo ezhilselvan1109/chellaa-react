@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type DividerOrientation = "horizontal" | "vertical";
 export type DividerVariant = "fullWidth" | "inset" | "middle";
@@ -53,94 +56,7 @@ const StyledDividerRoot = styled("hr", {
     prop !== "hasChildren" &&
     prop !== "asChild" &&
     prop !== "component",
-})<{ ownerState: DividerOwnerState }>(({ theme, ownerState }) => {
-  const isVertical = ownerState.orientation === "vertical";
-  const borderCol = ownerState.light
-    ? "rgba(0, 0, 0, 0.06)"
-    : theme.palette.divider;
-  const lineStyle = ownerState.lineStyle ?? "solid";
-
-  const baseStyles: Record<string, any> = {
-    margin: 0,
-    flexShrink: 0,
-    borderWidth: 0,
-    borderStyle: lineStyle,
-    borderColor: borderCol,
-    boxSizing: "border-box",
-  };
-
-  if (!ownerState.hasChildren) {
-    if (isVertical) {
-      return {
-        ...baseStyles,
-        borderRightWidth: "1px",
-        height: "auto",
-        alignSelf: ownerState.flexItem ? "stretch" : "auto",
-        display: "inline-block",
-        width: 0,
-        ...(ownerState.variant === "middle" && {
-          marginTop: theme.spacing(1),
-          marginBottom: theme.spacing(1),
-        }),
-      };
-    }
-
-    return {
-      ...baseStyles,
-      borderBottomWidth: "1px",
-      width: "100%",
-      display: "block",
-      height: 0,
-      ...(ownerState.variant === "inset" && {
-        marginLeft: "72px",
-      }),
-      ...(ownerState.variant === "middle" && {
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        width: `calc(100% - ${theme.spacing(4)})`,
-      }),
-    };
-  }
-
-  // Divider with label / children
-  const beforeFlex =
-    ownerState.textAlign === "left"
-      ? "0.05"
-      : ownerState.textAlign === "right"
-        ? "0.95"
-        : "1";
-  const afterFlex =
-    ownerState.textAlign === "left"
-      ? "0.95"
-      : ownerState.textAlign === "right"
-        ? "0.05"
-        : "1";
-
-  return {
-    ...baseStyles,
-    display: "flex",
-    alignItems: "center",
-    textAlign: ownerState.textAlign ?? "center",
-    border: "none",
-    width: "100%",
-    "&::before": {
-      content: '""',
-      flex: beforeFlex,
-      borderBottom: `1px ${lineStyle} ${borderCol}`,
-    },
-    "&::after": {
-      content: '""',
-      flex: afterFlex,
-      borderBottom: `1px ${lineStyle} ${borderCol}`,
-    },
-    "& > .ChellaaDivider-wrapper": {
-      display: "inline-block",
-      paddingLeft: theme.spacing(1.5),
-      paddingRight: theme.spacing(1.5),
-      whiteSpace: "nowrap",
-    },
-  };
-});
+})({});
 
 /**
  * Divider visual separator for grouping, lists, toolbars, and labeled sections.
@@ -162,6 +78,9 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
       flexItem = false,
       light = false,
       textAlign = "center",
+      className,
+      style,
+      sx,
       children,
       role: roleProp,
       ...rest
@@ -169,15 +88,17 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
 
     const hasChildren = Boolean(children);
 
-    const ownerState: DividerOwnerState = {
-      orientation,
-      variant,
-      lineStyle,
-      flexItem,
-      light,
-      textAlign,
-      hasChildren,
-    };
+    const dividerClassName = classNames(
+      "cl-divider",
+      `cl-divider--${orientation}`,
+      variant !== "fullWidth" && `cl-divider--${variant}`,
+      lineStyle !== "solid" && `cl-divider--${lineStyle}`,
+      flexItem && "cl-divider--flex-item",
+      light && "cl-divider--light",
+      hasChildren && "cl-divider--with-children",
+      hasChildren && `cl-divider--align-${textAlign}`,
+      className
+    );
 
     // Determine default semantic tag
     let defaultTag: React.ElementType = "hr";
@@ -202,13 +123,15 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
         <StyledDividerRoot
           as={Slot}
           ref={ref as any}
-          ownerState={ownerState}
+          className={dividerClassName}
+          style={style}
+          sx={sx}
           role={role}
           aria-orientation={ariaOrientation}
           {...rest}
         >
           {hasChildren ? (
-            <span className="ChellaaDivider-wrapper">{children}</span>
+            <span className="cl-divider__wrapper ChellaaDivider-wrapper">{children}</span>
           ) : (
             children
           )}
@@ -220,13 +143,15 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
       <StyledDividerRoot
         as={targetTag}
         ref={ref as any}
-        ownerState={ownerState}
+        className={dividerClassName}
+        style={style}
+        sx={sx}
         role={role}
         aria-orientation={ariaOrientation}
         {...rest}
       >
         {hasChildren ? (
-          <span className="ChellaaDivider-wrapper">{children}</span>
+          <span className="cl-divider__wrapper ChellaaDivider-wrapper">{children}</span>
         ) : null}
       </StyledDividerRoot>
     );
