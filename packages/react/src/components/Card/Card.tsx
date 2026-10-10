@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
+import { CardContext, useCardContext } from "./CardContext";
 import type {
   CardProps,
   CardOwnerState,
@@ -31,10 +32,10 @@ function getOverlayAlpha(elevation: number): number {
 
 // ─── Size Token Map ──────────────────────────────────────────────────────────
 
-const sizeTokens: Record<CardSize, { padding: string; gap: string }> = {
-  sm: { padding: "12px", gap: "8px" },
-  md: { padding: "16px", gap: "12px" },
-  lg: { padding: "24px", gap: "16px" },
+const sizeTokens: Record<CardSize, { padding: string; gap: string; headerPad: string; footerPad: string }> = {
+  sm: { padding: "12px", gap: "8px", headerPad: "12px", footerPad: "8px 12px" },
+  md: { padding: "16px", gap: "12px", headerPad: "16px", footerPad: "10px 16px" },
+  lg: { padding: "24px", gap: "16px", headerPad: "24px", footerPad: "14px 24px" },
 };
 
 // ─── Card Root Styled Component ──────────────────────────────────────────────
@@ -74,8 +75,7 @@ const StyledCardRoot = styled("div", {
     },
   };
 
-  // ── Variant-specific surface / shadow / border ───────────────────────────
-
+  // ── Variant surface / shadow / border ──────────────────────────────────────
   if (variant === "outlined") {
     base.border = `1px solid ${theme.palette.divider}`;
     base.boxShadow = "none";
@@ -85,16 +85,13 @@ const StyledCardRoot = styled("div", {
   } else {
     // elevated (default)
     base.boxShadow = theme.shadows[clampedElevation] ?? "none";
-
-    // M3 dark mode elevation tinting
     if (isDark && clampedElevation > 0) {
       const alpha = getOverlayAlpha(clampedElevation);
       base.backgroundImage = `linear-gradient(rgba(255,255,255,${alpha}), rgba(255,255,255,${alpha}))`;
     }
   }
 
-  // ── Hoverable lift ───────────────────────────────────────────────────────
-
+  // ── Hoverable lift ──────────────────────────────────────────────────────────
   if (hoverable) {
     const hoverElevation = Math.min(clampedElevation + 2, 24);
     const hoverAlpha = isDark ? getOverlayAlpha(hoverElevation) : undefined;
@@ -103,15 +100,12 @@ const StyledCardRoot = styled("div", {
       boxShadow: theme.shadows[hoverElevation] ?? "none",
       transform: "translateY(-2px)",
       ...(isDark && hoverAlpha !== undefined && variant === "elevated"
-        ? {
-            backgroundImage: `linear-gradient(rgba(255,255,255,${hoverAlpha}), rgba(255,255,255,${hoverAlpha}))`,
-          }
+        ? { backgroundImage: `linear-gradient(rgba(255,255,255,${hoverAlpha}), rgba(255,255,255,${hoverAlpha}))` }
         : {}),
-      "@media (prefers-reduced-motion: reduce)": {
-        transform: "none",
-      },
     };
-
+    base["&:hover @media (prefers-reduced-motion: reduce)"] = {
+      transform: "none",
+    };
     base.cursor = "default";
   }
 
@@ -150,38 +144,31 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ...rest
     } = props;
 
-    const ownerState: CardOwnerState = {
-      variant,
-      elevation,
-      size,
-      hoverable,
-      square,
-    };
-
+    const ownerState: CardOwnerState = { variant, elevation, size, hoverable, square };
     const targetTag = component || as;
 
-    if (asChild) {
-      return (
-        <StyledCardRoot
-          as={Slot as any}
-          ref={ref as any}
-          ownerState={ownerState}
-          {...rest}
-        >
-          {children}
-        </StyledCardRoot>
-      );
-    }
-
     return (
-      <StyledCardRoot
-        as={targetTag}
-        ref={ref as any}
-        ownerState={ownerState}
-        {...rest}
-      >
-        {children}
-      </StyledCardRoot>
+      <CardContext.Provider value={{ size }}>
+        {asChild ? (
+          <StyledCardRoot
+            as={Slot as any}
+            ref={ref as any}
+            ownerState={ownerState}
+            {...rest}
+          >
+            {children}
+          </StyledCardRoot>
+        ) : (
+          <StyledCardRoot
+            as={targetTag}
+            ref={ref as any}
+            ownerState={ownerState}
+            {...rest}
+          >
+            {children}
+          </StyledCardRoot>
+        )}
+      </CardContext.Provider>
     );
   }
 );
@@ -193,13 +180,13 @@ Card.displayName = "Card";
 const StyledCardHeaderRoot = styled("div", {
   name: "ChellaaCard",
   slot: "Header",
-  shouldForwardProp: (prop) => prop !== "ownerState" && prop !== "asChild",
-})<{ ownerState: { size: CardSize } }>(({ ownerState }) => {
-  const tokens = sizeTokens[ownerState.size];
+  shouldForwardProp: (prop) => prop !== "cardSize" && prop !== "asChild",
+})<{ cardSize: CardSize }>(({ cardSize }) => {
+  const tokens = sizeTokens[cardSize] ?? sizeTokens.md;
   return {
     display: "flex",
     alignItems: "center",
-    padding: tokens.padding,
+    padding: tokens.headerPad,
     gap: "12px",
     boxSizing: "border-box",
   };
@@ -261,6 +248,7 @@ const StyledCardHeaderAction = styled("div", {
 
 /**
  * Header zone of a Card. Supports avatar, title, subheader, and trailing action slots.
+ * Automatically inherits `size` from the parent Card via CardContext.
  */
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   function CardHeader(props, ref) {
@@ -273,19 +261,17 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       subheaderTypographyProps,
       asChild = false,
       children,
-      // Extract size from context — for now default to md; in a full
-      // implementation this would come from a CardContext.
       ...rest
     } = props;
 
-    const ownerState = { size: "md" as CardSize };
+    const { size } = useCardContext();
 
     if (asChild) {
       return (
         <StyledCardHeaderRoot
           as={Slot as any}
           ref={ref as any}
-          ownerState={ownerState}
+          cardSize={size}
           {...rest}
         >
           {children}
@@ -294,7 +280,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
     }
 
     return (
-      <StyledCardHeaderRoot ref={ref as any} ownerState={ownerState} {...rest}>
+      <StyledCardHeaderRoot ref={ref as any} cardSize={size} {...rest}>
         {avatar && (
           <StyledCardHeaderAvatar className="ChellaaCard-headerAvatar">
             {avatar}
@@ -356,7 +342,6 @@ const StyledCardMediaRoot = styled("div", {
         backgroundImage: `url(${image})`,
       }
     : {}),
-  // If children are an <img>, make it fill the zone
   "& img": {
     display: "block",
     width: "100%",
@@ -368,9 +353,9 @@ const StyledCardMediaRoot = styled("div", {
 // ─── CardMedia Component ─────────────────────────────────────────────────────
 
 /**
- * Aspect-ratio-locked media zone that bleeds to card edges.
- * Use the `image` prop for CSS background shorthand, or place an `<img>`
- * child for semantic HTML.
+ * Aspect-ratio-locked media zone that bleeds edge-to-edge within the card.
+ * Use the `image` prop for a CSS background shorthand, or place an `<img>`
+ * child for semantic HTML (preferred for accessibility).
  */
 export const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
   function CardMedia(props, ref) {
@@ -383,11 +368,9 @@ export const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
       ...rest
     } = props;
 
-    const targetTag = component;
-
     return (
       <StyledCardMediaRoot
-        as={targetTag}
+        as={component}
         ref={ref as any}
         image={image}
         aspectRatio={aspectRatio}
@@ -408,23 +391,29 @@ CardMedia.displayName = "CardMedia";
 const StyledCardBodyRoot = styled("div", {
   name: "ChellaaCard",
   slot: "Body",
-})<Record<string, never>>(({ theme: _theme }) => ({
-  flex: "1 1 auto",
-  padding: "0 16px 16px 16px",
-  boxSizing: "border-box",
-  color: "inherit",
-}));
+  shouldForwardProp: (prop) => prop !== "cardSize",
+})<{ cardSize: CardSize }>(({ cardSize }) => {
+  const tokens = sizeTokens[cardSize] ?? sizeTokens.md;
+  return {
+    flex: "1 1 auto",
+    padding: `0 ${tokens.padding} ${tokens.padding} ${tokens.padding}`,
+    boxSizing: "border-box",
+    color: "inherit",
+  };
+});
 
 // ─── CardBody Component ──────────────────────────────────────────────────────
 
 /**
  * Main flexible content zone of a Card.
+ * Inherits `size` from parent Card for consistent padding.
  */
 export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
   function CardBody(props, ref) {
     const { children, ...rest } = props;
+    const { size } = useCardContext();
     return (
-      <StyledCardBodyRoot ref={ref as any} {...rest}>
+      <StyledCardBodyRoot ref={ref as any} cardSize={size} {...rest}>
         {children}
       </StyledCardBodyRoot>
     );
@@ -437,35 +426,43 @@ CardBody.displayName = "CardBody";
 
 interface StyledCardFooterRootProps {
   divider: boolean;
+  cardSize: CardSize;
 }
 
 const StyledCardFooterRoot = styled("div", {
   name: "ChellaaCard",
   slot: "Footer",
-  shouldForwardProp: (prop) => prop !== "divider",
-})<StyledCardFooterRootProps>(({ theme, divider }) => ({
-  padding: "12px 16px",
-  boxSizing: "border-box",
-  display: "flex",
-  alignItems: "center",
-  flexWrap: "wrap",
-  gap: "8px",
-  ...(divider
-    ? { borderTop: `1px solid ${theme.palette.divider}` }
-    : {}),
-}));
+  shouldForwardProp: (prop) => prop !== "divider" && prop !== "cardSize",
+})<StyledCardFooterRootProps>(({ theme, divider, cardSize }) => {
+  const tokens = sizeTokens[cardSize] ?? sizeTokens.md;
+  return {
+    padding: tokens.footerPad,
+    boxSizing: "border-box",
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: tokens.gap,
+    ...(divider ? { borderTop: `1px solid ${theme.palette.divider}` } : {}),
+  };
+});
 
 // ─── CardFooter Component ────────────────────────────────────────────────────
 
 /**
  * Semantic footer zone of a Card. Use for metadata, tags, timestamps.
- * Use `divider` to render a 1px separator between body and footer.
+ * Set `divider` to render a 1px separator between the body and footer.
  */
 export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   function CardFooter(props, ref) {
     const { divider = false, children, ...rest } = props;
+    const { size } = useCardContext();
     return (
-      <StyledCardFooterRoot ref={ref as any} divider={divider} {...rest}>
+      <StyledCardFooterRoot
+        ref={ref as any}
+        divider={divider}
+        cardSize={size}
+        {...rest}
+      >
         {children}
       </StyledCardFooterRoot>
     );
@@ -478,27 +475,27 @@ CardFooter.displayName = "CardFooter";
 
 interface StyledCardActionsRootProps {
   disableSpacing: boolean;
+  cardSize: CardSize;
 }
 
 const StyledCardActionsRoot = styled("div", {
   name: "ChellaaCard",
   slot: "Actions",
-  shouldForwardProp: (prop) => prop !== "disableSpacing",
-})<StyledCardActionsRootProps>(({ disableSpacing }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: "8px",
-  boxSizing: "border-box",
-  flexWrap: "wrap",
-  gap: "4px",
-  ...(!disableSpacing
-    ? {
-        // Negative margin brings buttons flush with card padding
-        marginLeft: "-4px",
-        marginRight: "-4px",
-      }
-    : {}),
-}));
+  shouldForwardProp: (prop) => prop !== "disableSpacing" && prop !== "cardSize",
+})<StyledCardActionsRootProps>(({ cardSize, disableSpacing }) => {
+  const tokens = sizeTokens[cardSize] ?? sizeTokens.md;
+  return {
+    display: "flex",
+    alignItems: "center",
+    padding: `8px ${disableSpacing ? tokens.padding : "8px"}`,
+    boxSizing: "border-box",
+    flexWrap: "wrap",
+    gap: "4px",
+    ...(!disableSpacing
+      ? { marginLeft: "-4px", marginRight: "-4px" }
+      : {}),
+  };
+});
 
 // ─── CardActions Component ───────────────────────────────────────────────────
 
@@ -510,10 +507,12 @@ const StyledCardActionsRoot = styled("div", {
 export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
   function CardActions(props, ref) {
     const { disableSpacing = false, children, ...rest } = props;
+    const { size } = useCardContext();
     return (
       <StyledCardActionsRoot
         ref={ref as any}
         disableSpacing={disableSpacing}
+        cardSize={size}
         {...rest}
       >
         {children}

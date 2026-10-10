@@ -7,7 +7,6 @@ import { FormField } from "../FormField/FormField";
 import { FormLabel } from "../FormField/FormLabel";
 import { FormHelperText } from "../FormField/FormHelperText";
 import { FormErrorMessage } from "../FormField/FormErrorMessage";
-import { ThemeProvider } from "../../theme/ThemeProvider";
 
 export default {
   title: "Forms/Switch",
@@ -25,15 +24,7 @@ export default {
     },
     colorScheme: {
       control: "select",
-      options: [
-        "primary",
-        "secondary",
-        "success",
-        "error",
-        "warning",
-        "info",
-        "default",
-      ],
+      options: ["primary", "secondary", "success", "error", "warning", "info", "default"],
     },
     labelPlacement: {
       control: "select",
@@ -44,39 +35,33 @@ export default {
 
 export const Default = {
   render: () => (
-    <ThemeProvider>
-      <Box sx={{ p: 4 }}>
-        <Switch defaultChecked>Enable Push Notifications</Switch>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{ p: 4 }}>
+      <Switch defaultChecked>Enable Push Notifications</Switch>
+    </Box>
   ),
 };
 
 export const Sizes = {
   render: () => (
-    <ThemeProvider>
-      <Stack spacing={3} sx={{ p: 4 }}>
-        <Switch size="sm" defaultChecked>Small (sm - 18px)</Switch>
-        <Switch size="md" defaultChecked>Medium (md - 24px, Default)</Switch>
-        <Switch size="lg" defaultChecked>Large (lg - 30px)</Switch>
-      </Stack>
-    </ThemeProvider>
+    <Stack spacing={3} sx={{ p: 4 }}>
+      <Switch size="sm" defaultChecked>Small (sm — 18px track)</Switch>
+      <Switch size="md" defaultChecked>Medium (md — 24px track, Default)</Switch>
+      <Switch size="lg" defaultChecked>Large (lg — 30px track)</Switch>
+    </Stack>
   ),
 };
 
 export const ColorSchemes = {
   render: () => (
-    <ThemeProvider>
-      <Stack spacing={2} sx={{ p: 4 }}>
-        <Switch colorScheme="primary" defaultChecked>Primary Accent</Switch>
-        <Switch colorScheme="secondary" defaultChecked>Secondary (Violet)</Switch>
-        <Switch colorScheme="success" defaultChecked>Success (Emerald)</Switch>
-        <Switch colorScheme="warning" defaultChecked>Warning (Amber)</Switch>
-        <Switch colorScheme="error" defaultChecked>Error (Red)</Switch>
-        <Switch colorScheme="info" defaultChecked>Info (Sky)</Switch>
-        <Switch colorScheme="default" defaultChecked>Default (Neutral)</Switch>
-      </Stack>
-    </ThemeProvider>
+    <Stack spacing={2} sx={{ p: 4 }}>
+      <Switch colorScheme="primary" defaultChecked>Primary Accent</Switch>
+      <Switch colorScheme="secondary" defaultChecked>Secondary (Violet)</Switch>
+      <Switch colorScheme="success" defaultChecked>Success (Emerald)</Switch>
+      <Switch colorScheme="warning" defaultChecked>Warning (Amber)</Switch>
+      <Switch colorScheme="error" defaultChecked>Error (Red)</Switch>
+      <Switch colorScheme="info" defaultChecked>Info (Sky)</Switch>
+      <Switch colorScheme="default" defaultChecked>Default (Neutral)</Switch>
+    </Stack>
   ),
 };
 
@@ -107,66 +92,58 @@ export const WithIcons = {
     );
 
     return (
-      <ThemeProvider>
-        <Box sx={{ p: 4 }}>
-          <Typography variant="subtitle2" sx={{ mb: 2 }}>
-            Theme Switcher: {isDark ? "Dark Theme Active" : "Light Theme Active"}
-          </Typography>
-          <Switch
-            size="lg"
-            colorScheme="secondary"
-            checked={isDark}
-            onChange={(e) => setIsDark(e.target.checked)}
-            checkedIcon={moonIcon}
-            uncheckedIcon={sunIcon}
-          >
-            {isDark ? "Dark Mode" : "Light Mode"}
-          </Switch>
-        </Box>
-      </ThemeProvider>
+      <Box sx={{ p: 4 }}>
+        <Typography variant="subtitle2" sx={{ mb: 2 }}>
+          Theme Switcher: {isDark ? "Dark Theme Active" : "Light Theme Active"}
+        </Typography>
+        <Switch
+          size="lg"
+          colorScheme="secondary"
+          checked={isDark}
+          onChange={(e) => setIsDark(e.target.checked)}
+          checkedIcon={moonIcon}
+          uncheckedIcon={sunIcon}
+        >
+          {isDark ? "Dark Mode" : "Light Mode"}
+        </Switch>
+      </Box>
     );
   },
 };
 
 export const LabelPlacements = {
   render: () => (
-    <ThemeProvider>
-      <Stack spacing={4} sx={{ p: 4 }}>
-        <Switch labelPlacement="end" defaultChecked>Label at End (Default)</Switch>
-        <Switch labelPlacement="start" defaultChecked>Label at Start</Switch>
-        <Switch labelPlacement="top" defaultChecked>Label on Top</Switch>
-        <Switch labelPlacement="bottom" defaultChecked>Label at Bottom</Switch>
-      </Stack>
-    </ThemeProvider>
+    <Stack spacing={4} sx={{ p: 4 }}>
+      <Switch labelPlacement="end" defaultChecked>Label at End (Default)</Switch>
+      <Switch labelPlacement="start" defaultChecked>Label at Start</Switch>
+      <Switch labelPlacement="top" defaultChecked>Label on Top</Switch>
+      <Switch labelPlacement="bottom" defaultChecked>Label at Bottom</Switch>
+    </Stack>
   ),
 };
 
 export const States = {
   render: () => (
-    <ThemeProvider>
-      <Stack spacing={2} sx={{ p: 4 }}>
-        <Switch>Unchecked Normal</Switch>
-        <Switch defaultChecked>Checked Normal</Switch>
-        <Switch disabled>Disabled Unchecked</Switch>
-        <Switch disabled defaultChecked>Disabled Checked</Switch>
-        <Switch loading>Loading Async Operation</Switch>
-        <Switch error defaultChecked>Error State</Switch>
-      </Stack>
-    </ThemeProvider>
+    <Stack spacing={2} sx={{ p: 4 }}>
+      <Switch>Unchecked Normal</Switch>
+      <Switch defaultChecked>Checked Normal</Switch>
+      <Switch disabled>Disabled Unchecked</Switch>
+      <Switch disabled defaultChecked>Disabled Checked</Switch>
+      <Switch loading>Loading Async Operation</Switch>
+      <Switch error defaultChecked>Error State</Switch>
+    </Stack>
   ),
 };
 
 export const WithFormField = {
   render: () => (
-    <ThemeProvider>
-      <Box sx={{ maxWidth: 440, p: 4 }}>
-        <FormField id="cloud-backup-field" required error>
-          <FormLabel>Automated Backups</FormLabel>
-          <Switch>Enable hourly database snapshot sync</Switch>
-          <FormErrorMessage>Cloud backup quota has been exceeded.</FormErrorMessage>
-          <FormHelperText>Snapshots are stored encrypted in cold cloud storage.</FormHelperText>
-        </FormField>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{ maxWidth: 440, p: 4 }}>
+      <FormField id="cloud-backup-field" required error>
+        <FormLabel>Automated Backups</FormLabel>
+        <Switch>Enable hourly database snapshot sync</Switch>
+        <FormErrorMessage>Cloud backup quota has been exceeded.</FormErrorMessage>
+        <FormHelperText>Snapshots are stored encrypted in cold cloud storage.</FormHelperText>
+      </FormField>
+    </Box>
   ),
 };

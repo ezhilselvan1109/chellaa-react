@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Paper, type PaperProps } from "./Paper";
+import { Paper } from "./Paper";
 import { Stack } from "../Stack";
-import { ThemeProvider } from "../../theme/ThemeProvider";
 
 export default {
   title: "Surfaces/Paper",
@@ -21,42 +20,38 @@ export default {
 
 export const Elevations = {
   render: () => (
-    <ThemeProvider>
-      <Stack direction="row" spacing={3} flexWrap="wrap">
-        {[0, 1, 2, 4, 8, 16, 24].map((level) => (
-          <Paper
-            key={level}
-            elevation={level}
-            sx={{
-              width: 120,
-              height: 120,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              mb: 2,
-            }}
-          >
-            Elevation {level}
-          </Paper>
-        ))}
-      </Stack>
-    </ThemeProvider>
+    <Stack direction="row" spacing={3} flexWrap="wrap">
+      {[0, 1, 2, 4, 8, 16, 24].map((level) => (
+        <Paper
+          key={level}
+          elevation={level}
+          sx={{
+            width: 120,
+            height: 120,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            mb: 2,
+          }}
+        >
+          Elevation {level}
+        </Paper>
+      ))}
+    </Stack>
   ),
 };
 
 export const Outlined = {
   render: () => (
-    <ThemeProvider>
-      <Paper
-        variant="outlined"
-        sx={{
-          p: 3,
-          maxWidth: 400,
-        }}
-      >
-        Outlined Paper Surface with 1px divider border
-      </Paper>
-    </ThemeProvider>
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 3,
+        maxWidth: 400,
+      }}
+    >
+      Outlined Paper Surface with 1px divider border
+    </Paper>
   ),
 };

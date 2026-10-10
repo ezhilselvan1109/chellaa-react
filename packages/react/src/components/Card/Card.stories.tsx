@@ -59,88 +59,86 @@ type Story = StoryObj<typeof Card>;
 
 function SampleCard(props: React.ComponentProps<typeof Card>) {
   return (
-    <ThemeProvider>
-      <Card style={{ width: 320 }} {...props}>
-        <CardHeader
-          avatar={
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: 16,
-              }}
-            >
-              A
-            </div>
-          }
-          title="Chellaa UI Component"
-          subheader="October 6, 2026"
-          action={
-            <button
-              type="button"
-              aria-label="More options"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                fontSize: 20,
-                color: "inherit",
-                padding: "4px 8px",
-                borderRadius: 4,
-              }}
-            >
-              ⋮
-            </button>
-          }
-        />
-        <CardBody>
-          <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-            A well-structured card component with M3 elevation, compound sub-zones,
-            and accessibility-first design. Perfect for dashboards, galleries, and
-            data displays.
-          </p>
-        </CardBody>
-        <CardActions>
+    <Card style={{ width: 320 }} {...props}>
+      <CardHeader
+        avatar={
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: 16,
+            }}
+          >
+            A
+          </div>
+        }
+        title="Chellaa UI Component"
+        subheader="October 6, 2026"
+        action={
           <button
             type="button"
+            aria-label="More options"
             style={{
               background: "none",
               border: "none",
-              color: "#6366f1",
               cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              padding: "6px 12px",
+              fontSize: 20,
+              color: "inherit",
+              padding: "4px 8px",
               borderRadius: 4,
             }}
           >
-            Share
+            ⋮
           </button>
-          <button
-            type="button"
-            style={{
-              background: "#6366f1",
-              border: "none",
-              color: "#fff",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              padding: "6px 12px",
-              borderRadius: 4,
-            }}
-          >
-            Learn More
-          </button>
-        </CardActions>
-      </Card>
-    </ThemeProvider>
+        }
+      />
+      <CardBody>
+        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
+          A well-structured card component with M3 elevation, compound sub-zones,
+          and accessibility-first design. Perfect for dashboards, galleries, and
+          data displays.
+        </p>
+      </CardBody>
+      <CardActions>
+        <button
+          type="button"
+          style={{
+            background: "none",
+            border: "none",
+            color: "#6366f1",
+            cursor: "pointer",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            padding: "6px 12px",
+            borderRadius: 4,
+          }}
+        >
+          Share
+        </button>
+        <button
+          type="button"
+          style={{
+            background: "#6366f1",
+            border: "none",
+            color: "#fff",
+            cursor: "pointer",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            padding: "6px 12px",
+            borderRadius: 4,
+          }}
+        >
+          Learn More
+        </button>
+      </CardActions>
+    </Card>
   );
 }
 
@@ -157,28 +155,26 @@ export const Default: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <ThemeProvider>
-      <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-        {(["elevated", "outlined", "filled"] as const).map((variant) => (
-          <div key={variant}>
-            <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "capitalize" }}>
-              {variant}
-            </p>
-            <Card variant={variant} style={{ width: 280 }}>
-              <CardHeader title="Card Title" subheader="Subheader text" />
-              <CardBody>
-                <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                  Card body content for the {variant} variant.
-                </p>
-              </CardBody>
-              <CardActions>
-                <button type="button" style={{ cursor: "pointer" }}>Action</button>
-              </CardActions>
-            </Card>
-          </div>
-        ))}
-      </div>
-    </ThemeProvider>
+    <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+      {(["elevated", "outlined", "filled"] as const).map((variant) => (
+        <div key={variant}>
+          <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "capitalize" }}>
+            {variant}
+          </p>
+          <Card variant={variant} style={{ width: 280 }}>
+            <CardHeader title="Card Title" subheader="Subheader text" />
+            <CardBody>
+              <p style={{ margin: 0, fontSize: "0.9rem" }}>
+                Card body content for the {variant} variant.
+              </p>
+            </CardBody>
+            <CardActions>
+              <button type="button" style={{ cursor: "pointer" }}>Action</button>
+            </CardActions>
+          </Card>
+        </div>
+      ))}
+    </div>
   ),
   parameters: {
     docs: {
@@ -191,28 +187,26 @@ export const AllVariants: Story = {
 
 export const WithMedia: Story = {
   render: () => (
-    <ThemeProvider>
-      <Card style={{ width: 320 }}>
-        <CardMedia
-          image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&q=80"
-          alt="Mountain landscape"
-          aspectRatio="16/9"
-        />
-        <CardHeader title="Mountain Escape" subheader="Adventure · 4 min read" />
-        <CardBody>
-          <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-            Discover breathtaking mountain vistas and serene alpine meadows in this
-            curated travel guide.
-          </p>
-        </CardBody>
-        <CardActions>
-          <button type="button" style={{ cursor: "pointer", marginRight: "auto" }}>
-            ♡ Save
-          </button>
-          <button type="button" style={{ cursor: "pointer" }}>Read More →</button>
-        </CardActions>
-      </Card>
-    </ThemeProvider>
+    <Card style={{ width: 320 }}>
+      <CardMedia
+        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&q=80"
+        alt="Mountain landscape"
+        aspectRatio="16/9"
+      />
+      <CardHeader title="Mountain Escape" subheader="Adventure · 4 min read" />
+      <CardBody>
+        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
+          Discover breathtaking mountain vistas and serene alpine meadows in this
+          curated travel guide.
+        </p>
+      </CardBody>
+      <CardActions>
+        <button type="button" style={{ cursor: "pointer", marginRight: "auto" }}>
+          ♡ Save
+        </button>
+        <button type="button" style={{ cursor: "pointer" }}>Read More →</button>
+      </CardActions>
+    </Card>
   ),
   parameters: {
     docs: {
@@ -225,32 +219,30 @@ export const WithMedia: Story = {
 
 export const Hoverable: Story = {
   render: () => (
-    <ThemeProvider>
-      <div style={{ display: "flex", gap: 24 }}>
-        <div>
-          <p style={{ marginBottom: 8, fontWeight: 600 }}>Static (default)</p>
-          <Card style={{ width: 260 }}>
-            <CardHeader title="Static Card" subheader="No hover effect" />
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                This card has no hover animation.
-              </p>
-            </CardBody>
-          </Card>
-        </div>
-        <div>
-          <p style={{ marginBottom: 8, fontWeight: 600 }}>Hoverable</p>
-          <Card hoverable style={{ width: 260 }}>
-            <CardHeader title="Hoverable Card" subheader="Hover to lift" />
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                Hover over this card to see the elevation lift animation.
-              </p>
-            </CardBody>
-          </Card>
-        </div>
+    <div style={{ display: "flex", gap: 24 }}>
+      <div>
+        <p style={{ marginBottom: 8, fontWeight: 600 }}>Static (default)</p>
+        <Card style={{ width: 260 }}>
+          <CardHeader title="Static Card" subheader="No hover effect" />
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "0.9rem" }}>
+              This card has no hover animation.
+            </p>
+          </CardBody>
+        </Card>
       </div>
-    </ThemeProvider>
+      <div>
+        <p style={{ marginBottom: 8, fontWeight: 600 }}>Hoverable</p>
+        <Card hoverable style={{ width: 260 }}>
+          <CardHeader title="Hoverable Card" subheader="Hover to lift" />
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "0.9rem" }}>
+              Hover over this card to see the elevation lift animation.
+            </p>
+          </CardBody>
+        </Card>
+      </div>
+    </div>
   ),
   parameters: {
     docs: {
@@ -265,26 +257,24 @@ export const Hoverable: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <ThemeProvider>
-      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start" }}>
-        {(["sm", "md", "lg"] as const).map((size) => (
-          <div key={size}>
-            <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "uppercase", fontSize: "0.75rem" }}>
-              Size: {size}
-            </p>
-            <Card size={size} style={{ width: 240 }}>
-              <CardHeader title="Card Title" subheader="Subtitle" />
-              <CardBody>
-                <p style={{ margin: 0, fontSize: "0.9rem" }}>Body content.</p>
-              </CardBody>
-              <CardActions>
-                <button type="button" style={{ cursor: "pointer" }}>OK</button>
-              </CardActions>
-            </Card>
-          </div>
-        ))}
-      </div>
-    </ThemeProvider>
+    <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start" }}>
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <div key={size}>
+          <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "uppercase", fontSize: "0.75rem" }}>
+            Size: {size}
+          </p>
+          <Card size={size} style={{ width: 240 }}>
+            <CardHeader title="Card Title" subheader="Subtitle" />
+            <CardBody>
+              <p style={{ margin: 0, fontSize: "0.9rem" }}>Body content.</p>
+            </CardBody>
+            <CardActions>
+              <button type="button" style={{ cursor: "pointer" }}>OK</button>
+            </CardActions>
+          </Card>
+        </div>
+      ))}
+    </div>
   ),
   parameters: {
     docs: {
@@ -297,24 +287,22 @@ export const AllSizes: Story = {
 
 export const WithFooterDivider: Story = {
   render: () => (
-    <ThemeProvider>
-      <Card style={{ width: 320 }}>
-        <CardHeader title="Article Title" subheader="Author · 5 min read" />
-        <CardBody>
-          <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-            Article body content with a footer divider separating metadata.
-          </p>
-        </CardBody>
-        <CardFooter divider>
-          <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
-            🏷 Design · Component Systems
-          </span>
-          <span style={{ marginLeft: "auto", fontSize: "0.8rem", color: "#6b7280" }}>
-            Oct 6, 2026
-          </span>
-        </CardFooter>
-      </Card>
-    </ThemeProvider>
+    <Card style={{ width: 320 }}>
+      <CardHeader title="Article Title" subheader="Author · 5 min read" />
+      <CardBody>
+        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
+          Article body content with a footer divider separating metadata.
+        </p>
+      </CardBody>
+      <CardFooter divider>
+        <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
+          🏷 Design · Component Systems
+        </span>
+        <span style={{ marginLeft: "auto", fontSize: "0.8rem", color: "#6b7280" }}>
+          Oct 6, 2026
+        </span>
+      </CardFooter>
+    </Card>
   ),
   parameters: {
     docs: {
@@ -327,21 +315,19 @@ export const WithFooterDivider: Story = {
 
 export const ElevationScale: Story = {
   render: () => (
-    <ThemeProvider>
-      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start", padding: 24, background: "#f8fafc" }}>
-        {[0, 1, 2, 4, 8, 16, 24].map((elev) => (
-          <Card
-            key={elev}
-            elevation={elev}
-            style={{ width: 140, textAlign: "center" }}
-          >
-            <CardBody>
-              <p style={{ margin: 0, fontWeight: 700 }}>elevation={elev}</p>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
-    </ThemeProvider>
+    <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start", padding: 24, background: "#f8fafc" }}>
+      {[0, 1, 2, 4, 8, 16, 24].map((elev) => (
+        <Card
+          key={elev}
+          elevation={elev}
+          style={{ width: 140, textAlign: "center" }}
+        >
+          <CardBody>
+            <p style={{ margin: 0, fontWeight: 700 }}>elevation={elev}</p>
+          </CardBody>
+        </Card>
+      ))}
+    </div>
   ),
   parameters: {
     docs: {
@@ -354,7 +340,7 @@ export const ElevationScale: Story = {
 
 export const DarkTheme: Story = {
   render: () => (
-    <ThemeProvider defaultMode="dark">
+    <ThemeProvider defaultTheme="dark" enableSystem={false}>
       <div
         style={{
           background: "#121212",
@@ -395,37 +381,35 @@ export const DarkTheme: Story = {
 
 export const AsArticle: Story = {
   render: () => (
-    <ThemeProvider>
-      <Card asChild variant="outlined" style={{ width: 320 }}>
-        <article>
-          <CardHeader
-            title="Semantic Article Card"
-            subheader="asChild delegates to <article>"
-          />
-          <CardBody>
-            <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-              This card renders as a native{" "}
-              <code>{"<article>"}</code> element via the{" "}
-              <code>asChild</code> prop, enabling proper HTML5 semantics
-              for standalone content units.
-            </p>
-          </CardBody>
-          <CardActions>
-            <a
-              href="#"
-              style={{
-                color: "#6366f1",
-                fontSize: "0.875rem",
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-            >
-              Read full article →
-            </a>
-          </CardActions>
-        </article>
-      </Card>
-    </ThemeProvider>
+    <Card asChild variant="outlined" style={{ width: 320 }}>
+      <article>
+        <CardHeader
+          title="Semantic Article Card"
+          subheader="asChild delegates to <article>"
+        />
+        <CardBody>
+          <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
+            This card renders as a native{" "}
+            <code>{"<article>"}</code> element via the{" "}
+            <code>asChild</code> prop, enabling proper HTML5 semantics
+            for standalone content units.
+          </p>
+        </CardBody>
+        <CardActions>
+          <a
+            href="#"
+            style={{
+              color: "#6366f1",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Read full article →
+          </a>
+        </CardActions>
+      </article>
+    </Card>
   ),
   parameters: {
     docs: {
