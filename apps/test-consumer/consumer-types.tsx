@@ -131,6 +131,34 @@ import {
   type PaginationJumperProps,
   type PaginationSize,
   type PaginationVariant,
+  // 21. Combobox & Autocomplete (Wave 3)
+  Combobox,
+  Autocomplete,
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxTrigger,
+  ComboboxPortal,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxGroupLabel,
+  ComboboxEmpty,
+  ComboboxTag,
+  ComboboxClear,
+  type ComboboxProps,
+  type ComboboxRootProps,
+  type ComboboxInputProps,
+  type ComboboxTriggerProps,
+  type ComboboxPortalProps,
+  type ComboboxContentProps,
+  type ComboboxItemProps,
+  type ComboboxGroupProps,
+  type ComboboxGroupLabelProps,
+  type ComboboxEmptyProps,
+  type ComboboxTagProps,
+  type ComboboxClearProps,
+  type ComboboxSize,
+  type ComboboxVariant,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -576,6 +604,68 @@ export function ConsumerTypeFixture() {
                         <PaginationSizeSelect {...sizeSelectProps} />
                         <PaginationJumper {...jumperProps} />
                       </PaginationRoot>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 21. Combobox & Autocomplete (Wave 3) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const size: ComboboxSize = "md";
+                  const variant: ComboboxVariant = "outline";
+                  const rootProps: ComboboxRootProps = {
+                    size,
+                    variant,
+                    isMulti: true,
+                    value: ["us"],
+                  };
+                  const inputProps: ComboboxInputProps = {
+                    placeholder: "Search...",
+                  };
+                  const triggerProps: ComboboxTriggerProps = {};
+                  const portalProps: ComboboxPortalProps = {
+                    children: null,
+                  };
+                  const contentProps: ComboboxContentProps = {};
+                  const groupProps: ComboboxGroupProps = {
+                    heading: "Countries",
+                  };
+                  const groupLabelProps: ComboboxGroupLabelProps = {};
+                  const itemProps: ComboboxItemProps = {
+                    value: "us",
+                    children: "United States",
+                  };
+                  const emptyProps: ComboboxEmptyProps = {};
+                  const tagProps: ComboboxTagProps = {
+                    value: "us",
+                  };
+                  const clearProps: ComboboxClearProps = {};
+                  const comboboxProps: ComboboxProps = {
+                    options: [{ value: "us", label: "USA" }],
+                  };
+
+                  return (
+                    <>
+                      <Combobox {...comboboxProps} />
+                      <Autocomplete {...comboboxProps} />
+                      <ComboboxRoot {...rootProps}>
+                        <div className="cl-combobox__control">
+                          <ComboboxTag {...tagProps}>US</ComboboxTag>
+                          <ComboboxInput {...inputProps} />
+                          <ComboboxClear {...clearProps} />
+                          <ComboboxTrigger {...triggerProps} />
+                        </div>
+                        <ComboboxPortal {...portalProps}>
+                          <ComboboxContent {...contentProps}>
+                            <ComboboxEmpty {...emptyProps}>Empty</ComboboxEmpty>
+                            <ComboboxGroup {...groupProps}>
+                              <ComboboxGroupLabel {...groupLabelProps}>Group</ComboboxGroupLabel>
+                              <ComboboxItem {...itemProps} />
+                            </ComboboxGroup>
+                          </ComboboxContent>
+                        </ComboboxPortal>
+                      </ComboboxRoot>
                     </>
                   );
                 })()}

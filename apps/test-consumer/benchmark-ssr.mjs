@@ -47,6 +47,7 @@ import {
   // 19. Navigation Primitives (Wave 3)
   Tabs,
   Pagination,
+  Combobox,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -236,6 +237,12 @@ function App() {
           pageSize: 10,
           defaultPage: 1,
         }),
+
+        // 21. Combobox & Autocomplete (Wave 3)
+        React.createElement(Combobox, {
+          placeholder: "Search in SSR...",
+          options: [{ value: "us", label: "United States" }],
+        }),
       ),
     ),
   );
@@ -293,6 +300,10 @@ const mandatoryAssertions = [
   { name: "Pagination item class (cl-pagination__item)", check: html.includes("cl-pagination__item") },
   { name: "Pagination prev class (cl-pagination__prev)", check: html.includes("cl-pagination__prev") },
   { name: "Pagination next class (cl-pagination__next)", check: html.includes("cl-pagination__next") },
+  // Organisms & Combobox (Wave 3)
+  { name: "Combobox class (cl-combobox)", check: html.includes("cl-combobox") },
+  { name: "Combobox control class (cl-combobox__control)", check: html.includes("cl-combobox__control") },
+  { name: "Combobox input class (cl-combobox__input)", check: html.includes("cl-combobox__input") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -302,5 +313,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, and Pagination (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

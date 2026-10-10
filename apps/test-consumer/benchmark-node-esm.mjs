@@ -112,6 +112,21 @@ import {
   PaginationSizeSelect,
   PaginationJumper,
   getPaginationRange,
+  // 21. Combobox & Autocomplete Organisms (Wave 3)
+  Combobox,
+  Autocomplete,
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxTrigger,
+  ComboboxPortal,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxGroupLabel,
+  ComboboxEmpty,
+  ComboboxTag,
+  ComboboxClear,
+  useCombobox,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -285,6 +300,33 @@ assertComponent("PaginationSizeSelect", PaginationSizeSelect);
 assertComponent("PaginationJumper", PaginationJumper);
 assertFunction("getPaginationRange", getPaginationRange);
 
+// 21. Combobox & Autocomplete Organisms (Wave 3)
+assertComponent("Combobox", Combobox);
+assertComponent("Autocomplete", Autocomplete);
+assertComponent("Combobox.Root", Combobox.Root);
+assertComponent("Combobox.Input", Combobox.Input);
+assertComponent("Combobox.Trigger", Combobox.Trigger);
+assertComponent("Combobox.Portal", Combobox.Portal);
+assertComponent("Combobox.Content", Combobox.Content);
+assertComponent("Combobox.Item", Combobox.Item);
+assertComponent("Combobox.Group", Combobox.Group);
+assertComponent("Combobox.GroupLabel", Combobox.GroupLabel);
+assertComponent("Combobox.Empty", Combobox.Empty);
+assertComponent("Combobox.Tag", Combobox.Tag);
+assertComponent("Combobox.Clear", Combobox.Clear);
+assertComponent("ComboboxRoot", ComboboxRoot);
+assertComponent("ComboboxInput", ComboboxInput);
+assertComponent("ComboboxTrigger", ComboboxTrigger);
+assertComponent("ComboboxPortal", ComboboxPortal);
+assertComponent("ComboboxContent", ComboboxContent);
+assertComponent("ComboboxItem", ComboboxItem);
+assertComponent("ComboboxGroup", ComboboxGroup);
+assertComponent("ComboboxGroupLabel", ComboboxGroupLabel);
+assertComponent("ComboboxEmpty", ComboboxEmpty);
+assertComponent("ComboboxTag", ComboboxTag);
+assertComponent("ComboboxClear", ComboboxClear);
+assertFunction("useCombobox", useCombobox);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, Tabs, and Pagination imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox imported cleanly in Node ESM.",
 );

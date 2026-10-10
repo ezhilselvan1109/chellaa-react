@@ -1,0 +1,322 @@
+@layer cl-components {
+  .cl-combobox {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cl-combobox__control {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--cl-color-border-subtle);
+    border-radius: var(--cl-radius-md, 6px);
+    background-color: var(--cl-color-bg-surface);
+    padding: 0 var(--cl-space-3, 12px);
+    box-sizing: border-box;
+    gap: var(--cl-space-2, 8px);
+    transition: border-color var(--cl-duration-fast, 150ms) ease, box-shadow var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-combobox__control:focus-within {
+    border-color: var(--cl-color-primary-solid);
+    box-shadow: 0 0 0 1px var(--cl-color-primary-solid);
+  }
+
+  .cl-combobox__control[data-invalid="true"] {
+    border-color: var(--cl-color-error-solid, #ef4444);
+  }
+
+  .cl-combobox__control[data-invalid="true"]:focus-within {
+    border-color: var(--cl-color-error-solid, #ef4444);
+    box-shadow: 0 0 0 1px var(--cl-color-error-solid, #ef4444);
+  }
+
+  .cl-combobox__control[data-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--cl-color-bg-subtle);
+  }
+
+  /* Variants */
+  .cl-combobox--outline .cl-combobox__control {
+    border-color: var(--cl-color-border-subtle);
+  }
+
+  .cl-combobox--filled .cl-combobox__control {
+    background-color: var(--cl-color-bg-subtle);
+    border-color: transparent;
+  }
+
+  .cl-combobox--filled .cl-combobox__control:focus-within {
+    background-color: var(--cl-color-bg-surface);
+    border-color: var(--cl-color-primary-solid);
+  }
+
+  .cl-combobox--flushed .cl-combobox__control {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--cl-color-border-subtle);
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
+  }
+
+  .cl-combobox--flushed .cl-combobox__control:focus-within {
+    box-shadow: 0 1px 0 0 var(--cl-color-primary-solid);
+  }
+
+  /* Sizes */
+  .cl-combobox--sm .cl-combobox__control {
+    min-height: 32px;
+    font-size: var(--cl-font-size-xs, 12px);
+    padding: 0 var(--cl-space-2, 8px);
+  }
+
+  .cl-combobox--md .cl-combobox__control {
+    min-height: 40px;
+    font-size: var(--cl-font-size-sm, 14px);
+    padding: 0 var(--cl-space-3, 12px);
+  }
+
+  .cl-combobox--lg .cl-combobox__control {
+    min-height: 48px;
+    font-size: var(--cl-font-size-md, 16px);
+    padding: 0 var(--cl-space-4, 16px);
+  }
+
+  /* Input */
+  .cl-combobox__input {
+    flex: 1;
+    min-width: 60px;
+    border: none;
+    background: transparent;
+    padding: var(--cl-space-2, 8px) 0;
+    font-size: inherit;
+    color: var(--cl-color-text-primary);
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  .cl-combobox__input::placeholder {
+    color: var(--cl-color-text-muted);
+    opacity: 0.8;
+  }
+
+  .cl-combobox__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Trigger */
+  .cl-combobox__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--cl-color-text-secondary);
+    cursor: pointer;
+    flex-shrink: 0;
+    outline: none;
+    line-height: 1;
+  }
+
+  .cl-combobox__trigger:hover {
+    color: var(--cl-color-text-primary);
+  }
+
+  .cl-combobox__trigger[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .cl-combobox__trigger-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    transition: transform var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-combobox__trigger[data-state="open"] .cl-combobox__trigger-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Clear Button */
+  .cl-combobox__clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 2px;
+    color: var(--cl-color-text-muted);
+    cursor: pointer;
+    border-radius: var(--cl-radius-full, 9999px);
+    flex-shrink: 0;
+    outline: none;
+    line-height: 1;
+    transition: color var(--cl-duration-fast, 150ms) ease, background-color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-combobox__clear:hover {
+    color: var(--cl-color-text-primary);
+    background-color: var(--cl-color-bg-subtle);
+  }
+
+  /* Spinner */
+  .cl-combobox__spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--cl-color-border-subtle);
+    border-top-color: var(--cl-color-primary-solid);
+    border-radius: 50%;
+    animation: cl-combobox-spin 0.6s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes cl-combobox-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Multi-Select Tags */
+  .cl-combobox__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .cl-combobox__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--cl-radius-sm, 4px);
+    background-color: var(--cl-color-bg-subtle);
+    color: var(--cl-color-text-primary);
+    font-size: var(--cl-font-size-xs, 12px);
+    font-weight: 500;
+    border: 1px solid var(--cl-color-border-subtle);
+    line-height: 1.4;
+  }
+
+  .cl-combobox__tag-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 2px;
+    color: var(--cl-color-text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    line-height: 1;
+    font-size: 12px;
+  }
+
+  .cl-combobox__tag-remove:hover {
+    color: var(--cl-color-text-primary);
+  }
+
+  /* Content (Popup Listbox) */
+  .cl-combobox__content {
+    position: absolute;
+    z-index: var(--cl-z-dropdown, 1000);
+    max-height: 280px;
+    overflow-y: auto;
+    background-color: var(--cl-color-bg-surface);
+    border: 1px solid var(--cl-color-border-subtle);
+    border-radius: var(--cl-radius-md, 6px);
+    box-shadow: var(--cl-shadow-lg);
+    padding: var(--cl-space-1, 4px);
+    margin-top: 4px;
+    box-sizing: border-box;
+    outline: none;
+    overscroll-behavior: contain;
+  }
+
+  /* Group */
+  .cl-combobox__group {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cl-combobox__group-heading {
+    padding: var(--cl-space-1, 4px) var(--cl-space-3, 12px);
+    font-size: var(--cl-font-size-xs, 12px);
+    font-weight: 600;
+    color: var(--cl-color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Item */
+  .cl-combobox__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cl-space-2, 8px) var(--cl-space-3, 12px);
+    font-size: var(--cl-font-size-sm, 14px);
+    border-radius: var(--cl-radius-sm, 4px);
+    cursor: pointer;
+    color: var(--cl-color-text-primary);
+    user-select: none;
+    transition: background-color var(--cl-duration-fast, 150ms) ease;
+    box-sizing: border-box;
+  }
+
+  .cl-combobox__item[data-highlighted="true"] {
+    background-color: var(--cl-color-primary-subtle);
+    color: var(--cl-color-primary-text);
+  }
+
+  .cl-combobox__item[aria-selected="true"] {
+    font-weight: 600;
+  }
+
+  .cl-combobox__item[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .cl-combobox__item-indicator {
+    display: inline-flex;
+    align-items: center;
+    color: var(--cl-color-primary-solid);
+    margin-left: auto;
+  }
+
+  /* Empty state */
+  .cl-combobox__empty {
+    padding: var(--cl-space-3, 12px);
+    text-align: center;
+    color: var(--cl-color-text-muted);
+    font-size: var(--cl-font-size-sm, 14px);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-combobox__control,
+    .cl-combobox__trigger,
+    .cl-combobox__trigger-icon,
+    .cl-combobox__clear,
+    .cl-combobox__item {
+      transition: none !important;
+    }
+
+    .cl-combobox__spinner {
+      animation-duration: 1.5s !important;
+    }
+  }
+}

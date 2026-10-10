@@ -74,7 +74,7 @@ Status Classification Key:
 | **Tabs** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`27-tabs.md`](./27-tabs.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
 | **Accordion** | Tier 4 (Disclosure) | **Implemented** | Approved & Baseline | [`28-accordion.md`](./28-accordion.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
 | **Pagination** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`29-pagination.md`](./29-pagination.md) | ✅ Yes | ✅ 18/18 Tests Pass (axe 0) |
-| **Combobox / Autocomplete** | Tier 7 (Organisms) | **Missing** (Now Specified) | **SPEC-030 Created** | [`30-combobox.md`](./30-combobox.md) | ❌ No | Spec Ready |
+| **Combobox / Autocomplete** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`30-combobox.md`](./30-combobox.md) | ✅ Yes | ✅ 17/17 Tests Pass (axe 0) |
 
 ---
 

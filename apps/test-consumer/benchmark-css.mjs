@@ -101,6 +101,16 @@ const mandatoryRules = [
   { name: "Class: cl-pagination__ellipsis", check: combined.includes("cl-pagination__ellipsis") },
   { name: "Class: cl-pagination__size-select", check: combined.includes("cl-pagination__size-select") },
   { name: "Class: cl-pagination__jumper", check: combined.includes("cl-pagination__jumper") },
+  // 14. Organisms & Combobox (Wave 3)
+  { name: "Class: cl-combobox", check: combined.includes("cl-combobox") },
+  { name: "Class: cl-combobox__control", check: combined.includes("cl-combobox__control") },
+  { name: "Class: cl-combobox__input", check: combined.includes("cl-combobox__input") },
+  { name: "Class: cl-combobox__trigger", check: combined.includes("cl-combobox__trigger") },
+  { name: "Class: cl-combobox__content", check: combined.includes("cl-combobox__content") },
+  { name: "Class: cl-combobox__item", check: combined.includes("cl-combobox__item") },
+  { name: "Class: cl-combobox__empty", check: combined.includes("cl-combobox__empty") },
+  { name: "Class: cl-combobox__tag", check: combined.includes("cl-combobox__tag") },
+  { name: "Class: cl-combobox__clear", check: combined.includes("cl-combobox__clear") },
 ];
 
 for (const rule of mandatoryRules) {
