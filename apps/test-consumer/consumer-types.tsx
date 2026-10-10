@@ -42,6 +42,10 @@ import {
   // Headless Primitives (Wave 1)
   Portal,
   Slot,
+  // Floating Overlays (Wave 2)
+  Tooltip,
+  type TooltipProps,
+  type TooltipPlacement,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -178,6 +182,20 @@ export function ConsumerTypeFixture() {
         <Slot id="consumer-slot">
           <span>Slotted Consumer Element</span>
         </Slot>
+        {/* 17. Floating Overlays (Wave 2) */}
+        {(() => {
+          const _tooltipProps: TooltipProps = {
+            content: "Consumer Tooltip Info",
+            placement: "bottom-end" as TooltipPlacement,
+            shortcut: "Ctrl+S",
+            children: <button type="button" id="consumer-tooltip-btn">Consumer Hover</button>,
+          };
+          return (
+            <Tooltip {..._tooltipProps}>
+              <button type="button" id="consumer-tooltip-btn">Consumer Hover</button>
+            </Tooltip>
+          );
+        })()}
       </Container>
     </ThemeProvider>
   );

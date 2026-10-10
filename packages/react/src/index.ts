@@ -243,4 +243,12 @@ export {
   type SlotProps,
 } from "./primitives";
 
+// Overlays & Floating Anchored Primitives
+export {
+  Tooltip,
+  type TooltipProps,
+  type TooltipPlacement,
+  type TooltipOwnerState,
+} from "./components/Tooltip";
+
 

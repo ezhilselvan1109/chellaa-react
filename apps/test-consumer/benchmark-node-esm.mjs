@@ -60,6 +60,8 @@ import {
   // 13. Headless Primitives (Wave 1)
   Portal,
   Slot,
+  // 14. Floating Overlays (Wave 2)
+  Tooltip,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -153,6 +155,9 @@ assertComponent("Grid", Grid);
 assertComponent("Portal", Portal);
 assertComponent("Slot", Slot);
 
+// 15. Floating Overlays (Wave 2)
+assertComponent("Tooltip", Tooltip);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components and public primitives imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, and Tooltip imported cleanly in Node ESM.",
 );

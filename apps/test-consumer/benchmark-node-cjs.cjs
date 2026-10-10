@@ -60,6 +60,8 @@ const {
   // 13. Headless Primitives (Wave 1)
   Portal,
   Slot,
+  // 14. Floating Overlays (Wave 2)
+  Tooltip,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -153,6 +155,9 @@ assertComponent("Grid", Grid);
 assertComponent("Portal", Portal);
 assertComponent("Slot", Slot);
 
+// 15. Floating Overlays (Wave 2)
+assertComponent("Tooltip", Tooltip);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components and public primitives required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, and Tooltip required cleanly in CommonJS without CSS syntax errors.",
 );
