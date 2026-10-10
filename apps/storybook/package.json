@@ -9,7 +9,8 @@
     "prebuild": "pnpm --filter @chellaa/react build",
     "build": "storybook build -o dist",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \".storybook/**/*.{ts,tsx}\""
+    "lint": "eslint \".storybook/**/*.{ts,tsx}\"",
+    "test": "node validate-computed-styles.mjs"
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
