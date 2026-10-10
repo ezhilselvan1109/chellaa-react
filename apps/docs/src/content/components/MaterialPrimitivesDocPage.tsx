@@ -8,10 +8,8 @@ import {
   Button,
   TouchRipple,
   useRipple,
-  useTheme,
 } from "@chellaa/react";
 import { CodeBlock } from "../../components/Common/CodeBlock";
-import { Callout } from "../../components/Common/Callout";
 import type { TocItem } from "../../components/DocsLayout/TableOfContents";
 
 export const materialPrimitivesToc: TocItem[] = [
@@ -24,9 +22,7 @@ export const materialPrimitivesToc: TocItem[] = [
 ];
 
 export function MaterialPrimitivesDocPage() {
-  const { theme, setTheme } = useTheme();
   const [elevation, setElevation] = React.useState<number>(3);
-  const [spacing, setSpacing] = React.useState<number>(2);
   const [direction, setDirection] = React.useState<"column" | "row">("row");
 
   const { rippleProps, getRippleHandlers } = useRipple();
@@ -112,7 +108,7 @@ export function MaterialPrimitivesDocPage() {
             </Button>
           </div>
 
-          <Stack direction={direction} spacing={spacing}>
+          <Stack direction={direction} spacing={2}>
             <Box sx={{ p: 2, bgcolor: "secondary.light", borderRadius: 1 }}>Item 1</Box>
             <Box sx={{ p: 2, bgcolor: "secondary.light", borderRadius: 1 }}>Item 2</Box>
             <Box sx={{ p: 2, bgcolor: "secondary.light", borderRadius: 1 }}>Item 3</Box>

@@ -105,4 +105,31 @@ describe("styled() Component Factory", () => {
     const elem = screen.getByTestId("custom-card");
     expect(elem).toBeInTheDocument();
   });
+
+  it("ensures sx overrides have precedence over base styled rules", () => {
+    const OverrideBox = styled("div", {
+      name: "OverrideBox",
+      slot: "Root",
+    })({
+      padding: "8px",
+      color: "rgb(255, 0, 0)",
+    });
+
+    render(
+      <OverrideBox
+        data-testid="override-box"
+        sx={{
+          color: "rgb(0, 0, 255)",
+          padding: "24px",
+        }}
+      >
+        Overridden
+      </OverrideBox>
+    );
+
+    const elem = screen.getByTestId("override-box");
+    expect(elem).toBeInTheDocument();
+    expect(elem).toHaveTextContent("Overridden");
+  });
 });
+

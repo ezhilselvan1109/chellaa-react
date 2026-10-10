@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "prebuild": "pnpm --filter @chellaa/react build",
-    "build": "storybook build -o dist"
+    "build": "storybook build -o dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
@@ -20,6 +22,8 @@
     "@storybook/addon-links": "^8.3.5",
     "@storybook/react": "^8.3.5",
     "@storybook/react-vite": "^8.3.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "storybook": "^8.3.5",
     "vite": "^5.4.8"
   }

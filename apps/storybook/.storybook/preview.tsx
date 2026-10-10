@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { Preview, Decorator } from "@storybook/react";
 import { ThemeProvider } from "@chellaa/react";
 import "@chellaa/react/styles.css";

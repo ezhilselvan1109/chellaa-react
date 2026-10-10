@@ -1,9 +1,11 @@
 /**
  * Chellaa React — Master Stylesheet Bundle
- * Aggregates primitive tokens, semantic themes, and scoped resets.
+ * Aggregates primitive tokens, semantic themes, scoped resets, and component styles.
  */
+@layer cl-reset, cl-tokens, cl-theme, cl-components, cl-utilities;
+
+@import "./reset.css";
 @import "./tokens.css";
 @import "./theme.css";
-@import "./reset.css";
 @import "../components/Button/Button.styles.css";
 @import "../components/ButtonGroup/ButtonGroup.styles.css";

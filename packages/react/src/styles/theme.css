@@ -99,7 +99,7 @@
     --cl-button-danger-hover-bg: var(--cl-color-danger-hover);
     --cl-button-danger-active-bg: var(--cl-color-danger-active);
 
-    /* Input */
+    /* Input & Textarea */
     --cl-input-bg: var(--cl-color-bg-canvas);
     --cl-input-fg: var(--cl-color-fg-primary);
     --cl-input-border: var(--cl-color-border-default);
@@ -107,24 +107,52 @@
     --cl-input-invalid-border: var(--cl-color-danger-base);
     --cl-input-placeholder: var(--cl-color-fg-muted);
 
-    /* Card */
+    --cl-textarea-bg: var(--cl-input-bg);
+    --cl-textarea-fg: var(--cl-input-fg);
+    --cl-textarea-border: var(--cl-input-border);
+    --cl-textarea-focus-border: var(--cl-input-focus-border);
+
+    /* Form Controls */
+    --cl-checkbox-bg: var(--cl-color-bg-canvas);
+    --cl-checkbox-border: var(--cl-color-border-default);
+    --cl-checkbox-checked-bg: var(--cl-color-primary-base);
+    --cl-checkbox-checked-fg: var(--cl-color-primary-fg);
+
+    --cl-radio-bg: var(--cl-color-bg-canvas);
+    --cl-radio-border: var(--cl-color-border-default);
+    --cl-radio-checked-border: var(--cl-color-primary-base);
+    --cl-radio-dot: var(--cl-color-primary-base);
+
+    --cl-switch-track-bg: var(--cl-color-border-strong);
+    --cl-switch-track-checked-bg: var(--cl-color-primary-base);
+    --cl-switch-thumb-bg: var(--cl-palette-white);
+
+    /* Surfaces: Card & Paper */
     --cl-card-bg: var(--cl-color-bg-canvas);
     --cl-card-border: var(--cl-color-border-subtle);
     --cl-card-elevated-bg: var(--cl-color-bg-elev);
 
-    /* Dialog */
+    --cl-paper-bg: var(--cl-color-bg-canvas);
+    --cl-paper-border: var(--cl-color-border-subtle);
+
+    /* Modals & Dialogs */
     --cl-dialog-bg: var(--cl-color-bg-elev);
     --cl-dialog-border: var(--cl-color-border-subtle);
     --cl-dialog-backdrop: var(--cl-color-backdrop);
 
-    /* Badge */
+    /* Data Display: Badge, Table, Kbd, Divider */
     --cl-badge-default-bg: var(--cl-color-primary-subtle);
     --cl-badge-default-fg: var(--cl-color-primary-base);
 
-    /* Table */
     --cl-table-border: var(--cl-color-border-subtle);
     --cl-table-header-bg: var(--cl-color-bg-surface);
     --cl-table-row-hover-bg: var(--cl-color-bg-muted);
+
+    --cl-kbd-bg: var(--cl-color-bg-surface);
+    --cl-kbd-fg: var(--cl-color-fg-primary);
+    --cl-kbd-border: var(--cl-color-border-default);
+
+    --cl-divider-color: var(--cl-color-border-subtle);
   }
 
   /* ---------------------------------------------------------------------------
@@ -214,9 +242,16 @@
 
     /* Component Overrides for Dark Mode */
     --cl-input-bg: var(--cl-palette-slate-900);
+    --cl-textarea-bg: var(--cl-palette-slate-900);
+    --cl-checkbox-bg: var(--cl-palette-slate-900);
+    --cl-radio-bg: var(--cl-palette-slate-900);
     --cl-card-bg: var(--cl-palette-slate-900);
     --cl-card-elevated-bg: var(--cl-palette-slate-800);
+    --cl-paper-bg: var(--cl-palette-slate-900);
     --cl-dialog-bg: var(--cl-palette-slate-900);
     --cl-dialog-border: var(--cl-palette-slate-800);
+    --cl-kbd-bg: var(--cl-palette-slate-900);
+    --cl-table-header-bg: #131b2e;
+    --cl-table-row-hover-bg: var(--cl-palette-slate-800);
   }
 }

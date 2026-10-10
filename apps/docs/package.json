@@ -8,7 +8,8 @@
     "dev": "vite",
     "prebuild": "pnpm --filter @chellaa/react build",
     "build": "vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@chellaa/react": "workspace:*",
