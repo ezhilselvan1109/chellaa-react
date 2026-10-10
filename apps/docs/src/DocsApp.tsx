@@ -40,38 +40,38 @@ import { FlexDocPage, flexToc } from "./content/components/FlexDocPage";
 import { GridDocPage, gridToc } from "./content/components/GridDocPage";
 
 const titleMap: Record<string, string> = {
-  "#/": "Chellaa React — Production Component Library",
-  "#/overview": "Overview — Chellaa React",
-  "#/installation": "Installation — Chellaa React",
-  "#/quick-start": "Quick Start — Chellaa React",
-  "#/tokens": "Design Tokens — Chellaa React",
-  "#/colors": "Colors & Palettes — Chellaa React",
-  "#/theming": "Theming & Dark Mode — Chellaa React",
+  "/": "Chellaa React — Production Component Library",
+  "/overview": "Overview — Chellaa React",
+  "/installation": "Installation — Chellaa React",
+  "/quick-start": "Quick Start — Chellaa React",
+  "/tokens": "Design Tokens — Chellaa React",
+  "/colors": "Colors & Palettes — Chellaa React",
+  "/theming": "Theming & Dark Mode — Chellaa React",
   // Form Controls
-  "#/components/button": "Button Component — Chellaa React",
-  "#/components/button-group": "ButtonGroup Component — Chellaa React",
-  "#/components/input": "Input & TextField Component — Chellaa React",
-  "#/components/textarea": "Textarea Component — Chellaa React",
-  "#/components/form-field": "FormField Component — Chellaa React",
-  "#/components/checkbox": "Checkbox Component — Chellaa React",
-  "#/components/radio": "Radio Component — Chellaa React",
-  "#/components/switch": "Switch Component — Chellaa React",
+  "/components/button": "Button Component — Chellaa React",
+  "/components/button-group": "ButtonGroup Component — Chellaa React",
+  "/components/input": "Input & TextField Component — Chellaa React",
+  "/components/textarea": "Textarea Component — Chellaa React",
+  "/components/form-field": "FormField Component — Chellaa React",
+  "/components/checkbox": "Checkbox Component — Chellaa React",
+  "/components/radio": "Radio Component — Chellaa React",
+  "/components/switch": "Switch Component — Chellaa React",
   // Surfaces
-  "#/components/paper": "Paper Surface — Chellaa React",
-  "#/components/card": "Card Component — Chellaa React",
-  "#/components/typography": "Typography Component — Chellaa React",
-  "#/components/kbd": "Kbd Component — Chellaa React",
+  "/components/paper": "Paper Surface — Chellaa React",
+  "/components/card": "Card Component — Chellaa React",
+  "/components/typography": "Typography Component — Chellaa React",
+  "/components/kbd": "Kbd Component — Chellaa React",
   // Layouts
-  "#/components/box": "Box Component — Chellaa React",
-  "#/components/container": "Container Component — Chellaa React",
-  "#/components/divider": "Divider Component — Chellaa React",
-  "#/components/stack": "Stack Component — Chellaa React",
-  "#/components/flex": "Flex Component — Chellaa React",
-  "#/components/grid": "Grid Component — Chellaa React",
+  "/components/box": "Box Component — Chellaa React",
+  "/components/container": "Container Component — Chellaa React",
+  "/components/divider": "Divider Component — Chellaa React",
+  "/components/stack": "Stack Component — Chellaa React",
+  "/components/flex": "Flex Component — Chellaa React",
+  "/components/grid": "Grid Component — Chellaa React",
   // Guides & Resources
-  "#/guides/as-child": "Polymorphism (asChild) — Chellaa React",
-  "#/guides/accessibility": "Accessibility Standards — Chellaa React",
-  "#/changelog": "Changelog & Releases — Chellaa React",
+  "/guides/as-child": "Polymorphism (asChild) — Chellaa React",
+  "/guides/accessibility": "Accessibility Standards — Chellaa React",
+  "/changelog": "Changelog & Releases — Chellaa React",
 };
 
 const overviewToc: TocItem[] = [
@@ -97,12 +97,12 @@ const themingToc: TocItem[] = [
 
 export function DocsApp() {
   const [currentPath, setCurrentPath] = React.useState<string>(() => {
-    return window.location.hash || "#/";
+    return window.location.hash || "/";
   });
 
   React.useEffect(() => {
     const handleHashChange = () => {
-      setCurrentPath(window.location.hash || "#/");
+      setCurrentPath(window.location.hash || "/");
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -116,71 +116,71 @@ export function DocsApp() {
   }, [currentPath]);
 
   const isLandingPage =
-    currentPath === "#/" || currentPath === "" || currentPath === "#";
+    currentPath === "/" || currentPath === "" || currentPath === "/";
 
   const { content, toc } = React.useMemo(() => {
     switch (currentPath) {
-      case "#/overview":
+      case "/overview":
         return { content: <OverviewPage />, toc: overviewToc };
-      case "#/installation":
+      case "/installation":
         return { content: <InstallationPage />, toc: installationToc };
-      case "#/quick-start":
+      case "/quick-start":
         return { content: <QuickStartPage />, toc: [] };
-      case "#/tokens":
+      case "/tokens":
         return { content: <TokensPage />, toc: tokensToc };
-      case "#/colors":
+      case "/colors":
         return { content: <ColorsPage />, toc: [] };
-      case "#/theming":
+      case "/theming":
         return { content: <ThemingPage />, toc: themingToc };
 
       // 1. Form Controls
-      case "#/components/button":
+      case "/components/button":
         return { content: <ButtonDocPage />, toc: buttonToc };
-      case "#/components/button-group":
+      case "/components/button-group":
         return { content: <ButtonGroupDocPage />, toc: buttonGroupToc };
-      case "#/components/input":
+      case "/components/input":
         return { content: <InputDocPage />, toc: inputToc };
-      case "#/components/textarea":
+      case "/components/textarea":
         return { content: <TextareaDocPage />, toc: textareaToc };
-      case "#/components/form-field":
+      case "/components/form-field":
         return { content: <FormFieldDocPage />, toc: formFieldToc };
-      case "#/components/checkbox":
+      case "/components/checkbox":
         return { content: <CheckboxDocPage />, toc: checkboxToc };
-      case "#/components/radio":
+      case "/components/radio":
         return { content: <RadioDocPage />, toc: radioToc };
-      case "#/components/switch":
+      case "/components/switch":
         return { content: <SwitchDocPage />, toc: switchToc };
 
       // 2. Surfaces & Data Display
-      case "#/components/paper":
+      case "/components/paper":
         return { content: <PaperDocPage />, toc: paperToc };
-      case "#/components/card":
+      case "/components/card":
         return { content: <CardDocPage />, toc: cardToc };
-      case "#/components/typography":
+      case "/components/typography":
         return { content: <TypographyDocPage />, toc: typographyToc };
-      case "#/components/kbd":
+      case "/components/kbd":
         return { content: <KbdDocPage />, toc: kbdToc };
 
       // 3. Layout Primitives
-      case "#/components/box":
+      case "/components/box":
         return { content: <BoxDocPage />, toc: boxToc };
-      case "#/components/container":
+      case "/components/container":
         return { content: <ContainerDocPage />, toc: containerToc };
-      case "#/components/divider":
+      case "/components/divider":
         return { content: <DividerDocPage />, toc: dividerToc };
-      case "#/components/stack":
+      case "/components/stack":
         return { content: <StackDocPage />, toc: stackToc };
-      case "#/components/flex":
+      case "/components/flex":
         return { content: <FlexDocPage />, toc: flexToc };
-      case "#/components/grid":
+      case "/components/grid":
         return { content: <GridDocPage />, toc: gridToc };
 
       // Guides & Resources
-      case "#/guides/as-child":
+      case "/guides/as-child":
         return { content: <SlotCompositionPage />, toc: [] };
-      case "#/guides/accessibility":
+      case "/guides/accessibility":
         return { content: <AccessibilityGuidePage />, toc: [] };
-      case "#/changelog":
+      case "/changelog":
         return { content: <ChangelogPage />, toc: [] };
       default:
         return { content: <OverviewPage />, toc: overviewToc };
@@ -193,7 +193,7 @@ export function DocsApp() {
         <LandingPage
           onNavigate={(path) => {
             setCurrentPath(path);
-            window.location.hash = path.replace("#", "");
+            window.location.hash = path.replace("/", "");
           }}
         />
       ) : (
@@ -202,7 +202,7 @@ export function DocsApp() {
           tocItems={toc}
           onNavigate={(path) => {
             setCurrentPath(path);
-            window.location.hash = path.replace("#", "");
+            window.location.hash = path.replace("/", "");
           }}
         >
           {content}
