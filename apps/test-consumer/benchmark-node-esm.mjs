@@ -57,6 +57,9 @@ import {
   Stack,
   Flex,
   Grid,
+  // 13. Headless Primitives (Wave 1)
+  Portal,
+  Slot,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -146,6 +149,10 @@ assertComponent("Stack", Stack);
 assertComponent("Flex", Flex);
 assertComponent("Grid", Grid);
 
+// 14. Headless Primitives (Wave 1)
+assertComponent("Portal", Portal);
+assertComponent("Slot", Slot);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components and public symbols imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All 18 library components and public primitives imported cleanly in Node ESM.",
 );

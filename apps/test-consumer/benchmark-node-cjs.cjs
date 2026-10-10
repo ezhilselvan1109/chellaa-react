@@ -57,6 +57,9 @@ const {
   Stack,
   Flex,
   Grid,
+  // 13. Headless Primitives (Wave 1)
+  Portal,
+  Slot,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -146,6 +149,10 @@ assertComponent("Stack", Stack);
 assertComponent("Flex", Flex);
 assertComponent("Grid", Grid);
 
+// 14. Headless Primitives (Wave 1)
+assertComponent("Portal", Portal);
+assertComponent("Slot", Slot);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components and public symbols required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All 18 library components and public primitives required cleanly in CommonJS without CSS syntax errors.",
 );

@@ -235,4 +235,12 @@ export {
   type UseRippleReturn,
 } from "./ripple";
 
+// Headless Composition & DOM Primitives
+export {
+  Portal,
+  type PortalProps,
+  Slot,
+  type SlotProps,
+} from "./primitives";
+
 

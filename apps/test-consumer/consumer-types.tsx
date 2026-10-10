@@ -39,6 +39,9 @@ import {
   Stack,
   Flex,
   Grid,
+  // Headless Primitives (Wave 1)
+  Portal,
+  Slot,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -168,6 +171,13 @@ export function ConsumerTypeFixture() {
             <Paper elevation={1} sx={{ p: 2 }}>Col 2</Paper>
           </Grid>
         </Grid>
+        {/* 16. Headless Primitives (Wave 1) */}
+        <Portal>
+          <div data-testid="consumer-portal-content">Portal Consumer Render</div>
+        </Portal>
+        <Slot id="consumer-slot">
+          <span>Slotted Consumer Element</span>
+        </Slot>
       </Container>
     </ThemeProvider>
   );
