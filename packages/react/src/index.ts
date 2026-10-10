@@ -251,4 +251,32 @@ export {
   type TooltipOwnerState,
 } from "./components/Tooltip";
 
+export {
+  Popover,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverPortal,
+  PopoverContent,
+  PopoverClose,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverBody,
+  PopoverFooter,
+  usePopoverContext,
+  type PopoverProps,
+  type PopoverRootProps,
+  type PopoverTriggerProps,
+  type PopoverPortalProps,
+  type PopoverContentProps,
+  type PopoverCloseProps,
+  type PopoverArrowProps,
+  type PopoverHeaderProps,
+  type PopoverTitleProps,
+  type PopoverBodyProps,
+  type PopoverFooterProps,
+  type PopoverPlacement,
+  type PopoverContextValue,
+} from "./components/Popover";
+
 

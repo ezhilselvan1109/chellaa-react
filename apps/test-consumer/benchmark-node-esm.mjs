@@ -62,6 +62,10 @@ import {
   Slot,
   // 14. Floating Overlays (Wave 2)
   Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -157,7 +161,11 @@ assertComponent("Slot", Slot);
 
 // 15. Floating Overlays (Wave 2)
 assertComponent("Tooltip", Tooltip);
+assertComponent("Popover", Popover);
+assertComponent("Popover.Trigger", PopoverTrigger);
+assertComponent("Popover.Content", PopoverContent);
+assertComponent("Popover.Close", PopoverClose);
 
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, and Tooltip imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, and Popover imported cleanly in Node ESM.",
 );

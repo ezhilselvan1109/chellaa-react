@@ -62,6 +62,10 @@ const {
   Slot,
   // 14. Floating Overlays (Wave 2)
   Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -157,7 +161,11 @@ assertComponent("Slot", Slot);
 
 // 15. Floating Overlays (Wave 2)
 assertComponent("Tooltip", Tooltip);
+assertComponent("Popover", Popover);
+assertComponent("Popover.Trigger", PopoverTrigger);
+assertComponent("Popover.Content", PopoverContent);
+assertComponent("Popover.Close", PopoverClose);
 
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, and Tooltip required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, Tooltip, and Popover required cleanly in CommonJS without CSS syntax errors.",
 );

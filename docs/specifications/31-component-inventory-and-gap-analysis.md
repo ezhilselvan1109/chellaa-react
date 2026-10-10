@@ -67,7 +67,7 @@ Status Classification Key:
 | **Badge** | Tier 4 (Data Display) | Pending Implementation | Approved & Baseline | [`06-badge.md`](./06-badge.md) | ❌ No | Pending Code |
 | **Table** | Tier 7 (Organisms) | Pending Implementation | Approved & Baseline | [`07-table.md`](./07-table.md) | ❌ No | Pending Code |
 | **Tooltip** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`22-tooltip.md`](./22-tooltip.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
-| **Popover** | Tier 4 (Overlays) | Pending Implementation | **SPEC-023 Created** | [`23-popover.md`](./23-popover.md) | ❌ No | Spec Ready |
+| **Popover** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`23-popover.md`](./23-popover.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
 | **Alert** | Tier 5 (Feedback) | **Missing** (Now Specified) | **SPEC-024 Created** | [`24-alert.md`](./24-alert.md) | ❌ No | Spec Ready |
 | **Snackbar / Toast** | Tier 5 (Feedback) | **Missing** (Now Specified) | **SPEC-025 Created** | [`25-snackbar.md`](./25-snackbar.md) | ❌ No | Spec Ready |
 | **Avatar / Group** | Tier 4 (Data Display) | **Missing** (Now Specified) | **SPEC-026 Created** | [`26-avatar.md`](./26-avatar.md) | ❌ No | Spec Ready |

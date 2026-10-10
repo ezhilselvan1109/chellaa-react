@@ -46,6 +46,9 @@ import {
   Tooltip,
   type TooltipProps,
   type TooltipPlacement,
+  Popover,
+  type PopoverProps,
+  type PopoverPlacement,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -195,6 +198,30 @@ export function ConsumerTypeFixture() {
               <button type="button" id="consumer-tooltip-btn">Consumer Hover</button>
             </Tooltip>
           );
+        })()}
+        {/* 18. Popover Compound Overlays (Wave 2) */}
+        {(() => {
+          const _popoverProps: PopoverProps = {
+            placement: "top-start" as PopoverPlacement,
+            trapFocus: true,
+            children: (
+              <>
+                <Popover.Trigger asChild>
+                  <button type="button" id="consumer-popover-trigger">Open Popover</button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Content>
+                    <Popover.Header>
+                      <Popover.Title>Consumer Title</Popover.Title>
+                      <Popover.Close />
+                    </Popover.Header>
+                    <Popover.Body>Consumer Popover Body</Popover.Body>
+                  </Popover.Content>
+                </Popover.Portal>
+              </>
+            ),
+          };
+          return <Popover {..._popoverProps} />;
         })()}
       </Container>
     </ThemeProvider>
