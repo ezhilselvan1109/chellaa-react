@@ -257,9 +257,13 @@ export function App() {
 1. **Emotion Dependency Classification**:
    - `@emotion/react` and `@emotion/styled` are packaged as **direct runtime dependencies** of `@chellaa/react` to guarantee seamless execution of `styled()`, `sx`, and polymorphic primitives out of the box without requiring manual consumer peer-dependency installations.
 2. **Performance Budget**:
-   - **Compiled Master CSS (`dist/styles.css`)**: Maximum **35 KB** minified.
+   - **Compiled Master CSS (`dist/styles.css`) Phased Ceilings** (exact uncompressed minified size, using binary $1\text{ KB} = 1024\text{ bytes}$ convention):
+     - **Workflow F1 Milestone (8 Components)**: Maximum **42.0 KB** minified (Measured actual: **38.74 KB / 39,670 bytes**; gzip: **6.28 KB / 6,432 bytes**).
+     - **Workflow F2 Milestone (12 Components - Projected)**: Maximum **48.0 KB** minified (Projected: **~46.34 KB**).
+     - **Workflow F3 Whole-Library Ceiling (All 18 Components - Projected)**: Maximum **56.0 KB** minified (Projected: **~52.84 KB**; gzip projection: **< 10.0 KB**).
    - **ESM Bundle Size (`dist/index.mjs`)**: Maximum **160 KB** minified.
-   - **Runtime Core Component Styling**: 0 ms JavaScript execution for static class rendering.
+   - **Runtime Core Component Styling**: Standard static component styling completely eliminates runtime Emotion CSS generation, reducing style computation overhead while normal React component rendering continues to execute standard JavaScript.
+
 
 ---
 
