@@ -5,9 +5,15 @@ interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
   currentPath: string;
+  onNavigate?: (path: string) => void;
 }
 
-export function MobileNav({ isOpen, onClose, currentPath }: MobileNavProps) {
+export function MobileNav({
+  isOpen,
+  onClose,
+  currentPath,
+  onNavigate,
+}: MobileNavProps) {
   if (!isOpen) return null;
 
   return (
@@ -35,7 +41,13 @@ export function MobileNav({ isOpen, onClose, currentPath }: MobileNavProps) {
           </button>
         </div>
         <div className="docs-mobile-nav-body">
-          <Sidebar currentPath={currentPath} onNavigate={onClose} />
+          <Sidebar
+            currentPath={currentPath}
+            onNavigate={(path) => {
+              onNavigate?.(path);
+              onClose();
+            }}
+          />
         </div>
       </div>
     </div>

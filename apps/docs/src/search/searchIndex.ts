@@ -14,7 +14,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Getting Started",
     description:
       "Introduction to Chellaa React, design philosophy, and zero-config styling.",
-    path: "#/overview",
+    path: "/overview",
     keywords: [
       "intro",
       "overview",
@@ -29,7 +29,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Getting Started",
     description:
       "Installing @chellaa/react via npm, pnpm, yarn, and bundler setup.",
-    path: "#/installation",
+    path: "/installation",
     keywords: ["install", "pnpm", "npm", "yarn", "setup", "dependencies"],
   },
   {
@@ -38,7 +38,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Getting Started",
     description:
       "Fast-track code walkthrough rendering your first Chellaa React component.",
-    path: "#/quick-start",
+    path: "/quick-start",
     keywords: ["quickstart", "start", "tutorial", "hello world", "basic"],
   },
   {
@@ -47,7 +47,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Foundations",
     description:
       "3-tier token architecture: primitive, semantic, and component CSS custom properties.",
-    path: "#/tokens",
+    path: "/tokens",
     keywords: ["tokens", "css variables", "primitives", "semantic", "--cl-"],
   },
   {
@@ -56,7 +56,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Foundations",
     description:
       "Semantic color ramps: primary, secondary, neutral, success, warning, danger, and info.",
-    path: "#/colors",
+    path: "/colors",
     keywords: ["colors", "palette", "ramps", "primary", "danger", "neutral"],
   },
   {
@@ -65,7 +65,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Theming",
     description:
       "Theme context, light/dark/system mode switching, and ThemeScript zero-FOUC hydration.",
-    path: "#/theming",
+    path: "/theming",
     keywords: [
       "theme",
       "themeprovider",
@@ -81,7 +81,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Components",
     description:
       "Interactive button with 5 variants, 5 sizes, 7 color schemes, loading states, and asChild slot.",
-    path: "#/components/button",
+    path: "/components/button",
     keywords: [
       "button",
       "action",
@@ -99,7 +99,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Components",
     description:
       "Container component managing grouped buttons with shared borders and context propagation.",
-    path: "#/components/button-group",
+    path: "/components/button-group",
     keywords: [
       "buttongroup",
       "group",
@@ -115,7 +115,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Advanced Guides",
     description:
       "Zero DOM wrapper polymorphic slot delegation using Radix-style Slot primitives.",
-    path: "#/guides/as-child",
+    path: "/guides/as-child",
     keywords: [
       "asChild",
       "slot",
@@ -131,7 +131,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Advanced Guides",
     description:
       "WCAG 2.2 AA compliance, keyboard navigation keymaps, focus rings, and axe-core validation.",
-    path: "#/guides/accessibility",
+    path: "/guides/accessibility",
     keywords: [
       "a11y",
       "accessibility",
@@ -147,7 +147,7 @@ export const searchIndex: SearchRecord[] = [
     category: "Resources",
     description:
       "Release notes, new component introductions, version history, and bug fixes.",
-    path: "#/changelog",
+    path: "/changelog",
     keywords: ["changelog", "releases", "history", "versions", "changeset"],
   },
 ];

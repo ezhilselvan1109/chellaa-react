@@ -14,12 +14,14 @@ interface HeaderProps {
   currentPath?: string | undefined;
   onOpenSearch: () => void;
   onToggleMobileMenu: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export function Header({
   currentPath = "",
   onOpenSearch,
   onToggleMobileMenu,
+  onNavigate,
 }: HeaderProps) {
   const { theme, setTheme } = useTheme();
 
@@ -28,16 +30,16 @@ export function Header({
   };
 
   const isHome =
-    currentPath === "#/" || currentPath === "" || currentPath === "#";
+    currentPath === "/" || currentPath === "" || currentPath === "#/";
   const isDocs =
-    currentPath.startsWith("#/overview") ||
-    currentPath.startsWith("#/installation") ||
-    currentPath.startsWith("#/quick-start");
-  const isComponents = currentPath.startsWith("#/components");
+    currentPath.startsWith("/overview") ||
+    currentPath.startsWith("/installation") ||
+    currentPath.startsWith("/quick-start");
+  const isComponents = currentPath.startsWith("/components");
   const isFoundations =
-    currentPath.startsWith("#/tokens") ||
-    currentPath.startsWith("#/colors") ||
-    currentPath.startsWith("#/theming");
+    currentPath.startsWith("/tokens") ||
+    currentPath.startsWith("/colors") ||
+    currentPath.startsWith("/theming");
 
   return (
     <header className="docs-header" role="banner">
@@ -50,7 +52,14 @@ export function Header({
         >
           <FiMenu size={18} />
         </button>
-        <a href="#/" className="docs-logo">
+        <a
+          href="/"
+          className="docs-logo"
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate?.("/");
+          }}
+        >
           <div
             style={{
               width: "28px",
@@ -75,26 +84,42 @@ export function Header({
         {/* Primary Navigation Links */}
         <nav className="docs-top-nav" aria-label="Main Navigation">
           <a
-            href="#/"
+            href="/"
             className={`docs-top-nav-link ${isHome ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.("/");
+            }}
           >
             Home
           </a>
           <a
-            href="#/overview"
+            href="/overview"
             className={`docs-top-nav-link ${isDocs ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.("/overview");
+            }}
           >
             Docs
           </a>
           <a
-            href="#/components/button"
+            href="/components/button"
             className={`docs-top-nav-link ${isComponents ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.("/components/button");
+            }}
           >
             Components
           </a>
           <a
-            href="#/tokens"
+            href="/tokens"
             className={`docs-top-nav-link ${isFoundations ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.("/tokens");
+            }}
           >
             Tokens
           </a>

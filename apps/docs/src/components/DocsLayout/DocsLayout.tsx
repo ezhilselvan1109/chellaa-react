@@ -63,10 +63,11 @@ export function DocsLayout({
         currentPath={currentPath}
         onOpenSearch={() => setIsSearchOpen(true)}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onNavigate={onNavigate}
       />
 
       <div className="docs-main-container">
-        <Sidebar currentPath={currentPath} />
+        <Sidebar currentPath={currentPath} onNavigate={onNavigate} />
 
         <main
           id="docs-main-content"
@@ -76,7 +77,14 @@ export function DocsLayout({
           {/* Breadcrumbs */}
           {currentItem && (
             <nav className="docs-breadcrumbs" aria-label="Breadcrumb">
-              <a href="#/overview" className="docs-breadcrumbs-link">
+              <a
+                href="/overview"
+                className="docs-breadcrumbs-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("/overview");
+                }}
+              >
                 Docs
               </a>
               <span className="docs-breadcrumbs-separator">/</span>
@@ -99,7 +107,10 @@ export function DocsLayout({
                 <a
                   href={prevItem.path}
                   className="docs-pagination-card"
-                  onClick={() => onNavigate(prevItem.path)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate(prevItem.path);
+                  }}
                 >
                   <span
                     className="docs-pagination-sub"
@@ -125,7 +136,10 @@ export function DocsLayout({
                   href={nextItem.path}
                   className="docs-pagination-card"
                   style={{ textAlign: "right" }}
-                  onClick={() => onNavigate(nextItem.path)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate(nextItem.path);
+                  }}
                 >
                   <span
                     className="docs-pagination-sub"
@@ -158,7 +172,6 @@ export function DocsLayout({
         onClose={() => setIsSearchOpen(false)}
         onSelect={(path: string) => {
           onNavigate(path);
-          window.location.hash = path.replace("#", "");
         }}
       />
 
@@ -166,6 +179,7 @@ export function DocsLayout({
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         currentPath={currentPath}
+        onNavigate={onNavigate}
       />
     </div>
   );

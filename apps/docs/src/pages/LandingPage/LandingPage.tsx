@@ -65,16 +65,21 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
       {/* Global Header */}
       <Header
+        currentPath="/"
         onOpenSearch={() => setIsSearchOpen(true)}
         onToggleMobileMenu={() => {}}
+        onNavigate={onNavigate}
       />
 
       {/* Hero Section */}
       <section className="landing-hero">
         <a
-          href="#/overview"
+          href="/overview"
           className="landing-badge"
-          onClick={() => onNavigate("#/overview")}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate("/overview");
+          }}
         >
           <span className="landing-badge-pill">NEW</span>
           <span>Chellaa React v0.2.0 Released — Zero-Config Styling</span>
@@ -100,7 +105,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             variant="solid"
             colorScheme="primary"
             endIcon={<FiArrowRight size={16} />}
-            onClick={() => onNavigate("#/overview")}
+            onClick={() => onNavigate("/overview")}
           >
             Get Started
           </Button>
@@ -108,7 +113,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           <Button
             size="lg"
             variant="outline"
-            onClick={() => onNavigate("#/components/button")}
+            onClick={() => onNavigate("/components/button")}
           >
             Explore Components
           </Button>
@@ -508,14 +513,14 @@ export function ActionToolbar() {
               variant="solid"
               colorScheme="primary"
               endIcon={<FiArrowRight size={16} />}
-              onClick={() => onNavigate("#/overview")}
+              onClick={() => onNavigate("/overview")}
             >
               Read Documentation
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => onNavigate("#/components/button")}
+              onClick={() => onNavigate("/components/button")}
             >
               Browse Components
             </Button>
@@ -534,16 +539,22 @@ export function ActionToolbar() {
 
         <div className="landing-footer-links">
           <a
-            href="#/overview"
+            href="/overview"
             className="landing-footer-link"
-            onClick={() => onNavigate("#/overview")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate("/overview");
+            }}
           >
             Documentation
           </a>
           <a
-            href="#/components/button"
+            href="/components/button"
             className="landing-footer-link"
-            onClick={() => onNavigate("#/components/button")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate("/components/button");
+            }}
           >
             Components
           </a>
@@ -564,9 +575,12 @@ export function ActionToolbar() {
             Playground
           </a>
           <a
-            href="#/changelog"
+            href="/changelog"
             className="landing-footer-link"
-            onClick={() => onNavigate("#/changelog")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate("/changelog");
+            }}
           >
             Changelog
           </a>
@@ -579,7 +593,6 @@ export function ActionToolbar() {
         onClose={() => setIsSearchOpen(false)}
         onSelect={(path: string) => {
           onNavigate(path);
-          window.location.hash = path.replace("#", "");
         }}
       />
     </div>

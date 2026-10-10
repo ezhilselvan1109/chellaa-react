@@ -4,7 +4,7 @@ import { StatusBadge } from "../Common/StatusBadge";
 
 interface SidebarProps {
   currentPath: string;
-  onNavigate?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
@@ -23,7 +23,10 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
                       href={item.path}
                       className={`docs-nav-link ${isActive ? "active" : ""}`}
                       aria-current={isActive ? "page" : undefined}
-                      onClick={onNavigate}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigate?.(item.path);
+                      }}
                     >
                       <span className="docs-nav-link-text">{item.title}</span>
                       {item.status && <StatusBadge status={item.status} />}
