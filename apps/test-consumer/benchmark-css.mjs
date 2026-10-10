@@ -78,6 +78,14 @@ const mandatoryRules = [
   { name: "Class: cl-avatar-group", check: combined.includes("cl-avatar-group") },
   { name: "Class: cl-avatar__badge", check: combined.includes("cl-avatar__badge") },
   { name: "Class: cl-avatar__fallback", check: combined.includes("cl-avatar__fallback") },
+  // 11. Disclosure & Accordion (Wave 3)
+  { name: "Class: cl-accordion", check: combined.includes("cl-accordion") },
+  { name: "Class: cl-accordion__item", check: combined.includes("cl-accordion__item") },
+  { name: "Class: cl-accordion__header", check: combined.includes("cl-accordion__header") },
+  { name: "Class: cl-accordion__trigger", check: combined.includes("cl-accordion__trigger") },
+  { name: "Class: cl-accordion__content", check: combined.includes("cl-accordion__content") },
+  { name: "Class: cl-accordion__inner", check: combined.includes("cl-accordion__inner") },
+  { name: "Class: cl-accordion__icon", check: combined.includes("cl-accordion__icon") },
 ];
 
 for (const rule of mandatoryRules) {

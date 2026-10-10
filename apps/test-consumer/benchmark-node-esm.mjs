@@ -85,6 +85,13 @@ import {
   AvatarFallback,
   AvatarBadge,
   getInitials,
+  // 17. Disclosure Primitives (Wave 3)
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -207,6 +214,20 @@ assertComponent("Avatar.Fallback", AvatarFallback);
 assertComponent("Avatar.Badge", AvatarBadge);
 assertFunction("getInitials", getInitials);
 
+// 18. Disclosure Primitives (Wave 3)
+assertComponent("Accordion", Accordion);
+assertComponent("Accordion.Root", Accordion.Root);
+assertComponent("Accordion.Item", Accordion.Item);
+assertComponent("Accordion.Header", Accordion.Header);
+assertComponent("Accordion.Trigger", Accordion.Trigger);
+assertComponent("Accordion.Content", Accordion.Content);
+assertComponent("Accordion.Icon", Accordion.Icon);
+assertComponent("AccordionItem", AccordionItem);
+assertComponent("AccordionHeader", AccordionHeader);
+assertComponent("AccordionTrigger", AccordionTrigger);
+assertComponent("AccordionContent", AccordionContent);
+assertComponent("AccordionIcon", AccordionIcon);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, and Avatar imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, and Accordion imported cleanly in Node ESM.",
 );

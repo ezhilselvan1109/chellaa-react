@@ -346,4 +346,32 @@ export {
   type ImageLoadingStatus,
 } from "./components/Avatar";
 
+// Disclosure & Collapsible Primitives
+export {
+  Accordion,
+  AccordionRoot,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
+  AccordionContext,
+  AccordionItemContext,
+  useAccordionContext,
+  useAccordionItemContext,
+  type AccordionType,
+  type AccordionVariant,
+  type AccordionSingleProps,
+  type AccordionMultipleProps,
+  type AccordionRootProps,
+  type AccordionProps,
+  type AccordionItemProps,
+  type AccordionHeaderProps,
+  type AccordionTriggerProps,
+  type AccordionContentProps,
+  type AccordionIconProps,
+  type AccordionContextValue,
+  type AccordionItemContextValue,
+} from "./components/Accordion";
+
 

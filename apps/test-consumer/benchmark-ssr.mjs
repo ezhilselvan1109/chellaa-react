@@ -38,6 +38,12 @@ import {
   Snackbar,
   Avatar,
   AvatarGroup,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -190,6 +196,22 @@ function App() {
           React.createElement(Avatar, { name: "Sarah Connor" }),
           React.createElement(Avatar, { name: "John Doe" }),
         ),
+
+        // 18. Disclosure & Accordion (Wave 3)
+        React.createElement(
+          Accordion,
+          { type: "single", defaultValue: "faq-1", collapsible: true },
+          React.createElement(
+            AccordionItem,
+            { value: "faq-1" },
+            React.createElement(
+              AccordionHeader,
+              null,
+              React.createElement(AccordionTrigger, null, "FAQ Question 1", React.createElement(AccordionIcon, null)),
+            ),
+            React.createElement(AccordionContent, null, "FAQ Answer 1"),
+          ),
+        ),
       ),
     ),
   );
@@ -229,6 +251,13 @@ const mandatoryAssertions = [
   { name: "AvatarGroup class (cl-avatar-group)", check: html.includes("cl-avatar-group") },
   { name: "Avatar initials (ES)", check: html.includes("ES") },
   { name: "AvatarGroup excess (+1)", check: html.includes("+1") },
+  // Disclosure & Accordion (Wave 3)
+  { name: "Accordion class (cl-accordion)", check: html.includes("cl-accordion") },
+  { name: "Accordion item class (cl-accordion__item)", check: html.includes("cl-accordion__item") },
+  { name: "Accordion trigger class (cl-accordion__trigger)", check: html.includes("cl-accordion__trigger") },
+  { name: "Accordion content class (cl-accordion__content)", check: html.includes("cl-accordion__content") },
+  { name: "Accordion inner class (cl-accordion__inner)", check: html.includes("cl-accordion__inner") },
+  { name: "Accordion icon class (cl-accordion__icon)", check: html.includes("cl-accordion__icon") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -238,5 +267,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, and Avatar (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, and Accordion (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

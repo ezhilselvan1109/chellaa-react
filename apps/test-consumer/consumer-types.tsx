@@ -76,6 +76,22 @@ import {
   AvatarFallback,
   AvatarImage,
   getInitials,
+  // Disclosure Primitives (Wave 3)
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
+  type AccordionProps,
+  type AccordionSingleProps,
+  type AccordionMultipleProps,
+  type AccordionItemProps,
+  type AccordionHeaderProps,
+  type AccordionTriggerProps,
+  type AccordionContentProps,
+  type AccordionIconProps,
+  type AccordionVariant,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -329,6 +345,78 @@ export function ConsumerTypeFixture() {
                 <AvatarBadge status={"online" as AvatarStatus} />
               </Avatar>
               <AvatarGroup {..._groupProps} />
+            </div>
+          );
+        })()}
+
+        {/* 22. Accordion Disclosure Primitives (Wave 3) */}
+        {(() => {
+          const _accordionProps: AccordionProps = {
+            type: "single",
+            collapsible: true,
+            defaultValue: "item-1",
+            variant: "outline" as AccordionVariant,
+            children: null,
+          };
+          const _singleProps: AccordionSingleProps = {
+            type: "single",
+            collapsible: true,
+            defaultValue: "item-1",
+          };
+          const _multiProps: AccordionMultipleProps = {
+            type: "multiple",
+            defaultValue: ["item-1"],
+          };
+          const _itemProps: AccordionItemProps = {
+            value: "item-1",
+            children: null,
+          };
+          const _headerProps: AccordionHeaderProps = {
+            level: 3,
+            children: null,
+          };
+          const _triggerProps: AccordionTriggerProps = {
+            asChild: false,
+            children: null,
+          };
+          const _contentProps: AccordionContentProps = {
+            children: null,
+          };
+          const _iconProps: AccordionIconProps = {
+            className: "custom-icon",
+          };
+          void _accordionProps;
+          void _singleProps;
+          void _multiProps;
+          void _itemProps;
+          void _headerProps;
+          void _triggerProps;
+          void _contentProps;
+          void _iconProps;
+          return (
+            <div data-testid="accordion-fixture">
+              <Accordion type="single" collapsible defaultValue="item-1" variant="outline">
+                <Accordion.Item value="item-1">
+                  <Accordion.Header level={3}>
+                    <Accordion.Trigger>
+                      Section 1
+                      <Accordion.Icon />
+                    </Accordion.Trigger>
+                  </Accordion.Header>
+                  <Accordion.Content>Section 1 body content</Accordion.Content>
+                </Accordion.Item>
+              </Accordion>
+              <Accordion type="multiple" defaultValue={["flat-1"]}>
+                <AccordionItem value="flat-1">
+                  <AccordionHeader>
+                    <AccordionTrigger>
+                      Flat Header
+                      <AccordionIcon />
+                    </AccordionTrigger>
+                  </AccordionHeader>
+                  <AccordionContent>Flat Content</AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           );
         })()}
