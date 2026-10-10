@@ -1,0 +1,170 @@
+/**
+ * Chellaa React — Checkbox Component Styles
+ * Encapsulated within @layer cl-components for deterministic cascade ordering.
+ */
+
+@layer cl-components {
+  /* ---------------------------------------------------------------------------
+   * Root Label (.cl-checkbox)
+   * ------------------------------------------------------------------------- */
+  .cl-checkbox {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    line-height: var(--cl-leading-normal, 1.5);
+    font-family: var(--cl-font-sans, system-ui, -apple-system, sans-serif);
+    box-sizing: border-box;
+  }
+
+  .cl-checkbox--sm {
+    gap: var(--cl-space-2, 8px);
+    font-size: var(--cl-font-size-sm, 0.875rem);
+  }
+
+  .cl-checkbox--md {
+    gap: var(--cl-space-2-5, 10px);
+    font-size: var(--cl-font-size-base, 1rem);
+  }
+
+  .cl-checkbox--lg {
+    gap: var(--cl-space-3, 12px);
+    font-size: var(--cl-font-size-lg, 1.125rem);
+  }
+
+  .cl-checkbox--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Hidden Native Input (.cl-checkbox__input)
+   * ------------------------------------------------------------------------- */
+  .cl-checkbox__input {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Visual Control Box (.cl-checkbox__control)
+   * ------------------------------------------------------------------------- */
+  .cl-checkbox__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    border-radius: var(--cl-radius-sm, 4px);
+    border: 1px solid var(--cl-checkbox-border, var(--cl-color-border-default));
+    background-color: var(--cl-checkbox-bg, var(--cl-color-bg-canvas));
+    color: var(--cl-palette-white);
+    transition: background-color var(--cl-motion-fast, 150ms) ease,
+                border-color var(--cl-motion-fast, 150ms) ease,
+                box-shadow var(--cl-motion-fast, 150ms) ease;
+  }
+
+  .cl-checkbox--sm .cl-checkbox__control {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cl-checkbox--md .cl-checkbox__control {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cl-checkbox--lg .cl-checkbox__control {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Checked & Indeterminate States */
+  .cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-checkbox-checked-bg, var(--cl-color-primary-base));
+    border-color: var(--cl-checkbox-checked-bg, var(--cl-color-primary-base));
+    color: var(--cl-checkbox-checked-fg, var(--cl-palette-white));
+  }
+
+  /* Focus Indicator */
+  .cl-checkbox__input:focus-visible + .cl-checkbox__control {
+    outline: 2px solid var(--cl-color-primary-base, #6366f1);
+    outline-offset: 2px;
+  }
+
+  /* Error State */
+  .cl-checkbox--error .cl-checkbox__control {
+    border-color: var(--cl-color-danger-base, #e11d48);
+  }
+
+  /* Color Schemes */
+  .cl-checkbox--secondary.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--secondary.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-secondary-base, #8b5cf6);
+    border-color: var(--cl-color-secondary-base, #8b5cf6);
+  }
+
+  .cl-checkbox--success.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--success.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-success-base, #10b981);
+    border-color: var(--cl-color-success-base, #10b981);
+  }
+
+  .cl-checkbox--error.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--error.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-danger-base, #e11d48);
+    border-color: var(--cl-color-danger-base, #e11d48);
+  }
+
+  .cl-checkbox--warning.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--warning.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-warning-base, #f59e0b);
+    border-color: var(--cl-color-warning-base, #f59e0b);
+  }
+
+  .cl-checkbox--info.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--info.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-info-base, #0ea5e9);
+    border-color: var(--cl-color-info-base, #0ea5e9);
+  }
+
+  .cl-checkbox--default.cl-checkbox--checked .cl-checkbox__control,
+  .cl-checkbox--default.cl-checkbox--indeterminate .cl-checkbox__control {
+    background-color: var(--cl-color-neutral-base, #334155);
+    border-color: var(--cl-color-neutral-base, #334155);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Label Text (.cl-checkbox__label)
+   * ------------------------------------------------------------------------- */
+  .cl-checkbox__label {
+    display: inline-block;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * CheckboxGroup (.cl-checkbox-group)
+   * ------------------------------------------------------------------------- */
+  .cl-checkbox-group {
+    display: inline-flex;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .cl-checkbox-group--vertical {
+    flex-direction: column;
+  }
+
+  .cl-checkbox-group--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

@@ -10,4 +10,8 @@
 @import "../components/Button/Button.styles.css";
 @import "../components/ButtonGroup/ButtonGroup.styles.css";
 @import "../components/Input/Input.styles.css";
-
+@import "../components/Textarea/Textarea.styles.css";
+@import "../components/FormField/FormField.styles.css";
+@import "../components/Checkbox/Checkbox.styles.css";
+@import "../components/Radio/Radio.styles.css";
+@import "../components/Switch/Switch.styles.css";

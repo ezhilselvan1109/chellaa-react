@@ -305,4 +305,53 @@ describe("Switch Component", () => {
       expect(results).toHaveNoViolations();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 7. Static CSS & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Static CSS & sx Precedence", () => {
+    it("applies static BEM classes for variants, placements and states", () => {
+      render(
+        <Switch
+          size="lg"
+          colorScheme="success"
+          labelPlacement="start"
+          disabled
+          error
+          defaultChecked
+          data-testid="styled-switch"
+        >
+          Status
+        </Switch>
+      );
+
+      const root = screen.getByTestId("styled-switch");
+      expect(root).toHaveClass("cl-switch");
+      expect(root).toHaveClass("cl-switch--lg");
+      expect(root).toHaveClass("cl-switch--success");
+      expect(root).toHaveClass("cl-switch--placement-start");
+      expect(root).toHaveClass("cl-switch--disabled");
+      expect(root).toHaveClass("cl-switch--error");
+      expect(root).toHaveClass("cl-switch--checked");
+    });
+
+    it("applies dynamic sx styling overrides on root", () => {
+      render(
+        <Switch
+          data-testid="sx-switch"
+          sx={{
+            marginTop: "10px",
+            opacity: 0.95,
+          }}
+        >
+          Custom
+        </Switch>
+      );
+
+      const root = screen.getByTestId("sx-switch");
+      expect(root).toHaveClass("cl-switch");
+      expect(root.className).toMatch(/css-/);
+    });
+  });
 });
+

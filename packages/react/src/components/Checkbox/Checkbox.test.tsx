@@ -287,8 +287,7 @@ describe("Checkbox & CheckboxGroup Components", () => {
           <CheckboxGroup aria-label="Frontend frameworks" defaultValue={["react"]}>
             <Checkbox value="react">React</Checkbox>
             <Checkbox value="vue">Vue</Checkbox>
-            <Checkbox value="svelte">Svelte</Checkbox>
-          </CheckboxGroup>
+            </CheckboxGroup>
         </ThemeProvider>
       );
 
@@ -296,4 +295,51 @@ describe("Checkbox & CheckboxGroup Components", () => {
       expect(results).toHaveNoViolations();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 7. Static CSS & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Static CSS & sx Precedence", () => {
+    it("applies static BEM classes for variants and states", () => {
+      render(
+        <Checkbox
+          size="lg"
+          colorScheme="success"
+          disabled
+          error
+          defaultChecked
+          data-testid="styled-cb"
+        >
+          Check me
+        </Checkbox>
+      );
+
+      const root = screen.getByTestId("styled-cb");
+      expect(root).toHaveClass("cl-checkbox");
+      expect(root).toHaveClass("cl-checkbox--lg");
+      expect(root).toHaveClass("cl-checkbox--success");
+      expect(root).toHaveClass("cl-checkbox--disabled");
+      expect(root).toHaveClass("cl-checkbox--error");
+      expect(root).toHaveClass("cl-checkbox--checked");
+    });
+
+    it("applies dynamic sx styling overrides on root", () => {
+      render(
+        <Checkbox
+          data-testid="sx-cb"
+          sx={{
+            marginTop: "16px",
+            opacity: 0.85,
+          }}
+        >
+          Styled
+        </Checkbox>
+      );
+
+      const root = screen.getByTestId("sx-cb");
+      expect(root).toHaveClass("cl-checkbox");
+      expect(root.className).toMatch(/css-/);
+    });
+  });
 });
+

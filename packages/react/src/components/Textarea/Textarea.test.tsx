@@ -22,6 +22,8 @@ describe("Textarea Component", () => {
       expect(textarea).toBeInTheDocument();
       expect(textarea.tagName).toBe("TEXTAREA");
       expect(screen.getByTestId("textarea-wrapper")).toBeInTheDocument();
+      expect(screen.getByTestId("textarea-wrapper")).toHaveClass("cl-textarea");
+      expect(screen.getByTestId("textarea-wrapper")).toHaveClass("cl-textarea--outlined");
       expect(screen.getByTestId("textarea-wrapper")).not.toHaveAttribute("variant");
       expect(screen.getByTestId("textarea-wrapper")).not.toHaveAttribute("size");
     });
@@ -73,13 +75,15 @@ describe("Textarea Component", () => {
       const { rerender } = render(
         <Textarea variant="filled" placeholder="Filled" data-testid="wrap" />
       );
-      expect(screen.getByTestId("wrap")).toBeInTheDocument();
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--filled");
       expect(screen.getByTestId("wrap")).not.toHaveAttribute("variant");
 
       rerender(<Textarea variant="standard" placeholder="Standard" data-testid="wrap" />);
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--standard");
       expect(screen.getByTestId("wrap")).not.toHaveAttribute("variant");
 
       rerender(<Textarea variant="unstyled" placeholder="Unstyled" data-testid="wrap" />);
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--unstyled");
       expect(screen.getByTestId("wrap")).not.toHaveAttribute("variant");
     });
 
@@ -87,9 +91,11 @@ describe("Textarea Component", () => {
       const { rerender } = render(
         <Textarea size="sm" placeholder="Small" data-testid="wrap" />
       );
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--sm");
       expect(screen.getByTestId("wrap")).not.toHaveAttribute("size");
 
       rerender(<Textarea size="lg" placeholder="Large" data-testid="wrap" />);
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--lg");
       expect(screen.getByTestId("wrap")).not.toHaveAttribute("size");
     });
   });
@@ -139,17 +145,19 @@ describe("Textarea Component", () => {
   // 4. States & Validation
   // ---------------------------------------------------------------------------
   describe("States & Validation", () => {
-    it("sets disabled attribute on native textarea", () => {
-      render(<Textarea disabled placeholder="Disabled" />);
+    it("sets disabled attribute on native textarea and container class", () => {
+      render(<Textarea disabled placeholder="Disabled" data-testid="wrap" />);
       expect(screen.getByPlaceholderText("Disabled")).toBeDisabled();
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--disabled");
     });
 
-    it("sets aria-invalid when error is true", () => {
-      render(<Textarea error placeholder="Error state" />);
+    it("sets aria-invalid and container error class when error is true", () => {
+      render(<Textarea error placeholder="Error state" data-testid="wrap" />);
       expect(screen.getByPlaceholderText("Error state")).toHaveAttribute(
         "aria-invalid",
         "true"
       );
+      expect(screen.getByTestId("wrap")).toHaveClass("cl-textarea--error");
     });
   });
 
@@ -183,6 +191,38 @@ describe("Textarea Component", () => {
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 6. Styling Engine & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Styling Engine & sx Precedence", () => {
+    it("renders inside ThemeProvider and supports dynamic sx overrides", () => {
+      render(
+        <ThemeProvider>
+          <Textarea
+            placeholder="sx textarea"
+            data-testid="sx-textarea"
+            variant="outlined"
+            size="lg"
+            fullWidth
+            sx={{
+              borderColor: "rgb(255, 0, 0)",
+              backgroundColor: "rgb(0, 255, 0)",
+            }}
+          />
+        </ThemeProvider>
+      );
+
+      const wrapper = screen.getByTestId("sx-textarea");
+      expect(wrapper).toHaveClass("cl-textarea");
+      expect(wrapper).toHaveClass("cl-textarea--outlined");
+      expect(wrapper).toHaveClass("cl-textarea--lg");
+      expect(wrapper).toHaveClass("cl-textarea--full-width");
+
+      const styleTags = document.querySelectorAll("style[data-emotion]");
+      expect(styleTags.length).toBeGreaterThan(0);
     });
   });
 });

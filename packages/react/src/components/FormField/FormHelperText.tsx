@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useFormField } from "./FormFieldContext";
 
 export interface FormHelperTextProps
@@ -34,13 +37,7 @@ const StyledHelperTextRoot = styled("p", {
   slot: "Root",
   shouldForwardProp: (prop) =>
     prop !== "disabled" && prop !== "asChild" && prop !== "component",
-})<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  fontSize: "0.75rem",
-  lineHeight: 1.4,
-  margin: 0,
-  marginTop: theme.spacing(0.5),
-  color: disabled ? theme.palette.text.disabled : theme.palette.text.secondary,
-}));
+})({});
 
 /**
  * Contextual explanation text rendered beneath an input control,
@@ -78,14 +75,19 @@ export const FormHelperText = React.forwardRef<
   const disabled = disabledProp ?? formField?.disabled ?? false;
   const targetTag = component || as;
 
+  const helperClassName = classNames(
+    "cl-form-helper-text",
+    disabled && "cl-form-helper-text--disabled",
+    className
+  );
+
   if (asChild) {
     return (
       <StyledHelperTextRoot
         as={Slot}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLParagraphElement>}
         id={id}
-        disabled={disabled}
-        className={className}
+        className={helperClassName}
         style={style}
         sx={sx}
         {...rest}
@@ -98,10 +100,9 @@ export const FormHelperText = React.forwardRef<
   return (
     <StyledHelperTextRoot
       as={targetTag}
-      ref={ref as any}
+      ref={ref as React.Ref<HTMLParagraphElement>}
       id={id}
-      disabled={disabled}
-      className={className}
+      className={helperClassName}
       style={style}
       sx={sx}
       {...rest}

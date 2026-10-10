@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { FormFieldContext, type FormFieldContextValue } from "./FormFieldContext";
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -22,14 +25,14 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
 const StyledFormFieldRoot = styled("div", {
   name: "ChellaaFormField",
   slot: "Root",
-  shouldForwardProp: (prop) => prop !== "fullWidth",
-})<{ fullWidth?: boolean }>(({ fullWidth }) => ({
-  display: "inline-flex",
-  flexDirection: "column",
-  position: "relative",
-  width: fullWidth ? "100%" : "auto",
-  verticalAlign: "top",
-}));
+  shouldForwardProp: (prop) =>
+    prop !== "fullWidth" &&
+    prop !== "asChild" &&
+    prop !== "component" &&
+    prop !== "error" &&
+    prop !== "disabled" &&
+    prop !== "readOnly",
+})({});
 
 /**
  * Root form control container and accessibility context provider.
@@ -103,6 +106,14 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       ]
     );
 
+    const fieldClassName = classNames(
+      "cl-form-field",
+      fullWidth && "cl-form-field--full-width",
+      error && "cl-form-field--error",
+      disabled && "cl-form-field--disabled",
+      className
+    );
+
     const targetTag = component || as;
 
     if (asChild) {
@@ -110,9 +121,8 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
         <FormFieldContext.Provider value={contextValue}>
           <StyledFormFieldRoot
             as={Slot}
-            ref={ref as any}
-            fullWidth={fullWidth}
-            className={className}
+            ref={ref as React.Ref<HTMLDivElement>}
+            className={fieldClassName}
             style={style}
             sx={sx}
             {...rest}
@@ -127,9 +137,8 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       <FormFieldContext.Provider value={contextValue}>
         <StyledFormFieldRoot
           as={targetTag}
-          ref={ref as any}
-          fullWidth={fullWidth}
-          className={className}
+          ref={ref as React.Ref<HTMLDivElement>}
+          className={fieldClassName}
           style={style}
           sx={sx}
           {...rest}

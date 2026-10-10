@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useFormField } from "./FormFieldContext";
 
 export interface FormErrorMessageProps
@@ -35,17 +38,7 @@ const StyledErrorMessageRoot = styled("p", {
   slot: "Root",
   shouldForwardProp: (prop) =>
     prop !== "forceMount" && prop !== "asChild" && prop !== "component",
-})(({ theme }) => ({
-  fontSize: "0.75rem",
-  lineHeight: 1.4,
-  margin: 0,
-  marginTop: theme.spacing(0.5),
-  color: theme.palette.error.main,
-  fontWeight: 500,
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(0.5),
-}));
+})({});
 
 /**
  * Accessible error message primitive rendered conditionally when error is true,
@@ -89,15 +82,17 @@ export const FormErrorMessage = React.forwardRef<
   const id = idProp ?? formField?.errorMessageId;
   const targetTag = component || as;
 
+  const errorClassName = classNames("cl-form-error-message", className);
+
   if (asChild) {
     return (
       <StyledErrorMessageRoot
         as={Slot}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLParagraphElement>}
         id={id}
         role="alert"
         aria-live="polite"
-        className={className}
+        className={errorClassName}
         style={style}
         sx={sx}
         {...rest}
@@ -110,11 +105,11 @@ export const FormErrorMessage = React.forwardRef<
   return (
     <StyledErrorMessageRoot
       as={targetTag}
-      ref={ref as any}
+      ref={ref as React.Ref<HTMLParagraphElement>}
       id={id}
       role="alert"
       aria-live="polite"
-      className={className}
+      className={errorClassName}
       style={style}
       sx={sx}
       {...rest}

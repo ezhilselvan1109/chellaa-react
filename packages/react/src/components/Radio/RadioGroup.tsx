@@ -1,15 +1,13 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useControllableState } from "../../hooks/useControllableState";
 import { useFormField } from "../FormField/FormFieldContext";
 import { RadioContext } from "./RadioContext";
 import type { RadioGroupProps, RadioContextValue } from "./Radio.types";
-
-interface StyledRadioGroupRootProps {
-  orientation?: "vertical" | "horizontal" | undefined;
-  spacing?: number | string | undefined;
-}
 
 const StyledRadioGroupRoot = styled("div", {
   name: "ChellaaRadioGroup",
@@ -23,18 +21,7 @@ const StyledRadioGroupRoot = styled("div", {
     prop !== "readOnly" &&
     prop !== "asChild" &&
     prop !== "component",
-})<StyledRadioGroupRootProps>(({ theme, orientation = "vertical", spacing = 2 }) => {
-  const gapValue =
-    typeof spacing === "number" ? theme.spacing(spacing) : spacing;
-
-  return {
-    display: "flex",
-    flexDirection: orientation === "horizontal" ? "row" : "column",
-    flexWrap: orientation === "horizontal" ? "wrap" : "nowrap",
-    gap: gapValue,
-    width: "fit-content",
-  };
-});
+})({});
 
 /**
  * RadioGroup manages single-selection state across a group of mutually exclusive Radios,
@@ -113,17 +100,31 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
 
     const targetTag = component || as;
 
+    const groupClassName = classNames(
+      "cl-radio-group",
+      orientation === "horizontal"
+        ? "cl-radio-group--horizontal"
+        : "cl-radio-group--vertical",
+      className
+    );
+
+    const gapStyle =
+      spacing !== undefined
+        ? {
+            gap: typeof spacing === "number" ? `${spacing * 4}px` : spacing,
+            ...style,
+          }
+        : style;
+
     if (asChild) {
       return (
         <RadioContext.Provider value={contextValue}>
           <StyledRadioGroupRoot
             as={Slot}
-            ref={ref as any}
+            ref={ref as React.Ref<HTMLDivElement>}
             role="radiogroup"
-            orientation={orientation}
-            spacing={spacing}
-            className={className}
-            style={style}
+            className={groupClassName}
+            style={gapStyle}
             sx={sx}
             {...rest}
           >
@@ -137,12 +138,10 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       <RadioContext.Provider value={contextValue}>
         <StyledRadioGroupRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           role="radiogroup"
-          orientation={orientation}
-          spacing={spacing}
-          className={className}
-          style={style}
+          className={groupClassName}
+          style={gapStyle}
           sx={sx}
           {...rest}
         >

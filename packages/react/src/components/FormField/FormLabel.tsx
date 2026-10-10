@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useFormField } from "./FormFieldContext";
 
 export interface FormLabelProps
@@ -46,27 +49,7 @@ const StyledLabelRoot = styled("label", {
     prop !== "disabled" &&
     prop !== "asChild" &&
     prop !== "component",
-})<{ required?: boolean; error?: boolean; disabled?: boolean }>(
-  ({ theme, error, disabled }) => ({
-    display: "block",
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    lineHeight: 1.4,
-    marginBottom: theme.spacing(0.75),
-    color: error
-      ? theme.palette.error.main
-      : disabled
-        ? theme.palette.text.secondary
-        : theme.palette.text.primary,
-    userSelect: "none",
-    cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.6 : 1,
-    "& .ChellaaFormLabel-requiredAsterisk": {
-      color: theme.palette.error.main,
-      marginLeft: 4,
-    },
-  })
-);
+})({});
 
 /**
  * Accessible form label automatically linked to its associated input control.
@@ -100,19 +83,23 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
     const error = errorProp ?? formField?.error ?? false;
     const disabled = disabledProp ?? formField?.disabled ?? false;
 
+    const labelClassName = classNames(
+      "cl-form-label",
+      error && "cl-form-label--error",
+      disabled && "cl-form-label--disabled",
+      className
+    );
+
     const targetTag = component || as;
 
     if (asChild) {
       return (
         <StyledLabelRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLLabelElement>}
           htmlFor={htmlFor}
           id={id}
-          required={required}
-          error={error}
-          disabled={disabled}
-          className={className}
+          className={labelClassName}
           style={style}
           sx={sx}
           {...rest}
@@ -125,20 +112,17 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
     return (
       <StyledLabelRoot
         as={targetTag}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLLabelElement>}
         htmlFor={htmlFor}
         id={id}
-        required={required}
-        error={error}
-        disabled={disabled}
-        className={className}
+        className={labelClassName}
         style={style}
         sx={sx}
         {...rest}
       >
         {children}
         {required && (
-          <span className="ChellaaFormLabel-requiredAsterisk">*</span>
+          <span className="cl-form-label__asterisk" aria-hidden="true">*</span>
         )}
       </StyledLabelRoot>
     );

@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useControllableState } from "../../hooks/useControllableState";
 import { useFormField } from "../FormField/FormFieldContext";
 import { CheckboxContext } from "./CheckboxContext";
@@ -23,16 +26,12 @@ const StyledCheckboxGroupRoot = styled("div", {
     prop !== "readOnly" &&
     prop !== "asChild" &&
     prop !== "component",
-})<StyledCheckboxGroupRootProps>(({ theme, orientation = "vertical", spacing = 2 }) => {
+})<StyledCheckboxGroupRootProps>(({ theme, spacing = 2 }) => {
   const gapValue =
     typeof spacing === "number" ? theme.spacing(spacing) : spacing;
 
   return {
-    display: "flex",
-    flexDirection: orientation === "horizontal" ? "row" : "column",
-    flexWrap: orientation === "horizontal" ? "wrap" : "nowrap",
     gap: gapValue,
-    width: "fit-content",
   };
 });
 
@@ -112,6 +111,12 @@ export const CheckboxGroup = React.forwardRef<
     [value, name, size, colorScheme, disabled, readOnly, error, toggleValue]
   );
 
+  const groupClassName = classNames(
+    "cl-checkbox-group",
+    `cl-checkbox-group--${orientation}`,
+    className
+  );
+
   const targetTag = component || as;
 
   if (asChild) {
@@ -119,11 +124,11 @@ export const CheckboxGroup = React.forwardRef<
       <CheckboxContext.Provider value={contextValue}>
         <StyledCheckboxGroupRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           role="group"
           orientation={orientation}
           spacing={spacing}
-          className={className}
+          className={groupClassName}
           style={style}
           sx={sx}
           {...rest}
@@ -138,11 +143,11 @@ export const CheckboxGroup = React.forwardRef<
     <CheckboxContext.Provider value={contextValue}>
       <StyledCheckboxGroupRoot
         as={targetTag}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         role="group"
         orientation={orientation}
         spacing={spacing}
-        className={className}
+        className={groupClassName}
         style={style}
         sx={sx}
         {...rest}

@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { useCheckboxGroup } from "./CheckboxContext";
 import { useFormField } from "../FormField/FormFieldContext";
@@ -9,32 +12,8 @@ import type {
   CheckboxSize,
   CheckboxColorScheme,
 } from "./Checkbox.types";
-import type { ChellaaTheme } from "../../theme/types";
 
-function getColorSchemeAccent(
-  theme: ChellaaTheme,
-  scheme: CheckboxColorScheme
-): string {
-  if (scheme === "default") {
-    return theme.palette.text.primary;
-  }
-  const color = theme.palette[scheme];
-  return color?.main || theme.palette.primary.main;
-}
-
-const sizeConfig: Record<
-  CheckboxSize,
-  { boxSize: number; iconSize: number; fontSize: string; gap: number }
-> = {
-  sm: { boxSize: 16, iconSize: 12, fontSize: "0.875rem", gap: 8 },
-  md: { boxSize: 20, iconSize: 14, fontSize: "1rem", gap: 10 },
-  lg: { boxSize: 24, iconSize: 18, fontSize: "1.125rem", gap: 12 },
-};
-
-interface StyledCheckboxRootProps {
-  size: CheckboxSize;
-  disabled: boolean;
-}
+export type { CheckboxProps, CheckboxSize, CheckboxColorScheme };
 
 const StyledCheckboxRoot = styled("label", {
   name: "ChellaaCheckbox",
@@ -49,134 +28,7 @@ const StyledCheckboxRoot = styled("label", {
     prop !== "indeterminate" &&
     prop !== "asChild" &&
     prop !== "component",
-})<StyledCheckboxRootProps>(({ size, disabled }) => {
-  const config = sizeConfig[size] || sizeConfig.md;
-
-  return {
-    display: "inline-flex",
-    alignItems: "center",
-    verticalAlign: "middle",
-    position: "relative",
-    cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.5 : 1,
-    userSelect: "none",
-    gap: config.gap,
-    lineHeight: 1.5,
-  };
-});
-
-const StyledHiddenInput = styled("input", {
-  name: "ChellaaCheckbox",
-  slot: "Input",
-})({
-  border: 0,
-  clip: "rect(0 0 0 0)",
-  height: "1px",
-  margin: "-1px",
-  overflow: "hidden",
-  padding: 0,
-  position: "absolute",
-  width: "1px",
-  whiteSpace: "nowrap",
-});
-
-interface StyledControlBoxProps {
-  size: CheckboxSize;
-  colorScheme: CheckboxColorScheme;
-  checked: boolean;
-  indeterminate: boolean;
-  error: boolean;
-  disabled: boolean;
-}
-
-const StyledControlBox = styled("span", {
-  name: "ChellaaCheckbox",
-  slot: "Control",
-  shouldForwardProp: (prop) =>
-    prop !== "size" &&
-    prop !== "colorScheme" &&
-    prop !== "checked" &&
-    prop !== "indeterminate" &&
-    prop !== "error" &&
-    prop !== "disabled",
-})<StyledControlBoxProps>(
-  ({ theme, size, colorScheme, checked, indeterminate, error, disabled }) => {
-    const config = sizeConfig[size] || sizeConfig.md;
-    const accent = getColorSchemeAccent(theme, colorScheme);
-    const isFilled = checked || indeterminate;
-
-    const borderColor = error
-      ? theme.palette.error.main
-      : isFilled
-        ? accent
-        : theme.palette.text.secondary;
-
-    const backgroundColor = isFilled
-      ? error
-        ? theme.palette.error.main
-        : accent
-      : "transparent";
-
-    return {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      boxSizing: "border-box",
-      width: config.boxSize,
-      height: config.boxSize,
-      borderRadius: size === "lg" ? 6 : 4,
-      border: `2px solid ${borderColor}`,
-      backgroundColor,
-      color: "#ffffff",
-      flexShrink: 0,
-      transition:
-        "border-color 150ms ease-in-out, background-color 150ms ease-in-out, box-shadow 150ms ease-in-out, transform 100ms ease-out",
-
-      "& svg": {
-        width: config.iconSize,
-        height: config.iconSize,
-        display: "block",
-        transition: "transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms",
-      },
-
-      ...(!disabled && {
-        "label:hover &": {
-          boxShadow: `0 0 0 ${size === "lg" ? 10 : 8}px ${accent}1A`,
-          ...(!isFilled && !error && {
-            borderColor: accent,
-          }),
-        },
-        "label:active &": {
-          transform: "scale(0.92)",
-        },
-      }),
-
-      "input:focus-visible + &": {
-        outline: `2px solid ${accent}`,
-        outlineOffset: 2,
-        boxShadow: `0 0 0 4px ${accent}2A`,
-      },
-    };
-  }
-);
-
-interface StyledLabelTextProps {
-  size: CheckboxSize;
-  disabled: boolean;
-}
-
-const StyledLabelText = styled("span", {
-  name: "ChellaaCheckbox",
-  slot: "Label",
-  shouldForwardProp: (prop) => prop !== "size" && prop !== "disabled",
-})<StyledLabelTextProps>(({ theme, size, disabled }) => {
-  const config = sizeConfig[size] || sizeConfig.md;
-
-  return {
-    fontSize: config.fontSize,
-    color: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
-  };
-});
+})({});
 
 /**
  * Checkbox primitive with tri-state selection, custom color palettes,
@@ -237,7 +89,6 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
     const name = nameProp ?? group?.name ?? formField?.name;
     const id = idProp ?? (formField ? `${formField.id}-checkbox` : undefined);
 
-    // Uncontrolled state fallback when neither checkedProp nor group is present
     const [uncontrolledChecked, setUncontrolledChecked] = React.useState<boolean>(
       defaultChecked
     );
@@ -248,7 +99,6 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
     const nativeInputRef = React.useRef<HTMLInputElement | null>(null);
     const mergedInputRef = useMergeRefs(nativeInputRef, inputRefProp);
 
-    // Keep DOM indeterminate state in sync with prop for screen reader announcement
     React.useEffect(() => {
       if (nativeInputRef.current) {
         nativeInputRef.current.indeterminate = Boolean(indeterminate);
@@ -270,21 +120,24 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
       onChangeProp?.(event);
     };
 
+    const checkboxClassName = classNames(
+      "cl-checkbox",
+      `cl-checkbox--${size}`,
+      `cl-checkbox--${colorScheme}`,
+      effectiveChecked && "cl-checkbox--checked",
+      indeterminate && "cl-checkbox--indeterminate",
+      disabled && "cl-checkbox--disabled",
+      error && "cl-checkbox--error",
+      className
+    );
+
     const targetTag = component || as;
 
     const controlBox = (
-      <StyledControlBox
-        className="ChellaaCheckbox-Control"
-        size={size}
-        colorScheme={colorScheme}
-        checked={effectiveChecked}
-        indeterminate={indeterminate}
-        error={error}
-        disabled={disabled}
-      >
+      <span className="cl-checkbox__control ChellaaCheckbox-Control" aria-hidden="true">
         {indeterminate ? (
           <svg
-            className="ChellaaCheckbox-Icon ChellaaCheckbox-Icon--indeterminate"
+            className="cl-checkbox__icon ChellaaCheckbox-Icon ChellaaCheckbox-Icon--indeterminate"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -292,12 +145,14 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
+            width={size === "lg" ? 18 : size === "sm" ? 12 : 14}
+            height={size === "lg" ? 18 : size === "sm" ? 12 : 14}
           >
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         ) : effectiveChecked ? (
           <svg
-            className="ChellaaCheckbox-Icon ChellaaCheckbox-Icon--checked"
+            className="cl-checkbox__icon ChellaaCheckbox-Icon ChellaaCheckbox-Icon--checked"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -305,11 +160,13 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
+            width={size === "lg" ? 18 : size === "sm" ? 12 : 14}
+            height={size === "lg" ? 18 : size === "sm" ? 12 : 14}
           >
             <polyline points="20 6 9 17 4 12" />
           </svg>
         ) : null}
-      </StyledControlBox>
+      </span>
     );
 
     const ariaDescribedBy = [
@@ -324,10 +181,8 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
       return (
         <StyledCheckboxRoot
           as={Slot}
-          ref={ref as any}
-          size={size}
-          disabled={disabled}
-          className={className}
+          ref={ref as React.Ref<HTMLLabelElement>}
+          className={checkboxClassName}
           style={style}
           sx={sx}
           {...rest}
@@ -340,15 +195,13 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
     return (
       <StyledCheckboxRoot
         as={targetTag}
-        ref={ref as any}
-        size={size}
-        disabled={disabled}
-        className={className}
+        ref={ref as React.Ref<HTMLLabelElement>}
+        className={checkboxClassName}
         style={style}
         sx={sx}
         {...rest}
       >
-        <StyledHiddenInput
+        <input
           type="checkbox"
           id={id}
           name={name}
@@ -363,17 +216,14 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
           aria-checked={indeterminate ? "mixed" : effectiveChecked}
           aria-invalid={error ? true : undefined}
           aria-describedby={ariaDescribedBy}
+          className="cl-checkbox__input"
           {...inputProps}
         />
         {controlBox}
         {children && (
-          <StyledLabelText
-            className="ChellaaCheckbox-Label"
-            size={size}
-            disabled={disabled}
-          >
+          <span className="cl-checkbox__label ChellaaCheckbox-Label">
             {children}
-          </StyledLabelText>
+          </span>
         )}
       </StyledCheckboxRoot>
     );

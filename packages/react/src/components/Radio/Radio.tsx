@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { useRadioGroup } from "./RadioContext";
 import { useFormField } from "../FormField/FormFieldContext";
@@ -9,32 +12,8 @@ import type {
   RadioSize,
   RadioColorScheme,
 } from "./Radio.types";
-import type { ChellaaTheme } from "../../theme/types";
 
-function getColorSchemeAccent(
-  theme: ChellaaTheme,
-  scheme: RadioColorScheme
-): string {
-  if (scheme === "default") {
-    return theme.palette.text.primary;
-  }
-  const color = theme.palette[scheme];
-  return color?.main || theme.palette.primary.main;
-}
-
-const sizeConfig: Record<
-  RadioSize,
-  { boxSize: number; dotSize: number; fontSize: string; gap: number }
-> = {
-  sm: { boxSize: 16, dotSize: 6, fontSize: "0.875rem", gap: 8 },
-  md: { boxSize: 20, dotSize: 8, fontSize: "1rem", gap: 10 },
-  lg: { boxSize: 24, dotSize: 10, fontSize: "1.125rem", gap: 12 },
-};
-
-interface StyledRadioRootProps {
-  size: RadioSize;
-  disabled: boolean;
-}
+export type { RadioProps, RadioSize, RadioColorScheme };
 
 const StyledRadioRoot = styled("label", {
   name: "ChellaaRadio",
@@ -48,150 +27,7 @@ const StyledRadioRoot = styled("label", {
     prop !== "checked" &&
     prop !== "asChild" &&
     prop !== "component",
-})<StyledRadioRootProps>(({ size, disabled }) => {
-  const config = sizeConfig[size] || sizeConfig.md;
-
-  return {
-    display: "inline-flex",
-    alignItems: "center",
-    verticalAlign: "middle",
-    position: "relative",
-    cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.5 : 1,
-    userSelect: "none",
-    gap: config.gap,
-    lineHeight: 1.5,
-  };
-});
-
-const StyledHiddenInput = styled("input", {
-  name: "ChellaaRadio",
-  slot: "Input",
-})({
-  border: 0,
-  clip: "rect(0 0 0 0)",
-  height: "1px",
-  margin: "-1px",
-  overflow: "hidden",
-  padding: 0,
-  position: "absolute",
-  width: "1px",
-  whiteSpace: "nowrap",
-});
-
-interface StyledControlBoxProps {
-  size: RadioSize;
-  colorScheme: RadioColorScheme;
-  checked: boolean;
-  error: boolean;
-  disabled: boolean;
-}
-
-const StyledControlBox = styled("span", {
-  name: "ChellaaRadio",
-  slot: "Control",
-  shouldForwardProp: (prop) =>
-    prop !== "size" &&
-    prop !== "colorScheme" &&
-    prop !== "checked" &&
-    prop !== "error" &&
-    prop !== "disabled",
-})<StyledControlBoxProps>(
-  ({ theme, size, colorScheme, checked, error, disabled }) => {
-    const config = sizeConfig[size] || sizeConfig.md;
-    const accent = getColorSchemeAccent(theme, colorScheme);
-
-    const borderColor = error
-      ? theme.palette.error.main
-      : checked
-        ? accent
-        : theme.palette.text.secondary;
-
-    return {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      boxSizing: "border-box",
-      width: config.boxSize,
-      height: config.boxSize,
-      borderRadius: "50%",
-      border: `2px solid ${borderColor}`,
-      backgroundColor: "transparent",
-      flexShrink: 0,
-      transition:
-        "border-color 150ms ease-in-out, box-shadow 150ms ease-in-out, transform 100ms ease-out",
-
-      ...(!disabled && {
-        "label:hover &": {
-          boxShadow: `0 0 0 ${size === "lg" ? 10 : 8}px ${accent}1A`,
-          ...(!checked && !error && {
-            borderColor: accent,
-          }),
-        },
-        "label:active &": {
-          transform: "scale(0.92)",
-        },
-      }),
-
-      "input:focus-visible + &": {
-        outline: `2px solid ${accent}`,
-        outlineOffset: 2,
-        boxShadow: `0 0 0 4px ${accent}2A`,
-      },
-    };
-  }
-);
-
-interface StyledDotProps {
-  size: RadioSize;
-  colorScheme: RadioColorScheme;
-  checked: boolean;
-  error: boolean;
-}
-
-const StyledDot = styled("span", {
-  name: "ChellaaRadio",
-  slot: "Dot",
-  shouldForwardProp: (prop) =>
-    prop !== "size" &&
-    prop !== "colorScheme" &&
-    prop !== "checked" &&
-    prop !== "error",
-})<StyledDotProps>(({ theme, size, colorScheme, checked, error }) => {
-  const config = sizeConfig[size] || sizeConfig.md;
-  const accent = getColorSchemeAccent(theme, colorScheme);
-  const dotColor = error ? theme.palette.error.main : accent;
-
-  return {
-    display: "block",
-    width: config.dotSize,
-    height: config.dotSize,
-    borderRadius: "50%",
-    backgroundColor: dotColor,
-    transform: checked ? "scale(1)" : "scale(0)",
-    opacity: checked ? 1 : 0,
-    transition:
-      "transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms ease-in-out",
-  };
-});
-
-interface StyledLabelTextProps {
-  size: RadioSize;
-  disabled: boolean;
-}
-
-const StyledLabelText = styled("span", {
-  name: "ChellaaRadio",
-  slot: "Label",
-  shouldForwardProp: (prop) => prop !== "size" && prop !== "disabled",
-})<StyledLabelTextProps>(({ theme, size, disabled }) => {
-  const config = sizeConfig[size] || sizeConfig.md;
-
-  return {
-    fontSize: config.fontSize,
-    color: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
-  };
-});
+})({});
 
 /**
  * Radio primitive for single-choice selection with animated circular dot indicator,
@@ -274,25 +110,22 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
       onChangeProp?.(event);
     };
 
+    const radioClassName = classNames(
+      "cl-radio",
+      `cl-radio--${size}`,
+      `cl-radio--${colorScheme}`,
+      effectiveChecked && "cl-radio--checked",
+      disabled && "cl-radio--disabled",
+      error && "cl-radio--error",
+      className
+    );
+
     const targetTag = component || as;
 
     const controlBox = (
-      <StyledControlBox
-        className="ChellaaRadio-Control"
-        size={size}
-        colorScheme={colorScheme}
-        checked={effectiveChecked}
-        error={error}
-        disabled={disabled}
-      >
-        <StyledDot
-          className="ChellaaRadio-Dot"
-          size={size}
-          colorScheme={colorScheme}
-          checked={effectiveChecked}
-          error={error}
-        />
-      </StyledControlBox>
+      <span className="cl-radio__control ChellaaRadio-Control" aria-hidden="true">
+        <span className="cl-radio__dot ChellaaRadio-Dot" />
+      </span>
     );
 
     const ariaDescribedBy = [
@@ -307,10 +140,8 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
       return (
         <StyledRadioRoot
           as={Slot}
-          ref={ref as any}
-          size={size}
-          disabled={disabled}
-          className={className}
+          ref={ref as React.Ref<HTMLLabelElement>}
+          className={radioClassName}
           style={style}
           sx={sx}
           {...rest}
@@ -323,15 +154,13 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
     return (
       <StyledRadioRoot
         as={targetTag}
-        ref={ref as any}
-        size={size}
-        disabled={disabled}
-        className={className}
+        ref={ref as React.Ref<HTMLLabelElement>}
+        className={radioClassName}
         style={style}
         sx={sx}
         {...rest}
       >
-        <StyledHiddenInput
+        <input
           type="radio"
           id={id}
           name={name}
@@ -345,17 +174,14 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
           ref={mergedInputRef}
           aria-invalid={error ? true : undefined}
           aria-describedby={ariaDescribedBy}
+          className="cl-radio__input"
           {...inputProps}
         />
         {controlBox}
         {children && (
-          <StyledLabelText
-            className="ChellaaRadio-Label"
-            size={size}
-            disabled={disabled}
-          >
+          <span className="cl-radio__label ChellaaRadio-Label">
             {children}
-          </StyledLabelText>
+          </span>
         )}
       </StyledRadioRoot>
     );

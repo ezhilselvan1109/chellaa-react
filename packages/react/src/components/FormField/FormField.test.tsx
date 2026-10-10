@@ -25,6 +25,7 @@ describe("FormField & Primitives", () => {
       const root = screen.getByTestId("form-field");
       expect(root).toBeInTheDocument();
       expect(root.tagName).toBe("DIV");
+      expect(root).toHaveClass("cl-form-field");
     });
 
     it("supports custom polymorphic tag via as / component prop", () => {
@@ -35,6 +36,7 @@ describe("FormField & Primitives", () => {
       );
       const root = screen.getByTestId("form-field");
       expect(root.tagName).toBe("FIELDSET");
+      expect(root).toHaveClass("cl-form-field");
     });
 
     it("supports asChild delegation to child element via Slot", () => {
@@ -47,12 +49,14 @@ describe("FormField & Primitives", () => {
       );
       const slotted = screen.getByTestId("slotted-section");
       expect(slotted.tagName).toBe("SECTION");
+      expect(slotted).toHaveClass("cl-form-field");
     });
 
-    it("does not leak fullWidth prop to DOM element", () => {
+    it("does not leak fullWidth prop to DOM element and adds full-width class", () => {
       render(<FormField fullWidth data-testid="form-field" />);
       const root = screen.getByTestId("form-field");
       expect(root).not.toHaveAttribute("fullWidth");
+      expect(root).toHaveClass("cl-form-field--full-width");
     });
   });
 
@@ -122,6 +126,7 @@ describe("FormField & Primitives", () => {
       const label = screen.getByText("First Name");
       expect(label).toHaveAttribute("for", "first-name");
       expect(label).toHaveAttribute("id", "first-name-label");
+      expect(label).toHaveClass("cl-form-label");
     });
 
     it("renders required indicator when FormField is required", () => {
@@ -132,7 +137,7 @@ describe("FormField & Primitives", () => {
       );
       const label = screen.getByText(/Username/);
       expect(label).toBeInTheDocument();
-      expect(label.querySelector(".ChellaaFormLabel-requiredAsterisk")).toHaveTextContent("*");
+      expect(label.querySelector(".cl-form-label__asterisk")).toHaveTextContent("*");
     });
 
     it("allows overriding required indicator directly on FormLabel", () => {
@@ -142,7 +147,7 @@ describe("FormField & Primitives", () => {
         </FormField>
       );
       const label = screen.getByText(/Direct Required/);
-      expect(label.querySelector(".ChellaaFormLabel-requiredAsterisk")).toHaveTextContent("*");
+      expect(label.querySelector(".cl-form-label__asterisk")).toHaveTextContent("*");
     });
 
     it("supports asChild on FormLabel", () => {
@@ -156,6 +161,7 @@ describe("FormField & Primitives", () => {
       const span = screen.getByTestId("span-label");
       expect(span.tagName).toBe("SPAN");
       expect(span).toHaveAttribute("id", "slotted-label-label");
+      expect(span).toHaveClass("cl-form-label");
     });
   });
 
@@ -172,6 +178,7 @@ describe("FormField & Primitives", () => {
       const helper = screen.getByText("Helpful message");
       expect(helper).toBeInTheDocument();
       expect(helper).toHaveAttribute("id", "email-field-helper");
+      expect(helper).toHaveClass("cl-form-helper-text");
     });
 
     it("does not render error message when error is false and forceMount is false", () => {
@@ -194,6 +201,7 @@ describe("FormField & Primitives", () => {
       expect(errorMsg).toHaveTextContent("Field has error");
       expect(errorMsg).toHaveAttribute("id", "error-field-error");
       expect(errorMsg).toHaveAttribute("aria-live", "polite");
+      expect(errorMsg).toHaveClass("cl-form-error-message");
     });
 
     it("renders error message when forceMount is true even if error is false", () => {
@@ -205,6 +213,7 @@ describe("FormField & Primitives", () => {
       const errorMsg = screen.getByRole("alert");
       expect(errorMsg).toBeInTheDocument();
       expect(errorMsg).toHaveTextContent("Forced error");
+      expect(errorMsg).toHaveClass("cl-form-error-message");
     });
   });
 
@@ -299,6 +308,36 @@ describe("FormField & Primitives", () => {
 
       const results = await axe(container);
       expect(results).toHaveNoViolations();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 7. Styling Engine & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Styling Engine & sx Precedence", () => {
+    it("supports dynamic sx overrides across FormField elements", () => {
+      render(
+        <ThemeProvider>
+          <FormField
+            data-testid="sx-field"
+            sx={{ margin: "20px" }}
+          >
+            <FormLabel data-testid="sx-label" sx={{ color: "rgb(255, 0, 0)" }}>
+              Label
+            </FormLabel>
+            <FormHelperText data-testid="sx-helper" sx={{ fontSize: "14px" }}>
+              Helper
+            </FormHelperText>
+          </FormField>
+        </ThemeProvider>
+      );
+
+      expect(screen.getByTestId("sx-field")).toHaveClass("cl-form-field");
+      expect(screen.getByTestId("sx-label")).toHaveClass("cl-form-label");
+      expect(screen.getByTestId("sx-helper")).toHaveClass("cl-form-helper-text");
+
+      const styleTags = document.querySelectorAll("style[data-emotion]");
+      expect(styleTags.length).toBeGreaterThan(0);
     });
   });
 });

@@ -295,4 +295,72 @@ describe("Radio & RadioGroup Components", () => {
       expect(results).toHaveNoViolations();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 7. Static CSS & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Static CSS & sx Precedence", () => {
+    it("applies static BEM classes for variants and states on Radio", () => {
+      render(
+        <Radio
+          size="lg"
+          colorScheme="success"
+          disabled
+          error
+          defaultChecked
+          value="bem"
+          data-testid="styled-radio"
+        >
+          BEM Radio
+        </Radio>
+      );
+
+      const root = screen.getByTestId("styled-radio");
+      expect(root).toHaveClass("cl-radio");
+      expect(root).toHaveClass("cl-radio--lg");
+      expect(root).toHaveClass("cl-radio--success");
+      expect(root).toHaveClass("cl-radio--disabled");
+      expect(root).toHaveClass("cl-radio--error");
+      expect(root).toHaveClass("cl-radio--checked");
+    });
+
+    it("applies dynamic sx styling overrides on Radio root", () => {
+      render(
+        <Radio
+          value="sx"
+          data-testid="sx-radio"
+          sx={{
+            marginBottom: "12px",
+            opacity: 0.9,
+          }}
+        >
+          SX Radio
+        </Radio>
+      );
+
+      const root = screen.getByTestId("sx-radio");
+      expect(root).toHaveClass("cl-radio");
+      expect(root.className).toMatch(/css-/);
+    });
+
+    it("applies static BEM classes and sx overrides on RadioGroup", () => {
+      render(
+        <RadioGroup
+          orientation="horizontal"
+          data-testid="styled-group"
+          sx={{
+            padding: "16px",
+          }}
+        >
+          <Radio value="a">A</Radio>
+        </RadioGroup>
+      );
+
+      const group = screen.getByTestId("styled-group");
+      expect(group).toHaveClass("cl-radio-group");
+      expect(group).toHaveClass("cl-radio-group--horizontal");
+      expect(group.className).toMatch(/css-/);
+    });
+  });
 });
+
