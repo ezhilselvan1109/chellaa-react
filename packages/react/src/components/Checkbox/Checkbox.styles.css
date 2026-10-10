@@ -1,12 +1,8 @@
-/**
- * Chellaa React — Checkbox Component Styles
- * Encapsulated within @layer cl-components for deterministic cascade ordering.
- */
-
 @layer cl-components {
-  /* ---------------------------------------------------------------------------
-   * Root Label (.cl-checkbox)
-   * ------------------------------------------------------------------------- */
+  /* ==========================================================================
+     Chellaa UI - Checkbox Component Styles
+     ========================================================================== */
+
   .cl-checkbox {
     display: inline-flex;
     align-items: center;
@@ -15,7 +11,7 @@
     cursor: pointer;
     user-select: none;
     line-height: var(--cl-leading-normal, 1.5);
-    font-family: var(--cl-font-sans, system-ui, -apple-system, sans-serif);
+    font-family: var(--cl-font-sans, inherit);
     box-sizing: border-box;
   }
 
@@ -39,9 +35,7 @@
     opacity: 0.5;
   }
 
-  /* ---------------------------------------------------------------------------
-   * Hidden Native Input (.cl-checkbox__input)
-   * ------------------------------------------------------------------------- */
+  /* Hidden Native Input */
   .cl-checkbox__input {
     border: 0;
     clip: rect(0 0 0 0);
@@ -54,9 +48,7 @@
     white-space: nowrap;
   }
 
-  /* ---------------------------------------------------------------------------
-   * Visual Control Box (.cl-checkbox__control)
-   * ------------------------------------------------------------------------- */
+  /* Visual Control Box */
   .cl-checkbox__control {
     display: inline-flex;
     align-items: center;
@@ -66,93 +58,50 @@
     border-radius: var(--cl-radius-sm, 4px);
     border: 1px solid var(--cl-checkbox-border, var(--cl-color-border-default));
     background-color: var(--cl-checkbox-bg, var(--cl-color-bg-canvas));
-    color: var(--cl-palette-white);
-    transition: background-color var(--cl-motion-fast, 150ms) ease,
-                border-color var(--cl-motion-fast, 150ms) ease,
-                box-shadow var(--cl-motion-fast, 150ms) ease;
+    color: var(--cl-palette-white, #fff);
+    transition: background-color var(--cl-duration-fast, 150ms) ease,
+                border-color var(--cl-duration-fast, 150ms) ease,
+                box-shadow var(--cl-duration-fast, 150ms) ease;
   }
 
-  .cl-checkbox--sm .cl-checkbox__control {
-    width: 16px;
-    height: 16px;
-  }
+  .cl-checkbox--sm .cl-checkbox__control { width: 16px; height: 16px; }
+  .cl-checkbox--md .cl-checkbox__control { width: 20px; height: 20px; }
+  .cl-checkbox--lg .cl-checkbox__control { width: 24px; height: 24px; }
 
-  .cl-checkbox--md .cl-checkbox__control {
-    width: 20px;
-    height: 20px;
-  }
-
-  .cl-checkbox--lg .cl-checkbox__control {
-    width: 24px;
-    height: 24px;
-  }
+  /* Color Schemes */
+  .cl-checkbox--primary { --cl-cb-accent: var(--cl-color-primary-base); }
+  .cl-checkbox--secondary { --cl-cb-accent: var(--cl-color-secondary-base); }
+  .cl-checkbox--success { --cl-cb-accent: var(--cl-color-success-base); }
+  .cl-checkbox--error { --cl-cb-accent: var(--cl-color-danger-base); }
+  .cl-checkbox--warning { --cl-cb-accent: var(--cl-color-warning-base); }
+  .cl-checkbox--info { --cl-cb-accent: var(--cl-color-info-base); }
+  .cl-checkbox--default { --cl-cb-accent: var(--cl-color-neutral-base); }
 
   /* Checked & Indeterminate States */
   .cl-checkbox--checked .cl-checkbox__control,
   .cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-checkbox-checked-bg, var(--cl-color-primary-base));
-    border-color: var(--cl-checkbox-checked-bg, var(--cl-color-primary-base));
-    color: var(--cl-checkbox-checked-fg, var(--cl-palette-white));
+    background-color: var(--cl-cb-accent, var(--cl-color-primary-base));
+    border-color: var(--cl-cb-accent, var(--cl-color-primary-base));
+    color: var(--cl-palette-white, #fff);
   }
 
   /* Focus Indicator */
   .cl-checkbox__input:focus-visible + .cl-checkbox__control {
-    outline: 2px solid var(--cl-color-primary-base, #6366f1);
+    outline: 2px solid var(--cl-cb-accent, var(--cl-color-primary-base));
     outline-offset: 2px;
   }
 
-  /* Error State */
+  /* Error State Override */
   .cl-checkbox--error .cl-checkbox__control {
-    border-color: var(--cl-color-danger-base, #e11d48);
+    border-color: var(--cl-color-danger-base);
   }
 
-  /* Color Schemes */
-  .cl-checkbox--secondary.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--secondary.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-secondary-base, #8b5cf6);
-    border-color: var(--cl-color-secondary-base, #8b5cf6);
-  }
-
-  .cl-checkbox--success.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--success.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-success-base, #10b981);
-    border-color: var(--cl-color-success-base, #10b981);
-  }
-
-  .cl-checkbox--error.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--error.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-danger-base, #e11d48);
-    border-color: var(--cl-color-danger-base, #e11d48);
-  }
-
-  .cl-checkbox--warning.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--warning.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-warning-base, #f59e0b);
-    border-color: var(--cl-color-warning-base, #f59e0b);
-  }
-
-  .cl-checkbox--info.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--info.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-info-base, #0ea5e9);
-    border-color: var(--cl-color-info-base, #0ea5e9);
-  }
-
-  .cl-checkbox--default.cl-checkbox--checked .cl-checkbox__control,
-  .cl-checkbox--default.cl-checkbox--indeterminate .cl-checkbox__control {
-    background-color: var(--cl-color-neutral-base, #334155);
-    border-color: var(--cl-color-neutral-base, #334155);
-  }
-
-  /* ---------------------------------------------------------------------------
-   * Label Text (.cl-checkbox__label)
-   * ------------------------------------------------------------------------- */
+  /* Label Text */
   .cl-checkbox__label {
     display: inline-block;
   }
 
-  /* ---------------------------------------------------------------------------
-   * CheckboxGroup (.cl-checkbox-group)
-   * ------------------------------------------------------------------------- */
+  /* CheckboxGroup */
   .cl-checkbox-group {
     display: inline-flex;
     position: relative;

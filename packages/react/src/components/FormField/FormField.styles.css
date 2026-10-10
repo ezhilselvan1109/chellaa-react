@@ -1,19 +1,15 @@
-/**
- * Chellaa React — FormField Component Styles
- * Encapsulated within @layer cl-components for deterministic cascade ordering.
- */
-
 @layer cl-components {
-  /* ---------------------------------------------------------------------------
-   * Root Container (.cl-form-field)
-   * ------------------------------------------------------------------------- */
+  /* ==========================================================================
+     Chellaa UI - FormField Component Styles
+     ========================================================================== */
+
   .cl-form-field {
     display: inline-flex;
     flex-direction: column;
     position: relative;
     width: auto;
     vertical-align: top;
-    font-family: var(--cl-font-sans, system-ui, -apple-system, sans-serif);
+    font-family: var(--cl-font-sans, inherit);
     box-sizing: border-box;
   }
 
@@ -22,59 +18,48 @@
     display: flex;
   }
 
-  /* ---------------------------------------------------------------------------
-   * Form Label (.cl-form-label)
-   * ------------------------------------------------------------------------- */
+  /* Form Label */
   .cl-form-label {
     display: block;
     font-size: var(--cl-font-size-sm, 0.875rem);
-    font-weight: 500;
-    line-height: 1.4;
-    margin-bottom: var(--cl-space-1-5, 6px);
-    color: var(--cl-color-fg-primary, #0f172a);
+    font-weight: var(--cl-font-weight-medium, 500);
+    line-height: var(--cl-line-height-sm, 1.4);
+    margin-bottom: var(--cl-space-1, 4px);
+    color: var(--cl-color-fg-primary);
     user-select: none;
     cursor: pointer;
   }
 
-  .cl-form-label--error {
-    color: var(--cl-color-danger-base, #e11d48);
-  }
+  .cl-form-label--error { color: var(--cl-color-danger-base); }
 
   .cl-form-label--disabled {
-    color: var(--cl-color-fg-muted, #64748b);
+    color: var(--cl-color-fg-muted);
     cursor: not-allowed;
     opacity: 0.6;
   }
 
   .cl-form-label__asterisk {
-    color: var(--cl-color-danger-base, #e11d48);
+    color: var(--cl-color-danger-base);
     margin-left: var(--cl-space-1, 4px);
   }
 
-  /* ---------------------------------------------------------------------------
-   * Helper Text (.cl-form-helper-text)
-   * ------------------------------------------------------------------------- */
+  /* Helper Text */
   .cl-form-helper-text {
     font-size: var(--cl-font-size-xs, 0.75rem);
-    line-height: 1.4;
+    line-height: var(--cl-line-height-xs, 1.4);
     margin: var(--cl-space-1, 4px) 0 0 0;
-    color: var(--cl-color-fg-muted, #64748b);
+    color: var(--cl-color-fg-muted);
   }
 
-  .cl-form-helper-text--disabled {
-    color: var(--cl-color-fg-muted, #94a3b8);
-    opacity: 0.6;
-  }
+  .cl-form-helper-text--disabled { opacity: 0.6; }
 
-  /* ---------------------------------------------------------------------------
-   * Error Message (.cl-form-error-message)
-   * ------------------------------------------------------------------------- */
+  /* Error Message */
   .cl-form-error-message {
     font-size: var(--cl-font-size-xs, 0.75rem);
-    line-height: 1.4;
+    line-height: var(--cl-line-height-xs, 1.4);
     margin: var(--cl-space-1, 4px) 0 0 0;
-    color: var(--cl-color-danger-base, #e11d48);
-    font-weight: 500;
+    color: var(--cl-color-danger-base);
+    font-weight: var(--cl-font-weight-medium, 500);
     display: flex;
     align-items: center;
     gap: var(--cl-space-1, 4px);
