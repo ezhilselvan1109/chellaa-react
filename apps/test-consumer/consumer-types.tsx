@@ -109,6 +109,28 @@ import {
   type TabsVariant,
   type TabsSize,
   type TabsActivationMode,
+  // Navigation Primitives - Pagination (Wave 3)
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  type PaginationProps,
+  type PaginationRootProps,
+  type PaginationListProps,
+  type PaginationItemProps,
+  type PaginationActionProps,
+  type PaginationEllipsisProps,
+  type PaginationSizeSelectProps,
+  type PaginationJumperProps,
+  type PaginationSize,
+  type PaginationVariant,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -506,6 +528,56 @@ export function ConsumerTypeFixture() {
                     ),
                   };
                   return <Tabs {...tabsProps} />;
+                })()}
+              </div>
+
+              {/* 20. Pagination (Wave 3) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const size: PaginationSize = "md";
+                  const variant: PaginationVariant = "outline";
+                  const rootProps: PaginationRootProps = {
+                    total: 100,
+                    pageSize: 10,
+                    size,
+                    variant,
+                  };
+                  const listProps: PaginationListProps = {};
+                  const itemProps: PaginationItemProps = { page: 1, isCurrent: true };
+                  const prevProps: PaginationActionProps = {};
+                  const nextProps: PaginationActionProps = {};
+                  const firstProps: PaginationActionProps = {};
+                  const lastProps: PaginationActionProps = {};
+                  const ellipsisProps: PaginationEllipsisProps = {};
+                  const sizeSelectProps: PaginationSizeSelectProps = {
+                    options: [10, 20, 50],
+                  };
+                  const jumperProps: PaginationJumperProps = {};
+                  const paginationProps: PaginationProps = {
+                    total: 200,
+                    pageSize: 20,
+                    page: 2,
+                    onPageChange: (page: number) => console.log(page),
+                  };
+
+                  return (
+                    <>
+                      <Pagination {...paginationProps} />
+                      <PaginationRoot {...rootProps}>
+                        <PaginationPrev {...prevProps} />
+                        <PaginationFirst {...firstProps} />
+                        <PaginationList {...listProps}>
+                          <PaginationItem {...itemProps}>1</PaginationItem>
+                          <PaginationEllipsis {...ellipsisProps} />
+                          <PaginationItem page={10}>10</PaginationItem>
+                        </PaginationList>
+                        <PaginationLast {...lastProps} />
+                        <PaginationNext {...nextProps} />
+                        <PaginationSizeSelect {...sizeSelectProps} />
+                        <PaginationJumper {...jumperProps} />
+                      </PaginationRoot>
+                    </>
+                  );
                 })()}
               </div>
             </>

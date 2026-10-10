@@ -99,6 +99,19 @@ import {
   TabsTrigger,
   TabsContent,
   TabsIndicator,
+  // 20. Pagination Navigation Primitives (Wave 3)
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  getPaginationRange,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -248,6 +261,30 @@ assertComponent("TabsTrigger", TabsTrigger);
 assertComponent("TabsContent", TabsContent);
 assertComponent("TabsIndicator", TabsIndicator);
 
+// 20. Pagination Navigation Primitives (Wave 3)
+assertComponent("Pagination", Pagination);
+assertComponent("Pagination.Root", Pagination.Root);
+assertComponent("Pagination.List", Pagination.List);
+assertComponent("Pagination.Item", Pagination.Item);
+assertComponent("Pagination.Prev", Pagination.Prev);
+assertComponent("Pagination.Next", Pagination.Next);
+assertComponent("Pagination.First", Pagination.First);
+assertComponent("Pagination.Last", Pagination.Last);
+assertComponent("Pagination.Ellipsis", Pagination.Ellipsis);
+assertComponent("Pagination.SizeSelect", Pagination.SizeSelect);
+assertComponent("Pagination.Jumper", Pagination.Jumper);
+assertComponent("PaginationRoot", PaginationRoot);
+assertComponent("PaginationList", PaginationList);
+assertComponent("PaginationItem", PaginationItem);
+assertComponent("PaginationPrev", PaginationPrev);
+assertComponent("PaginationNext", PaginationNext);
+assertComponent("PaginationFirst", PaginationFirst);
+assertComponent("PaginationLast", PaginationLast);
+assertComponent("PaginationEllipsis", PaginationEllipsis);
+assertComponent("PaginationSizeSelect", PaginationSizeSelect);
+assertComponent("PaginationJumper", PaginationJumper);
+assertFunction("getPaginationRange", getPaginationRange);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, and Tabs imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, Tabs, and Pagination imported cleanly in Node ESM.",
 );

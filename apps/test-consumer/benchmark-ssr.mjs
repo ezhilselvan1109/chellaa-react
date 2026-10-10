@@ -46,6 +46,7 @@ import {
   AccordionIcon,
   // 19. Navigation Primitives (Wave 3)
   Tabs,
+  Pagination,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -228,6 +229,13 @@ function App() {
           React.createElement(Tabs.Content, { value: "tab-1" }, "Tab 1 Content"),
           React.createElement(Tabs.Content, { value: "tab-2" }, "Tab 2 Content"),
         ),
+
+        // 20. Navigation & Pagination (Wave 3)
+        React.createElement(Pagination, {
+          total: 100,
+          pageSize: 10,
+          defaultPage: 1,
+        }),
       ),
     ),
   );
@@ -279,6 +287,12 @@ const mandatoryAssertions = [
   { name: "Tabs list class (cl-tabs__list)", check: html.includes("cl-tabs__list") },
   { name: "Tabs trigger class (cl-tabs__trigger)", check: html.includes("cl-tabs__trigger") },
   { name: "Tabs content class (cl-tabs__content)", check: html.includes("cl-tabs__content") },
+  // Navigation & Pagination (Wave 3)
+  { name: "Pagination class (cl-pagination)", check: html.includes("cl-pagination") },
+  { name: "Pagination list class (cl-pagination__list)", check: html.includes("cl-pagination__list") },
+  { name: "Pagination item class (cl-pagination__item)", check: html.includes("cl-pagination__item") },
+  { name: "Pagination prev class (cl-pagination__prev)", check: html.includes("cl-pagination__prev") },
+  { name: "Pagination next class (cl-pagination__next)", check: html.includes("cl-pagination__next") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -288,5 +302,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, and Tabs (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, and Pagination (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

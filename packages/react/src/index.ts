@@ -397,5 +397,33 @@ export {
   type TabsContextValue,
 } from "./components/Tabs";
 
+export {
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  PaginationContext,
+  usePaginationContext,
+  getPaginationRange,
+  type PaginationSize,
+  type PaginationVariant,
+  type PaginationProps,
+  type PaginationRootProps,
+  type PaginationListProps,
+  type PaginationItemProps,
+  type PaginationActionProps,
+  type PaginationEllipsisProps,
+  type PaginationSizeSelectProps,
+  type PaginationJumperProps,
+  type PaginationContextValue,
+} from "./components/Pagination";
+
 
 

@@ -92,6 +92,15 @@ const mandatoryRules = [
   { name: "Class: cl-tabs__trigger", check: combined.includes("cl-tabs__trigger") },
   { name: "Class: cl-tabs__content", check: combined.includes("cl-tabs__content") },
   { name: "Class: cl-tabs__indicator", check: combined.includes("cl-tabs__indicator") },
+  // 13. Navigation & Pagination (Wave 3)
+  { name: "Class: cl-pagination", check: combined.includes("cl-pagination") },
+  { name: "Class: cl-pagination__list", check: combined.includes("cl-pagination__list") },
+  { name: "Class: cl-pagination__item", check: combined.includes("cl-pagination__item") },
+  { name: "Class: cl-pagination__prev", check: combined.includes("cl-pagination__prev") },
+  { name: "Class: cl-pagination__next", check: combined.includes("cl-pagination__next") },
+  { name: "Class: cl-pagination__ellipsis", check: combined.includes("cl-pagination__ellipsis") },
+  { name: "Class: cl-pagination__size-select", check: combined.includes("cl-pagination__size-select") },
+  { name: "Class: cl-pagination__jumper", check: combined.includes("cl-pagination__jumper") },
 ];
 
 for (const rule of mandatoryRules) {
