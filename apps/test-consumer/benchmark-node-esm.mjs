@@ -66,6 +66,14 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverClose,
+  // 15. Feedback & Notification Primitives (Wave 2B)
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertCloseButton,
+  AlertIcon,
+  AlertAction,
+  AlertBody,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -166,6 +174,16 @@ assertComponent("Popover.Trigger", PopoverTrigger);
 assertComponent("Popover.Content", PopoverContent);
 assertComponent("Popover.Close", PopoverClose);
 
+// 16. Feedback & Notification Primitives (Wave 2B)
+assertComponent("Alert", Alert);
+assertComponent("Alert.Root", Alert.Root);
+assertComponent("Alert.Icon", Alert.Icon);
+assertComponent("Alert.Title", Alert.Title);
+assertComponent("Alert.Description", Alert.Description);
+assertComponent("Alert.CloseButton", Alert.CloseButton);
+assertComponent("Alert.Action", Alert.Action);
+assertComponent("Alert.Body", Alert.Body);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, and Popover imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, Popover, and Alert imported cleanly in Node ESM.",
 );

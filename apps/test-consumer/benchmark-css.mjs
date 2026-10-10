@@ -63,6 +63,11 @@ const mandatoryRules = [
   { name: "Class: cl-stack", check: combined.includes("cl-stack") },
   { name: "Class: cl-flex", check: combined.includes("cl-flex") },
   { name: "Class: cl-grid", check: combined.includes("cl-grid") },
+  // 8. Feedback & Alert (Wave 2B)
+  { name: "Class: cl-alert", check: combined.includes("cl-alert") },
+  { name: "Class: cl-alert__icon", check: combined.includes("cl-alert__icon") },
+  { name: "Class: cl-alert__title", check: combined.includes("cl-alert__title") },
+  { name: "Class: cl-alert__close", check: combined.includes("cl-alert__close") },
 ];
 
 for (const rule of mandatoryRules) {

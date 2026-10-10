@@ -34,6 +34,7 @@ import {
   Stack,
   Flex,
   Grid,
+  Alert,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -156,6 +157,20 @@ function App() {
           React.createElement(Grid, { item: true, xs: 6 }, "Grid Column A"),
           React.createElement(Grid, { item: true, xs: 6 }, "Grid Column B"),
         ),
+
+        // 15. Alert (Wave 2B)
+        React.createElement(
+          Alert,
+          { status: "warning", variant: "subtle" },
+          React.createElement(Alert.Icon),
+          React.createElement(
+            Alert.Body,
+            null,
+            React.createElement(Alert.Title, null, "SSR Alert Title"),
+            React.createElement(Alert.Description, null, "SSR Alert Description"),
+          ),
+          React.createElement(Alert.CloseButton),
+        ),
       ),
     ),
   );
@@ -186,6 +201,10 @@ const mandatoryAssertions = [
   { name: "Divider class (cl-divider)", check: html.includes("cl-divider") },
   { name: "Flex class (cl-flex)", check: html.includes("cl-flex") },
   { name: "Grid class (cl-grid)", check: html.includes("cl-grid") },
+  // Feedback & Alert (Wave 2B)
+  { name: "Alert class (cl-alert)", check: html.includes("cl-alert") },
+  { name: "Alert icon class (cl-alert__icon)", check: html.includes("cl-alert__icon") },
+  { name: "Alert title class (cl-alert__title)", check: html.includes("cl-alert__title") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -195,5 +214,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all 18 components (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

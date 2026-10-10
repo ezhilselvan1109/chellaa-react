@@ -49,6 +49,11 @@ import {
   Popover,
   type PopoverProps,
   type PopoverPlacement,
+  // Feedback & Alert (Wave 2B)
+  Alert,
+  type AlertProps,
+  type AlertStatus,
+  type AlertVariant,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -222,6 +227,29 @@ export function ConsumerTypeFixture() {
             ),
           };
           return <Popover {..._popoverProps} />;
+        })()}
+        {/* 19. Alert Compound Feedback (Wave 2B) */}
+        {(() => {
+          const _alertProps: AlertProps = {
+            status: "info" as AlertStatus,
+            variant: "subtle" as AlertVariant,
+            isClosable: true,
+            onClose: () => {},
+            children: (
+              <>
+                <Alert.Icon />
+                <Alert.Body>
+                  <Alert.Title>Consumer Alert Title</Alert.Title>
+                  <Alert.Description>Consumer Alert Description</Alert.Description>
+                </Alert.Body>
+                <Alert.Action>
+                  <button type="button">Action</button>
+                </Alert.Action>
+                <Alert.CloseButton />
+              </>
+            ),
+          };
+          return <Alert {..._alertProps} />;
         })()}
       </Container>
     </ThemeProvider>

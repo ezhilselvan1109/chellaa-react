@@ -279,4 +279,28 @@ export {
   type PopoverContextValue,
 } from "./components/Popover";
 
+// Feedback & Notification Primitives
+export {
+  Alert,
+  AlertRoot,
+  AlertIcon,
+  AlertBody,
+  AlertTitle,
+  AlertDescription,
+  AlertAction,
+  AlertCloseButton,
+  useAlertContext,
+  type AlertProps,
+  type AlertRootProps,
+  type AlertIconProps,
+  type AlertBodyProps,
+  type AlertTitleProps,
+  type AlertDescriptionProps,
+  type AlertActionProps,
+  type AlertCloseButtonProps,
+  type AlertStatus,
+  type AlertVariant,
+  type AlertContextValue,
+} from "./components/Alert";
+
 
