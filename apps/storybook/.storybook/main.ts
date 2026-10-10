@@ -17,7 +17,7 @@ const config: StorybookConfig = {
     autodocs: "tag",
   },
   async viteFinal(config) {
-    if (process.env.VERCEL) {
+    if (process.env.VERCEL || process.env.NODE_ENV === "production") {
       config.base = "/storybook/";
     }
     return config;
