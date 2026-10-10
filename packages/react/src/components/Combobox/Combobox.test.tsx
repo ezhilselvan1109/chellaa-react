@@ -16,6 +16,8 @@ import {
 } from "./Combobox";
 import { FormField } from "../FormField/FormField";
 import { FormLabel } from "../FormField/FormLabel";
+import { FormHelperText } from "../FormField/FormHelperText";
+import { FormErrorMessage } from "../FormField/FormErrorMessage";
 
 const COUNTRIES = [
   { value: "us", label: "United States" },
@@ -330,5 +332,128 @@ describe("Combobox Component (SPEC-030)", () => {
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders Combobox.Control and forwards ref properly", () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(
+      <Combobox.Root>
+        <Combobox.Control ref={ref} data-testid="cb-control">
+          <Combobox.Input placeholder="Test control" />
+          <Combobox.Trigger />
+        </Combobox.Control>
+      </Combobox.Root>
+    );
+
+    const controlEl = screen.getByTestId("cb-control");
+    expect(controlEl).toHaveClass("cl-combobox__control");
+    expect(ref.current).toBe(controlEl);
+  });
+
+  it("opens listbox popup when clicking on the input element", async () => {
+    const user = userEvent.setup();
+    render(<StandardCombobox />);
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(input);
+    expect(input).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+  });
+
+  it("highlights item on mouseEnter", () => {
+    render(<StandardCombobox defaultOpen />);
+    const options = screen.getAllByRole("option");
+    const secondOption = options[1];
+
+    fireEvent.mouseEnter(secondOption);
+    expect(secondOption).toHaveAttribute("data-highlighted", "true");
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("aria-activedescendant", secondOption.id);
+  });
+
+  it("[DEF-008] shows all options when single-select is reopened with an existing value", async () => {
+    const user = userEvent.setup();
+    render(<StandardCombobox />);
+    const trigger = screen.getByRole("button", { name: "Toggle options" });
+
+    // Open and select Canada
+    await user.click(trigger);
+    const canadaOption = screen.getByRole("option", { name: /Canada/i });
+    await user.click(canadaOption);
+
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveValue("Canada");
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+
+    // Reopen listbox via trigger
+    await user.click(trigger);
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+
+    // All options must remain visible, Canada is selected
+    expect(screen.getAllByRole("option")).toHaveLength(4);
+    expect(screen.getByRole("option", { name: /United States/i })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: /Canada/i })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("[DEF-009] pressing ArrowDown on closed input opens listbox and highlights first option", () => {
+    render(<StandardCombobox />);
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(input).toHaveAttribute("aria-expanded", "true");
+    const firstOption = screen.getByRole("option", { name: /United States/i });
+    expect(firstOption).toHaveAttribute("data-highlighted", "true");
+    expect(input).toHaveAttribute("aria-activedescendant", firstOption.id);
+  });
+
+  it("[DEF-010] cascades FormField props: aria-describedby, aria-required, and name", () => {
+    render(
+      <FormField id="country-ff" required error name="user_country">
+        <FormLabel>Country</FormLabel>
+        <Combobox.Root>
+          <Combobox.Control>
+            <Combobox.Input />
+            <Combobox.Trigger />
+          </Combobox.Control>
+        </Combobox.Root>
+        <FormErrorMessage>Country is required.</FormErrorMessage>
+      </FormField>
+    );
+
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("id", "country-ff");
+    expect(input).toHaveAttribute("aria-required", "true");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("name", "user_country");
+    expect(input).toHaveAttribute("aria-describedby");
+    expect(input.getAttribute("aria-describedby")).toContain("country-ff-error");
+  });
+
+  it("[DEF-011] auto-layout renders tag chips and clear button in multi-select mode", () => {
+    render(
+      <Combobox
+        options={COUNTRIES}
+        isMulti
+        defaultValue={["us", "ca"]}
+        placeholder="Select countries"
+      />
+    );
+
+    expect(screen.getByText("United States")).toBeInTheDocument();
+    expect(screen.getByText("Canada")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Clear selection/i })).toBeInTheDocument();
+  });
+
+  it("[DEF-012] ComboboxTrigger retains focus on input when closing popup", async () => {
+    const user = userEvent.setup();
+    render(<StandardCombobox defaultOpen />);
+    const input = screen.getByRole("combobox");
+    const trigger = screen.getByRole("button", { name: "Toggle options" });
+
+    await user.click(trigger);
+    expect(input).toHaveAttribute("aria-expanded", "false");
+    expect(input).toHaveFocus();
   });
 });

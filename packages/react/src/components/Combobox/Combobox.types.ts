@@ -47,11 +47,23 @@ export interface ComboboxRootProps<TValue = string | string[]>
   options?: ComboboxOption[] | undefined;
   /** Placeholder for the auto-layout input */
   placeholder?: string | undefined;
+  /** Name of the input element for form submission */
+  name?: string | undefined;
+  /** Whether the combobox input is required */
+  isRequired?: boolean | undefined;
+  /** Accessible description element ID */
+  "aria-describedby"?: string | undefined;
   /** Compound children or custom layout */
   children?: React.ReactNode | undefined;
 }
 
 export type ComboboxProps<TValue = string | string[]> = ComboboxRootProps<TValue>;
+
+export interface ComboboxControlProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** When true, delegates rendering to child element via Slot */
+  asChild?: boolean | undefined;
+}
 
 export interface ComboboxInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -147,6 +159,14 @@ export interface ComboboxContextValue {
   size: ComboboxSize;
   variant: ComboboxVariant;
   filter: ((itemValue: string, itemText: string, search: string) => boolean) | false;
+  isFiltering: boolean;
+  setIsFiltering: (filtering: boolean) => void;
+  pendingHighlight: "first" | "last" | "selected" | null;
+  setPendingHighlight: (target: "first" | "last" | "selected" | null) => void;
+  openWithHighlight: (target: "first" | "last" | "selected") => void;
+  ariaDescribedBy?: string | undefined;
+  isRequired?: boolean | undefined;
+  name?: string | undefined;
   registerItem: (item: RegisteredItem) => () => void;
   updateItemVisibility: (id: string, isVisible: boolean) => void;
   visibleItems: RegisteredItem[];

@@ -10,6 +10,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import { useControllableState } from "../../hooks/useControllableState";
+import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { useFormField } from "../FormField/FormFieldContext";
 import { Portal } from "../../primitives/Portal";
 import { Slot } from "../../primitives/Slot";
@@ -17,6 +18,7 @@ import { classNames } from "../../utils/classNames";
 import type {
   ComboboxProps,
   ComboboxRootProps,
+  ComboboxControlProps,
   ComboboxInputProps,
   ComboboxTriggerProps,
   ComboboxPortalProps,
@@ -87,11 +89,24 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
       className,
       children,
       id: idProp,
+      name: nameProp,
+      isRequired: isRequiredProp,
+      "aria-describedby": ariaDescribedByProp,
       ...rest
     } = props;
 
     const isDisabled = disabledProp ?? formField?.disabled ?? false;
     const isInvalid = isInvalidProp ?? formField?.error ?? false;
+    const isRequired = isRequiredProp ?? (props as any).required ?? formField?.required ?? false;
+    const name = nameProp ?? formField?.name;
+    const ariaDescribedBy = [
+      ariaDescribedByProp,
+      formField?.error && formField?.hasErrorMessage ? formField.errorMessageId : null,
+      formField?.hasHelperText ? formField.helperTextId : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
     const size = sizeProp ?? "md";
     const variant = variantProp;
     const isLoading = isLoadingProp;
@@ -100,6 +115,21 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
     const generatedInputId = `cl-combobox-input-${baseId}`;
     const inputId = idProp ?? formField?.id ?? generatedInputId;
     const listboxId = `cl-combobox-listbox-${baseId}`;
+
+    // Resolve initial search label for single-select when options are available
+    const initialVal = valueProp !== undefined ? valueProp : defaultValueProp;
+    const initialSelectedOption =
+      !isMulti && options && initialVal !== undefined
+        ? options.find((o) => o.value === initialVal)
+        : undefined;
+
+    const resolvedDefaultSearch =
+      defaultSearchValue ||
+      (typeof initialSelectedOption?.label === "string"
+        ? initialSelectedOption.label
+        : typeof initialSelectedOption?.value === "string"
+          ? initialSelectedOption.value
+          : "");
 
     // Controlled or uncontrolled value
     const [value, setValueState] = useControllableState<any>({
@@ -111,7 +141,7 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
     // Controlled or uncontrolled search text
     const [searchValue, setSearchValueState] = useControllableState<string>({
       value: searchValueProp,
-      defaultValue: defaultSearchValue,
+      defaultValue: resolvedDefaultSearch,
       onChange: onSearchChange,
     });
 
@@ -122,8 +152,27 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
       onChange: onOpenChange,
     });
 
+    const [isFiltering, setIsFiltering] = React.useState<boolean>(false);
+    const [pendingHighlight, setPendingHighlight] = React.useState<
+      "first" | "last" | "selected" | null
+    >(null);
+
+    const openWithHighlight = React.useCallback(
+      (target: "first" | "last" | "selected") => {
+        if (isDisabled) return;
+        setIsFiltering(false);
+        setPendingHighlight(target);
+        setIsOpenState(true);
+      },
+      [isDisabled, setIsOpenState]
+    );
+
     const [activeId, setActiveId] = React.useState<string | null>(null);
     const [hasOptions, setHasOptions] = React.useState<boolean>(true);
+    const setHasOptionsCallback = React.useCallback((has: boolean) => {
+      setHasOptions((prev) => (prev === has ? prev : has));
+    }, []);
+
     const inputRef = React.useRef<HTMLInputElement | null>(null);
     const contentElementRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -173,12 +222,14 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
             : [...currentArr, itemVal];
           setValueState(nextArr);
           setSearchValueState("");
+          setIsFiltering(false);
           if (inputRef.current) {
             inputRef.current.focus();
           }
         } else {
           setValueState(itemVal);
           setSearchValueState(itemText || itemVal);
+          setIsFiltering(false);
           setIsOpenState(false);
           setActiveId(null);
           if (inputRef.current) {
@@ -201,6 +252,7 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
     const clearSelection = React.useCallback(() => {
       setValueState(isMulti ? [] : "");
       setSearchValueState("");
+      setIsFiltering(false);
       setActiveId(null);
       if (inputRef.current) {
         inputRef.current.focus();
@@ -227,7 +279,7 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         contentRef: refs.setFloating,
         contentElementRef,
         hasOptions,
-        setHasOptions,
+        setHasOptions: setHasOptionsCallback,
         floatingStyles,
         listboxId,
         inputId,
@@ -238,6 +290,14 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         size,
         variant,
         filter,
+        isFiltering,
+        setIsFiltering,
+        pendingHighlight,
+        setPendingHighlight,
+        openWithHighlight,
+        ariaDescribedBy,
+        isRequired,
+        name,
         registerItem,
         updateItemVisibility,
         visibleItems: [],
@@ -256,6 +316,7 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         refs.setReference,
         refs.setFloating,
         hasOptions,
+        setHasOptionsCallback,
         floatingStyles,
         listboxId,
         inputId,
@@ -266,6 +327,12 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         size,
         variant,
         filter,
+        isFiltering,
+        pendingHighlight,
+        openWithHighlight,
+        ariaDescribedBy,
+        isRequired,
+        name,
         registerItem,
         updateItemVisibility,
       ]
@@ -278,20 +345,30 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
       className
     );
 
+    const mergedRootRef = useMergeRefs(ref, refs.setReference);
+
     return (
       <ComboboxContext.Provider value={contextValue}>
-        <div ref={ref} className={rootClasses} {...rest}>
+        <div ref={mergedRootRef} className={rootClasses} {...rest}>
           {children ?? (
             <>
-              <div
-                className="cl-combobox__control"
-                ref={refs.setReference}
-                data-disabled={isDisabled ? "true" : undefined}
-                data-invalid={isInvalid ? "true" : undefined}
-              >
+              <ComboboxControl>
+                {isMulti && Array.isArray(value) && value.length > 0 && (
+                  <div className="cl-combobox__tags">
+                    {value.map((val) => {
+                      const opt = options?.find((o) => o.value === val);
+                      return (
+                        <ComboboxTag key={val} value={val}>
+                          {opt?.label ?? val}
+                        </ComboboxTag>
+                      );
+                    })}
+                  </div>
+                )}
                 <ComboboxInput placeholder={placeholder} />
+                <ComboboxClear />
                 <ComboboxTrigger />
-              </div>
+              </ComboboxControl>
               <ComboboxContent>
                 <ComboboxEmpty>No results found.</ComboboxEmpty>
                 {options?.map((opt) => (
@@ -313,7 +390,47 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
 );
 
 /* =========================================================================
-   2. ComboboxInput
+   2. ComboboxControl
+   ========================================================================= */
+
+export const ComboboxControl = React.forwardRef<HTMLDivElement, ComboboxControlProps>(
+  function ComboboxControl(props, ref) {
+    const ctx = useComboboxContext();
+    const { asChild = false, className, children, ...rest } = props;
+    const combinedRef = useMergeRefs(ref, ctx.controlRef);
+
+    const controlClasses = classNames("cl-combobox__control", className);
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={combinedRef}
+          data-disabled={ctx.isDisabled ? "true" : undefined}
+          data-invalid={ctx.isInvalid ? "true" : undefined}
+          className={controlClasses}
+          {...rest}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <div
+        ref={combinedRef}
+        data-disabled={ctx.isDisabled ? "true" : undefined}
+        data-invalid={ctx.isInvalid ? "true" : undefined}
+        className={controlClasses}
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+/* =========================================================================
+   3. ComboboxInput
    ========================================================================= */
 
 export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputProps>(
@@ -328,6 +445,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
       onKeyDown,
       onFocus,
       onBlur,
+      onClick,
       disabled: disabledProp,
       placeholder,
       value: inputValProp,
@@ -349,6 +467,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (isDisabled) return;
       const nextQuery = e.target.value;
+      ctx.setIsFiltering(true);
       ctx.setSearchValue(nextQuery);
       if (!ctx.isOpen) {
         ctx.setIsOpen(true);
@@ -365,7 +484,8 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         case "ArrowDown": {
           e.preventDefault();
           if (!ctx.isOpen) {
-            ctx.setIsOpen(true);
+            ctx.openWithHighlight(ctx.value && !ctx.isMulti ? "selected" : "first");
+            break;
           }
           if (options.length > 0) {
             const currentIndex = options.findIndex((opt) => opt.id === ctx.activeId);
@@ -385,7 +505,8 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         case "ArrowUp": {
           e.preventDefault();
           if (!ctx.isOpen) {
-            ctx.setIsOpen(true);
+            ctx.openWithHighlight(ctx.value && !ctx.isMulti ? "selected" : "last");
+            break;
           }
           if (options.length > 0) {
             const currentIndex = options.findIndex((opt) => opt.id === ctx.activeId);
@@ -483,6 +604,17 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
       onBlur?.(e);
     };
 
+    const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+      if (isDisabled) return;
+      if (!ctx.isOpen) {
+        ctx.openWithHighlight("selected");
+        if (!ctx.isMulti && ctx.value) {
+          ctx.inputRef.current?.select();
+        }
+      }
+      onClick?.(e);
+    };
+
     const combinedRef = (node: HTMLInputElement | null) => {
       ctx.inputRef.current = node;
       if (typeof ref === "function") {
@@ -511,6 +643,10 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             "aria-invalid": ctx.isInvalid || undefined,
             "aria-disabled": isDisabled || undefined,
             "aria-busy": ctx.isLoading || undefined,
+            "aria-describedby": ctx.ariaDescribedBy,
+            "aria-required": ctx.isRequired || undefined,
+            name: ctx.name,
+            required: ctx.isRequired || undefined,
             id: ctx.inputId,
             autoComplete: "off",
             spellCheck: "false",
@@ -519,6 +655,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             onKeyDown: handleKeyDown,
             onFocus: handleFocus,
             onBlur: handleBlur,
+            onClick: handleClick,
             placeholder,
             className: inputClasses,
             ...rest,
@@ -540,6 +677,10 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         aria-invalid={ctx.isInvalid || undefined}
         aria-disabled={isDisabled || undefined}
         aria-busy={ctx.isLoading || undefined}
+        aria-describedby={ctx.ariaDescribedBy}
+        aria-required={ctx.isRequired || undefined}
+        name={ctx.name}
+        required={ctx.isRequired || undefined}
         disabled={isDisabled}
         id={ctx.inputId}
         autoComplete="off"
@@ -549,6 +690,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onClick={handleClick}
         placeholder={placeholder}
         className={inputClasses}
         {...rest}
@@ -577,8 +719,12 @@ export const ComboboxTrigger = React.forwardRef<HTMLButtonElement, ComboboxTrigg
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (isDisabled) return;
-      ctx.setIsOpen(!ctx.isOpen);
-      if (!ctx.isOpen && ctx.inputRef.current) {
+      if (ctx.isOpen) {
+        ctx.setIsOpen(false);
+      } else {
+        ctx.openWithHighlight("selected");
+      }
+      if (ctx.inputRef.current) {
         ctx.inputRef.current.focus();
       }
       onClick?.(e);
@@ -671,12 +817,38 @@ export const ComboboxContent = React.forwardRef<HTMLDivElement, ComboboxContentP
       }
     };
 
-    // Keep track of visible option count for Combobox.Empty
+    // Keep track of visible option count and process pendingHighlight
     React.useLayoutEffect(() => {
       if (ctx.isOpen && ctx.contentElementRef.current) {
-        const optionCount =
-          ctx.contentElementRef.current.querySelectorAll('[role="option"]').length;
-        ctx.setHasOptions(optionCount > 0);
+        const container = ctx.contentElementRef.current;
+        const allOptions = Array.from(
+          container.querySelectorAll<HTMLElement>('[role="option"]')
+        );
+        const enabledOptions = allOptions.filter(
+          (el) => el.getAttribute("aria-disabled") !== "true"
+        );
+
+        ctx.setHasOptions(allOptions.length > 0);
+
+        if (ctx.pendingHighlight) {
+          let targetEl: HTMLElement | null = null;
+          if (ctx.pendingHighlight === "first" && enabledOptions.length > 0) {
+            targetEl = enabledOptions[0] ?? null;
+          } else if (ctx.pendingHighlight === "last" && enabledOptions.length > 0) {
+            targetEl = enabledOptions[enabledOptions.length - 1] ?? null;
+          } else if (ctx.pendingHighlight === "selected") {
+            const selectedEl = enabledOptions.find(
+              (el) => el.getAttribute("aria-selected") === "true"
+            );
+            targetEl = selectedEl ?? (enabledOptions.length > 0 ? enabledOptions[0] ?? null : null);
+          }
+
+          if (targetEl) {
+            ctx.setActiveId(targetEl.id);
+            targetEl.scrollIntoView?.({ block: "nearest" });
+          }
+          ctx.setPendingHighlight(null);
+        }
       }
     });
 
@@ -747,6 +919,7 @@ export const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(
       className,
       children,
       onClick,
+      onMouseEnter,
       ...rest
     } = props;
 
@@ -764,8 +937,9 @@ export const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(
     // Check match against current search query
     const isVisible = React.useMemo(() => {
       if (ctx.filter === false) return true;
+      if (!ctx.isFiltering && !ctx.isMulti) return true;
       return ctx.filter(itemVal, itemText, ctx.searchValue);
-    }, [ctx.filter, itemVal, itemText, ctx.searchValue]);
+    }, [ctx.filter, ctx.isFiltering, ctx.isMulti, itemVal, itemText, ctx.searchValue]);
 
     // Check selection state
     const isSelected = React.useMemo(() => {
@@ -785,6 +959,13 @@ export const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(
       if (itemDisabled || ctx.isDisabled) return;
       ctx.selectItem(itemVal, itemText);
       onClick?.(e);
+    };
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!itemDisabled && !ctx.isDisabled) {
+        ctx.setActiveId(itemId);
+      }
+      onMouseEnter?.(e);
     };
 
     const combinedRef = (node: HTMLDivElement | null) => {
@@ -812,6 +993,7 @@ export const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(
           data-disabled={itemDisabled ? "true" : undefined}
           data-state={isSelected ? "checked" : "unchecked"}
           onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
           className={itemClasses}
           {...rest}
         >
@@ -833,6 +1015,7 @@ export const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(
         data-disabled={itemDisabled ? "true" : undefined}
         data-state={isSelected ? "checked" : "unchecked"}
         onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
         className={itemClasses}
         {...rest}
       >
@@ -1000,6 +1183,7 @@ export const ComboboxClear = React.forwardRef<HTMLButtonElement, ComboboxClearPr
     }
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
       if (isDisabled) return;
       ctx.clearSelection();
       onClick?.(e);
@@ -1046,6 +1230,7 @@ export interface ComboboxComponent
     ComboboxProps & React.RefAttributes<HTMLDivElement>
   > {
   Root: typeof ComboboxRoot;
+  Control: typeof ComboboxControl;
   Input: typeof ComboboxInput;
   Trigger: typeof ComboboxTrigger;
   Portal: typeof ComboboxPortal;
@@ -1060,6 +1245,7 @@ export interface ComboboxComponent
 
 export const Combobox = ComboboxRoot as ComboboxComponent;
 Combobox.Root = ComboboxRoot;
+Combobox.Control = ComboboxControl;
 Combobox.Input = ComboboxInput;
 Combobox.Trigger = ComboboxTrigger;
 Combobox.Portal = ComboboxPortal;

@@ -71,13 +71,13 @@ type Story = StoryObj<typeof Combobox>;
 export const Default: Story = {
   render: (args) => {
     return (
-      <div style={{ width: 320 }}>
+      <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
         <Combobox.Root {...args}>
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Search country..." />
             <Combobox.Clear />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Empty>No countries found.</Combobox.Empty>
             {COUNTRIES.map((c) => (
@@ -124,22 +124,26 @@ export const AsyncSearch: Story = {
       }, [query]);
 
       return (
-        <div style={{ width: 320 }}>
+        <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
           <Combobox.Root
             searchValue={query}
             onSearchChange={setQuery}
             isLoading={loading}
             filter={false}
           >
-            <div className="cl-combobox__control">
+            <Combobox.Control>
               <Combobox.Input placeholder="Type to search countries..." />
               {loading && <span className="cl-combobox__spinner" />}
               <Combobox.Clear />
               <Combobox.Trigger />
-            </div>
+            </Combobox.Control>
             <Combobox.Content>
               <Combobox.Empty>
-                {loading ? "Searching..." : "No results found."}
+                {loading
+                  ? "Searching..."
+                  : query
+                    ? "No results found."
+                    : "Type to search countries..."}
               </Combobox.Empty>
               {results.map((c) => (
                 <Combobox.Item key={c.value} value={c.value}>
@@ -156,19 +160,43 @@ export const AsyncSearch: Story = {
   },
 };
 
+export const WithPortal: Story = {
+  render: () => (
+    <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+      <Combobox.Root>
+        <Combobox.Control>
+          <Combobox.Input placeholder="With Portal overlay..." />
+          <Combobox.Clear />
+          <Combobox.Trigger />
+        </Combobox.Control>
+        <Combobox.Portal>
+          <Combobox.Content>
+            <Combobox.Empty>No countries found.</Combobox.Empty>
+            {COUNTRIES.map((c) => (
+              <Combobox.Item key={c.value} value={c.value}>
+                {c.label}
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox.Portal>
+      </Combobox.Root>
+    </div>
+  ),
+};
+
 export const MultiSelect: Story = {
   render: () => {
     function MultiSelectDemo() {
       const [selected, setSelected] = React.useState<string[]>(["us", "ca"]);
 
       return (
-        <div style={{ width: 360 }}>
+        <div style={{ width: 360, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
           <Combobox.Root
             isMulti
             value={selected}
             onValueChange={setSelected}
           >
-            <div className="cl-combobox__control">
+            <Combobox.Control>
               <div className="cl-combobox__tags">
                 {selected.map((val) => {
                   const country = COUNTRIES.find((c) => c.value === val);
@@ -182,7 +210,7 @@ export const MultiSelect: Story = {
               <Combobox.Input placeholder="Add countries..." />
               <Combobox.Clear />
               <Combobox.Trigger />
-            </div>
+            </Combobox.Control>
             <Combobox.Content>
               <Combobox.Empty>No more countries found.</Combobox.Empty>
               {COUNTRIES.map((c) => (
@@ -207,15 +235,15 @@ export const WithFormField: Story = {
       const isError = val === "";
 
       return (
-        <div style={{ width: 320 }}>
+        <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
           <FormField id="country-field" required error={isError}>
             <FormLabel>Country of Residence</FormLabel>
             <Combobox.Root value={val} onValueChange={setVal}>
-              <div className="cl-combobox__control">
+              <Combobox.Control>
                 <Combobox.Input placeholder="Select country..." />
                 <Combobox.Clear />
                 <Combobox.Trigger />
-              </div>
+              </Combobox.Control>
               <Combobox.Content>
                 <Combobox.Empty>No countries found.</Combobox.Empty>
                 {COUNTRIES.map((c) => (
@@ -241,14 +269,14 @@ export const WithFormField: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", width: 320 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Outline</div>
         <Combobox.Root variant="outline">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Outline variant" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -258,10 +286,10 @@ export const AllVariants: Story = {
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Filled</div>
         <Combobox.Root variant="filled">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Filled variant" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -271,10 +299,10 @@ export const AllVariants: Story = {
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Flushed</div>
         <Combobox.Root variant="flushed">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Flushed variant" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -287,14 +315,14 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", width: 320 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Small (32px)</div>
         <Combobox.Root size="sm">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Small combobox" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -304,10 +332,10 @@ export const AllSizes: Story = {
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Medium (40px)</div>
         <Combobox.Root size="md">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Medium combobox" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -317,10 +345,10 @@ export const AllSizes: Story = {
       <div>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Large (48px)</div>
         <Combobox.Root size="lg">
-          <div className="cl-combobox__control">
+          <Combobox.Control>
             <Combobox.Input placeholder="Large combobox" />
             <Combobox.Trigger />
-          </div>
+          </Combobox.Control>
           <Combobox.Content>
             <Combobox.Item value="1">Option 1</Combobox.Item>
             <Combobox.Item value="2">Option 2</Combobox.Item>
@@ -333,12 +361,12 @@ export const AllSizes: Story = {
 
 export const GroupedOptions: Story = {
   render: () => (
-    <div style={{ width: 320 }}>
+    <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
       <Combobox.Root>
-        <div className="cl-combobox__control">
+        <Combobox.Control>
           <Combobox.Input placeholder="Search regions..." />
           <Combobox.Trigger />
-        </div>
+        </Combobox.Control>
         <Combobox.Content>
           <Combobox.Empty>No items found.</Combobox.Empty>
           <Combobox.Group heading="Americas">
