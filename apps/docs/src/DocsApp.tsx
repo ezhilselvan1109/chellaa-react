@@ -3,24 +3,41 @@ import { ThemeProvider } from "@chellaa/react";
 import { DocsLayout } from "./components/DocsLayout/DocsLayout";
 import { LandingPage } from "./pages/LandingPage/LandingPage";
 import { TocItem } from "./components/DocsLayout/TableOfContents";
+
+// Content Pages
 import { OverviewPage } from "./content/getting-started/OverviewPage";
 import { InstallationPage } from "./content/getting-started/InstallationPage";
 import { QuickStartPage } from "./content/getting-started/QuickStartPage";
 import { TokensPage } from "./content/foundations/TokensPage";
 import { ColorsPage } from "./content/foundations/ColorsPage";
 import { ThemingPage } from "./content/theming/ThemingPage";
-import { ButtonDocPage, buttonToc } from "./content/components/ButtonDocPage";
-import {
-  ButtonGroupDocPage,
-  buttonGroupToc,
-} from "./content/components/ButtonGroupDocPage";
-import {
-  MaterialPrimitivesDocPage,
-  materialPrimitivesToc,
-} from "./content/components/MaterialPrimitivesDocPage";
 import { SlotCompositionPage } from "./content/guides/SlotCompositionPage";
 import { AccessibilityGuidePage } from "./content/guides/AccessibilityGuidePage";
 import { ChangelogPage } from "./content/resources/ChangelogPage";
+
+// 1. Form Controls Pages
+import { ButtonDocPage, buttonToc } from "./content/components/ButtonDocPage";
+import { ButtonGroupDocPage, buttonGroupToc } from "./content/components/ButtonGroupDocPage";
+import { InputDocPage, inputToc } from "./content/components/InputDocPage";
+import { TextareaDocPage, textareaToc } from "./content/components/TextareaDocPage";
+import { FormFieldDocPage, formFieldToc } from "./content/components/FormFieldDocPage";
+import { CheckboxDocPage, checkboxToc } from "./content/components/CheckboxDocPage";
+import { RadioDocPage, radioToc } from "./content/components/RadioDocPage";
+import { SwitchDocPage, switchToc } from "./content/components/SwitchDocPage";
+
+// 2. Surfaces & Data Display Pages
+import { PaperDocPage, paperToc } from "./content/components/PaperDocPage";
+import { CardDocPage, cardToc } from "./content/components/CardDocPage";
+import { TypographyDocPage, typographyToc } from "./content/components/TypographyDocPage";
+import { KbdDocPage, kbdToc } from "./content/components/KbdDocPage";
+
+// 3. Layout Primitives Pages
+import { BoxDocPage, boxToc } from "./content/components/BoxDocPage";
+import { ContainerDocPage, containerToc } from "./content/components/ContainerDocPage";
+import { DividerDocPage, dividerToc } from "./content/components/DividerDocPage";
+import { StackDocPage, stackToc } from "./content/components/StackDocPage";
+import { FlexDocPage, flexToc } from "./content/components/FlexDocPage";
+import { GridDocPage, gridToc } from "./content/components/GridDocPage";
 
 const titleMap: Record<string, string> = {
   "#/": "Chellaa React — Production Component Library",
@@ -30,9 +47,28 @@ const titleMap: Record<string, string> = {
   "#/tokens": "Design Tokens — Chellaa React",
   "#/colors": "Colors & Palettes — Chellaa React",
   "#/theming": "Theming & Dark Mode — Chellaa React",
+  // Form Controls
   "#/components/button": "Button Component — Chellaa React",
   "#/components/button-group": "ButtonGroup Component — Chellaa React",
-  "#/components/material-primitives": "Material Primitives — Chellaa React",
+  "#/components/input": "Input & TextField Component — Chellaa React",
+  "#/components/textarea": "Textarea Component — Chellaa React",
+  "#/components/form-field": "FormField Component — Chellaa React",
+  "#/components/checkbox": "Checkbox Component — Chellaa React",
+  "#/components/radio": "Radio Component — Chellaa React",
+  "#/components/switch": "Switch Component — Chellaa React",
+  // Surfaces
+  "#/components/paper": "Paper Surface — Chellaa React",
+  "#/components/card": "Card Component — Chellaa React",
+  "#/components/typography": "Typography Component — Chellaa React",
+  "#/components/kbd": "Kbd Component — Chellaa React",
+  // Layouts
+  "#/components/box": "Box Component — Chellaa React",
+  "#/components/container": "Container Component — Chellaa React",
+  "#/components/divider": "Divider Component — Chellaa React",
+  "#/components/stack": "Stack Component — Chellaa React",
+  "#/components/flex": "Flex Component — Chellaa React",
+  "#/components/grid": "Grid Component — Chellaa React",
+  // Guides & Resources
   "#/guides/as-child": "Polymorphism (asChild) — Chellaa React",
   "#/guides/accessibility": "Accessibility Standards — Chellaa React",
   "#/changelog": "Changelog & Releases — Chellaa React",
@@ -96,15 +132,50 @@ export function DocsApp() {
         return { content: <ColorsPage />, toc: [] };
       case "#/theming":
         return { content: <ThemingPage />, toc: themingToc };
+
+      // 1. Form Controls
       case "#/components/button":
         return { content: <ButtonDocPage />, toc: buttonToc };
       case "#/components/button-group":
         return { content: <ButtonGroupDocPage />, toc: buttonGroupToc };
-      case "#/components/material-primitives":
-        return {
-          content: <MaterialPrimitivesDocPage />,
-          toc: materialPrimitivesToc,
-        };
+      case "#/components/input":
+        return { content: <InputDocPage />, toc: inputToc };
+      case "#/components/textarea":
+        return { content: <TextareaDocPage />, toc: textareaToc };
+      case "#/components/form-field":
+        return { content: <FormFieldDocPage />, toc: formFieldToc };
+      case "#/components/checkbox":
+        return { content: <CheckboxDocPage />, toc: checkboxToc };
+      case "#/components/radio":
+        return { content: <RadioDocPage />, toc: radioToc };
+      case "#/components/switch":
+        return { content: <SwitchDocPage />, toc: switchToc };
+
+      // 2. Surfaces & Data Display
+      case "#/components/paper":
+        return { content: <PaperDocPage />, toc: paperToc };
+      case "#/components/card":
+        return { content: <CardDocPage />, toc: cardToc };
+      case "#/components/typography":
+        return { content: <TypographyDocPage />, toc: typographyToc };
+      case "#/components/kbd":
+        return { content: <KbdDocPage />, toc: kbdToc };
+
+      // 3. Layout Primitives
+      case "#/components/box":
+        return { content: <BoxDocPage />, toc: boxToc };
+      case "#/components/container":
+        return { content: <ContainerDocPage />, toc: containerToc };
+      case "#/components/divider":
+        return { content: <DividerDocPage />, toc: dividerToc };
+      case "#/components/stack":
+        return { content: <StackDocPage />, toc: stackToc };
+      case "#/components/flex":
+        return { content: <FlexDocPage />, toc: flexToc };
+      case "#/components/grid":
+        return { content: <GridDocPage />, toc: gridToc };
+
+      // Guides & Resources
       case "#/guides/as-child":
         return { content: <SlotCompositionPage />, toc: [] };
       case "#/guides/accessibility":
