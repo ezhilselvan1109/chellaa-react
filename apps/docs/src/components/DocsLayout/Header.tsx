@@ -78,7 +78,7 @@ export function Header({
           </div>
           <span className="docs-logo-brand">Chellaa</span>
           <span className="docs-logo-react">React</span>
-          <span className="docs-version-tag">v0.2.0</span>
+          <span className="docs-version-tag">v0.2.1</span>
         </a>
 
         {/* Primary Navigation Links */}

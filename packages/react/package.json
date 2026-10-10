@@ -1,6 +1,6 @@
 {
   "name": "@chellaa/react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Production-grade, accessible, high-performance React component library and design system engine built with zero-runtime CSS custom properties.",
   "keywords": [
     "react",
@@ -17,12 +17,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chellaa/chellaa-react.git",
+    "url": "git+https://github.com/ezhilselvan1109/chellaa-react.git",
     "directory": "packages/react"
   },
-  "homepage": "https://chellaa.dev",
+  "homepage": "https://chellaa.ezhilselvan.in/",
   "bugs": {
-    "url": "https://github.com/chellaa/chellaa-react/issues"
+    "url": "https://github.com/ezhilselvan1109/chellaa-react/issues"
   },
   "author": "Chellaa React Contributors",
   "type": "module",
