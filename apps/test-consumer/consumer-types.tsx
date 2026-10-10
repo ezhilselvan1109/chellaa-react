@@ -32,6 +32,13 @@ import {
   Code,
   Kbd,
   MODIFIER_SYMBOLS,
+  // Layout Primitives (Workflow F3)
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Flex,
+  Grid,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -127,6 +134,41 @@ export function ConsumerTypeFixture() {
       <Kbd modifier="command" size="sm" variant="outline" />
       <Kbd size="md" variant="subtle">Ctrl</Kbd>
       <span>{MODIFIER_SYMBOLS.shift}</span>
+
+      {/* 11. Container */}
+      <Container maxWidth="lg" fixed disableGutters component="main" sx={{ my: 4 }}>
+        {/* 12. Box */}
+        <Box component="section" sx={{ p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
+          Section Box Content
+        </Box>
+
+        {/* 13. Stack with Divider */}
+        <Stack
+          direction="column"
+          spacing={3}
+          divider={<Divider variant="middle" lineStyle="dashed" />}
+        >
+          <Box>Stack Item A</Box>
+          <Box>Stack Item B</Box>
+        </Stack>
+
+        {/* 14. Flex */}
+        <Flex center inline gap={2} direction="row" sx={{ mt: 2 }}>
+          <span>Flex Item 1</span>
+          <Divider orientation="vertical" flexItem />
+          <span>Flex Item 2</span>
+        </Flex>
+
+        {/* 15. Grid */}
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper elevation={1} sx={{ p: 2 }}>Col 1</Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={8}>
+            <Paper elevation={1} sx={{ p: 2 }}>Col 2</Paper>
+          </Grid>
+        </Grid>
+      </Container>
     </ThemeProvider>
   );
 }

@@ -55,6 +55,14 @@ const mandatoryRules = [
   { name: "Class: cl-typography", check: combined.includes("cl-typography") },
   { name: "Class: cl-code", check: combined.includes("cl-code") },
   { name: "Class: cl-kbd", check: combined.includes("cl-kbd") },
+
+  // 7. Layout Primitives (Workflow F3)
+  { name: "Class: cl-box", check: combined.includes("cl-box") },
+  { name: "Class: cl-container", check: combined.includes("cl-container") },
+  { name: "Class: cl-divider", check: combined.includes("cl-divider") },
+  { name: "Class: cl-stack", check: combined.includes("cl-stack") },
+  { name: "Class: cl-flex", check: combined.includes("cl-flex") },
+  { name: "Class: cl-grid", check: combined.includes("cl-grid") },
 ];
 
 for (const rule of mandatoryRules) {

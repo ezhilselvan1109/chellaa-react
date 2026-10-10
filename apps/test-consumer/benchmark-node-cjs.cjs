@@ -50,9 +50,16 @@ const {
   // 11. Kbd
   Kbd,
   MODIFIER_SYMBOLS,
+  // 12. Layout Primitives (Workflow F3)
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Flex,
+  Grid,
 } = require("@chellaa/react");
 
-console.log("[Benchmark Node CJS] Testing CommonJS require for all 12 migrated components...");
+console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
 
 function assertComponent(name, comp) {
   if (typeof comp !== "object" && typeof comp !== "function") {
@@ -131,6 +138,14 @@ if (!MODIFIER_SYMBOLS || typeof MODIFIER_SYMBOLS !== "object" || MODIFIER_SYMBOL
   throw new Error("MODIFIER_SYMBOLS is not a valid dictionary in CJS");
 }
 
+// 13. Layout Primitives (Workflow F3)
+assertComponent("Box", Box);
+assertComponent("Container", Container);
+assertComponent("Divider", Divider);
+assertComponent("Stack", Stack);
+assertComponent("Flex", Flex);
+assertComponent("Grid", Grid);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All 12 migrated components and public symbols required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All 18 library components and public symbols required cleanly in CommonJS without CSS syntax errors.",
 );

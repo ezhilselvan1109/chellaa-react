@@ -27,9 +27,16 @@ import {
   Paragraph,
   Code,
   Kbd,
+  // Layout Primitives (Workflow F3)
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Flex,
+  Grid,
 } from "@chellaa/react";
 
-console.log("[Benchmark SSR] Testing Server-Side Rendering across all 12 migrated components...");
+console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
 
 function App() {
   return React.createElement(
@@ -118,6 +125,37 @@ function App() {
         // 10. Kbd
         React.createElement(Kbd, { modifier: "command" }),
         React.createElement(Kbd, null, "K"),
+
+        // 11. Container & Box
+        React.createElement(
+          Container,
+          { maxWidth: "md" },
+          React.createElement(Box, { component: "section", sx: { p: 2 } }, "Box content inside container"),
+        ),
+
+        // 12. Stack with Divider
+        React.createElement(
+          Stack,
+          { direction: "column", spacing: 2, divider: React.createElement(Divider, null) },
+          React.createElement("div", null, "Stack Item 1"),
+          React.createElement("div", null, "Stack Item 2"),
+        ),
+
+        // 13. Flex
+        React.createElement(
+          Flex,
+          { center: true, gap: 3 },
+          React.createElement("span", null, "Centered Item 1"),
+          React.createElement("span", null, "Centered Item 2"),
+        ),
+
+        // 14. Grid
+        React.createElement(
+          Grid,
+          { container: true, spacing: 2 },
+          React.createElement(Grid, { item: true, xs: 6 }, "Grid Column A"),
+          React.createElement(Grid, { item: true, xs: 6 }, "Grid Column B"),
+        ),
       ),
     ),
   );
@@ -141,6 +179,13 @@ const mandatoryAssertions = [
   { name: "Typography class (cl-typography)", check: html.includes("cl-typography") },
   { name: "Code class (cl-code)", check: html.includes("cl-code") },
   { name: "Kbd class (cl-kbd)", check: html.includes("cl-kbd") },
+  // Layout Primitives
+  { name: "Container class (cl-container)", check: html.includes("cl-container") },
+  { name: "Box class (cl-box)", check: html.includes("cl-box") },
+  { name: "Stack class (cl-stack)", check: html.includes("cl-stack") },
+  { name: "Divider class (cl-divider)", check: html.includes("cl-divider") },
+  { name: "Flex class (cl-flex)", check: html.includes("cl-flex") },
+  { name: "Grid class (cl-grid)", check: html.includes("cl-grid") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -150,5 +195,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all 12 components (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all 18 components (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );
