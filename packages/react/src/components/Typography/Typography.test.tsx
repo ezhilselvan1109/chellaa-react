@@ -14,15 +14,17 @@ describe("Typography System", () => {
   // 1. Base Typography Rendering & Variants
   // ---------------------------------------------------------------------------
   describe("Typography Base", () => {
-    it("renders body1 as <p> by default", () => {
+    it("renders body1 as <p> by default with static classes", () => {
       render(<Typography data-testid="typo-root">Default body text</Typography>);
       const elem = screen.getByTestId("typo-root");
       expect(elem).toBeInTheDocument();
       expect(elem.tagName).toBe("P");
       expect(elem).toHaveTextContent("Default body text");
+      expect(elem).toHaveClass("cl-typography");
+      expect(elem).toHaveClass("cl-typography--body1");
     });
 
-    it("renders h1 as <h1> by default", () => {
+    it("renders h1 as <h1> by default with static classes", () => {
       render(
         <Typography variant="h1" data-testid="typo-h1">
           H1 Title
@@ -31,6 +33,19 @@ describe("Typography System", () => {
       const elem = screen.getByTestId("typo-h1");
       expect(elem.tagName).toBe("H1");
       expect(elem).toHaveTextContent("H1 Title");
+      expect(elem).toHaveClass("cl-typography");
+      expect(elem).toHaveClass("cl-typography--h1");
+    });
+
+    it("applies dynamic sx styling with precedence", () => {
+      render(
+        <Typography sx={{ letterSpacing: "2px", textTransform: "uppercase" }} data-testid="typo-sx">
+          Sx Typography
+        </Typography>
+      );
+      const elem = screen.getByTestId("typo-sx");
+      expect(elem).toHaveClass("cl-typography");
+      expect(elem).not.toHaveAttribute("sx");
     });
 
     it("renders caption as <span> by default", () => {

@@ -23,13 +23,27 @@ function renderWithTheme(ui: React.ReactElement) {
 // ─── Card Root ────────────────────────────────────────────────────────────────
 
 describe("Card", () => {
-  it("renders with default props", () => {
+  it("renders with default props and static CSS classes", () => {
     const { container } = renderWithTheme(
       <Card data-testid="card">Content</Card>
     );
     const card = screen.getByTestId("card");
     expect(card).toBeInTheDocument();
     expect(card.tagName).toBe("DIV");
+    expect(card).toHaveClass("cl-card");
+    expect(card).toHaveClass("cl-card--md");
+    expect(card).toHaveClass("cl-card--elevated");
+  });
+
+  it("applies dynamic sx styling with precedence", () => {
+    renderWithTheme(
+      <Card sx={{ padding: "30px", border: "2px solid red" }} data-testid="card-sx">
+        Sx Content
+      </Card>
+    );
+    const card = screen.getByTestId("card-sx");
+    expect(card).toHaveClass("cl-card");
+    expect(card).not.toHaveAttribute("sx");
   });
 
   it("renders children", () => {

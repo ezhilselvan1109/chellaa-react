@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type CodeColorScheme = "default" | "primary" | "secondary";
 
@@ -26,40 +29,7 @@ const StyledCodeRoot = styled("code", {
     prop !== "colorScheme" &&
     prop !== "asChild" &&
     prop !== "component",
-})<{ ownerState: CodeOwnerState }>(({ theme, ownerState }) => {
-  const isPrimary = ownerState.colorScheme === "primary";
-  const isSecondary = ownerState.colorScheme === "secondary";
-
-  let bg = theme.palette.action.hover;
-  let text = theme.palette.text.primary;
-  let border = theme.palette.divider;
-
-  if (isPrimary) {
-    bg = theme.palette.primary.light ? `${theme.palette.primary.main}15` : theme.palette.action.hover;
-    text = theme.palette.primary.main;
-    border = `${theme.palette.primary.main}40`;
-  } else if (isSecondary) {
-    bg = theme.palette.secondary.light ? `${theme.palette.secondary.main}15` : theme.palette.action.hover;
-    text = theme.palette.secondary.main;
-    border = `${theme.palette.secondary.main}40`;
-  }
-
-  return {
-    fontFamily:
-      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontSize: "0.875em",
-    padding: "0.15em 0.4em",
-    margin: "0 0.15em",
-    borderRadius: (theme.shape?.borderRadius ?? 4) / 2,
-    backgroundColor: bg,
-    color: text,
-    border: `1px solid ${border}`,
-    display: "inline-block",
-    lineHeight: 1.25,
-    verticalAlign: "baseline",
-    boxSizing: "border-box",
-  };
-});
+})({});
 
 /**
  * Inline monospace code chip primitive for identifiers, filenames, and CLI snippets.
@@ -75,10 +45,19 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
       component = "code",
       as,
       colorScheme = "default",
+      className,
+      style,
+      sx,
+      children,
       ...rest
     } = props;
 
-    const ownerState: CodeOwnerState = { colorScheme };
+    const codeClassName = classNames(
+      "cl-code",
+      colorScheme !== "default" && `cl-code--${colorScheme}`,
+      className
+    );
+
     const targetTag = component || as || "code";
 
     if (asChild) {
@@ -86,9 +65,13 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
         <StyledCodeRoot
           as={Slot}
           ref={ref as any}
-          ownerState={ownerState}
+          className={codeClassName}
+          style={style}
+          sx={sx}
           {...rest}
-        />
+        >
+          {children}
+        </StyledCodeRoot>
       );
     }
 
@@ -96,9 +79,13 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
       <StyledCodeRoot
         as={targetTag}
         ref={ref as any}
-        ownerState={ownerState}
+        className={codeClassName}
+        style={style}
+        sx={sx}
         {...rest}
-      />
+      >
+        {children}
+      </StyledCodeRoot>
     );
   }
 );

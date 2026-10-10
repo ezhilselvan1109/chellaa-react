@@ -10,12 +10,15 @@ describe("Kbd Component", () => {
   // 1. Rendering & DOM Hygiene
   // ---------------------------------------------------------------------------
   describe("Rendering", () => {
-    it("renders as native <kbd> by default with children", () => {
+    it("renders as native <kbd> by default with children and static classes", () => {
       render(<Kbd data-testid="kbd-root">Ctrl</Kbd>);
       const elem = screen.getByTestId("kbd-root");
       expect(elem).toBeInTheDocument();
       expect(elem.tagName).toBe("KBD");
       expect(elem).toHaveTextContent("Ctrl");
+      expect(elem).toHaveClass("cl-kbd");
+      expect(elem).toHaveClass("cl-kbd--md");
+      expect(elem).toHaveClass("cl-kbd--outline");
       expect(elem).not.toHaveAttribute("size");
       expect(elem).not.toHaveAttribute("variant");
       expect(elem).not.toHaveAttribute("modifier");

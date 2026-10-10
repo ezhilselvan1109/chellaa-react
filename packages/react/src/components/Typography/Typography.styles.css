@@ -1,0 +1,78 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Typography & Code Component Styles
+     ========================================================================== */
+
+  .cl-typography {
+    margin: 0;
+    font-family: var(--cl-font-sans, inherit);
+    color: inherit;
+  }
+
+  /* Variant scales */
+  .cl-typography--h1 { font-size: var(--cl-font-5xl, 3rem); font-weight: var(--cl-font-weight-bold, 700); line-height: 1.15; letter-spacing: -0.035em; }
+  .cl-typography--h2 { font-size: var(--cl-font-4xl, 2.25rem); font-weight: var(--cl-font-weight-bold, 700); line-height: 1.2; letter-spacing: -0.03em; }
+  .cl-typography--h3 { font-size: var(--cl-font-3xl, 1.875rem); font-weight: var(--cl-font-weight-semibold, 600); line-height: 1.25; letter-spacing: -0.025em; }
+  .cl-typography--h4 { font-size: var(--cl-font-2xl, 1.5rem); font-weight: var(--cl-font-weight-semibold, 600); line-height: 1.3; letter-spacing: -0.02em; }
+  .cl-typography--h5 { font-size: var(--cl-font-xl, 1.25rem); font-weight: var(--cl-font-weight-medium, 500); line-height: 1.4; letter-spacing: -0.015em; }
+  .cl-typography--h6 { font-size: var(--cl-font-lg, 1.125rem); font-weight: var(--cl-font-weight-medium, 500); line-height: 1.45; letter-spacing: -0.01em; }
+  .cl-typography--subtitle1 { font-size: var(--cl-font-base, 1rem); font-weight: var(--cl-font-weight-medium, 500); line-height: 1.5; }
+  .cl-typography--subtitle2 { font-size: var(--cl-font-sm, 0.875rem); font-weight: var(--cl-font-weight-medium, 500); line-height: 1.5; }
+  .cl-typography--body1 { font-size: var(--cl-font-base, 1rem); font-weight: var(--cl-font-weight-regular, 400); line-height: 1.5; }
+  .cl-typography--body2 { font-size: var(--cl-font-sm, 0.875rem); font-weight: var(--cl-font-weight-regular, 400); line-height: 1.5; }
+  .cl-typography--button { font-size: var(--cl-font-sm, 0.875rem); font-weight: var(--cl-font-weight-semibold, 600); line-height: 1.5; text-transform: uppercase; letter-spacing: 0.02em; }
+  .cl-typography--caption { font-size: var(--cl-font-xs, 0.75rem); font-weight: var(--cl-font-weight-regular, 400); line-height: 1.4; letter-spacing: 0.01em; }
+  .cl-typography--overline { font-size: var(--cl-font-xs, 0.75rem); font-weight: var(--cl-font-weight-semibold, 600); line-height: 1.4; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Gutter bottom */
+  .cl-typography--gutter-bottom {
+    margin-bottom: 0.35em;
+  }
+
+  /* NoWrap & Line Clamp */
+  .cl-typography--no-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cl-typography--line-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Alignments */
+  .cl-typography--align-left { text-align: left; }
+  .cl-typography--align-center { text-align: center; }
+  .cl-typography--align-right { text-align: right; }
+  .cl-typography--align-justify { text-align: justify; }
+
+  /* Code Component */
+  .cl-code {
+    font-family: var(--cl-font-mono, monospace);
+    font-size: 0.875em;
+    padding: 0.15em 0.4em;
+    margin: 0 0.15em;
+    border-radius: var(--cl-rad-xs, 2px);
+    background-color: var(--cl-color-bg-muted);
+    color: var(--cl-color-fg-primary);
+    border: 1px solid var(--cl-color-border-subtle);
+    display: inline-block;
+    line-height: 1.25;
+    vertical-align: baseline;
+    box-sizing: border-box;
+  }
+
+  .cl-code--primary {
+    background-color: var(--cl-color-primary-subtle);
+    color: var(--cl-color-primary-base);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+
+  .cl-code--secondary {
+    background-color: var(--cl-color-secondary-subtle);
+    color: var(--cl-color-secondary-base);
+    border-color: rgba(139, 92, 246, 0.25);
+  }
+}

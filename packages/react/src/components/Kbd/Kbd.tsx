@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type KbdSize = "sm" | "md" | "lg";
 export type KbdVariant = "outline" | "subtle" | "solid";
@@ -84,81 +87,7 @@ const StyledKbdRoot = styled("kbd", {
     prop !== "modifier" &&
     prop !== "asChild" &&
     prop !== "component",
-})<{ ownerState: KbdOwnerState }>(({ theme, ownerState }) => {
-  const size = ownerState.size ?? "md";
-  const variant = ownerState.variant ?? "outline";
-
-  // Size specifications
-  const sizeMap: Record<KbdSize, any> = {
-    sm: {
-      minHeight: 18,
-      minWidth: 18,
-      fontSize: "0.6875rem",
-      padding: "0 4px",
-      borderRadius: Math.max((theme.shape?.borderRadius ?? 4) - 1, 2),
-    },
-    md: {
-      minHeight: 22,
-      minWidth: 22,
-      fontSize: "0.75rem",
-      padding: "0 6px",
-      borderRadius: theme.shape?.borderRadius ?? 4,
-    },
-    lg: {
-      minHeight: 28,
-      minWidth: 28,
-      fontSize: "0.875rem",
-      padding: "0 8px",
-      borderRadius: (theme.shape?.borderRadius ?? 4) + 1,
-    },
-  };
-
-  const baseStyles: Record<string, any> = {
-    fontFamily:
-      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontWeight: 600,
-    lineHeight: 1,
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    verticalAlign: "baseline",
-    whiteSpace: "nowrap",
-    userSelect: "none",
-    boxSizing: "border-box",
-    ...sizeMap[size],
-  };
-
-  if (variant === "outline") {
-    return {
-      ...baseStyles,
-      backgroundColor: theme.palette.background.paper,
-      color: theme.palette.text.primary,
-      border: `1px solid ${theme.palette.divider}`,
-      borderBottom: `2px solid ${theme.palette.divider}`,
-      boxShadow: "0 1px 1px rgba(0, 0, 0, 0.08)",
-    };
-  }
-
-  if (variant === "subtle") {
-    return {
-      ...baseStyles,
-      backgroundColor: theme.palette.action.hover,
-      color: theme.palette.text.secondary,
-      border: "1px solid transparent",
-    };
-  }
-
-  if (variant === "solid") {
-    return {
-      ...baseStyles,
-      backgroundColor: theme.palette.text.primary,
-      color: theme.palette.background.paper,
-      border: "none",
-    };
-  }
-
-  return baseStyles;
-});
+})({});
 
 /**
  * Tactile keyboard shortcut keycap primitive representing user input keystrokes.
@@ -177,15 +106,19 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       size = "md",
       variant = "outline",
       modifier,
+      className,
+      style,
+      sx,
       children,
       ...rest
     } = props;
 
-    const ownerState: KbdOwnerState = {
-      size,
-      variant,
-      modifier,
-    };
+    const kbdClassName = classNames(
+      "cl-kbd",
+      `cl-kbd--${size}`,
+      `cl-kbd--${variant}`,
+      className
+    );
 
     const targetTag = component || as || "kbd";
 
@@ -197,7 +130,9 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
         <StyledKbdRoot
           as={Slot}
           ref={ref as any}
-          ownerState={ownerState}
+          className={kbdClassName}
+          style={style}
+          sx={sx}
           {...rest}
         >
           {content}
@@ -209,7 +144,9 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       <StyledKbdRoot
         as={targetTag}
         ref={ref as any}
-        ownerState={ownerState}
+        className={kbdClassName}
+        style={style}
+        sx={sx}
         {...rest}
       >
         {content}

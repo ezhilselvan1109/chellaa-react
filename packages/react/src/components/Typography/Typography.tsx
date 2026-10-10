@@ -1,8 +1,11 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
 import type { SxProps } from "../../system/types";
 import type { TypographyVariant, ChellaaTheme } from "../../theme/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 
 export type TypographyAlign = "inherit" | "left" | "center" | "right" | "justify";
 
@@ -99,39 +102,13 @@ const StyledTypographyRoot = styled("span", {
     prop !== "lineClamp" &&
     prop !== "asChild" &&
     prop !== "component",
-})<{ ownerState: TypographyOwnerState }>(({ theme, ownerState }) => {
-  const variant = ownerState.variant ?? "body1";
-  const variantStyles = theme.typography[variant] || {};
-
-  const styles: Record<string, any> = {
-    margin: 0,
-    ...variantStyles,
-  };
-
-  if (ownerState.align && ownerState.align !== "inherit") {
-    styles.textAlign = ownerState.align;
+})<{ color?: string }>(({ theme, color }) => {
+  if (color) {
+    return {
+      color: resolveTypographyColor(theme, color),
+    };
   }
-
-  if (ownerState.gutterBottom) {
-    styles.marginBottom = "0.35em";
-  }
-
-  if (ownerState.noWrap) {
-    styles.overflow = "hidden";
-    styles.textOverflow = "ellipsis";
-    styles.whiteSpace = "nowrap";
-  } else if (ownerState.lineClamp && ownerState.lineClamp > 0) {
-    styles.display = "-webkit-box";
-    styles.WebkitLineClamp = ownerState.lineClamp;
-    styles.WebkitBoxOrient = "vertical";
-    styles.overflow = "hidden";
-  }
-
-  if (ownerState.color) {
-    styles.color = resolveTypographyColor(theme, ownerState.color);
-  }
-
-  return styles;
+  return {};
 });
 
 /**
@@ -155,16 +132,28 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       gutterBottom = false,
       noWrap = false,
       lineClamp,
+      className,
+      style,
+      sx,
+      children,
       ...rest
     } = props;
 
-    const ownerState: TypographyOwnerState = {
-      variant,
-      align,
-      color,
-      gutterBottom,
-      noWrap,
-      lineClamp,
+    const typographyClassName = classNames(
+      "cl-typography",
+      `cl-typography--${variant}`,
+      align && align !== "inherit" && `cl-typography--align-${align}`,
+      gutterBottom && "cl-typography--gutter-bottom",
+      noWrap && "cl-typography--no-wrap",
+      lineClamp !== undefined && lineClamp > 0 && "cl-typography--line-clamp",
+      className
+    );
+
+    const inlineStyle: React.CSSProperties = {
+      ...(lineClamp !== undefined && lineClamp > 0
+        ? ({ WebkitLineClamp: lineClamp } as React.CSSProperties)
+        : {}),
+      ...style,
     };
 
     const targetTag =
@@ -175,9 +164,14 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
         <StyledTypographyRoot
           as={Slot}
           ref={ref as any}
-          ownerState={ownerState}
+          className={typographyClassName}
+          style={inlineStyle}
+          color={color}
+          sx={sx}
           {...rest}
-        />
+        >
+          {children}
+        </StyledTypographyRoot>
       );
     }
 
@@ -185,9 +179,14 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       <StyledTypographyRoot
         as={targetTag}
         ref={ref as any}
-        ownerState={ownerState}
+        className={typographyClassName}
+        style={inlineStyle}
+        color={color}
+        sx={sx}
         {...rest}
-      />
+      >
+        {children}
+      </StyledTypographyRoot>
     );
   }
 );

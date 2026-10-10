@@ -1,0 +1,166 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Card Component Styles
+     ========================================================================== */
+
+  .cl-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cl-card-bg, var(--cl-color-bg-canvas));
+    border-radius: var(--cl-rad-xl, 12px);
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: box-shadow var(--cl-duration-normal, 250ms) var(--cl-ease-default),
+                transform var(--cl-duration-fast, 150ms) var(--cl-ease-default),
+                background-color var(--cl-duration-normal, 250ms) var(--cl-ease-default);
+  }
+
+  .cl-card--square {
+    border-radius: 0;
+  }
+
+  .cl-card--elevated {
+    box-shadow: var(--cl-shadow-sm);
+  }
+
+  .cl-card--outlined {
+    border: 1px solid var(--cl-card-border, var(--cl-color-border-subtle));
+    box-shadow: none;
+  }
+
+  .cl-card--filled {
+    background-color: var(--cl-color-bg-muted);
+    box-shadow: none;
+  }
+
+  .cl-card--hoverable {
+    cursor: default;
+  }
+
+  .cl-card--hoverable:hover {
+    box-shadow: var(--cl-shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  /* Dark mode elevation overlay */
+  [data-theme="dark"] .cl-card--elevated {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
+  }
+
+  /* CardHeader */
+  .cl-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--cl-space-3, 12px);
+    box-sizing: border-box;
+  }
+
+  .cl-card--sm .cl-card__header { padding: 12px; }
+  .cl-card--md .cl-card__header { padding: 16px; }
+  .cl-card--lg .cl-card__header { padding: 24px; }
+
+  .cl-card__header-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .cl-card__header-title {
+    display: block;
+    font-size: var(--cl-font-size-base, 1rem);
+    font-weight: var(--cl-font-weight-semibold, 600);
+    line-height: 1.4;
+    color: var(--cl-color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cl-card__header-subheader {
+    display: block;
+    font-size: var(--cl-font-size-sm, 0.875rem);
+    line-height: 1.4;
+    color: var(--cl-color-fg-secondary);
+    margin-top: 2px;
+  }
+
+  .cl-card__header-avatar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .cl-card__header-action {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: -8px;
+    margin-right: -8px;
+  }
+
+  /* CardMedia */
+  .cl-card__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .cl-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* CardBody */
+  .cl-card__body {
+    flex: 1 1 auto;
+    box-sizing: border-box;
+    color: inherit;
+  }
+
+  .cl-card--sm .cl-card__body { padding: 0 12px 12px; }
+  .cl-card--md .cl-card__body { padding: 0 16px 16px; }
+  .cl-card--lg .cl-card__body { padding: 0 24px 24px; }
+
+  /* CardFooter */
+  .cl-card__footer {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .cl-card--sm .cl-card__footer { padding: 8px 12px; gap: 8px; }
+  .cl-card--md .cl-card__footer { padding: 10px 16px; gap: 12px; }
+  .cl-card--lg .cl-card__footer { padding: 14px 24px; gap: 16px; }
+
+  .cl-card__footer--divider {
+    border-top: 1px solid var(--cl-color-border-subtle);
+  }
+
+  /* CardActions */
+  .cl-card__actions {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+
+  .cl-card__actions--disable-spacing {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .cl-card--sm .cl-card__actions--disable-spacing { padding: 8px 12px; }
+  .cl-card--md .cl-card__actions--disable-spacing { padding: 8px 16px; }
+  .cl-card--lg .cl-card__actions--disable-spacing { padding: 8px 24px; }
+}

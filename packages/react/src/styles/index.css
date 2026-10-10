@@ -15,3 +15,7 @@
 @import "../components/Checkbox/Checkbox.styles.css";
 @import "../components/Radio/Radio.styles.css";
 @import "../components/Switch/Switch.styles.css";
+@import "../components/Paper/Paper.styles.css";
+@import "../components/Card/Card.styles.css";
+@import "../components/Typography/Typography.styles.css";
+@import "../components/Kbd/Kbd.styles.css";

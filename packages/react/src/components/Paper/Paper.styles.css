@@ -1,0 +1,40 @@
+@layer cl-components {
+  /* ==========================================================================
+     Chellaa UI - Paper Component Styles
+     ========================================================================== */
+
+  .cl-paper {
+    background-color: var(--cl-paper-bg, var(--cl-color-bg-canvas));
+    color: var(--cl-color-fg-primary);
+    border-radius: var(--cl-rad-md, 6px);
+    box-sizing: border-box;
+    transition: box-shadow var(--cl-duration-normal, 250ms) var(--cl-ease-default),
+                background-color var(--cl-duration-normal, 250ms) var(--cl-ease-default),
+                border-color var(--cl-duration-normal, 250ms) var(--cl-ease-default);
+  }
+
+  .cl-paper--square {
+    border-radius: 0;
+  }
+
+  .cl-paper--outlined {
+    border: 1px solid var(--cl-paper-border, var(--cl-color-border-subtle));
+    box-shadow: none;
+  }
+
+  .cl-paper--elevation-0 { box-shadow: none; }
+  .cl-paper--elevation-1 { box-shadow: var(--cl-shadow-sm); }
+  .cl-paper--elevation-2 { box-shadow: var(--cl-shadow-md); }
+  .cl-paper--elevation-3,
+  .cl-paper--elevation-4,
+  .cl-paper--elevation-6,
+  .cl-paper--elevation-8 { box-shadow: var(--cl-shadow-lg); }
+  .cl-paper--elevation-12,
+  .cl-paper--elevation-16,
+  .cl-paper--elevation-24 { box-shadow: var(--cl-shadow-xl); }
+
+  /* Dark mode surface elevation overlay tinting */
+  [data-theme="dark"] .cl-paper:not(.cl-paper--outlined):not(.cl-paper--elevation-0) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
+  }
+}
