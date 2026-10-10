@@ -36,6 +36,8 @@ import {
   Grid,
   Alert,
   Snackbar,
+  Avatar,
+  AvatarGroup,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -179,6 +181,15 @@ function App() {
           message: "SSR Snackbar Notification",
           status: "info",
         }),
+
+        // 17. Visual Data Display & Identity (Wave 3)
+        React.createElement(
+          AvatarGroup,
+          { max: 2 },
+          React.createElement(Avatar, { name: "Ezhil Selvan" }),
+          React.createElement(Avatar, { name: "Sarah Connor" }),
+          React.createElement(Avatar, { name: "John Doe" }),
+        ),
       ),
     ),
   );
@@ -213,6 +224,11 @@ const mandatoryAssertions = [
   { name: "Alert class (cl-alert)", check: html.includes("cl-alert") },
   { name: "Alert icon class (cl-alert__icon)", check: html.includes("cl-alert__icon") },
   { name: "Alert title class (cl-alert__title)", check: html.includes("cl-alert__title") },
+  // Identity & Avatar (Wave 3)
+  { name: "Avatar class (cl-avatar)", check: html.includes("cl-avatar") },
+  { name: "AvatarGroup class (cl-avatar-group)", check: html.includes("cl-avatar-group") },
+  { name: "Avatar initials (ES)", check: html.includes("ES") },
+  { name: "AvatarGroup excess (+1)", check: html.includes("+1") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -222,5 +238,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert and Snackbar (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, and Avatar (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

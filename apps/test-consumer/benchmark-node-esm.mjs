@@ -78,6 +78,13 @@ import {
   Toast,
   ToastProvider,
   useToast,
+  // 16. Visual Data Display & Identity Primitives (Wave 3)
+  Avatar,
+  AvatarGroup,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  getInitials,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -192,6 +199,14 @@ assertComponent("Toast", Toast);
 assertFunction("ToastProvider", ToastProvider);
 assertFunction("useToast", useToast);
 
+// 17. Visual Data Display & Identity Primitives (Wave 3)
+assertComponent("Avatar", Avatar);
+assertComponent("AvatarGroup", AvatarGroup);
+assertComponent("Avatar.Image", AvatarImage);
+assertComponent("Avatar.Fallback", AvatarFallback);
+assertComponent("Avatar.Badge", AvatarBadge);
+assertFunction("getInitials", getInitials);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, Popover, Alert, and Snackbar imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, and Avatar imported cleanly in Node ESM.",
 );

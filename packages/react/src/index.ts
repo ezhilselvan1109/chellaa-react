@@ -319,4 +319,31 @@ export {
   type UseToastReturn,
 } from "./components/Snackbar";
 
+// Visual Data Display & Identity Primitives
+export {
+  Avatar,
+  AvatarRoot,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  AvatarGroup,
+  AvatarContext,
+  useAvatarContext,
+  AvatarGroupContext,
+  useAvatarGroupContext,
+  getInitials,
+  type AvatarProps,
+  type AvatarImageProps,
+  type AvatarFallbackProps,
+  type AvatarBadgeProps,
+  type AvatarGroupProps,
+  type AvatarSize,
+  type AvatarShape,
+  type AvatarStatus,
+  type AvatarPlacement,
+  type AvatarContextValue,
+  type AvatarGroupContextValue,
+  type ImageLoadingStatus,
+} from "./components/Avatar";
+
 

@@ -64,6 +64,18 @@ import {
   type ToastOptions,
   type ToastPosition,
   type ToastStatus,
+  // Visual Data Display & Identity (Wave 3)
+  Avatar,
+  type AvatarProps,
+  AvatarGroup,
+  type AvatarGroupProps,
+  type AvatarSize,
+  type AvatarShape,
+  type AvatarStatus,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+  getInitials,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -283,6 +295,41 @@ export function ConsumerTypeFixture() {
               <Toast isOpen={false} message="Toast Alias" />
               <ToastConsumerDemo />
             </ToastProvider>
+          );
+        })()}
+        {/* 21. Avatar & AvatarGroup Identity Primitives (Wave 3) */}
+        {(() => {
+          const _avatarProps: AvatarProps = {
+            src: "https://example.com/photo.jpg",
+            name: "Ezhil Selvan",
+            size: "lg" as AvatarSize,
+            shape: "rounded" as AvatarShape,
+          };
+          const _groupProps: AvatarGroupProps = {
+            max: 3,
+            size: "md" as AvatarSize,
+            shape: "circular" as AvatarShape,
+            spacing: -8,
+            children: (
+              <>
+                <Avatar name="Alice" />
+                <Avatar name="Bob" />
+                <Avatar name="Charlie" />
+                <Avatar name="David" />
+              </>
+            ),
+          };
+          const initials = getInitials("Ezhil Selvan");
+          void initials;
+          return (
+            <div data-testid="avatar-fixture">
+              <Avatar {..._avatarProps}>
+                <AvatarImage src="https://example.com/photo.jpg" alt="Photo" />
+                <AvatarFallback>ES</AvatarFallback>
+                <AvatarBadge status={"online" as AvatarStatus} />
+              </Avatar>
+              <AvatarGroup {..._groupProps} />
+            </div>
           );
         })()}
       </Container>

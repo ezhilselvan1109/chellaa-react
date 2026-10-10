@@ -78,6 +78,13 @@ const {
   Toast,
   ToastProvider,
   useToast,
+  // 17. Visual Data Display & Identity Primitives (Wave 3)
+  Avatar,
+  AvatarGroup,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  getInitials,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -192,6 +199,14 @@ assertComponent("Toast", Toast);
 assertFunction("ToastProvider", ToastProvider);
 assertFunction("useToast", useToast);
 
+// 17. Visual Data Display & Identity Primitives (Wave 3)
+assertComponent("Avatar", Avatar);
+assertComponent("AvatarGroup", AvatarGroup);
+assertComponent("Avatar.Image", AvatarImage);
+assertComponent("Avatar.Fallback", AvatarFallback);
+assertComponent("Avatar.Badge", AvatarBadge);
+assertFunction("getInitials", getInitials);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, Tooltip, Popover, Alert, and Snackbar required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, and Avatar required cleanly in CommonJS without CSS syntax errors.",
 );

@@ -73,6 +73,11 @@ const mandatoryRules = [
   { name: "Class: cl-toast", check: combined.includes("cl-toast") },
   { name: "Class: cl-toast__close", check: combined.includes("cl-toast__close") },
   { name: "Class: cl-toast__action", check: combined.includes("cl-toast__action") },
+  // 10. Visual Data Display & Identity (Wave 3)
+  { name: "Class: cl-avatar", check: combined.includes("cl-avatar") },
+  { name: "Class: cl-avatar-group", check: combined.includes("cl-avatar-group") },
+  { name: "Class: cl-avatar__badge", check: combined.includes("cl-avatar__badge") },
+  { name: "Class: cl-avatar__fallback", check: combined.includes("cl-avatar__fallback") },
 ];
 
 for (const rule of mandatoryRules) {
