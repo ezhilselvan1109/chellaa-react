@@ -54,6 +54,16 @@ import {
   type AlertProps,
   type AlertStatus,
   type AlertVariant,
+  Snackbar,
+  type SnackbarProps,
+  Toast,
+  ToastProvider,
+  type ToastProviderProps,
+  useToast,
+  type UseToastReturn,
+  type ToastOptions,
+  type ToastPosition,
+  type ToastStatus,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -251,7 +261,55 @@ export function ConsumerTypeFixture() {
           };
           return <Alert {..._alertProps} />;
         })()}
+        {/* 20. Snackbar & Toast Notifications (Wave 2B) */}
+        {(() => {
+          const _providerProps: ToastProviderProps = {
+            maxVisibleToasts: 5,
+            defaultDuration: 4000,
+            defaultPosition: "bottom-left" as ToastPosition,
+          };
+          const _snackbarProps: SnackbarProps = {
+            isOpen: true,
+            message: "Consumer Snackbar",
+            status: "success" as ToastStatus,
+            position: "bottom-left" as ToastPosition,
+            duration: 4000,
+            isClosable: true,
+            action: <button type="button">Undo</button>,
+          };
+          return (
+            <ToastProvider {..._providerProps}>
+              <Snackbar {..._snackbarProps} />
+              <Toast isOpen={false} message="Toast Alias" />
+              <ToastConsumerDemo />
+            </ToastProvider>
+          );
+        })()}
       </Container>
     </ThemeProvider>
+  );
+}
+
+function ToastConsumerDemo() {
+  const toast: UseToastReturn = useToast();
+  const options: ToastOptions = {
+    title: "Consumer hook toast",
+    status: "info",
+    duration: 3000,
+  };
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const id = toast(options);
+        toast.close(id);
+        toast.closeAll();
+        toast.update(id, { title: "Updated" });
+        const _active: boolean = toast.isActive(id);
+        void _active;
+      }}
+    >
+      Trigger Toast
+    </button>
   );
 }

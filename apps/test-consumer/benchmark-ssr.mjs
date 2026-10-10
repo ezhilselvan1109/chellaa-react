@@ -35,6 +35,7 @@ import {
   Flex,
   Grid,
   Alert,
+  Snackbar,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -171,6 +172,13 @@ function App() {
           ),
           React.createElement(Alert.CloseButton),
         ),
+
+        // 16. Snackbar (Wave 2B) - portaled notification, SSR safe
+        React.createElement(Snackbar, {
+          isOpen: true,
+          message: "SSR Snackbar Notification",
+          status: "info",
+        }),
       ),
     ),
   );
@@ -214,5 +222,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert and Snackbar (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

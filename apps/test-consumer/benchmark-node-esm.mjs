@@ -74,6 +74,10 @@ import {
   AlertIcon,
   AlertAction,
   AlertBody,
+  Snackbar,
+  Toast,
+  ToastProvider,
+  useToast,
 } from "@chellaa/react";
 
 console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
@@ -183,7 +187,11 @@ assertComponent("Alert.Description", Alert.Description);
 assertComponent("Alert.CloseButton", Alert.CloseButton);
 assertComponent("Alert.Action", Alert.Action);
 assertComponent("Alert.Body", Alert.Body);
+assertComponent("Snackbar", Snackbar);
+assertComponent("Toast", Toast);
+assertFunction("ToastProvider", ToastProvider);
+assertFunction("useToast", useToast);
 
 console.log(
-  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, Popover, and Alert imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All 18 library components, primitives, Tooltip, Popover, Alert, and Snackbar imported cleanly in Node ESM.",
 );

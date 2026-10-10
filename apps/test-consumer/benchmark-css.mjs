@@ -68,6 +68,11 @@ const mandatoryRules = [
   { name: "Class: cl-alert__icon", check: combined.includes("cl-alert__icon") },
   { name: "Class: cl-alert__title", check: combined.includes("cl-alert__title") },
   { name: "Class: cl-alert__close", check: combined.includes("cl-alert__close") },
+  // 9. Toast / Snackbar (Wave 2B)
+  { name: "Class: cl-toast-container", check: combined.includes("cl-toast-container") },
+  { name: "Class: cl-toast", check: combined.includes("cl-toast") },
+  { name: "Class: cl-toast__close", check: combined.includes("cl-toast__close") },
+  { name: "Class: cl-toast__action", check: combined.includes("cl-toast__action") },
 ];
 
 for (const rule of mandatoryRules) {

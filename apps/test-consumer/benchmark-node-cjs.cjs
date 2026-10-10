@@ -74,6 +74,10 @@ const {
   AlertIcon,
   AlertAction,
   AlertBody,
+  Snackbar,
+  Toast,
+  ToastProvider,
+  useToast,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -183,7 +187,11 @@ assertComponent("Alert.Description", Alert.Description);
 assertComponent("Alert.CloseButton", Alert.CloseButton);
 assertComponent("Alert.Action", Alert.Action);
 assertComponent("Alert.Body", Alert.Body);
+assertComponent("Snackbar", Snackbar);
+assertComponent("Toast", Toast);
+assertFunction("ToastProvider", ToastProvider);
+assertFunction("useToast", useToast);
 
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, Tooltip, Popover, and Alert required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All 18 library components, primitives, Tooltip, Popover, Alert, and Snackbar required cleanly in CommonJS without CSS syntax errors.",
 );
