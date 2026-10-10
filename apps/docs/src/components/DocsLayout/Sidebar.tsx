@@ -29,7 +29,9 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
                       }}
                     >
                       <span className="docs-nav-link-text">{item.title}</span>
-                      {item.status && <StatusBadge status={item.status} />}
+                      {item.status && item.status !== "stable" && (
+                        <StatusBadge status={item.status} />
+                      )}
                     </a>
                   </li>
                 );
