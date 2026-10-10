@@ -1,99 +1,37 @@
+"use client";
+
 import * as React from "react";
 import { styled } from "../../system/styled";
-import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
+import { classNames } from "../../utils/classNames";
 import { useFormField } from "../FormField/FormFieldContext";
+import type {
+  InputProps,
+  InputOwnerState,
+  InputVariant,
+  InputSize,
+} from "./Input.types";
 
-export type InputVariant = "outlined" | "filled" | "standard" | "unstyled";
-export type InputSize = "sm" | "md" | "lg";
+export type { InputProps, InputOwnerState, InputVariant, InputSize };
 
-export interface InputOwnerState {
-  variant?: InputVariant | undefined;
-  size?: InputSize | undefined;
-  fullWidth?: boolean | undefined;
-  error?: boolean | undefined;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  hasStartAdornment?: boolean | undefined;
-  hasEndAdornment?: boolean | undefined;
-  focused?: boolean | undefined;
-}
+/**
+ * Headless raw input primitive for backward compatibility.
+ */
+export const InputBase = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & { ownerState?: InputOwnerState }
+>(function InputBase({ className, ownerState: _ownerState, ...props }, ref) {
+  return (
+    <input
+      ref={ref}
+      className={classNames("cl-input__input", className)}
+      {...props}
+    />
+  );
+});
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "color">,
-    InputOwnerState {
-  /**
-   * If true, delegate rendering to immediate child element using Slot
-   */
-  asChild?: boolean | undefined;
-  /**
-   * The underlying HTML element or component for root wrapper
-   */
-  component?: React.ElementType | undefined;
-  /**
-   * Alias for component
-   */
-  as?: React.ElementType | undefined;
-  /**
-   * The system-aware sx prop
-   */
-  sx?: SxProps;
-  /**
-   * Content rendered at the start of the input track
-   */
-  startAdornment?: React.ReactNode | undefined;
-  /**
-   * Content rendered at the end of the input track
-   */
-  endAdornment?: React.ReactNode | undefined;
-  /**
-   * If true, displays an interactive clear button when text is present
-   * @default false
-   */
-  clearable?: boolean | undefined;
-  /**
-   * Callback fired when the clear button is clicked
-   */
-  onClear?: () => void;
-  /**
-   * Ref forwarded directly to the native <input> element
-   */
-  inputRef?: React.Ref<HTMLInputElement>;
-}
+InputBase.displayName = "InputBase";
 
-// ---------------------------------------------------------------------------
-// 1. Raw Headless InputBase Primitive
-// ---------------------------------------------------------------------------
-export const InputBase = styled("input", {
-  name: "ChellaaInputBase",
-  slot: "Input",
-})<{ ownerState?: InputOwnerState }>(({ theme }) => ({
-  font: "inherit",
-  letterSpacing: "inherit",
-  color: "currentColor",
-  padding: 0,
-  border: 0,
-  boxSizing: "border-box",
-  background: "none",
-  height: "100%",
-  margin: 0,
-  WebkitTapHighlightColor: "transparent",
-  display: "block",
-  minWidth: 0,
-  width: "100%",
-  outline: 0,
-  "&::placeholder": {
-    color: theme.palette.text.secondary,
-    opacity: 0.6,
-  },
-  "&::-webkit-search-decoration, &::-webkit-search-cancel-button": {
-    display: "none",
-  },
-}));
-
-// ---------------------------------------------------------------------------
-// 2. Styled Root Container
-// ---------------------------------------------------------------------------
 const StyledInputRoot = styled("div", {
   name: "ChellaaInput",
   slot: "Root",
@@ -108,149 +46,16 @@ const StyledInputRoot = styled("div", {
     prop !== "hasEndAdornment" &&
     prop !== "focused" &&
     prop !== "asChild" &&
-    prop !== "component",
-})<{ ownerState: InputOwnerState }>(({ theme, ownerState }) => {
-  const size = ownerState.size ?? "md";
-  const variant = ownerState.variant ?? "outlined";
-  const isError = ownerState.error;
-  const isDisabled = ownerState.disabled;
-
-  const heightMap: Record<InputSize, number> = {
-    sm: 32,
-    md: 40,
-    lg: 48,
-  };
-
-  const paddingMap: Record<InputSize, string> = {
-    sm: "0 10px",
-    md: "0 12px",
-    lg: "0 16px",
-  };
-
-  const fontMap: Record<InputSize, string> = {
-    sm: "0.8125rem",
-    md: "0.875rem",
-    lg: "1rem",
-  };
-
-  const baseStyles: Record<string, any> = {
-    fontFamily: theme.typography.fontFamily,
-    fontSize: fontMap[size],
-    lineHeight: 1.5,
-    color: theme.palette.text.primary,
-    boxSizing: "border-box",
-    position: "relative",
-    cursor: "text",
-    display: "inline-flex",
-    alignItems: "center",
-    width: ownerState.fullWidth ? "100%" : "auto",
-    minHeight: heightMap[size],
-    padding: paddingMap[size],
-    transition: "border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease",
-  };
-
-  if (variant === "unstyled") {
-    return {
-      ...baseStyles,
-      padding: 0,
-      minHeight: "auto",
-    };
-  }
-
-  if (variant === "outlined") {
-    return {
-      ...baseStyles,
-      borderRadius: theme.shape?.borderRadius ?? 4,
-      backgroundColor: theme.palette.background.paper,
-      border: `1px solid ${isError ? theme.palette.error.main : theme.palette.divider}`,
-      "&:hover:not(:has(:disabled))": {
-        borderColor: isError ? theme.palette.error.main : theme.palette.text.primary,
-      },
-      "&:focus-within": {
-        borderColor: isError ? theme.palette.error.main : theme.palette.primary.main,
-        boxShadow: `0 0 0 2px ${isError ? theme.palette.error.main : theme.palette.primary.main}25`,
-      },
-      ...(isDisabled && {
-        opacity: 0.38,
-        cursor: "not-allowed",
-        backgroundColor: theme.palette.action.disabledBackground,
-      }),
-    };
-  }
-
-  if (variant === "filled") {
-    return {
-      ...baseStyles,
-      borderTopLeftRadius: theme.shape?.borderRadius ?? 4,
-      borderTopRightRadius: theme.shape?.borderRadius ?? 4,
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-      backgroundColor: theme.palette.action.hover,
-      borderBottom: `2px solid ${isError ? theme.palette.error.main : theme.palette.divider}`,
-      "&:hover:not(:has(:disabled))": {
-        backgroundColor: theme.palette.action.selected,
-      },
-      "&:focus-within": {
-        backgroundColor: theme.palette.action.selected,
-        borderBottomColor: isError ? theme.palette.error.main : theme.palette.primary.main,
-      },
-      ...(isDisabled && {
-        opacity: 0.38,
-        cursor: "not-allowed",
-        backgroundColor: theme.palette.action.disabledBackground,
-      }),
-    };
-  }
-
-  if (variant === "standard") {
-    return {
-      ...baseStyles,
-      paddingLeft: 0,
-      paddingRight: 0,
-      backgroundColor: "transparent",
-      borderBottom: `1px solid ${isError ? theme.palette.error.main : theme.palette.divider}`,
-      "&:hover:not(:has(:disabled))": {
-        borderBottomColor: isError ? theme.palette.error.main : theme.palette.text.primary,
-      },
-      "&:focus-within": {
-        borderBottom: `2px solid ${isError ? theme.palette.error.main : theme.palette.primary.main}`,
-      },
-      ...(isDisabled && {
-        opacity: 0.38,
-        cursor: "not-allowed",
-      }),
-    };
-  }
-
-  return baseStyles;
-});
-
-// Clear Button Styling
-const ClearButton = styled("button")(({ theme }) => ({
-  background: "none",
-  border: "none",
-  padding: 2,
-  margin: 0,
-  cursor: "pointer",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: theme.palette.text.secondary,
-  borderRadius: "50%",
-  transition: "background-color 150ms ease, color 150ms ease",
-  marginLeft: theme.spacing(0.5),
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-    color: theme.palette.text.primary,
-  },
-  "&:focus-visible": {
-    outline: `2px solid ${theme.palette.primary.main}`,
-  },
-}));
+    prop !== "component" &&
+    prop !== "ownerState",
+})({});
 
 /**
- * Single-line text entry primitive with Material Design 3 surface variants,
- * adornments, and responsive size scaling.
+ * Chellaa React Input component.
+ *
+ * Fundamental single-line text entry primitive with Material Design 3 surface variants,
+ * precompiled CSS cascade layers (@layer cl-components), zero-runtime static styling,
+ * dynamic sx override bridge, and accessible form integration.
  */
 export const Input = React.forwardRef<HTMLDivElement, InputProps>(
   function Input(props, ref) {
@@ -280,6 +85,7 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       className,
       style,
       sx,
+      inputProps,
       "aria-describedby": ariaDescribedByProp,
       ...restInputProps
     } = props;
@@ -336,7 +142,6 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       }
       if (innerInputRef.current) {
         innerInputRef.current.value = "";
-        // Create synthetic change event
         const event = new Event("input", { bubbles: true });
         innerInputRef.current.dispatchEvent(event);
         innerInputRef.current.focus();
@@ -350,24 +155,12 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       }
     };
 
-    const ownerState: InputOwnerState = {
-      variant,
-      size,
-      fullWidth,
-      error,
-      disabled,
-      readOnly,
-      hasStartAdornment: Boolean(startAdornment),
-      hasEndAdornment: Boolean(endAdornment || (clearable && currentValue.length > 0)),
-    };
-
-    const targetTag = component || as;
-
     const showClear = clearable && !disabled && !readOnly && currentValue.length > 0;
 
     const clearButton = showClear ? (
-      <ClearButton
+      <button
         type="button"
+        className="cl-input__clear"
         aria-label="Clear input"
         onClick={handleClear}
       >
@@ -384,21 +177,33 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
           <line x1="18" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
-      </ClearButton>
+      </button>
     ) : null;
+
+    const inputWrapperClassName = classNames(
+      "cl-input",
+      `cl-input--${variant}`,
+      `cl-input--${size}`,
+      fullWidth && "cl-input--full-width",
+      error && "cl-input--error",
+      disabled && "cl-input--disabled",
+      className
+    );
+
+    const targetTag = component || as;
 
     if (asChild) {
       return (
         <StyledInputRoot
           as={Slot}
-          ref={ref as any}
-          ownerState={ownerState}
-          className={className}
+          ref={ref as React.Ref<HTMLDivElement>}
+          className={inputWrapperClassName}
           style={style}
+          sx={sx}
           onClick={handleWrapperClick}
         >
           {startAdornment}
-          <InputBase
+          <input
             ref={handleInputRef}
             id={id}
             type={type}
@@ -410,7 +215,8 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
             defaultValue={defaultValue}
             onChange={handleChange}
             aria-invalid={error ? true : undefined}
-            ownerState={ownerState}
+            className="cl-input__input"
+            {...inputProps}
             {...restInputProps}
           />
           {clearButton}
@@ -422,14 +228,14 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
     return (
       <StyledInputRoot
         as={targetTag}
-        ref={ref as any}
-        ownerState={ownerState}
-        className={className}
+        ref={ref as React.Ref<HTMLDivElement>}
+        className={inputWrapperClassName}
         style={style}
+        sx={sx}
         onClick={handleWrapperClick}
       >
         {startAdornment}
-        <InputBase
+        <input
           ref={handleInputRef}
           id={id}
           type={type}
@@ -441,7 +247,8 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
           defaultValue={defaultValue}
           onChange={handleChange}
           aria-invalid={error ? true : undefined}
-          ownerState={ownerState}
+          className="cl-input__input"
+          {...inputProps}
           {...restInputProps}
         />
         {clearButton}

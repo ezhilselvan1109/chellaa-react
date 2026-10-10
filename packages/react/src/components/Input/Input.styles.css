@@ -1,0 +1,220 @@
+/**
+ * Chellaa React — Input Component Styles
+ * Encapsulated within @layer cl-components for deterministic cascade ordering.
+ */
+
+@layer cl-components {
+  /* ---------------------------------------------------------------------------
+   * Root Wrapper (.cl-input)
+   * ------------------------------------------------------------------------- */
+  .cl-input {
+    font-family: var(--cl-font-sans, system-ui, -apple-system, sans-serif);
+    font-size: var(--cl-font-size-base, 0.875rem);
+    line-height: var(--cl-leading-normal, 1.5);
+    color: var(--cl-input-fg, var(--cl-color-fg-primary));
+    box-sizing: border-box;
+    position: relative;
+    cursor: text;
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    min-height: 40px;
+    padding: 0 var(--cl-space-3, 12px);
+    transition: border-color var(--cl-motion-fast, 150ms) cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow var(--cl-motion-fast, 150ms) cubic-bezier(0.4, 0, 0.2, 1),
+                background-color var(--cl-motion-fast, 150ms) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cl-input--full-width {
+    width: 100%;
+    display: flex;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Sizes
+   * ------------------------------------------------------------------------- */
+  .cl-input--sm {
+    min-height: 32px;
+    padding: 0 var(--cl-space-2-5, 10px);
+    font-size: var(--cl-font-size-sm, 0.8125rem);
+  }
+
+  .cl-input--md {
+    min-height: 40px;
+    padding: 0 var(--cl-space-3, 12px);
+    font-size: var(--cl-font-size-base, 0.875rem);
+  }
+
+  .cl-input--lg {
+    min-height: 48px;
+    padding: 0 var(--cl-space-4, 16px);
+    font-size: var(--cl-font-size-lg, 1rem);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Outlined (Default)
+   * ------------------------------------------------------------------------- */
+  .cl-input--outlined {
+    border-radius: var(--cl-radius-md, 6px);
+    background-color: var(--cl-input-bg, var(--cl-color-bg-canvas));
+    border: 1px solid var(--cl-input-border, var(--cl-color-border-default));
+  }
+
+  .cl-input--outlined:hover:not(.cl-input--disabled) {
+    border-color: var(--cl-color-border-strong, #64748b);
+  }
+
+  .cl-input--outlined:focus-within:not(.cl-input--disabled) {
+    border-color: var(--cl-input-focus-border, var(--cl-color-primary-base));
+    box-shadow: 0 0 0 2px var(--cl-color-focus-ring, rgba(99, 102, 241, 0.25));
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Filled
+   * ------------------------------------------------------------------------- */
+  .cl-input--filled {
+    border-top-left-radius: var(--cl-radius-md, 6px);
+    border-top-right-radius: var(--cl-radius-md, 6px);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: var(--cl-color-bg-muted, #f1f5f9);
+    border: none;
+    border-bottom: 2px solid var(--cl-input-border, var(--cl-color-border-default));
+  }
+
+  .cl-input--filled:hover:not(.cl-input--disabled) {
+    background-color: var(--cl-color-bg-surface, #e2e8f0);
+  }
+
+  .cl-input--filled:focus-within:not(.cl-input--disabled) {
+    background-color: var(--cl-color-bg-surface, #e2e8f0);
+    border-bottom-color: var(--cl-input-focus-border, var(--cl-color-primary-base));
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Standard
+   * ------------------------------------------------------------------------- */
+  .cl-input--standard {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cl-input-border, var(--cl-color-border-default));
+    border-radius: 0;
+  }
+
+  .cl-input--standard:hover:not(.cl-input--disabled) {
+    border-bottom-color: var(--cl-color-border-strong, #64748b);
+  }
+
+  .cl-input--standard:focus-within:not(.cl-input--disabled) {
+    border-bottom: 2px solid var(--cl-input-focus-border, var(--cl-color-primary-base));
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Unstyled
+   * ------------------------------------------------------------------------- */
+  .cl-input--unstyled {
+    padding: 0;
+    min-height: auto;
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * State: Error
+   * ------------------------------------------------------------------------- */
+  .cl-input--error.cl-input--outlined {
+    border-color: var(--cl-input-invalid-border, var(--cl-color-danger-base));
+  }
+
+  .cl-input--error.cl-input--outlined:focus-within {
+    border-color: var(--cl-input-invalid-border, var(--cl-color-danger-base));
+    box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.25);
+  }
+
+  .cl-input--error.cl-input--filled,
+  .cl-input--error.cl-input--standard {
+    border-bottom-color: var(--cl-input-invalid-border, var(--cl-color-danger-base));
+  }
+
+  /* ---------------------------------------------------------------------------
+   * State: Disabled
+   * ------------------------------------------------------------------------- */
+  .cl-input--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: var(--cl-color-neutral-subtle, #f8fafc);
+  }
+
+  .cl-input--disabled input {
+    cursor: not-allowed;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Native Input Element (.cl-input__input)
+   * ------------------------------------------------------------------------- */
+  .cl-input__input {
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentColor;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    background: none;
+    height: 100%;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    min-width: 0;
+    width: 100%;
+    outline: 0;
+  }
+
+  .cl-input__input::placeholder {
+    color: var(--cl-input-placeholder, var(--cl-color-fg-muted));
+    opacity: 0.7;
+  }
+
+  .cl-input__input::-webkit-search-decoration,
+  .cl-input__input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Clear Button (.cl-input__clear)
+   * ------------------------------------------------------------------------- */
+  .cl-input__clear {
+    background: none;
+    border: none;
+    padding: 2px;
+    margin: 0 0 0 var(--cl-space-1, 4px);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cl-color-fg-muted, #94a3b8);
+    border-radius: var(--cl-radius-full, 9999px);
+    transition: background-color var(--cl-motion-fast, 150ms) ease,
+                color var(--cl-motion-fast, 150ms) ease;
+  }
+
+  .cl-input__clear:hover {
+    background-color: var(--cl-color-neutral-subtle, #f1f5f9);
+    color: var(--cl-color-fg-primary, #0f172a);
+  }
+
+  .cl-input__clear:focus-visible {
+    outline: 2px solid var(--cl-color-primary-base, #6366f1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer cl-components {
+    .cl-input,
+    .cl-input__clear {
+      transition: none !important;
+    }
+  }
+}

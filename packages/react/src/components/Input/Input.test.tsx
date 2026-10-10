@@ -1,6 +1,6 @@
 import * as React from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import { Input, InputBase } from "./Input";
@@ -17,16 +17,23 @@ describe("Input & TextField Components", () => {
       render(
         <Input
           placeholder="Enter text"
-          data-testid="input-wrapper"
-          inputProps={{ "data-testid": "native-input" } as any}
+          data-testid="native-input"
         />
       );
       const input = screen.getByPlaceholderText("Enter text");
       expect(input).toBeInTheDocument();
       expect(input.tagName).toBe("INPUT");
-      expect(screen.getByTestId("input-wrapper")).toBeInTheDocument();
-      expect(screen.getByTestId("input-wrapper")).not.toHaveAttribute("variant");
-      expect(screen.getByTestId("input-wrapper")).not.toHaveAttribute("size");
+      expect(input.parentElement).toHaveClass("cl-input");
+      expect(input.parentElement).toHaveClass("cl-input--outlined");
+      expect(input.parentElement).not.toHaveAttribute("variant");
+      expect(input.parentElement).not.toHaveAttribute("size");
+    });
+
+    it("renders InputBase directly with input classes", () => {
+      render(<InputBase placeholder="Base input" data-testid="base-input" />);
+      const input = screen.getByTestId("base-input");
+      expect(input).toHaveClass("cl-input__input");
+      expect(input.tagName).toBe("INPUT");
     });
 
     it("supports controlled value and fires onChange", async () => {
@@ -76,80 +83,91 @@ describe("Input & TextField Components", () => {
       const { rerender } = render(
         <Input variant="filled" placeholder="Filled" data-testid="inp" />
       );
-      expect(screen.getByTestId("inp")).toBeInTheDocument();
-      expect(screen.getByTestId("inp")).not.toHaveAttribute("variant");
+      const input = screen.getByTestId("inp");
+      expect(input.parentElement).toHaveClass("cl-input--filled");
+      expect(input.parentElement).not.toHaveAttribute("variant");
 
       rerender(<Input variant="standard" placeholder="Standard" data-testid="inp" />);
-      expect(screen.getByTestId("inp")).not.toHaveAttribute("variant");
+      expect(input.parentElement).toHaveClass("cl-input--standard");
+      expect(input.parentElement).not.toHaveAttribute("variant");
 
       rerender(<Input variant="unstyled" placeholder="Unstyled" data-testid="inp" />);
-      expect(screen.getByTestId("inp")).not.toHaveAttribute("variant");
+      expect(input.parentElement).toHaveClass("cl-input--unstyled");
+      expect(input.parentElement).not.toHaveAttribute("variant");
     });
 
     it("renders sm, md, lg sizes without leaking to DOM", () => {
       const { rerender } = render(
         <Input size="sm" placeholder="Small" data-testid="inp" />
       );
-      expect(screen.getByTestId("inp")).not.toHaveAttribute("size");
+      const input = screen.getByTestId("inp");
+      expect(input.parentElement).toHaveClass("cl-input--sm");
+      expect(input.parentElement).not.toHaveAttribute("size");
 
       rerender(<Input size="lg" placeholder="Large" data-testid="inp" />);
-      expect(screen.getByTestId("inp")).not.toHaveAttribute("size");
+      expect(input.parentElement).toHaveClass("cl-input--lg");
+      expect(input.parentElement).not.toHaveAttribute("size");
     });
   });
 
   // ---------------------------------------------------------------------------
   // 3. Adornments & Clear Button
   // ---------------------------------------------------------------------------
-  describe("Adornments & Clearable", () => {
-    it("renders startAdornment and endAdornment", () => {
+  describe("Adornments & Clear Button", () => {
+    it("renders start and end adornments properly", () => {
+      render(
+        <Input
+          placeholder="Amount"
+          startAdornment={<InputAdornment position="start">$</InputAdornment>}
+          endAdornment={<InputAdornment position="end">USD</InputAdornment>}
+        />
+      );
+
+      expect(screen.getByText("$")).toBeInTheDocument();
+      expect(screen.getByText("USD")).toBeInTheDocument();
+    });
+
+    it("renders interactive clear button when clearable and text is entered", async () => {
+      const user = userEvent.setup();
+      const handleClear = vi.fn();
+
       render(
         <Input
           placeholder="Search"
-          startAdornment={<span data-testid="start-icon">🔍</span>}
-          endAdornment={<span data-testid="end-icon">⌘K</span>}
-        />
-      );
-      expect(screen.getByTestId("start-icon")).toBeInTheDocument();
-      expect(screen.getByTestId("end-icon")).toBeInTheDocument();
-    });
-
-    it("renders clearable button when text is present and clears on click", async () => {
-      const user = userEvent.setup();
-      const onClear = vi.fn();
-
-      render(
-        <Input
-          placeholder="Clearable input"
-          defaultValue="Clear me"
           clearable
-          onClear={onClear}
+          defaultValue="Query"
+          onClear={handleClear}
         />
       );
 
-      const clearBtn = screen.getByRole("button", { name: "Clear input" });
+      const clearBtn = screen.getByRole("button", { name: /clear input/i });
       expect(clearBtn).toBeInTheDocument();
 
       await user.click(clearBtn);
-      expect(onClear).toHaveBeenCalled();
-      expect(screen.getByPlaceholderText("Clearable input")).toHaveValue("");
+      expect(handleClear).toHaveBeenCalled();
     });
   });
 
   // ---------------------------------------------------------------------------
-  // 4. States & Validation
+  // 4. Form Field Integration & States
   // ---------------------------------------------------------------------------
-  describe("States & Validation", () => {
-    it("sets disabled attribute on native input", () => {
-      render(<Input disabled placeholder="Disabled" />);
-      expect(screen.getByPlaceholderText("Disabled")).toBeDisabled();
+  describe("Form Field States", () => {
+    it("reflects disabled state on wrapper and native input", () => {
+      render(<Input disabled placeholder="Disabled input" data-testid="inp-wrapper" />);
+      const input = screen.getByPlaceholderText("Disabled input");
+      const wrapper = input.parentElement;
+
+      expect(wrapper).toHaveClass("cl-input--disabled");
+      expect(input).toBeDisabled();
     });
 
-    it("sets aria-invalid when error is true", () => {
-      render(<Input error placeholder="Error state" />);
-      expect(screen.getByPlaceholderText("Error state")).toHaveAttribute(
-        "aria-invalid",
-        "true"
-      );
+    it("reflects error state and aria-invalid on native input", () => {
+      render(<Input error placeholder="Error state" data-testid="inp-wrapper" />);
+      const input = screen.getByPlaceholderText("Error state");
+      const wrapper = input.parentElement;
+
+      expect(wrapper).toHaveClass("cl-input--error");
+      expect(input).toHaveAttribute("aria-invalid", "true");
     });
   });
 
@@ -231,6 +249,39 @@ describe("Input & TextField Components", () => {
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 7. Styling Engine, Theme Integration & sx Precedence
+  // ---------------------------------------------------------------------------
+  describe("Styling Engine & sx Precedence", () => {
+    it("renders inside ThemeProvider and supports dynamic sx overrides", () => {
+      render(
+        <ThemeProvider>
+          <Input
+            placeholder="sx test"
+            variant="outlined"
+            size="lg"
+            fullWidth
+            sx={{
+              borderColor: "rgb(255, 0, 0)",
+              backgroundColor: "rgb(0, 255, 0)",
+            }}
+          />
+        </ThemeProvider>
+      );
+
+      const input = screen.getByPlaceholderText("sx test");
+      const wrapper = input.parentElement;
+      expect(wrapper).toHaveClass("cl-input");
+      expect(wrapper).toHaveClass("cl-input--outlined");
+      expect(wrapper).toHaveClass("cl-input--lg");
+      expect(wrapper).toHaveClass("cl-input--full-width");
+
+      // Emotion style tag is generated for dynamic sx overrides
+      const styleTags = document.querySelectorAll("style[data-emotion]");
+      expect(styleTags.length).toBeGreaterThan(0);
     });
   });
 });

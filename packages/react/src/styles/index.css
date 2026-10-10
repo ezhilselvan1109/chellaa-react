@@ -9,3 +9,5 @@
 @import "./theme.css";
 @import "../components/Button/Button.styles.css";
 @import "../components/ButtonGroup/ButtonGroup.styles.css";
+@import "../components/Input/Input.styles.css";
+
