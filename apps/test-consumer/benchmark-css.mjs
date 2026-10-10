@@ -86,6 +86,12 @@ const mandatoryRules = [
   { name: "Class: cl-accordion__content", check: combined.includes("cl-accordion__content") },
   { name: "Class: cl-accordion__inner", check: combined.includes("cl-accordion__inner") },
   { name: "Class: cl-accordion__icon", check: combined.includes("cl-accordion__icon") },
+  // 12. Navigation & Tabs (Wave 3)
+  { name: "Class: cl-tabs", check: combined.includes("cl-tabs") },
+  { name: "Class: cl-tabs__list", check: combined.includes("cl-tabs__list") },
+  { name: "Class: cl-tabs__trigger", check: combined.includes("cl-tabs__trigger") },
+  { name: "Class: cl-tabs__content", check: combined.includes("cl-tabs__content") },
+  { name: "Class: cl-tabs__indicator", check: combined.includes("cl-tabs__indicator") },
 ];
 
 for (const rule of mandatoryRules) {

@@ -44,6 +44,8 @@ import {
   AccordionTrigger,
   AccordionContent,
   AccordionIcon,
+  // 19. Navigation Primitives (Wave 3)
+  Tabs,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -212,6 +214,20 @@ function App() {
             React.createElement(AccordionContent, null, "FAQ Answer 1"),
           ),
         ),
+
+        // 19. Navigation & Tabs (Wave 3)
+        React.createElement(
+          Tabs,
+          { defaultValue: "tab-1" },
+          React.createElement(
+            Tabs.List,
+            { "aria-label": "SSR Tabs" },
+            React.createElement(Tabs.Trigger, { value: "tab-1" }, "Tab 1"),
+            React.createElement(Tabs.Trigger, { value: "tab-2" }, "Tab 2"),
+          ),
+          React.createElement(Tabs.Content, { value: "tab-1" }, "Tab 1 Content"),
+          React.createElement(Tabs.Content, { value: "tab-2" }, "Tab 2 Content"),
+        ),
       ),
     ),
   );
@@ -258,6 +274,11 @@ const mandatoryAssertions = [
   { name: "Accordion content class (cl-accordion__content)", check: html.includes("cl-accordion__content") },
   { name: "Accordion inner class (cl-accordion__inner)", check: html.includes("cl-accordion__inner") },
   { name: "Accordion icon class (cl-accordion__icon)", check: html.includes("cl-accordion__icon") },
+  // Navigation & Tabs (Wave 3)
+  { name: "Tabs class (cl-tabs)", check: html.includes("cl-tabs") },
+  { name: "Tabs list class (cl-tabs__list)", check: html.includes("cl-tabs__list") },
+  { name: "Tabs trigger class (cl-tabs__trigger)", check: html.includes("cl-tabs__trigger") },
+  { name: "Tabs content class (cl-tabs__content)", check: html.includes("cl-tabs__content") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -267,5 +288,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, and Accordion (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, and Tabs (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

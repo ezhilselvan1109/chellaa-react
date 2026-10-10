@@ -374,4 +374,28 @@ export {
   type AccordionItemContextValue,
 } from "./components/Accordion";
 
+// Navigation & Rich Controls (Phase 5 / Wave 3)
+export {
+  Tabs,
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsIndicator,
+  TabsContext,
+  useTabsContext,
+  type TabsOrientation,
+  type TabsVariant,
+  type TabsSize,
+  type TabsActivationMode,
+  type TabsRootProps,
+  type TabsProps,
+  type TabsListProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+  type TabsIndicatorProps,
+  type TabsContextValue,
+} from "./components/Tabs";
+
+
 

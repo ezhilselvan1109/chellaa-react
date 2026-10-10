@@ -92,6 +92,23 @@ import {
   type AccordionContentProps,
   type AccordionIconProps,
   type AccordionVariant,
+  // Navigation Primitives (Wave 3)
+  Tabs,
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsIndicator,
+  type TabsProps,
+  type TabsRootProps,
+  type TabsListProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+  type TabsIndicatorProps,
+  type TabsOrientation,
+  type TabsVariant,
+  type TabsSize,
+  type TabsActivationMode,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -394,30 +411,104 @@ export function ConsumerTypeFixture() {
           void _contentProps;
           void _iconProps;
           return (
-            <div data-testid="accordion-fixture">
-              <Accordion type="single" collapsible defaultValue="item-1" variant="outline">
-                <Accordion.Item value="item-1">
-                  <Accordion.Header level={3}>
-                    <Accordion.Trigger>
-                      Section 1
-                      <Accordion.Icon />
-                    </Accordion.Trigger>
-                  </Accordion.Header>
-                  <Accordion.Content>Section 1 body content</Accordion.Content>
-                </Accordion.Item>
-              </Accordion>
-              <Accordion type="multiple" defaultValue={["flat-1"]}>
-                <AccordionItem value="flat-1">
-                  <AccordionHeader>
-                    <AccordionTrigger>
-                      Flat Header
-                      <AccordionIcon />
-                    </AccordionTrigger>
-                  </AccordionHeader>
-                  <AccordionContent>Flat Content</AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
+            <>
+              <div data-testid="accordion-fixture">
+                <Accordion type="single" collapsible defaultValue="item-1" variant="outline">
+                  <Accordion.Item value="item-1">
+                    <Accordion.Header level={3}>
+                      <Accordion.Trigger>
+                        Section 1
+                        <Accordion.Icon />
+                      </Accordion.Trigger>
+                    </Accordion.Header>
+                    <Accordion.Content>Section 1 body content</Accordion.Content>
+                  </Accordion.Item>
+                </Accordion>
+                <Accordion type="multiple" defaultValue={["flat-1"]}>
+                  <AccordionItem value="flat-1">
+                    <AccordionHeader>
+                      <AccordionTrigger>
+                        Flat Header
+                        <AccordionIcon />
+                      </AccordionTrigger>
+                    </AccordionHeader>
+                    <AccordionContent>Flat Content</AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+
+              {/* 19. Navigation Primitives: Tabs */}
+              <div style={{ marginTop: "24px" }}>
+                <Typography variant="h3">Tabs Fixture</Typography>
+                {(() => {
+                  const orientation: TabsOrientation = "horizontal";
+                  const variant: TabsVariant = "line";
+                  const size: TabsSize = "md";
+                  const activationMode: TabsActivationMode = "automatic";
+                  const _rootProps: TabsRootProps = {
+                    orientation,
+                    children: null,
+                  };
+                  const _listProps: TabsListProps = {
+                    "aria-label": "Test",
+                    children: null,
+                  };
+                  const _triggerProps: TabsTriggerProps = {
+                    value: "t1",
+                    isDisabled: false,
+                    asChild: false,
+                    children: "T1",
+                  };
+                  const _contentProps: TabsContentProps = {
+                    value: "t1",
+                    children: null,
+                  };
+                  const _indicatorProps: TabsIndicatorProps = {
+                    className: "custom-indicator",
+                  };
+                  void TabsRoot;
+                  void TabsList;
+                  void TabsTrigger;
+                  void TabsContent;
+                  void TabsIndicator;
+                  void _rootProps;
+                  void _listProps;
+                  void _triggerProps;
+                  void _contentProps;
+                  void _indicatorProps;
+
+                  const tabsProps: TabsProps = {
+                    orientation,
+                    variant,
+                    size,
+                    activationMode,
+                    defaultValue: "tab-1",
+                    onValueChange: (val: string) => {
+                      const _v: string = val;
+                      void _v;
+                    },
+                    children: (
+                      <>
+                        <Tabs.List aria-label="Consumer Navigation Tabs">
+                          <Tabs.Trigger value="tab-1">Overview</Tabs.Trigger>
+                          <Tabs.Trigger value="tab-2" isDisabled>
+                            Billing (Disabled)
+                          </Tabs.Trigger>
+                          <Tabs.Trigger value="tab-3" asChild>
+                            <a href="#settings">Settings</a>
+                          </Tabs.Trigger>
+                          <Tabs.Indicator />
+                        </Tabs.List>
+                        <Tabs.Content value="tab-1">Overview Content</Tabs.Content>
+                        <Tabs.Content value="tab-2">Billing Content</Tabs.Content>
+                        <Tabs.Content value="tab-3">Settings Content</Tabs.Content>
+                      </>
+                    ),
+                  };
+                  return <Tabs {...tabsProps} />;
+                })()}
+              </div>
+            </>
           );
         })()}
       </Container>

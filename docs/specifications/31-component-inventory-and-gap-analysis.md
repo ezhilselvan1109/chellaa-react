@@ -71,7 +71,7 @@ Status Classification Key:
 | **Alert** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`24-alert.md`](./24-alert.md) | ✅ Yes | ✅ 38/38 Tests Pass (axe 0) |
 | **Snackbar / Toast** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`25-snackbar.md`](./25-snackbar.md) | ✅ Yes | ✅ 32/32 Tests Pass (axe 0) |
 | **Avatar / Group** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`26-avatar.md`](./26-avatar.md) | ✅ Yes | ✅ 41/41 Tests Pass (axe 0) |
-| **Tabs** | Tier 6 (Navigation) | **Missing** (Now Specified) | **SPEC-027 Created** | [`27-tabs.md`](./27-tabs.md) | ❌ No | Spec Ready |
+| **Tabs** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`27-tabs.md`](./27-tabs.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
 | **Accordion** | Tier 4 (Disclosure) | **Implemented** | Approved & Baseline | [`28-accordion.md`](./28-accordion.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
 | **Pagination** | Tier 6 (Navigation) | **Missing** (Now Specified) | **SPEC-029 Created** | [`29-pagination.md`](./29-pagination.md) | ❌ No | Spec Ready |
 | **Combobox / Autocomplete** | Tier 7 (Organisms) | **Missing** (Now Specified) | **SPEC-030 Created** | [`30-combobox.md`](./30-combobox.md) | ❌ No | Spec Ready |

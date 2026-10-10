@@ -92,6 +92,13 @@ const {
   AccordionTrigger,
   AccordionContent,
   AccordionIcon,
+  // 19. Navigation Primitives (Wave 3)
+  Tabs,
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsIndicator,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -228,6 +235,19 @@ assertComponent("AccordionTrigger", AccordionTrigger);
 assertComponent("AccordionContent", AccordionContent);
 assertComponent("AccordionIcon", AccordionIcon);
 
+// 19. Navigation Primitives (Wave 3)
+assertComponent("Tabs", Tabs);
+assertComponent("Tabs.Root", Tabs.Root);
+assertComponent("Tabs.List", Tabs.List);
+assertComponent("Tabs.Trigger", Tabs.Trigger);
+assertComponent("Tabs.Content", Tabs.Content);
+assertComponent("Tabs.Indicator", Tabs.Indicator);
+assertComponent("TabsRoot", TabsRoot);
+assertComponent("TabsList", TabsList);
+assertComponent("TabsTrigger", TabsTrigger);
+assertComponent("TabsContent", TabsContent);
+assertComponent("TabsIndicator", TabsIndicator);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, and Accordion required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, and Tabs required cleanly in CommonJS without CSS syntax errors.",
 );
