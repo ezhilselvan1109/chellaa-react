@@ -120,9 +120,19 @@ describe("Card", () => {
   describe("hoverable", () => {
     it("renders with hoverable=true without error", () => {
       const { container } = renderWithTheme(
-        <Card hoverable>Content</Card>
+        <Card hoverable data-testid="hoverable-card">Content</Card>
       );
-      expect(container.firstChild).toBeInTheDocument();
+      const card = screen.getByTestId("hoverable-card");
+      expect(card).toHaveClass("cl-card--hoverable");
+    });
+
+    it("renders with isClickable=true applying clickable and hoverable classes", () => {
+      renderWithTheme(
+        <Card isClickable data-testid="clickable-card">Content</Card>
+      );
+      const card = screen.getByTestId("clickable-card");
+      expect(card).toHaveClass("cl-card--clickable");
+      expect(card).toHaveClass("cl-card--hoverable");
     });
   });
 
@@ -381,6 +391,29 @@ describe("CardActions", () => {
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
+  it("applies align classes on CardActions", () => {
+    const { rerender } = renderWithTheme(
+      <CardActions align="end" data-testid="actions-end">
+        <button type="button">Action</button>
+      </CardActions>
+    );
+    expect(screen.getByTestId("actions-end")).toHaveClass("cl-card__actions--align-end");
+
+    rerender(
+      <CardActions align="center" data-testid="actions-center">
+        <button type="button">Action</button>
+      </CardActions>
+    );
+    expect(screen.getByTestId("actions-center")).toHaveClass("cl-card__actions--align-center");
+
+    rerender(
+      <CardActions align="between" data-testid="actions-between">
+        <button type="button">Action</button>
+      </CardActions>
+    );
+    expect(screen.getByTestId("actions-between")).toHaveClass("cl-card__actions--align-between");
+  });
+
   it("has no axe violations", async () => {
     const { container } = renderWithTheme(
       <CardActions>
@@ -401,10 +434,10 @@ describe("Card compound composition", () => {
       <Card data-testid="full-card" hoverable>
         <CardMedia image="/test.jpg" alt="Test" />
         <CardHeader
-          avatar={<span>👤</span>}
+          avatar={<span data-testid="avatar-slot">AV</span>}
           title="Card Title"
           subheader="Card Subheader"
-          action={<button type="button" aria-label="Options">⋮</button>}
+          action={<button type="button" aria-label="Options">Options</button>}
         />
         <CardBody>
           <p>Main body content of the card.</p>

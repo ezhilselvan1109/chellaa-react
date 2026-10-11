@@ -50,10 +50,16 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: CardSize;
 
   /**
-   * When true, raises elevation by 2 stops and lifts the card 2px on hover.
+   * When true, raises elevation and lifts the card on hover.
    * @default false
    */
   hoverable?: boolean;
+
+  /**
+   * When true, changes cursor to pointer and enables interactive hover lift.
+   * @default false
+   */
+  isClickable?: boolean;
 
   /**
    * If true, removes the card's border-radius.
@@ -158,6 +164,12 @@ export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default false
    */
   disableSpacing?: boolean;
+
+  /**
+   * Horizontal alignment of action triggers.
+   * @default "start"
+   */
+  align?: "start" | "center" | "end" | "between";
 
   sx?: SxProps;
 }

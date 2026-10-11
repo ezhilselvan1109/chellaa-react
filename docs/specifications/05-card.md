@@ -157,7 +157,8 @@ Card (HTML <div className="cl-card"> or delegated asChild element)
 | `variant` | `CardVariant` | Optional | `"elevated"` | Visual surface style (`elevated`, `outlined`, `filled`, `outline`) | None |
 | `elevation` | `number` | Optional | `1` | Numeric M3 elevation level (0–24) | None |
 | `size` | `CardSize` | Optional | `"md"` | Spatial padding scale propagated to all child sections | None |
-| `hoverable` | `boolean` | Optional | `false` | Raises elevation and translates -2px on hover | Cursor / tactile feedback |
+| `hoverable` | `boolean` | Optional | `false` | Raises elevation and translates -4px on hover | Cursor / tactile feedback |
+| `isClickable` | `boolean` | Optional | `false` | Enables interactive card surface (cursor pointer, hover lift, active press) | Interactive landmark |
 | `square` | `boolean` | Optional | `false` | Removes border-radius (sets radius to 0) | None |
 | `asChild` | `boolean` | Optional | `false` | Delegates rendering to immediate child element via `Slot` | Preserves child semantic tag |
 | `component` | `React.ElementType` | Optional | `"div"` | Override rendered HTML element | Semantic landmark tag |
@@ -221,6 +222,7 @@ Card (HTML <div className="cl-card"> or delegated asChild element)
 
 | Prop Name | Type | Req/Opt | Default | Description | A11y Impact |
 | :--- | :--- | :---: | :--- | :--- | :--- |
+| `align` | `"start" \| "center" \| "end" \| "between"` | Optional | `"start"` | Flex justification alignment of action controls (`cl-card__actions--align-*`) | None |
 | `disableSpacing` | `boolean` | Optional | `false` | Removes negative margins and applies padded spacing | None |
 | `sx` | `SxProps` | Optional | `undefined` | Emotion theme-aware sx prop | None |
 
@@ -241,6 +243,7 @@ export interface CardOwnerState {
   size: CardSize;
   hoverable: boolean;
   square: boolean;
+  isClickable?: boolean;
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -248,6 +251,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   elevation?: number;
   size?: CardSize;
   hoverable?: boolean;
+  isClickable?: boolean;
   square?: boolean;
   asChild?: boolean;
   component?: React.ElementType;
@@ -296,6 +300,7 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  align?: "start" | "center" | "end" | "between";
   disableSpacing?: boolean;
   sx?: SxProps;
 }

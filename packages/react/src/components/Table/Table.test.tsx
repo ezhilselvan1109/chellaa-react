@@ -170,6 +170,85 @@ describe("Table Component (SPEC-007)", () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
+  it("FR-TBL-10: applies explicit alignment classes on Th and Td", () => {
+    render(
+      <TableRoot>
+        <TableThead>
+          <TableTr>
+            <TableTh align="center" data-testid="center-th">Center</TableTh>
+            <TableTh align="right" data-testid="right-th">Right</TableTh>
+          </TableTr>
+        </TableThead>
+        <TableTbody>
+          <TableTr>
+            <TableTd align="center" data-testid="center-td">Center Data</TableTd>
+            <TableTd align="right" data-testid="right-td">Right Data</TableTd>
+          </TableTr>
+        </TableTbody>
+      </TableRoot>
+    );
+
+    expect(screen.getByTestId("center-th")).toHaveClass("cl-table__th--align-center");
+    expect(screen.getByTestId("right-th")).toHaveClass("cl-table__th--align-right");
+    expect(screen.getByTestId("center-td")).toHaveClass("cl-table__td--align-center");
+    expect(screen.getByTestId("right-td")).toHaveClass("cl-table__td--align-right");
+  });
+
+  it("FR-TBL-11: applies sortable styling and accessible aria-sort attribute on Th", () => {
+    const { rerender } = render(
+      <TableRoot>
+        <TableThead>
+          <TableTr>
+            <TableTh isSortable sortDirection="asc" data-testid="sortable-th">
+              Column
+            </TableTh>
+          </TableTr>
+        </TableThead>
+      </TableRoot>
+    );
+
+    const th = screen.getByTestId("sortable-th");
+    expect(th).toHaveClass("cl-table__th--sortable");
+    expect(th).toHaveClass("cl-table__th--sorted-asc");
+    expect(th).toHaveAttribute("aria-sort", "ascending");
+
+    rerender(
+      <TableRoot>
+        <TableThead>
+          <TableTr>
+            <TableTh isSortable sortDirection="desc" data-testid="sortable-th">
+              Column
+            </TableTh>
+          </TableTr>
+        </TableThead>
+      </TableRoot>
+    );
+    expect(th).toHaveClass("cl-table__th--sorted-desc");
+    expect(th).toHaveAttribute("aria-sort", "descending");
+
+    rerender(
+      <TableRoot>
+        <TableThead>
+          <TableTr>
+            <TableTh isSortable sortDirection="none" data-testid="sortable-th">
+              Column
+            </TableTh>
+          </TableTr>
+        </TableThead>
+      </TableRoot>
+    );
+    expect(th).toHaveAttribute("aria-sort", "none");
+  });
+
+  it("FR-TBL-12: applies cl-table__container--bordered when bordered is true", () => {
+    render(
+      <TableContainer bordered data-testid="bordered-container">
+        <TableRoot />
+      </TableContainer>
+    );
+    expect(screen.getByTestId("bordered-container")).toHaveClass("cl-table__container--bordered");
+  });
+
   it("NFR-TBL-03: passes axe-core accessibility audit with zero violations", async () => {
     const { container } = renderStandardTable();
     const results = await axe(container);

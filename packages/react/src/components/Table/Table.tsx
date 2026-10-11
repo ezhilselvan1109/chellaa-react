@@ -71,11 +71,17 @@ TableRoot.displayName = "Table.Root";
 export const TableContainer = React.forwardRef<
   HTMLDivElement,
   TableContainerProps
->(({ className, children, ...props }, ref) => {
+>(({ bordered = false, className, children, ...props }, ref) => {
   return (
     <div
       ref={ref}
-      className={["cl-table__container", className].filter(Boolean).join(" ")}
+      className={[
+        "cl-table__container",
+        bordered && "cl-table__container--bordered",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       {...props}
     >
       {children}
@@ -196,31 +202,65 @@ TableTr.displayName = "Table.Tr";
 export const TableTh = React.forwardRef<
   HTMLTableCellElement,
   TableHeaderCellProps
->(({ isNumeric = false, scope = "col", className, children, ...props }, ref) => {
-  const classNames = [
-    "cl-table__th",
-    isNumeric && "cl-table__th--numeric",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+>(
+  (
+    {
+      isNumeric = false,
+      align,
+      isSortable = false,
+      sortDirection,
+      scope = "col",
+      className,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const computedAriaSort = isSortable
+      ? sortDirection === "asc"
+        ? "ascending"
+        : sortDirection === "desc"
+        ? "descending"
+        : "none"
+      : props["aria-sort"];
 
-  return (
-    <th ref={ref} scope={scope} className={classNames} {...props}>
-      {children}
-    </th>
-  );
-});
+    const classNames = [
+      "cl-table__th",
+      isNumeric && "cl-table__th--numeric",
+      align && `cl-table__th--align-${align}`,
+      isSortable && "cl-table__th--sortable",
+      sortDirection &&
+        sortDirection !== "none" &&
+        `cl-table__th--sorted-${sortDirection}`,
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    return (
+      <th
+        ref={ref}
+        scope={scope}
+        aria-sort={computedAriaSort}
+        className={classNames}
+        {...props}
+      >
+        {children}
+      </th>
+    );
+  }
+);
 TableTh.displayName = "Table.Th";
 
 /**
- * TableTd component - Semantic table data cell with isNumeric alignment support.
+ * TableTd component - Semantic table data cell with isNumeric and align support.
  */
 export const TableTd = React.forwardRef<HTMLTableCellElement, TableCellProps>(
-  ({ isNumeric = false, className, children, ...props }, ref) => {
+  ({ isNumeric = false, align, className, children, ...props }, ref) => {
     const classNames = [
       "cl-table__td",
       isNumeric && "cl-table__td--numeric",
+      align && `cl-table__td--align-${align}`,
       className,
     ]
       .filter(Boolean)

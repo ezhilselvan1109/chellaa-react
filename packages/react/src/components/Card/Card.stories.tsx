@@ -3,14 +3,128 @@ import * as React from "react";
 import {
   Card,
   CardHeader,
+  CardTitle,
+  CardDescription,
   CardMedia,
   CardBody,
   CardFooter,
   CardActions,
 } from "./index";
+import { Button } from "../Button";
+import { Badge } from "../Badge";
+import { Avatar } from "../Avatar";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
-// ─── Meta ─────────────────────────────────────────────────────────────────────
+// ─── SVG Icon Primitives (Zero Emojis per Design System Standards) ─────────────
+
+const MoreVerticalIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="1" />
+    <circle cx="12" cy="5" r="1" />
+    <circle cx="12" cy="19" r="1" />
+  </svg>
+);
+
+const BookmarkIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+  </svg>
+);
+
+const ShareIcon = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  </svg>
+);
+
+const CalendarIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+    <line x1="16" y1="2" x2="16" y2="6" />
+    <line x1="8" y1="2" x2="8" y2="6" />
+    <line x1="3" y1="10" x2="21" y2="10" />
+  </svg>
+);
+
+const TrendingUpIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+    <polyline points="17 6 23 6 23 12" />
+  </svg>
+);
+
+const ArrowRightIcon = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+// ─── Storybook Meta ───────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Card> = {
   title: "Components/Card",
@@ -20,34 +134,37 @@ const meta: Meta<typeof Card> = {
     docs: {
       description: {
         component:
-          "Material Design 3-aligned surface container with compound sub-components. " +
-          "Supports elevated (with M3 dark-mode tinting), outlined, and filled variants, " +
-          "numeric elevation, a hoverable lift mode, and media/header/body/footer/actions slots.",
+          "Material Design 3-aligned surface container with compound subcomponents (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Media`, `Card.Body`, `Card.Footer`, `Card.Actions`). " +
+          "Supports 3 visual variants (`elevated`, `outlined`, `filled`), numeric M3 elevation stops, dark mode surface elevation tinting, and an interactive hoverable lift mode.",
       },
     },
   },
   argTypes: {
     variant: {
       control: "select",
-      options: ["elevated", "outlined", "filled"],
-      description: "Visual surface treatment",
+      options: ["elevated", "outlined", "filled", "outline"],
+      description: "Visual surface style treatment.",
     },
     elevation: {
       control: { type: "range", min: 0, max: 24, step: 1 },
-      description: "M3 elevation level (0-24). Only for elevated variant.",
+      description: "M3 elevation level (0–24). Applicable to elevated variant.",
     },
     size: {
       control: "select",
       options: ["sm", "md", "lg"],
-      description: "Spatial padding scale",
+      description: "Spatial padding scale propagated to all child sections.",
     },
     hoverable: {
       control: "boolean",
-      description: "Raise elevation + lift on hover",
+      description: "Enables interactive lift and elevated shadow bloom on hover.",
+    },
+    isClickable: {
+      control: "boolean",
+      description: "Sets cursor to pointer and activates interactive hover state.",
     },
     square: {
       control: "boolean",
-      description: "Remove border-radius",
+      description: "Removes border-radius for edge-to-edge container alignment.",
     },
   },
 };
@@ -55,416 +172,354 @@ const meta: Meta<typeof Card> = {
 export default meta;
 type Story = StoryObj<typeof Card>;
 
-// ─── Shared content helper ────────────────────────────────────────────────────
-
-function SampleCard(props: React.ComponentProps<typeof Card>) {
-  return (
-    <Card style={{ width: 320 }} {...props}>
-      <CardHeader
-        avatar={
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: 16,
-            }}
-          >
-            A
-          </div>
-        }
-        title="Chellaa UI Component"
-        subheader="October 6, 2026"
-        action={
-          <button
-            type="button"
-            aria-label="More options"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: 20,
-              color: "inherit",
-              padding: "4px 8px",
-              borderRadius: 4,
-            }}
-          >
-            ⋮
-          </button>
-        }
-      />
-      <CardBody>
-        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-          A well-structured card component with M3 elevation, compound sub-zones,
-          and accessibility-first design. Perfect for dashboards, galleries, and
-          data displays.
-        </p>
-      </CardBody>
-      <CardActions>
-        <button
-          type="button"
-          style={{
-            background: "none",
-            border: "none",
-            color: "#6366f1",
-            cursor: "pointer",
-            fontSize: "0.875rem",
-            fontWeight: 600,
-            padding: "6px 12px",
-            borderRadius: 4,
-          }}
-        >
-          Share
-        </button>
-        <button
-          type="button"
-          style={{
-            background: "#6366f1",
-            border: "none",
-            color: "#fff",
-            cursor: "pointer",
-            fontSize: "0.875rem",
-            fontWeight: 600,
-            padding: "6px 12px",
-            borderRadius: 4,
-          }}
-        >
-          Learn More
-        </button>
-      </CardActions>
-    </Card>
-  );
-}
-
 // ─── Stories ──────────────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  render: () => <SampleCard />,
-  parameters: {
-    docs: {
-      description: { story: "Default elevated card with header, body, and actions." },
-    },
+  args: {
+    variant: "elevated",
+    size: "md",
+    hoverable: false,
+    square: false,
   },
+  render: (args) => (
+    <Card style={{ maxWidth: 360 }} {...args}>
+      <CardHeader
+        avatar={<Avatar name="Chellaa Team" size="md" />}
+        title="Design System Release"
+        subheader="Published October 2026"
+        action={
+          <Button variant="ghost" size="sm" aria-label="More options">
+            <MoreVerticalIcon />
+          </Button>
+        }
+      />
+      <CardBody>
+        <p style={{ margin: 0, color: "var(--cl-color-fg-secondary)" }}>
+          Chellaa React delivers zero-runtime CSS styling, strict WCAG 2.2 AA accessibility,
+          and robust compound component composition for enterprise applications.
+        </p>
+      </CardBody>
+      <CardFooter divider>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>
+          <CalendarIcon />
+          <span>v2.1.0 Stable</span>
+        </div>
+        <CardActions disableSpacing>
+          <Button variant="solid" colorScheme="primary" size="sm">
+            Explore Docs
+          </Button>
+        </CardActions>
+      </CardFooter>
+    </Card>
+  ),
 };
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-      {(["elevated", "outlined", "filled"] as const).map((variant) => (
-        <div key={variant}>
-          <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "capitalize" }}>
-            {variant}
-          </p>
-          <Card variant={variant} style={{ width: 280 }}>
-            <CardHeader title="Card Title" subheader="Subheader text" />
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                Card body content for the {variant} variant.
-              </p>
-            </CardBody>
-            <CardActions>
-              <button type="button" style={{ cursor: "pointer" }}>Action</button>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, maxWidth: 960 }}>
+      {(["elevated", "outlined", "filled"] as const).map((v) => (
+        <Card key={v} variant={v}>
+          <CardHeader
+            title={`${v.toUpperCase()} Variant`}
+            subheader="Surface style demonstration"
+          />
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)", lineHeight: 1.6 }}>
+              {v === "elevated" && "Ambient multi-layer drop shadow with Material Design 3 elevation semantics."}
+              {v === "outlined" && "1px hairline border on a crisp canvas surface with zero ambient shadow."}
+              {v === "filled" && "Subtle tinted surface background for low-contrast section groupings."}
+            </p>
+          </CardBody>
+          <CardFooter divider>
+            <Badge colorScheme={v === "elevated" ? "primary" : v === "outlined" ? "info" : "neutral"} size="sm">
+              {v}
+            </Badge>
+            <CardActions disableSpacing>
+              <Button variant="ghost" size="sm">
+                Action
+              </Button>
             </CardActions>
-          </Card>
-        </div>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: "Side-by-side comparison of all three visual variants.",
-      },
-    },
-  },
-};
-
-export const WithMedia: Story = {
-  render: () => (
-    <Card style={{ width: 320 }}>
-      <CardMedia
-        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&q=80"
-        alt="Mountain landscape"
-        aspectRatio="16/9"
-      />
-      <CardHeader title="Mountain Escape" subheader="Adventure · 4 min read" />
-      <CardBody>
-        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-          Discover breathtaking mountain vistas and serene alpine meadows in this
-          curated travel guide.
-        </p>
-      </CardBody>
-      <CardActions>
-        <button type="button" style={{ cursor: "pointer", marginRight: "auto" }}>
-          ♡ Save
-        </button>
-        <button type="button" style={{ cursor: "pointer" }}>Read More →</button>
-      </CardActions>
-    </Card>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: "Card with a 16/9 aspect-ratio media zone at the top.",
-      },
-    },
-  },
-};
-
-export const Hoverable: Story = {
-  render: () => (
-    <div style={{ display: "flex", gap: 24 }}>
-      <div>
-        <p style={{ marginBottom: 8, fontWeight: 600 }}>Static (default)</p>
-        <Card style={{ width: 260 }}>
-          <CardHeader title="Static Card" subheader="No hover effect" />
-          <CardBody>
-            <p style={{ margin: 0, fontSize: "0.9rem" }}>
-              This card has no hover animation.
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-      <div>
-        <p style={{ marginBottom: 8, fontWeight: 600 }}>Hoverable</p>
-        <Card hoverable style={{ width: 260 }}>
-          <CardHeader title="Hoverable Card" subheader="Hover to lift" />
-          <CardBody>
-            <p style={{ margin: 0, fontSize: "0.9rem" }}>
-              Hover over this card to see the elevation lift animation.
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Comparison of static vs hoverable cards. `hoverable=true` raises the elevation " +
-          "by 2 stops and lifts 2px with a smooth 200ms transition.",
-      },
-    },
-  },
 };
 
 export const AllSizes: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start" }}>
-      {(["sm", "md", "lg"] as const).map((size) => (
-        <div key={size}>
-          <p style={{ marginBottom: 8, fontWeight: 600, textTransform: "uppercase", fontSize: "0.75rem" }}>
-            Size: {size}
-          </p>
-          <Card size={size} style={{ width: 240 }}>
-            <CardHeader title="Card Title" subheader="Subtitle" />
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "0.9rem" }}>Body content.</p>
-            </CardBody>
-            <CardActions>
-              <button type="button" style={{ cursor: "pointer" }}>OK</button>
-            </CardActions>
-          </Card>
-        </div>
-      ))}
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: "Padding scale comparison across sm (12px), md (16px), and lg (24px) sizes.",
-      },
-    },
-  },
-};
-
-export const WithFooterDivider: Story = {
-  render: () => (
-    <Card style={{ width: 320 }}>
-      <CardHeader title="Article Title" subheader="Author · 5 min read" />
-      <CardBody>
-        <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-          Article body content with a footer divider separating metadata.
-        </p>
-      </CardBody>
-      <CardFooter divider>
-        <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
-          🏷 Design · Component Systems
-        </span>
-        <span style={{ marginLeft: "auto", fontSize: "0.8rem", color: "#6b7280" }}>
-          Oct 6, 2026
-        </span>
-      </CardFooter>
-    </Card>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: "Card with a CardFooter using `divider=true` for a 1px separator.",
-      },
-    },
-  },
-};
-
-export const ElevationScale: Story = {
-  render: () => (
-    <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start", padding: 24, background: "#f8fafc" }}>
-      {[0, 1, 2, 4, 8, 16, 24].map((elev) => (
-        <Card
-          key={elev}
-          elevation={elev}
-          style={{ width: 140, textAlign: "center" }}
-        >
+    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 640 }}>
+      {(["sm", "md", "lg"] as const).map((sz) => (
+        <Card key={sz} size={sz} variant="outlined">
+          <CardHeader
+            avatar={<Avatar name={`Size ${sz.toUpperCase()}`} size={sz} />}
+            title={`Size: ${sz.toUpperCase()}`}
+            subheader={`${sz === "sm" ? "12px" : sz === "md" ? "16px" : "24px"} spatial padding scale`}
+          />
           <CardBody>
-            <p style={{ margin: 0, fontWeight: 700 }}>elevation={elev}</p>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)" }}>
+              Inner subcomponents automatically inherit the spatial scale from parent CardContext.
+            </p>
           </CardBody>
+          <CardFooter divider>
+            <span style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>Spatial token</span>
+            <CardActions disableSpacing>
+              <Button variant="outline" size={sz}>
+                Confirm
+              </Button>
+            </CardActions>
+          </CardFooter>
         </Card>
       ))}
     </div>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: "Demonstrates the 24-level M3 elevation shadow scale on card surfaces.",
-      },
-    },
-  },
+};
+
+export const MediaCard: Story = {
+  render: () => (
+    <Card variant="elevated" hoverable style={{ maxWidth: 360 }}>
+      <div style={{ position: "relative" }}>
+        <CardMedia
+          image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=640&q=80"
+          alt="Breathtaking alpine peak landscape"
+          aspectRatio="16/9"
+        />
+        <div style={{ position: "absolute", top: 12, right: 12 }}>
+          <Badge colorScheme="primary" variant="solid" size="sm">
+            Featured Route
+          </Badge>
+        </div>
+      </div>
+      <CardHeader
+        title="Alpine Vista Trail"
+        subheader="High Alps · 14.2 km loop"
+        action={
+          <Button variant="ghost" size="sm" aria-label="Bookmark route">
+            <BookmarkIcon />
+          </Button>
+        }
+      />
+      <CardBody>
+        <p style={{ margin: 0, fontSize: "14px", lineHeight: 1.6, color: "var(--cl-color-fg-secondary)" }}>
+          Experience panoramic glacial peaks, wildflower valleys, and serene alpine streams
+          on this world-renowned high-altitude trail.
+        </p>
+      </CardBody>
+      <CardFooter divider>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: "13px", fontWeight: 500, color: "var(--cl-color-fg-primary)" }}>
+          <span>$85 / permit</span>
+        </div>
+        <CardActions disableSpacing>
+          <Button variant="solid" colorScheme="primary" size="sm">
+            Book Permit
+          </Button>
+        </CardActions>
+      </CardFooter>
+    </Card>
+  ),
+};
+
+export const Hoverable: Story = {
+  render: () => (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, maxWidth: 640 }}>
+      <Card variant="elevated">
+        <CardHeader title="Static Surface" subheader="hoverable=false" />
+        <CardBody>
+          <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)" }}>
+            Standard stationary surface with baseline drop shadow and fixed elevation.
+          </p>
+        </CardBody>
+        <CardFooter divider>
+          <Badge colorScheme="neutral">Static</Badge>
+        </CardFooter>
+      </Card>
+
+      <Card variant="elevated" hoverable>
+        <CardHeader title="Hoverable Surface" subheader="hoverable=true" />
+        <CardBody>
+          <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)" }}>
+            Hover to experience smooth 4px upward lift, expanded ambient bloom, and responsive micro-animation.
+          </p>
+        </CardBody>
+        <CardFooter divider>
+          <Badge colorScheme="success">Interactive Lift</Badge>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+export const MetricsCard: Story = {
+  render: () => (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20, maxWidth: 840 }}>
+      <Card variant="elevated" hoverable>
+        <CardHeader
+          title="Monthly Recurring Revenue"
+          subheader="Real-time billing analytics"
+          action={
+            <Badge colorScheme="success" variant="subtle" size="sm">
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                <TrendingUpIcon />
+                <span>+18.4%</span>
+              </span>
+            </Badge>
+          }
+        />
+        <CardBody>
+          <div style={{ fontSize: "32px", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--cl-color-fg-primary)", marginBottom: 4 }}>
+            $142,850
+          </div>
+          <p style={{ margin: 0, fontSize: "13px", color: "var(--cl-color-fg-muted)" }}>
+            Compared to $120,600 last month
+          </p>
+        </CardBody>
+        <CardFooter divider>
+          <span style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>Updated 3 mins ago</span>
+          <Button variant="ghost" size="sm">
+            View Report
+          </Button>
+        </CardFooter>
+      </Card>
+
+      <Card variant="elevated" hoverable>
+        <CardHeader
+          title="Active Subscribers"
+          subheader="Total enterprise accounts"
+          action={
+            <Badge colorScheme="primary" variant="subtle" size="sm">
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                <TrendingUpIcon />
+                <span>+9.2%</span>
+              </span>
+            </Badge>
+          }
+        />
+        <CardBody>
+          <div style={{ fontSize: "32px", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--cl-color-fg-primary)", marginBottom: 4 }}>
+            24,190
+          </div>
+          <p style={{ margin: 0, fontSize: "13px", color: "var(--cl-color-fg-muted)" }}>
+            98.7% 30-day retention rate
+          </p>
+        </CardBody>
+        <CardFooter divider>
+          <span style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>Updated 5 mins ago</span>
+          <Button variant="ghost" size="sm">
+            Analytics
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+export const CompoundComposition: Story = {
+  render: () => (
+    <Card variant="elevated" hoverable style={{ maxWidth: 380 }}>
+      <CardMedia
+        image="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=640&q=80"
+        alt="Contemporary modern art installation"
+        aspectRatio="16/9"
+      />
+      <CardHeader>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4, width: "100%" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <Badge colorScheme="secondary" size="sm">
+              Exhibition
+            </Badge>
+            <span style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>
+              Oct 12 - Nov 30
+            </span>
+          </div>
+          <CardTitle>Masterpiece Gallery</CardTitle>
+          <CardDescription>Curated showcase by Contemporary Arts Council</CardDescription>
+        </div>
+      </CardHeader>
+      <CardBody>
+        <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "var(--cl-color-fg-secondary)" }}>
+          Experience avant-garde sculptures, expressive modern canvases, and immersive sensory
+          environments created by international modern artists.
+        </p>
+      </CardBody>
+      <CardFooter divider>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <Avatar name="Art Curator" size="sm" />
+          <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--cl-color-fg-primary)" }}>
+            Dr. Evelyn Vance
+          </span>
+        </div>
+        <CardActions align="end" disableSpacing>
+          <Button variant="ghost" size="sm" aria-label="Share exhibition">
+            <ShareIcon />
+          </Button>
+          <Button variant="solid" colorScheme="primary" size="sm">
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+              <span>Reserve</span>
+              <ArrowRightIcon />
+            </span>
+          </Button>
+        </CardActions>
+      </CardFooter>
+    </Card>
+  ),
 };
 
 export const DarkTheme: Story = {
   render: () => (
     <ThemeProvider defaultTheme="dark" enableSystem={false}>
       <div
+        data-theme="dark"
         style={{
-          background: "#121212",
+          background: "var(--cl-color-bg-canvas, #090d16)",
           padding: 32,
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: 24,
-          flexWrap: "wrap",
-          borderRadius: 8,
+          borderRadius: 12,
         }}
       >
-        {[1, 4, 8].map((elev) => (
-          <Card key={elev} elevation={elev} style={{ width: 220 }}>
-            <CardHeader
-              title={`Elevation ${elev}`}
-              subheader="Dark M3 tinting"
-            />
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "0.85rem" }}>
-                Surface brightens with elevation via M3 white overlay tinting.
-              </p>
-            </CardBody>
-          </Card>
-        ))}
+        <Card variant="elevated" hoverable>
+          <CardHeader
+            avatar={<Avatar name="Dark Surface" size="md" />}
+            title="Elevated Dark Surface"
+            subheader="M3 White overlay tint"
+          />
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)", lineHeight: 1.6 }}>
+              Elevated surfaces in dark mode automatically receive subtle overlay tinting to convey physical height.
+            </p>
+          </CardBody>
+          <CardFooter divider>
+            <Badge colorScheme="primary">Elevated</Badge>
+            <CardActions disableSpacing>
+              <Button variant="solid" colorScheme="primary" size="sm">
+                Action
+              </Button>
+            </CardActions>
+          </CardFooter>
+        </Card>
+
+        <Card variant="outlined" hoverable>
+          <CardHeader
+            avatar={<Avatar name="Outlined Dark" size="md" />}
+            title="Outlined Dark Surface"
+            subheader="Hairline border"
+          />
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--cl-color-fg-secondary)", lineHeight: 1.6 }}>
+              Outlined dark surfaces feature crisp boundary borders with high contrast against the dark canvas.
+            </p>
+          </CardBody>
+          <CardFooter divider>
+            <Badge colorScheme="info">Outlined</Badge>
+            <CardActions disableSpacing>
+              <Button variant="outline" size="sm">
+                Details
+              </Button>
+            </CardActions>
+          </CardFooter>
+        </Card>
       </div>
     </ThemeProvider>
   ),
-  parameters: {
-    backgrounds: { default: "dark" },
-    docs: {
-      description: {
-        story:
-          "Dark mode M3 elevation tinting: higher elevation = brighter surface " +
-          "via a white overlay at increasing alpha. Matches the Paper component's algorithm.",
-      },
-    },
-  },
-};
-
-export const AsArticle: Story = {
-  render: () => (
-    <Card asChild variant="outlined" style={{ width: 320 }}>
-      <article>
-        <CardHeader
-          title="Semantic Article Card"
-          subheader="asChild delegates to <article>"
-        />
-        <CardBody>
-          <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-            This card renders as a native{" "}
-            <code>{"<article>"}</code> element via the{" "}
-            <code>asChild</code> prop, enabling proper HTML5 semantics
-            for standalone content units.
-          </p>
-        </CardBody>
-        <CardActions>
-          <a
-            href="#"
-            style={{
-              color: "#6366f1",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
-            Read full article →
-          </a>
-        </CardActions>
-      </article>
-    </Card>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Demonstrates `asChild` delegation to `<article>`. The card's surface styles " +
-          "are forwarded to the child element, giving semantic HTML without extra DOM nodes.",
-      },
-    },
-  },
-};
-
-export const CompoundComposition: Story = {
-  render: () => (
-    <Card variant="elevated" hoverable style={{ maxWidth: 360 }}>
-      <Card.Media
-        image="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80"
-        alt="Artistic abstract painting"
-        aspectRatio="16/9"
-      />
-      <Card.Header>
-        <Card.Title>Masterpiece Gallery</Card.Title>
-        <Card.Description>Curated exhibition by Contemporary Arts Council</Card.Description>
-      </Card.Header>
-      <Card.Body>
-        <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "var(--cl-color-fg-secondary)" }}>
-          Experience breathtaking modern abstractions, sculpture exhibits, and avant-garde installations.
-        </p>
-      </Card.Body>
-      <Card.Footer divider>
-        <Card.Actions>
-          <button
-            type="button"
-            style={{
-              padding: "8px 16px",
-              borderRadius: "6px",
-              border: "1px solid var(--cl-color-border-subtle)",
-              background: "var(--cl-color-bg-surface)",
-              color: "var(--cl-color-fg-primary)",
-              cursor: "pointer",
-              fontWeight: 500,
-            }}
-          >
-            Explore
-          </button>
-        </Card.Actions>
-      </Card.Footer>
-    </Card>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Demonstrates namespaced compound subcomponents (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Body`, `Card.Footer`, `Card.Media`, `Card.Actions`).",
-      },
-    },
-  },
 };

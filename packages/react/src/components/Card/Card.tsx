@@ -55,6 +55,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(
       elevation = 1,
       size = "md",
       hoverable = false,
+      isClickable = false,
       square = false,
       asChild = false,
       component,
@@ -74,7 +75,8 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(
       `cl-card--${normalizedVariant}`,
       variant === "outline" && "cl-card--outline",
       square && "cl-card--square",
-      hoverable && "cl-card--hoverable",
+      (hoverable || isClickable) && "cl-card--hoverable",
+      isClickable && "cl-card--clickable",
       className
     );
 
@@ -368,10 +370,19 @@ const StyledCardActionsRoot = styled("div", {
  */
 export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
   function CardActions(props, ref) {
-    const { disableSpacing = false, children, className, style, sx, ...rest } = props;
+    const {
+      disableSpacing = false,
+      align = "start",
+      children,
+      className,
+      style,
+      sx,
+      ...rest
+    } = props;
     const actionsClassName = classNames(
       "cl-card__actions",
       "ChellaaCard-actions",
+      `cl-card__actions--align-${align}`,
       disableSpacing && "cl-card__actions--disable-spacing",
       className
     );

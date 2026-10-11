@@ -34,6 +34,11 @@ export interface TableRootProps
 
 export interface TableContainerProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * If true, applies a rounded border, background surface, and subtle shadow.
+   * @default false
+   */
+  bordered?: boolean | undefined;
   children?: React.ReactNode | undefined;
 }
 
@@ -86,6 +91,23 @@ export interface TableHeaderCellProps
    */
   isNumeric?: boolean | undefined;
 
+  /**
+   * Text alignment of the cell content.
+   */
+  align?: "left" | "center" | "right" | undefined;
+
+  /**
+   * If true, renders the header with interactive sort affordance styling.
+   * @default false
+   */
+  isSortable?: boolean | undefined;
+
+  /**
+   * Current sort direction for accessible aria-sort attribute.
+   * @default "none"
+   */
+  sortDirection?: "asc" | "desc" | "none" | undefined;
+
   children?: React.ReactNode | undefined;
 }
 
@@ -96,6 +118,11 @@ export interface TableCellProps
    * @default false
    */
   isNumeric?: boolean | undefined;
+
+  /**
+   * Text alignment of the cell content.
+   */
+  align?: "left" | "center" | "right" | undefined;
 
   children?: React.ReactNode | undefined;
 }
