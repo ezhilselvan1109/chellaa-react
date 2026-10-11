@@ -1,0 +1,166 @@
+@layer cl-components {
+  /* Overlay Backdrop - Static CSS Centering per ADR-010 */
+  .cl-dialog__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--cl-z-modal, 1400);
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: var(--cl-space-4, 1rem);
+    animation: cl-dialog-fade-in 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cl-dialog__overlay--top {
+    align-items: flex-start;
+  }
+
+  /* Content Container */
+  .cl-dialog__content {
+    position: relative;
+    width: 100%;
+    max-height: calc(100vh - 2rem);
+    background-color: var(--cl-color-bg-elev, #ffffff);
+    border: 1px solid var(--cl-color-border-sub, #e2e8f0);
+    border-radius: var(--cl-rad-lg, 0.75rem);
+    box-shadow: var(--cl-shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04));
+    outline: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: cl-dialog-scale-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cl-dialog__content--top {
+    margin-top: var(--cl-space-12, 3rem);
+  }
+
+  /* Spatial Size Scales */
+  .cl-dialog__content--sm {
+    max-width: 400px;
+  }
+
+  .cl-dialog__content--md {
+    max-width: 560px;
+  }
+
+  .cl-dialog__content--lg {
+    max-width: 720px;
+  }
+
+  .cl-dialog__content--xl {
+    max-width: 960px;
+  }
+
+  .cl-dialog__content--full {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* Header */
+  .cl-dialog__header {
+    padding: var(--cl-space-5, 1.25rem);
+    border-bottom: 1px solid var(--cl-color-border-sub, #e2e8f0);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Title */
+  .cl-dialog__title {
+    margin: 0;
+    font-size: var(--cl-font-lg, 1.125rem);
+    font-weight: 600;
+    line-height: var(--cl-lh-snug, 1.375);
+    color: var(--cl-color-fg-primary, #0f172a);
+  }
+
+  /* Description */
+  .cl-dialog__desc {
+    margin: var(--cl-space-1, 0.25rem) 0 0 0;
+    font-size: var(--cl-font-sm, 0.875rem);
+    line-height: var(--cl-lh-normal, 1.5);
+    color: var(--cl-color-fg-muted, #64748b);
+  }
+
+  /* Body */
+  .cl-dialog__body {
+    padding: var(--cl-space-5, 1.25rem);
+    color: var(--cl-color-fg-second, #334155);
+    font-size: var(--cl-font-base, 1rem);
+    line-height: var(--cl-lh-normal, 1.5);
+    overflow-y: auto;
+    flex: 1 1 auto;
+  }
+
+  /* Footer */
+  .cl-dialog__footer {
+    padding: var(--cl-space-4, 1rem) var(--cl-space-5, 1.25rem);
+    border-top: 1px solid var(--cl-color-border-sub, #e2e8f0);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--cl-space-3, 0.75rem);
+  }
+
+  /* Close Button */
+  .cl-dialog__close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--cl-rad-base, 0.375rem);
+    color: var(--cl-color-fg-muted, #64748b);
+    padding: var(--cl-space-1, 0.25rem);
+    transition: color 150ms ease, background-color 150ms ease;
+  }
+
+  .cl-dialog__close-button:hover {
+    color: var(--cl-color-fg-primary, #0f172a);
+    background-color: var(--cl-color-bg-hover, #f1f5f9);
+  }
+
+  .cl-dialog__close-button:focus-visible {
+    outline: 2px solid var(--cl-color-focus, #3b82f6);
+    outline-offset: 2px;
+  }
+
+  /* Keyframe Animations */
+  @keyframes cl-dialog-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cl-dialog-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-dialog__overlay,
+    .cl-dialog__content {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

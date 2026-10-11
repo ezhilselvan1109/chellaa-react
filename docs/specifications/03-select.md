@@ -1,21 +1,29 @@
 # Select Component Specification
 
 **Document Status:** Approved & Baseline  
-**Phase:** 3 — Component Specifications  
+**Phase:** 3 — Component Specifications (Tier 3 / Form Controls)  
+**Specification ID:** SPEC-003  
 **Target Package:** `@chellaa/react`  
-**Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
+**Revision:** 1.0.0  
+**Priority:** P1 High  
+**Governing Standard:** [00-component-specification-standard.md](./00-component-specification-standard.md), [01-api-conventions.md](./01-api-conventions.md), [ADR-010-overlay-positioning.md](../adr/ADR-010-overlay-positioning.md), [ADR-011-hybrid-styling-architecture-and-engine-boundary.md](../adr/ADR-011-hybrid-styling-architecture-and-engine-boundary.md)  
+**Dependencies:** `@floating-ui/react` (runtime positioning per ADR-010), `Portal` primitive, `Slot` primitive, `useControllableState` hook  
 
 ---
 
 ## 1. Identity
 
 ```text
-Component Name:     Select
-Package Export:     import { Select } from "@chellaa/react";
-Category:           Forms
+Component Name:     Select (Compound Architecture: Select.Root, Select.Trigger, Select.Value, Select.Icon, Select.Portal, Select.Content, Select.Item, Select.ItemText, Select.ItemIndicator, Select.Group, Select.Label, Select.Separator)
+Specification ID:   SPEC-003
+Package Export:     import { Select, type SelectProps, type SelectRootProps, type SelectTriggerProps, type SelectContentProps, type SelectItemProps } from "@chellaa/react";
+Category:           Forms / Selection
 Status:             Approved & Implementation Ready
 Phase:              3 — Component Specifications
-Related Components: Combobox, Menu, FormControl
+Priority:           P1 High
+Version:            1.0.0
+Related Components: Combobox, FormField, Menu, RadioGroup
+Governing ADRs:     ADR-007 (Zero-Config Styling), ADR-010 (Overlay Positioning), ADR-011 (Hybrid Styling)
 ```
 
 ---
@@ -26,30 +34,47 @@ The `Select` component allows users to pick a single value from a collapsible li
 
 ### When to Use
 
-- Selecting a single value from a list of 5 to 50 options (countries, roles, themes, statuses).
+- Selecting a single value from a list of 4 to 50 options (countries, roles, themes, statuses).
 - Form inputs requiring custom option layouts with icons, subtitles, or badges.
-- When an accessible, custom-styled dropdown picker is required.
+- When an accessible, custom-styled dropdown picker is required without editable text input.
 
 ### When NOT to Use
 
 - **Do NOT use for fewer than 4 options.** Use `RadioGroup` or `SegmentedControl` for higher visibility and single-click speed.
 - **Do NOT use for large, searchable datasets (> 50 items).** Use `Combobox` / `Autocomplete` to allow filtering and typing.
-- **Do NOT use for multi-selection.** Use `MultiSelect` or `CheckboxGroup`.
+- **Do NOT use for multi-selection.** Use `Combobox` with multi-select mode or `CheckboxGroup`.
 
 ---
 
-## 3. Scope
+## 3. Scope & Requirements
 
-### In Scope
+### 3.1 Functional Requirements (In Scope)
 
-- Compound component architecture (`Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Portal`, `Select.Content`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, `Select.Group`, `Select.Label`, `Select.Separator`).
-- 3 visual variants: `outline` (default), `filled`, `flushed`.
-- 5 standardized sizes: `xs`, `sm`, `md`, `lg`, `xl` (matching `Input` and `Button` heights).
-- Generic type support: `Select<TValue extends string = string>`.
-- Strict WAI-ARIA APG Listbox compliance (keyboard navigation, `aria-expanded`, `aria-selected`, roving focus).
-- Floating portal rendering with automated collision boundary detection.
-- Controlled (`value`, `onValueChange`) and uncontrolled (`defaultValue`) state.
-- Form states (`isDisabled`, `isInvalid`, `isRequired`, `name`).
+- **FR-SEL-01 (Compound Structure):** Standard compound export consisting of `Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Icon`, `Select.Portal`, `Select.Content`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, `Select.Group`, `Select.Label`, and `Select.Separator`.
+- **FR-SEL-02 (WAI-ARIA APG Listbox Semantics):** Strict compliance with WAI-ARIA APG Listbox pattern:
+  - Trigger button has `role="combobox"`, `aria-haspopup="listbox"`, `aria-expanded={isOpen}`, `aria-controls={contentId}`.
+  - Content container has `role="listbox"`, `id={contentId}`, `aria-labelledby={triggerId}`.
+  - Option items have `role="option"`, `aria-selected={isSelected}`, `aria-disabled={isDisabled}`.
+- **FR-SEL-03 (Generic Type Safety):** Type-safe generic parameter `<TValue extends string = string>` on `Select.Root` and `Select.Item`.
+- **FR-SEL-04 (Selection State Management):** Support both controlled (`value`, `onValueChange`) and uncontrolled (`defaultValue`) selection via `useControllableState`.
+- **FR-SEL-05 (Open State Management):** Support controlled (`isOpen`, `onOpenChange`) and uncontrolled (`defaultOpen`) popup state.
+- **FR-SEL-06 (Anchored Positioning):** Positioned via `@floating-ui/react` with auto-flip, shift, offset, and portal rendering per ADR-010.
+- **FR-SEL-07 (APG Keyboard Navigation):** Comprehensive keyboard keymap:
+  - `ArrowDown` / `ArrowUp`: cycles through non-disabled items; opens closed menu.
+  - `Home` / `End`: jumps to first / last non-disabled item.
+  - `Enter` / `Space`: opens menu if closed, or commits selection and closes if open.
+  - `Escape`: closes popup and restores focus to Trigger.
+  - `Tab`: closes popup without committing new selection and moves focus to next focusable element.
+  - Type-ahead search: typing printable characters jumps to first matching option within buffer window.
+- **FR-SEL-08 (Focus Restoration):** Restores keyboard focus directly to the Trigger button upon popup dismissal.
+- **FR-SEL-09 (FormField Integration):** Automatically consumes `useFormField()` context for `id`, `name`, `isRequired`, `isDisabled`, `isInvalid`, and `aria-describedby` cascade.
+- **FR-SEL-10 (Native Form Submission):** Renders hidden `<input type="hidden" name={name} value={value} />` to participate seamlessly in HTML form submissions.
+
+### 3.2 Non-Functional Requirements
+
+- **NFR-SEL-01 (Zero-Config Scoped CSS):** CSS strictly encapsulated within `@layer cl-components` using `.cl-select*` classes and `--cl-*` design tokens (ADR-007, ADR-011).
+- **NFR-SEL-02 (Performance & Bundle Size):** Zero heavy third-party dependencies beyond approved `@floating-ui/react`.
+- **NFR-SEL-03 (Accessibility Compliance):** Zero axe-core accessibility violations (WCAG 2.2 AA).
 
 ---
 
@@ -428,32 +453,34 @@ Under `@media (prefers-reduced-motion: reduce)`:
 
 ---
 
-## 23. Testing
+## 23. Testing Matrix & Traceability
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                         Select Test Matrix                             │
+│                   Select Test Matrix & Traceability                    │
 ├───────────────────────────────────┬────────────────────────────────────┤
-│ Category                          │ Applicability & Verification       │
+│ Category                          │ Mapped Requirements & Verification │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 1. Rendering / Prop Pass-through  │ Applicable: verifies compound DOM. │
+│ 1. Rendering / Prop Pass-through  │ FR-SEL-01: Verifies compound DOM,  │
+│                                   │ subcomponents, classes, variants.  │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 2. User Interaction Suite         │ Applicable: opening, clicking item │
-│                                   │ updates value.                     │
+│ 2. User Interaction Suite         │ FR-SEL-04, FR-SEL-05: Click trigger│
+│                                   │ opens popup; click item selects.   │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 3. Accessibility / axe-core       │ Applicable: zero violations with   │
-│                                   │ APG combobox/listbox roles.        │
+│ 3. Accessibility / axe-core       │ FR-SEL-02, NFR-SEL-03: Zero axe    │
+│                                   │ violations; APG combobox/listbox.  │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 4. Keyboard Navigation Physics    │ Applicable: Arrow keys, Home, End, │
-│                                   │ Enter, Escape, type-ahead.         │
+│ 4. Keyboard Navigation Physics    │ FR-SEL-07, FR-SEL-08: Arrow keys,  │
+│                                   │ Home, End, Enter, Space, Escape,   │
+│                                   │ type-ahead, and focus restoration. │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 5. Controlled / Uncontrolled      │ Applicable: value/onValueChange vs.│
-│                                   │ defaultValue.                      │
+│ 5. Controlled / Uncontrolled      │ FR-SEL-04, FR-SEL-05: value vs.    │
+│                                   │ defaultValue; isOpen/defaultOpen.  │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 6. Disabled / Loading State Guards│ Applicable: disabled select blocks │
-│                                   │ trigger clicks; disabled items skip│
+│ 6. Disabled & Form Integration    │ FR-SEL-09, FR-SEL-10: Disabled     │
+│                                   │ options skip; FormField cascade.   │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 7. SSR & RSC Compatibility        │ Applicable: SSR renders trigger;   │
+│ 7. SSR & RSC Compatibility        │ FR-SEL-01: SSR renders trigger;    │
 │                                   │ portal mounts safely on client.    │
 └───────────────────────────────────┴────────────────────────────────────┘
 ```
@@ -466,7 +493,7 @@ Under `@media (prefers-reduced-motion: reduce)`:
 2. `Controlled`: Demonstrates controlled `value` and state badge.
 3. `WithGroups`: Demonstrates `Select.Group` and `Select.Label`.
 4. `DisabledItems`: Select containing individual disabled options.
-5. `FormValidation`: Invalid error state with red border.
+5. `FormValidation`: Invalid error state with red border and FormField cascade.
 6. `DarkTheme`: Verified under Dark Mode surface elevation.
 
 ---
@@ -481,9 +508,9 @@ Under `@media (prefers-reduced-motion: reduce)`:
 
 ## 26. Edge Cases
 
-1. **Focus Restoration Failure:** Focus returns to Trigger when closing via backdrop click or Escape.
-2. **Hidden Form Field:** Hidden `<input type="hidden" name={name} value={value} />` supports traditional HTML form submission.
-3. **Viewport Collision:** Menu flips upwards when positioned near the bottom of the viewport.
+1. **Focus Restoration Failure:** Focus returns to Trigger when closing via backdrop click or Escape (FR-SEL-08).
+2. **Hidden Form Field:** Hidden `<input type="hidden" name={name} value={value} />` supports traditional HTML form submission (FR-SEL-10).
+3. **Viewport Collision:** Menu flips upwards when positioned near the bottom of the viewport (FR-SEL-06).
 
 ---
 
@@ -515,14 +542,16 @@ Under `@media (prefers-reduced-motion: reduce)`:
 
 ## 29. Acceptance Criteria
 
-- [ ] Compound component export: `Select.Trigger`, `Select.Value`, `Select.Content`, `Select.Item`.
-- [ ] Strictly typed generic `Select<TValue extends string = string>`.
-- [ ] Strict WAI-ARIA APG Listbox compliance with `role="combobox"` and `role="listbox"`.
-- [ ] Keyboard navigation fully functional: Arrow keys, Enter, Space, Escape, Home, End, Type-ahead.
-- [ ] Focus restored to trigger button upon close.
-- [ ] Zero axe-core accessibility violations.
-- [ ] Both controlled (`value`) and uncontrolled (`defaultValue`) work reliably.
-- [ ] Styled in `@layer cl-components` using `--cl-*` variables.
+- [ ] **[AC-SEL-01]** Compound component export: `Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Icon`, `Select.Portal`, `Select.Content`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, `Select.Group`, `Select.Label`, `Select.Separator` (FR-SEL-01).
+- [ ] **[AC-SEL-02]** Strictly typed generic `Select<TValue extends string = string>` with no `any` (FR-SEL-03).
+- [ ] **[AC-SEL-03]** Strict WAI-ARIA APG Listbox compliance with `role="combobox"` on Trigger, `role="listbox"` on Content, and `role="option"` with `aria-selected` on Items (FR-SEL-02).
+- [ ] **[AC-SEL-04]** Keyboard navigation fully functional: Arrow keys, Enter, Space, Escape, Home, End, and type-ahead buffer search (FR-SEL-07).
+- [ ] **[AC-SEL-05]** Focus restored to trigger button upon close (FR-SEL-08).
+- [ ] **[AC-SEL-06]** Zero axe-core accessibility violations in default and open states (NFR-SEL-03).
+- [ ] **[AC-SEL-07]** Both controlled (`value`, `onValueChange`) and uncontrolled (`defaultValue`) work reliably (FR-SEL-04).
+- [ ] **[AC-SEL-08]** Styled in `@layer cl-components` using `--cl-*` variables with zero Tailwind or runtime CSS-in-JS (NFR-SEL-01).
+- [ ] **[AC-SEL-09]** Cascades with `useFormField()` context for invalid border and error association (FR-SEL-09).
+- [ ] **[AC-SEL-10]** Synchronizes hidden native `<input>` for form submission (FR-SEL-10).
 
 ---
 

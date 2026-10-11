@@ -1,6 +1,7 @@
-# Table Component Specification
+# SPEC-007: Table Component Specification
 
-**Document Status:** Approved & Baseline  
+**Document Identifier:** SPEC-007  
+**Document Status:** Approved & Implementation Ready  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
 **Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
@@ -10,6 +11,7 @@
 ## 1. Identity
 
 ```text
+Specification ID:   SPEC-007
 Component Name:     Table
 Package Export:     import { Table } from "@chellaa/react";
 Category:           Data Display
@@ -439,19 +441,58 @@ N/A — Tables do not possess non-essential motion.
 
 ---
 
-## 29. Acceptance Criteria
+## 29. Functional & Non-Functional Requirements
 
-- [ ] Semantic HTML table elements used throughout.
-- [ ] Supports 3 variants (`simple`, `striped`, `bordered`).
-- [ ] Supports 3 sizes (`sm`, `md`, `lg`).
-- [ ] `isNumeric` right-aligns cells with `tabular-nums`.
-- [ ] `isHoverable` highlights hovered rows.
-- [ ] `Table.Container` provides responsive horizontal scrolling.
-- [ ] Zero axe-core accessibility violations.
-- [ ] Styled in `@layer cl-components` using `--cl-*` variables.
+### 29.1 Functional Requirements
+
+- **FR-TBL-01:** The component shall expose compound semantic table primitives: `Table.Root`, `Table.Container`, `Table.Caption`, `Table.Thead`, `Table.Tbody`, `Table.Tfoot`, `Table.Tr`, `Table.Th`, and `Table.Td`.
+- **FR-TBL-02:** `Table.Root` shall support 3 visual variants via `variant`: `simple` (default), `striped`, and `bordered`.
+- **FR-TBL-03:** `Table.Root` shall support 3 spatial density scales via `size`: `sm` (dense), `md` (default), and `lg` (spacious).
+- **FR-TBL-04:** `Table.Root` shall support row hover highlighting via `isHoverable` (default `false`), which cascades down to table body rows or can be set directly on `Table.Tr`.
+- **FR-TBL-05:** `Table.Root` shall support sticky header pinning via `isStickyHeader` (default `false`), keeping header cells pinned to the top of scrollable viewports.
+- **FR-TBL-06:** `Table.Th` and `Table.Td` shall support numeric right-alignment and tabular numeral font styling via `isNumeric` (default `false`).
+- **FR-TBL-07:** `Table.Container` shall render a responsive wrapper with `overflow-x: auto` and touch scrolling to prevent mobile layout clipping.
+- **FR-TBL-08:** `Table.Th` shall default to `scope="col"` for accessible header semantics, and `Table.Caption` shall provide accessible programmatic descriptions.
+- **FR-TBL-09:** `Table.Tr` shall support native row click events via `onClick`.
+
+### 29.2 Non-Functional Requirements
+
+- **NFR-TBL-01:** Styling shall reside in static CSS under `@layer cl-components` using `--cl-*` design tokens, with zero Tailwind or runtime CSS-in-JS.
+- **NFR-TBL-02:** The component shall be SSR-safe and RSC-safe with zero external runtime dependencies.
+- **NFR-TBL-03:** Primitives shall be fully compatible with headless table logic such as TanStack Table without modifying component internals.
+
+### 29.3 Requirements Traceability Matrix
+
+| Requirement ID | Description | Test Verification Case | Storybook Story |
+| --- | --- | --- | --- |
+| `FR-TBL-01` | Compound primitives | `renders full semantic table hierarchy` | `Default` |
+| `FR-TBL-02` | 3 Visual variants | `applies simple, striped, bordered variant classes` | `Default`, `Striped`, `Bordered` |
+| `FR-TBL-03` | 3 Density scales | `applies sm, md, lg size classes to table cells` | `DenseSize` |
+| `FR-TBL-04` | Hoverable rows | `applies cl-table--hoverable class and hover styles` | `Default` |
+| `FR-TBL-05` | Sticky header | `applies cl-table--sticky-header modifier class` | `StickyHeader` |
+| `FR-TBL-06` | Numeric alignment | `applies cl-table__th--numeric and cl-table__td--numeric` | `NumericColumns` |
+| `FR-TBL-07` | Responsive container | `renders cl-table__container with horizontal scroll` | `StickyHeader`, `Default` |
+| `FR-TBL-08` | WAI-ARIA / HTML semantics | `defaults scope="col" on Th and renders Caption` | `Default` |
+| `FR-TBL-09` | Row click events | `triggers onClick when row is clicked` | `Default` |
+| `NFR-TBL-01` | CSS Layering & Tokens | `uses .cl-table classes and design tokens` | Visual Inspection |
+| `NFR-TBL-02` | SSR / RSC compatibility | `renders static semantic markup without DOM errors` | SSR Suite |
+| `NFR-TBL-03` | TanStack compatibility | `renders data driven cells accurately` | HeadlessIntegration |
 
 ---
 
-## 30. Definition of Done
+## 30. Acceptance Criteria
 
-The Table specification is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 4 implementation.
+- [x] Semantic HTML table elements used throughout.
+- [x] Supports 3 variants (`simple`, `striped`, `bordered`).
+- [x] Supports 3 sizes (`sm`, `md`, `lg`).
+- [x] `isNumeric` right-aligns cells with `tabular-nums`.
+- [x] `isHoverable` highlights hovered rows.
+- [x] `Table.Container` provides responsive horizontal scrolling.
+- [x] Zero axe-core accessibility violations.
+- [x] Styled in `@layer cl-components` using `--cl-*` variables.
+
+---
+
+## 31. Definition of Done
+
+The Table specification (SPEC-007) is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 6 implementation.

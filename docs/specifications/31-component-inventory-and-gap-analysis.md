@@ -62,10 +62,10 @@ Status Classification Key:
 | **TouchRipple** | Primitives / Tactile | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
 | **Portal** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Portal.tsx` | ✅ Yes | ✅ 3/3 Tests Pass (axe 0) |
 | **Slot** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Slot.tsx` | ✅ Yes | ✅ 7/7 Tests Pass (axe 0) |
-| **Select** | Tier 3 (Forms) | Pending Implementation | Approved & Baseline | [`03-select.md`](./03-select.md) | ❌ No | Pending Code |
-| **Dialog / Modal** | Tier 5 (Overlays) | Pending Implementation | Approved & Baseline | [`04-modal.md`](./04-modal.md) | ❌ No | Pending Code |
-| **Badge** | Tier 4 (Data Display) | Pending Implementation | Approved & Baseline | [`06-badge.md`](./06-badge.md) | ❌ No | Pending Code |
-| **Table** | Tier 7 (Organisms) | Pending Implementation | Approved & Baseline | [`07-table.md`](./07-table.md) | ❌ No | Pending Code |
+| **Select** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`03-select.md`](./03-select.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
+| **Dialog / Modal** | Tier 5 (Overlays) | **Implemented** | Approved & Baseline | [`04-modal.md`](./04-modal.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
+| **Badge** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`06-badge.md`](./06-badge.md) | ✅ Yes | ✅ 9/9 Tests Pass (axe 0) |
+| **Table** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`07-table.md`](./07-table.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
 | **Tooltip** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`22-tooltip.md`](./22-tooltip.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
 | **Popover** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`23-popover.md`](./23-popover.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
 | **Alert** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`24-alert.md`](./24-alert.md) | ✅ Yes | ✅ 38/38 Tests Pass (axe 0) |

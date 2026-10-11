@@ -11,9 +11,13 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string | undefined;
   name?: string | undefined;
   required?: boolean | undefined;
+  isRequired?: boolean | undefined;
   disabled?: boolean | undefined;
+  isDisabled?: boolean | undefined;
   readOnly?: boolean | undefined;
+  isReadOnly?: boolean | undefined;
   error?: boolean | undefined;
+  isInvalid?: boolean | undefined;
   fullWidth?: boolean | undefined;
   asChild?: boolean | undefined;
   component?: React.ElementType | undefined;
@@ -30,8 +34,13 @@ const StyledFormFieldRoot = styled("div", {
     prop !== "asChild" &&
     prop !== "component" &&
     prop !== "error" &&
+    prop !== "isInvalid" &&
     prop !== "disabled" &&
-    prop !== "readOnly",
+    prop !== "isDisabled" &&
+    prop !== "readOnly" &&
+    prop !== "isReadOnly" &&
+    prop !== "required" &&
+    prop !== "isRequired",
 })({});
 
 /**
@@ -51,10 +60,14 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     const {
       id: idProp,
       name,
-      required = false,
-      disabled = false,
-      readOnly = false,
-      error = false,
+      required: requiredProp = false,
+      isRequired = false,
+      disabled: disabledProp = false,
+      isDisabled = false,
+      readOnly: readOnlyProp = false,
+      isReadOnly = false,
+      error: errorProp = false,
+      isInvalid = false,
       fullWidth = false,
       asChild = false,
       component,
@@ -65,6 +78,11 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       sx,
       ...rest
     } = props;
+
+    const required = isRequired || requiredProp;
+    const disabled = isDisabled || disabledProp;
+    const readOnly = isReadOnly || readOnlyProp;
+    const error = isInvalid || errorProp;
 
     const generatedId = React.useId();
     const id = idProp || generatedId;

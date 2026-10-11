@@ -1,6 +1,7 @@
-# Badge Component Specification
+# SPEC-006: Badge Component Specification
 
-**Document Status:** Approved & Baseline  
+**Document Identifier:** SPEC-006  
+**Document Status:** Approved & Implementation Ready  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
 **Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
@@ -10,6 +11,7 @@
 ## 1. Identity
 
 ```text
+Specification ID:   SPEC-006
 Component Name:     Badge
 Package Export:     import { Badge } from "@chellaa/react";
 Category:           Data Display / Feedback
@@ -425,19 +427,56 @@ N/A — Badges do not possess animated transitions.
 
 ---
 
-## 29. Acceptance Criteria
+## 29. Functional & Non-Functional Requirements
 
-- [ ] Renders semantic `<span>`.
-- [ ] Supports 3 variants (`subtle`, `solid`, `outline`).
-- [ ] Supports 3 sizes (`sm`, `md`, `lg`).
-- [ ] Supports 7 color schemes with WCAG AA contrast.
-- [ ] `hasDot` renders accessible status dot with `aria-hidden="true"`.
-- [ ] `isPill` renders full border radius.
-- [ ] Zero axe-core accessibility violations.
-- [ ] Styled in `@layer cl-components` using `--cl-*` variables.
+### 29.1 Functional Requirements
+
+- **FR-BDG-01:** The component shall render a semantic HTML `<span>` and forward its DOM ref to `HTMLSpanElement`.
+- **FR-BDG-02:** The component shall support 3 visual variants: `subtle` (default), `solid`, and `outline`.
+- **FR-BDG-03:** The component shall support 3 spatial sizes: `sm`, `md` (default), and `lg`.
+- **FR-BDG-04:** The component shall support 7 semantic color schemes: `primary`, `secondary`, `success`, `warning`, `danger`, `info`, and `neutral` (default).
+- **FR-BDG-05:** The component shall support a full pill border-radius via the `isPill` boolean prop (default `false`).
+- **FR-BDG-06:** The component shall support an optional status indicator dot via `hasDot` (default `false`), rendered as an inline element marked with `aria-hidden="true"`.
+- **FR-BDG-07:** The component shall support polymorphic slot delegation via `asChild` (default `false`), preserving child attributes while merging classes.
+- **FR-BDG-08:** The component shall render as a passive, non-interactive status label with `white-space: nowrap`, emitting no side effects and remaining outside sequential keyboard navigation.
+
+### 29.2 Non-Functional Requirements
+
+- **NFR-BDG-01:** Styling shall reside in static CSS under `@layer cl-components` using `--cl-*` design tokens, with zero Tailwind or runtime CSS-in-JS.
+- **NFR-BDG-02:** The component shall have zero runtime dependencies and be completely SSR and React Server Component (RSC) safe.
+- **NFR-BDG-03:** All variant and color scheme combinations shall satisfy WCAG 2.2 AA contrast ratios (> 4.5:1) in both Light and Dark modes.
+
+### 29.3 Requirements Traceability Matrix
+
+| Requirement ID | Description | Test Verification Case | Storybook Story |
+| --- | --- | --- | --- |
+| `FR-BDG-01` | Semantic span & ref forwarding | `renders semantic span and forwards ref` | `Default` |
+| `FR-BDG-02` | 3 Visual variants | `applies subtle, solid, outline variant classes` | `AllVariants` |
+| `FR-BDG-03` | 3 Spatial sizes | `applies sm, md, lg size classes` | `Default`, `Sizes` |
+| `FR-BDG-04` | 7 Color schemes | `applies all 7 semantic color scheme modifier classes` | `AllColorSchemes` |
+| `FR-BDG-05` | Pill shape | `applies cl-badge--pill when isPill is true` | `Pills` |
+| `FR-BDG-06` | Status dot | `renders aria-hidden decorative dot when hasDot is true` | `WithDots` |
+| `FR-BDG-07` | Polymorphism via asChild | `delegates rendering to child element via asChild` | `AsChild` |
+| `FR-BDG-08` | Non-interactive & nowrap | `renders as non-focusable inline element with nowrap` | `Default` |
+| `NFR-BDG-01` | CSS Layering & Tokens | `uses .cl-badge classes and token variables` | Visual Inspection |
+| `NFR-BDG-02` | SSR / RSC compatibility | `renders statically without client-only hooks` | SSR Suite |
+| `NFR-BDG-03` | WCAG contrast & a11y | `passes axe-core accessibility audit with zero violations` | `Default`, `AllVariants` |
 
 ---
 
-## 30. Definition of Done
+## 30. Acceptance Criteria
 
-The Badge specification is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 4 implementation.
+- [x] Renders semantic `<span>`.
+- [x] Supports 3 variants (`subtle`, `solid`, `outline`).
+- [x] Supports 3 sizes (`sm`, `md`, `lg`).
+- [x] Supports 7 color schemes with WCAG AA contrast.
+- [x] `hasDot` renders accessible status dot with `aria-hidden="true"`.
+- [x] `isPill` renders full border radius.
+- [x] Zero axe-core accessibility violations.
+- [x] Styled in `@layer cl-components` using `--cl-*` variables.
+
+---
+
+## 31. Definition of Done
+
+The Badge specification (SPEC-006) is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 5 implementation.

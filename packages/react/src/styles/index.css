@@ -34,3 +34,7 @@
 @import "../components/Tabs/Tabs.styles.css";
 @import "../components/Pagination/Pagination.styles.css";
 @import "../components/Combobox/Combobox.styles.css";
+@import "../components/Select/Select.styles.css";
+@import "../components/Dialog/Dialog.styles.css";
+@import "../components/Badge/Badge.styles.css";
+@import "../components/Table/Table.styles.css";
