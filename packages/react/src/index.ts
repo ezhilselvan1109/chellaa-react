@@ -208,12 +208,17 @@ export {
 // Card Compound Surface
 export {
   Card,
+  CardRoot,
   type CardProps,
   type CardOwnerState,
   type CardVariant,
   type CardSize,
   CardHeader,
   type CardHeaderProps,
+  CardTitle,
+  type CardTitleProps,
+  CardDescription,
+  type CardDescriptionProps,
   CardMedia,
   type CardMediaProps,
   CardBody,

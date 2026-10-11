@@ -112,6 +112,16 @@ export const ManyPages: Story = {
   ),
 };
 
+export const WithSizeChanger: Story = {
+  args: {
+    total: 200,
+    pageSize: 20,
+    defaultPage: 2,
+    showSizeChanger: true,
+    pageSizeOptions: [10, 20, 50, 100],
+  },
+};
+
 export const WithJumper: Story = {
   args: {
     total: 500,

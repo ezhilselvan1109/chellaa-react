@@ -8,6 +8,8 @@ import { CardContext } from "./CardContext";
 import type {
   CardProps,
   CardHeaderProps,
+  CardTitleProps,
+  CardDescriptionProps,
   CardMediaProps,
   CardBodyProps,
   CardFooterProps,
@@ -46,8 +48,8 @@ const StyledCardRoot = styled("div", {
  *   </CardActions>
  * </Card>
  */
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  function Card(props, ref) {
+export const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(
+  function CardRoot(props, ref) {
     const {
       variant = "elevated",
       elevation = 1,
@@ -64,10 +66,13 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ...rest
     } = props;
 
+    const normalizedVariant = variant === "outline" ? "outlined" : variant;
+
     const cardClassName = classNames(
       "cl-card",
       `cl-card--${size}`,
-      `cl-card--${variant}`,
+      `cl-card--${normalizedVariant}`,
+      variant === "outline" && "cl-card--outline",
       square && "cl-card--square",
       hoverable && "cl-card--hoverable",
       className
@@ -105,7 +110,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   }
 );
 
-Card.displayName = "Card";
+CardRoot.displayName = "Card";
 
 // ─── CardHeader Styled Components ────────────────────────────────────────────
 
@@ -386,3 +391,68 @@ export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
 );
 
 CardActions.displayName = "CardActions";
+
+// ─── CardTitle Component ─────────────────────────────────────────────────────
+
+/**
+ * Semantic heading component for a Card, typically rendered inside CardHeader.
+ * Supports `asChild` for slot delegation to custom heading levels.
+ */
+export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  function CardTitle({ asChild = false, className, children, style, sx, ...rest }, ref) {
+    const titleClassName = classNames("cl-card__title", className);
+    if (asChild) {
+      return (
+        <Slot ref={ref} className={titleClassName} style={style} {...rest}>
+          {children}
+        </Slot>
+      );
+    }
+    return (
+      <h3 ref={ref} className={titleClassName} style={style} {...rest}>
+        {children}
+      </h3>
+    );
+  }
+);
+
+CardTitle.displayName = "CardTitle";
+
+// ─── CardDescription Component ───────────────────────────────────────────────
+
+/**
+ * Supporting subtext or subtitle paragraph for a Card.
+ * Supports `asChild` for slot delegation.
+ */
+export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  function CardDescription({ asChild = false, className, children, style, sx, ...rest }, ref) {
+    const descClassName = classNames("cl-card__description", "cl-card__desc", className);
+    if (asChild) {
+      return (
+        <Slot ref={ref} className={descClassName} style={style} {...rest}>
+          {children}
+        </Slot>
+      );
+    }
+    return (
+      <p ref={ref} className={descClassName} style={style} {...rest}>
+        {children}
+      </p>
+    );
+  }
+);
+
+CardDescription.displayName = "CardDescription";
+
+// ─── Compound Export ─────────────────────────────────────────────────────────
+
+export const Card = Object.assign(CardRoot, {
+  Root: CardRoot,
+  Header: CardHeader,
+  Title: CardTitle,
+  Description: CardDescription,
+  Body: CardBody,
+  Footer: CardFooter,
+  Media: CardMedia,
+  Actions: CardActions,
+});

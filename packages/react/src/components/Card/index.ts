@@ -1,6 +1,9 @@
 export {
   Card,
+  CardRoot,
   CardHeader,
+  CardTitle,
+  CardDescription,
   CardMedia,
   CardBody,
   CardFooter,
@@ -13,6 +16,8 @@ export type {
   CardVariant,
   CardSize,
   CardHeaderProps,
+  CardTitleProps,
+  CardDescriptionProps,
   CardMediaProps,
   CardBodyProps,
   CardFooterProps,

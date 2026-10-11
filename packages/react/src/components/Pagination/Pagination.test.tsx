@@ -205,25 +205,117 @@ describe("Pagination Component (SPEC-029)", () => {
     });
   });
 
-  describe("Page Size Changer & Quick Jumper", () => {
-    it("changes page size with showSizeChanger dropdown", () => {
+  describe("Page Size Changer (Select Integration) & Quick Jumper", () => {
+    it("renders shared Select combobox with current page size", () => {
+      render(<Pagination total={100} pageSize={10} showSizeChanger />);
+
+      const trigger = screen.getByRole("combobox", { name: "Page size" });
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveTextContent("10 / page");
+      expect(trigger).toHaveAttribute("aria-haspopup", "listbox");
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("opens dropdown and updates page size and page calculation on option click", async () => {
+      const user = userEvent.setup();
       const handlePageSizeChange = vi.fn();
 
       render(
         <Pagination
           total={100}
           pageSize={10}
+          defaultPage={1}
           showSizeChanger
           onPageSizeChange={handlePageSizeChange}
         />,
       );
 
-      const select = screen.getByRole("combobox", { name: "Page size" });
-      expect(select).toBeInTheDocument();
-      expect(select).toHaveValue("10");
+      const trigger = screen.getByRole("combobox", { name: "Page size" });
+      expect(screen.getByRole("button", { name: "Page 10" })).toBeInTheDocument();
 
-      fireEvent.change(select, { target: { value: "20" } });
+      // Open Select dropdown
+      await user.click(trigger);
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+      const option20 = await screen.findByRole("option", { name: /20 \/ page/i });
+      expect(option20).toBeInTheDocument();
+
+      // Click option
+      await user.click(option20);
+
       expect(handlePageSizeChange).toHaveBeenCalledWith(20);
+      expect(trigger).toHaveTextContent("20 / page");
+
+      // Total pages recalculates from 10 to 5 (100 / 20 = 5)
+      expect(screen.getByRole("button", { name: "Page 5" })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Page 10" })).not.toBeInTheDocument();
+    });
+
+    it("clamps active page to new totalPages when page size increase reduces total pages", async () => {
+      const user = userEvent.setup();
+      const handlePageSizeChange = vi.fn();
+      const handlePageChange = vi.fn();
+
+      render(
+        <Pagination
+          total={100}
+          pageSize={10}
+          defaultPage={8}
+          showSizeChanger
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />,
+      );
+
+      // Initially on page 8
+      expect(screen.getByRole("button", { name: "Page 8" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+
+      const trigger = screen.getByRole("combobox", { name: "Page size" });
+      await user.click(trigger);
+
+      const option50 = await screen.findByRole("option", { name: /50 \/ page/i });
+      await user.click(option50);
+
+      expect(handlePageSizeChange).toHaveBeenCalledWith(50);
+      // New total pages is 100 / 50 = 2. Page 8 was clamped to 2!
+      expect(screen.getByRole("button", { name: "Page 2" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+    });
+
+    it("works with compound subcomponent <Pagination.SizeSelect />", async () => {
+      const user = userEvent.setup();
+      const handlePageSizeChange = vi.fn();
+
+      render(
+        <Pagination total={60} pageSize={20}>
+          <Pagination.List>
+            <Pagination.Prev />
+            <Pagination.Item page={1}>1</Pagination.Item>
+            <Pagination.Item page={2}>2</Pagination.Item>
+            <Pagination.Item page={3}>3</Pagination.Item>
+            <Pagination.Next />
+          </Pagination.List>
+          <Pagination.SizeSelect
+            options={[20, 30, 60]}
+            onChange={handlePageSizeChange}
+          />
+        </Pagination>,
+      );
+
+      const trigger = screen.getByRole("combobox", { name: "Page size" });
+      expect(trigger).toHaveTextContent("20 / page");
+
+      await user.click(trigger);
+      const option60 = await screen.findByRole("option", { name: /60 \/ page/i });
+      await user.click(option60);
+
+      expect(handlePageSizeChange).toHaveBeenCalledWith(60);
+      expect(trigger).toHaveTextContent("60 / page");
     });
 
     it("jumps to page with showQuickJumper input on Enter key", () => {

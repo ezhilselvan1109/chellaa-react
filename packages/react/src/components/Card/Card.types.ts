@@ -3,7 +3,7 @@ import type { SxProps } from "../../system/types";
 
 // ─── Variant & Size Unions ───────────────────────────────────────────────────
 
-export type CardVariant = "elevated" | "outlined" | "filled";
+export type CardVariant = "elevated" | "outlined" | "filled" | "outline";
 export type CardSize = "sm" | "md" | "lg";
 
 // ─── Owner State ─────────────────────────────────────────────────────────────
@@ -14,6 +14,18 @@ export interface CardOwnerState {
   size: CardSize;
   hoverable: boolean;
   square: boolean;
+}
+
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  /** When true, delegates rendering to child element via Slot */
+  asChild?: boolean;
+  sx?: SxProps;
+}
+
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  /** When true, delegates rendering to child element via Slot */
+  asChild?: boolean;
+  sx?: SxProps;
 }
 
 // ─── Card (Root) ─────────────────────────────────────────────────────────────

@@ -3,7 +3,7 @@
    * Pagination Root Landmark Container
    * ------------------------------------------------------------------------- */
   .cl-pagination {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--cl-space-3, 12px);
@@ -31,17 +31,19 @@
    * Pagination List
    * ------------------------------------------------------------------------- */
   .cl-pagination__list {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
     gap: var(--cl-space-1, 4px);
     box-sizing: border-box;
+    flex-shrink: 0;
   }
 
   .cl-pagination__list-item {
     display: inline-flex;
+    align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -68,10 +70,30 @@
     text-decoration: none;
     line-height: 1;
     white-space: nowrap;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
     transition: background-color var(--cl-duration-fast, 150ms) ease,
                 border-color var(--cl-duration-fast, 150ms) ease,
                 color var(--cl-duration-fast, 150ms) ease,
                 box-shadow var(--cl-duration-fast, 150ms) ease;
+  }
+
+  /* SVG Icons in Navigation Buttons */
+  .cl-pagination__icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  .cl-pagination--sm .cl-pagination__icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .cl-pagination--lg .cl-pagination__icon {
+    width: 18px;
+    height: 18px;
   }
 
   /* Sizes: sm (28px), md (36px), lg (44px) */
@@ -135,6 +157,7 @@
     border-color: var(--cl-color-primary-solid, #4f46e5);
     color: var(--cl-color-primary-solid, #4f46e5);
     font-weight: var(--cl-font-weight-semibold, 600);
+    box-shadow: 0 0 0 1px var(--cl-color-primary-solid, #4f46e5);
   }
 
   /* ---------------------------------------------------------------------------
@@ -177,6 +200,7 @@
     background-color: transparent;
     border: 1px solid transparent;
     color: var(--cl-color-text-primary, #0f172a);
+    box-shadow: none;
   }
 
   .cl-pagination--ghost .cl-pagination__item:hover:not([disabled]):not([aria-disabled="true"]),
@@ -205,6 +229,7 @@
     background-color: var(--cl-color-bg-subtle, #f8fafc);
     border: 1px solid transparent;
     color: var(--cl-color-text-primary, #0f172a);
+    box-shadow: none;
   }
 
   .cl-pagination--subtle .cl-pagination__item:hover:not([disabled]):not([aria-disabled="true"]),
@@ -262,6 +287,8 @@
     color: var(--cl-color-text-secondary, #64748b);
     user-select: none;
     line-height: 1;
+    font-weight: var(--cl-font-weight-bold, 700);
+    letter-spacing: 0.05em;
   }
 
   .cl-pagination--sm .cl-pagination__ellipsis {
@@ -283,8 +310,68 @@
   }
 
   /* ---------------------------------------------------------------------------
-   * Page Size Selector
+   * Page Size Selector (reusing Select component)
+   * Scoped override ensures Select never blows out to 100% width in Pagination toolbar
    * ------------------------------------------------------------------------- */
+  .cl-pagination .cl-pagination__size-select-root,
+  .cl-pagination .cl-select {
+    display: inline-flex !important;
+    align-items: center;
+    width: auto !important;
+    max-width: fit-content;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .cl-pagination .cl-pagination__size-select-trigger,
+  .cl-pagination .cl-select__trigger {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: auto !important;
+    min-width: 105px;
+    gap: var(--cl-space-2, 8px);
+    box-sizing: border-box;
+    border-radius: var(--cl-radius-md, 6px);
+    border: 1px solid var(--cl-color-border-subtle, #cbd5e1);
+    background-color: var(--cl-color-bg-surface, #ffffff);
+    color: var(--cl-color-text-primary, #0f172a);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    font-weight: var(--cl-font-weight-normal, 400);
+    transition: border-color var(--cl-duration-fast, 150ms) ease,
+                background-color var(--cl-duration-fast, 150ms) ease,
+                box-shadow var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-pagination .cl-pagination__size-select-trigger:hover,
+  .cl-pagination .cl-select__trigger:hover {
+    border-color: var(--cl-color-border-strong, #94a3b8);
+    background-color: var(--cl-color-bg-subtle, #f8fafc);
+  }
+
+  .cl-pagination--sm .cl-pagination__size-select-trigger,
+  .cl-pagination--sm .cl-select__trigger {
+    height: 28px;
+    padding: 0 var(--cl-space-2, 8px);
+    font-size: var(--cl-font-size-xs, 12px);
+  }
+
+  .cl-pagination--md .cl-pagination__size-select-trigger,
+  .cl-pagination--md .cl-select__trigger {
+    height: 36px;
+    padding: 0 var(--cl-space-3, 10px);
+    font-size: var(--cl-font-size-sm, 14px);
+  }
+
+  .cl-pagination--lg .cl-pagination__size-select-trigger,
+  .cl-pagination--lg .cl-select__trigger {
+    height: 44px;
+    padding: 0 var(--cl-space-4, 14px);
+    font-size: var(--cl-font-size-md, 16px);
+  }
+
+  /* Legacy fallback */
   .cl-pagination__size-select {
     box-sizing: border-box;
     border-radius: var(--cl-radius-md, 6px);
@@ -296,19 +383,6 @@
     cursor: pointer;
     outline: none;
     padding: 0 var(--cl-space-2, 8px);
-    transition: border-color var(--cl-duration-fast, 150ms) ease;
-  }
-
-  .cl-pagination--sm .cl-pagination__size-select {
-    height: 28px;
-  }
-
-  .cl-pagination--md .cl-pagination__size-select {
-    height: 36px;
-  }
-
-  .cl-pagination--lg .cl-pagination__size-select {
-    height: 44px;
   }
 
   /* ---------------------------------------------------------------------------
@@ -317,10 +391,12 @@
   .cl-pagination__jumper {
     display: inline-flex;
     align-items: center;
-    gap: var(--cl-space-2, 6px);
+    gap: var(--cl-space-2, 8px);
     color: var(--cl-color-text-secondary, #64748b);
     font-size: inherit;
     user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .cl-pagination__jumper-input {
@@ -333,23 +409,36 @@
     font-size: inherit;
     text-align: center;
     outline: none;
-    width: 48px;
-    transition: border-color var(--cl-duration-fast, 150ms) ease;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: border-color var(--cl-duration-fast, 150ms) ease,
+                box-shadow var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-pagination__jumper-input:hover:not(:disabled) {
+    border-color: var(--cl-color-border-strong, #94a3b8);
+  }
+
+  .cl-pagination__jumper-input:focus {
+    border-color: var(--cl-color-primary-base, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
   }
 
   .cl-pagination--sm .cl-pagination__jumper-input {
     height: 28px;
-    width: 40px;
+    width: 44px;
+    font-size: var(--cl-font-size-xs, 12px);
   }
 
   .cl-pagination--md .cl-pagination__jumper-input {
     height: 36px;
-    width: 48px;
+    width: 52px;
+    font-size: var(--cl-font-size-sm, 14px);
   }
 
   .cl-pagination--lg .cl-pagination__jumper-input {
     height: 44px;
-    width: 56px;
+    width: 60px;
+    font-size: var(--cl-font-size-md, 16px);
   }
 
   /* Hide number spin buttons */
@@ -357,6 +446,37 @@
   .cl-pagination__jumper-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Dark Mode Overrides
+   * ------------------------------------------------------------------------- */
+  [data-theme="dark"] .cl-pagination {
+    color: var(--cl-color-text-primary, #f8fafc);
+  }
+
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__item,
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__prev,
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__next,
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__first,
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__last,
+  [data-theme="dark"] .cl-pagination .cl-pagination__size-select-trigger,
+  [data-theme="dark"] .cl-pagination .cl-select__trigger,
+  [data-theme="dark"] .cl-pagination__jumper-input {
+    background-color: var(--cl-color-bg-surface, #1e293b);
+    border-color: var(--cl-color-border-subtle, #334155);
+    color: var(--cl-color-text-primary, #f8fafc);
+  }
+
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__item:hover:not([disabled]):not([aria-disabled="true"]),
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__prev:hover:not([disabled]):not([aria-disabled="true"]),
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__next:hover:not([disabled]):not([aria-disabled="true"]),
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__first:hover:not([disabled]):not([aria-disabled="true"]),
+  [data-theme="dark"] .cl-pagination--outline .cl-pagination__last:hover:not([disabled]):not([aria-disabled="true"]),
+  [data-theme="dark"] .cl-pagination .cl-pagination__size-select-trigger:hover,
+  [data-theme="dark"] .cl-pagination .cl-select__trigger:hover {
+    background-color: var(--cl-color-bg-subtle, #334155);
+    border-color: var(--cl-color-border-strong, #475569);
   }
 }
 

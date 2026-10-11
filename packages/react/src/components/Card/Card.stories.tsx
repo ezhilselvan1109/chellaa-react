@@ -13,7 +13,7 @@ import { ThemeProvider } from "../../theme/ThemeProvider";
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Card> = {
-  title: "Surfaces/Card",
+  title: "Components/Card",
   component: Card,
   tags: ["autodocs"],
   parameters: {
@@ -417,6 +417,53 @@ export const AsArticle: Story = {
         story:
           "Demonstrates `asChild` delegation to `<article>`. The card's surface styles " +
           "are forwarded to the child element, giving semantic HTML without extra DOM nodes.",
+      },
+    },
+  },
+};
+
+export const CompoundComposition: Story = {
+  render: () => (
+    <Card variant="elevated" hoverable style={{ maxWidth: 360 }}>
+      <Card.Media
+        image="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80"
+        alt="Artistic abstract painting"
+        aspectRatio="16/9"
+      />
+      <Card.Header>
+        <Card.Title>Masterpiece Gallery</Card.Title>
+        <Card.Description>Curated exhibition by Contemporary Arts Council</Card.Description>
+      </Card.Header>
+      <Card.Body>
+        <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "var(--cl-color-fg-secondary)" }}>
+          Experience breathtaking modern abstractions, sculpture exhibits, and avant-garde installations.
+        </p>
+      </Card.Body>
+      <Card.Footer divider>
+        <Card.Actions>
+          <button
+            type="button"
+            style={{
+              padding: "8px 16px",
+              borderRadius: "6px",
+              border: "1px solid var(--cl-color-border-subtle)",
+              background: "var(--cl-color-bg-surface)",
+              color: "var(--cl-color-fg-primary)",
+              cursor: "pointer",
+              fontWeight: 500,
+            }}
+          >
+            Explore
+          </button>
+        </Card.Actions>
+      </Card.Footer>
+    </Card>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Demonstrates namespaced compound subcomponents (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Body`, `Card.Footer`, `Card.Media`, `Card.Actions`).",
       },
     },
   },

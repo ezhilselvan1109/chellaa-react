@@ -6,6 +6,8 @@ import { ThemeProvider } from "../../theme/ThemeProvider";
 import {
   Card,
   CardHeader,
+  CardTitle,
+  CardDescription,
   CardMedia,
   CardBody,
   CardFooter,
@@ -457,5 +459,97 @@ describe("Card compound composition", () => {
     );
     const article = screen.getByTestId("article");
     expect(article.tagName).toBe("ARTICLE");
+  });
+
+  it("supports outline variant as alias for outlined", () => {
+    renderWithTheme(
+      <Card variant="outline" data-testid="outline-card">
+        Outline Content
+      </Card>
+    );
+    const card = screen.getByTestId("outline-card");
+    expect(card).toHaveClass("cl-card--outlined");
+    expect(card).toHaveClass("cl-card--outline");
+  });
+});
+
+// ─── CardTitle & CardDescription ─────────────────────────────────────────────
+
+describe("CardTitle & CardDescription", () => {
+  it("renders CardTitle as h3 by default with cl-card__title class", () => {
+    renderWithTheme(<CardTitle>Card Main Title</CardTitle>);
+    const heading = screen.getByRole("heading", { level: 3, name: "Card Main Title" });
+    expect(heading).toBeInTheDocument();
+    expect(heading).toHaveClass("cl-card__title");
+  });
+
+  it("renders CardTitle with custom heading element via asChild", () => {
+    renderWithTheme(
+      <CardTitle asChild>
+        <h2 data-testid="custom-title">Custom H2 Title</h2>
+      </CardTitle>
+    );
+    const heading = screen.getByTestId("custom-title");
+    expect(heading.tagName).toBe("H2");
+    expect(heading).toHaveClass("cl-card__title");
+    expect(heading).toHaveTextContent("Custom H2 Title");
+  });
+
+  it("renders CardDescription as paragraph with cl-card__description class", () => {
+    renderWithTheme(<CardDescription>Supporting card description.</CardDescription>);
+    const desc = screen.getByText("Supporting card description.");
+    expect(desc.tagName).toBe("P");
+    expect(desc).toHaveClass("cl-card__description");
+    expect(desc).toHaveClass("cl-card__desc");
+  });
+
+  it("renders CardDescription with custom element via asChild", () => {
+    renderWithTheme(
+      <CardDescription asChild>
+        <span data-testid="custom-desc">Custom span description</span>
+      </CardDescription>
+    );
+    const desc = screen.getByTestId("custom-desc");
+    expect(desc.tagName).toBe("SPAN");
+    expect(desc).toHaveClass("cl-card__description");
+  });
+
+  it("renders Card.Title and Card.Description via compound namespace", () => {
+    renderWithTheme(
+      <Card data-testid="compound-card">
+        <Card.Header>
+          <Card.Title>Compound Title</Card.Title>
+          <Card.Description>Compound Description</Card.Description>
+        </Card.Header>
+        <Card.Body>Body text</Card.Body>
+        <Card.Footer>
+          <Card.Actions>
+            <button type="button">Confirm</button>
+          </Card.Actions>
+        </Card.Footer>
+      </Card>
+    );
+
+    expect(screen.getByRole("heading", { level: 3, name: "Compound Title" })).toBeInTheDocument();
+    expect(screen.getByText("Compound Description")).toBeInTheDocument();
+    expect(screen.getByText("Body text")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Confirm" })).toBeInTheDocument();
+  });
+
+  it("has no axe violations with compound Card Title and Description", async () => {
+    const { container } = renderWithTheme(
+      <Card>
+        <Card.Header>
+          <Card.Title>Accessible Title</Card.Title>
+          <Card.Description>Accessible Description</Card.Description>
+        </Card.Header>
+        <Card.Body>Content description text</Card.Body>
+        <Card.Actions>
+          <button type="button">Action</button>
+        </Card.Actions>
+      </Card>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

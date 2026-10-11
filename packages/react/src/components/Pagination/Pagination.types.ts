@@ -69,8 +69,15 @@ export interface PaginationEllipsisProps
 }
 
 export interface PaginationSizeSelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
+  /** Available page size options. Default [10, 20, 50, 100] */
   options?: number[] | undefined;
+  /** Optional callback fired when page size changes */
+  onChange?: ((pageSize: number) => void) | undefined;
+  /** Accessible label for the select trigger button. Default "Page size" */
+  "aria-label"?: string | undefined;
+  /** Whether the selector is disabled */
+  isDisabled?: boolean | undefined;
 }
 
 export interface PaginationJumperProps

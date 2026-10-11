@@ -2,6 +2,7 @@ import * as React from "react";
 import { useControllableState } from "../../hooks/useControllableState";
 import { classNames } from "../../utils/classNames";
 import { Slot } from "../../primitives/Slot";
+import { Select } from "../Select";
 import type {
   PaginationRootProps,
   PaginationListProps,
@@ -345,6 +346,76 @@ export const PaginationItem = React.forwardRef<
 
 PaginationItem.displayName = "Pagination.Item";
 
+const ChevronLeftIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="cl-pagination__icon"
+  >
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="cl-pagination__icon"
+  >
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
+const ChevronsLeftIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="cl-pagination__icon"
+  >
+    <polyline points="11 17 6 12 11 7" />
+    <polyline points="18 17 13 12 18 7" />
+  </svg>
+);
+
+const ChevronsRightIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="cl-pagination__icon"
+  >
+    <polyline points="13 17 18 12 13 7" />
+    <polyline points="6 17 11 12 6 7" />
+  </svg>
+);
+
 /**
  * Pagination.Prev navigates to the preceding page.
  */
@@ -382,7 +453,7 @@ export const PaginationPrev = React.forwardRef<
         onClick={handleClick as unknown as React.MouseEventHandler<HTMLElement>}
         {...(restProps as Record<string, unknown>)}
       >
-        {children ?? "‹"}
+        {children ?? <ChevronLeftIcon />}
       </Slot>
     );
   }
@@ -397,7 +468,7 @@ export const PaginationPrev = React.forwardRef<
       onClick={handleClick}
       {...restProps}
     >
-      {children ?? "‹"}
+      {children ?? <ChevronLeftIcon />}
     </button>
   );
 });
@@ -442,7 +513,7 @@ export const PaginationNext = React.forwardRef<
         onClick={handleClick as unknown as React.MouseEventHandler<HTMLElement>}
         {...(restProps as Record<string, unknown>)}
       >
-        {children ?? "›"}
+        {children ?? <ChevronRightIcon />}
       </Slot>
     );
   }
@@ -457,7 +528,7 @@ export const PaginationNext = React.forwardRef<
       onClick={handleClick}
       {...restProps}
     >
-      {children ?? "›"}
+      {children ?? <ChevronRightIcon />}
     </button>
   );
 });
@@ -500,7 +571,7 @@ export const PaginationFirst = React.forwardRef<
         onClick={handleClick as unknown as React.MouseEventHandler<HTMLElement>}
         {...(restProps as Record<string, unknown>)}
       >
-        {children ?? "«"}
+        {children ?? <ChevronsLeftIcon />}
       </Slot>
     );
   }
@@ -515,7 +586,7 @@ export const PaginationFirst = React.forwardRef<
       onClick={handleClick}
       {...restProps}
     >
-      {children ?? "«"}
+      {children ?? <ChevronsLeftIcon />}
     </button>
   );
 });
@@ -559,7 +630,7 @@ export const PaginationLast = React.forwardRef<
         onClick={handleClick as unknown as React.MouseEventHandler<HTMLElement>}
         {...(restProps as Record<string, unknown>)}
       >
-        {children ?? "»"}
+        {children ?? <ChevronsRightIcon />}
       </Slot>
     );
   }
@@ -574,7 +645,7 @@ export const PaginationLast = React.forwardRef<
       onClick={handleClick}
       {...restProps}
     >
-      {children ?? "»"}
+      {children ?? <ChevronsRightIcon />}
     </button>
   );
 });
@@ -603,44 +674,65 @@ export const PaginationEllipsis = React.forwardRef<
 PaginationEllipsis.displayName = "Pagination.Ellipsis";
 
 /**
- * Pagination.SizeSelect renders the page size dropdown.
+ * Pagination.SizeSelect renders the page size dropdown reusing @chellaa/react's Select component.
  */
 export const PaginationSizeSelect = React.forwardRef<
-  HTMLSelectElement,
+  HTMLButtonElement,
   PaginationSizeSelectProps
 >(function PaginationSizeSelect(
-  { options = [10, 20, 50, 100], className, onChange, ...restProps },
+  {
+    options = [10, 20, 50, 100],
+    className,
+    onChange,
+    "aria-label": ariaLabel = "Page size",
+    isDisabled: isDisabledProp,
+    ...restProps
+  },
   ref,
 ) {
-  const { pageSize, setPageSize, isDisabled } = usePaginationContext();
+  const { pageSize, setPageSize, size, isDisabled: isContextDisabled } =
+    usePaginationContext();
+  const disabled = isDisabledProp ?? isContextDisabled;
 
-  const handleChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const val = parseInt(e.target.value, 10);
-      if (!isNaN(val)) {
-        setPageSize(val);
+  const handleValueChange = React.useCallback(
+    (val: string) => {
+      const num = parseInt(val, 10);
+      if (!isNaN(num)) {
+        setPageSize(num);
+        onChange?.(num);
       }
-      onChange?.(e);
     },
     [onChange, setPageSize],
   );
 
   return (
-    <select
-      ref={ref}
-      aria-label="Page size"
-      disabled={isDisabled}
-      value={pageSize}
-      onChange={handleChange}
-      className={classNames("cl-pagination__size-select", className)}
-      {...restProps}
+    <Select.Root
+      value={String(pageSize)}
+      onValueChange={handleValueChange}
+      isDisabled={disabled}
+      size={size}
+      className={classNames("cl-pagination__size-select-root", className)}
     >
-      {options.map((opt) => (
-        <option key={opt} value={opt}>
-          {opt} / page
-        </option>
-      ))}
-    </select>
+      <Select.Trigger
+        ref={ref}
+        aria-label={ariaLabel}
+        className="cl-pagination__size-select-trigger"
+        {...restProps}
+      >
+        <Select.Value>{`${pageSize} / page`}</Select.Value>
+        <Select.Icon />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content className="cl-pagination__size-select-content">
+          {options.map((opt) => (
+            <Select.Item key={opt} value={String(opt)}>
+              <Select.ItemText>{opt} / page</Select.ItemText>
+              <Select.ItemIndicator />
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
   );
 });
 
