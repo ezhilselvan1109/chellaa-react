@@ -60,17 +60,38 @@ const expectedComponentStoryBundles = [
   "Stack.stories",
 ];
 
+const expectedFoundationStoryBundles = [
+  "Welcome.stories",
+  "GettingStarted.stories",
+  "DesignTokensOverview.stories",
+  "Colors.stories",
+  "TypographyScale.stories",
+  "SpacingLayout.stories",
+  "RadiusShadowsMotion.stories",
+  "ThemingDarkMode.stories",
+];
+
 const builtAssets = fs.readdirSync(previewAssetsPath);
 
-console.log("\n[Audit Phase 1] Verifying 32 Public Component Story Chunks in built distribution:");
+console.log("\n[Audit Phase 1A] Verifying 32 Public Component Story Chunks in built distribution:");
 for (const story of expectedComponentStoryBundles) {
   const found = builtAssets.some((file) => file.startsWith(story));
   if (!found) {
     throw new Error(`[Storybook Bundle Missing] Missing built story bundle for: ${story}`);
   }
-  console.log(`  ✓ Story Chunk Verified: ${story}`);
+  console.log(`  ✓ Component Story Chunk: ${story}`);
 }
 console.log(`✓ All 32 component story chunks verified (32/32)\n`);
+
+console.log("[Audit Phase 1B] Verifying Foundations & Introduction Story Chunks in built distribution:");
+for (const story of expectedFoundationStoryBundles) {
+  const found = builtAssets.some((file) => file.startsWith(story));
+  if (!found) {
+    throw new Error(`[Storybook Bundle Missing] Missing built foundation story bundle for: ${story}`);
+  }
+  console.log(`  ✓ Foundation Story Chunk: ${story}`);
+}
+console.log(`✓ All 8 foundation & introduction story chunks verified (8/8)\n`);
 
 // Note on Headless Primitives:
 // Headless primitives `Portal` (DOM teleportation) and `Slot` (element clone merging)
