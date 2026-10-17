@@ -23,6 +23,7 @@ import { useControllableState } from "../../hooks/useControllableState";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { composeEventHandlers } from "../../utils/composeEventHandlers";
 import { classNames } from "../../utils/classNames";
+import { getElementRef } from "../../utils/getElementRef";
 import type {
   PopoverRootProps,
   PopoverTriggerProps,
@@ -170,7 +171,7 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, PopoverTriggerProps>
     const { refs, getReferenceProps, isOpen, id } = usePopoverContext();
 
     const childRef = React.isValidElement(children)
-      ? (children as { ref?: React.Ref<unknown> }).ref
+      ? getElementRef(children)
       : undefined;
     const mergedRef = useMergeRefs(refs.setReference, childRef, ref);
 

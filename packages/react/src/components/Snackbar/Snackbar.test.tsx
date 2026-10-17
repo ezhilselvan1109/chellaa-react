@@ -591,4 +591,142 @@ describe("Snackbar & Toast Component System", () => {
       }
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 7. Lifecycle & Instant Expiry Timer Hygiene (W2-F13)
+  // ---------------------------------------------------------------------------
+  describe("7. Lifecycle & Instant Expiry Timer Hygiene (W2-F13)", () => {
+    it("schedules asynchronous dismiss when duration is 0 (instant expiry)", () => {
+      vi.useFakeTimers();
+      const handleClose = vi.fn();
+      render(
+        <Snackbar
+          isOpen={true}
+          message="Zero duration test"
+          duration={0}
+          onClose={handleClose}
+        />,
+      );
+
+      // Should not have been called synchronously during render/mount
+      expect(handleClose).not.toHaveBeenCalled();
+
+      // Advance next tick
+      act(() => {
+        vi.advanceTimersByTime(1);
+      });
+      expect(handleClose).toHaveBeenCalledTimes(1);
+
+      vi.useRealTimers();
+    });
+
+    it("schedules asynchronous dismiss when duration is negative", () => {
+      vi.useFakeTimers();
+      const handleClose = vi.fn();
+      render(
+        <Snackbar
+          isOpen={true}
+          message="Negative duration test"
+          duration={-500}
+          onClose={handleClose}
+        />,
+      );
+
+      expect(handleClose).not.toHaveBeenCalled();
+
+      act(() => {
+        vi.advanceTimersByTime(1);
+      });
+      expect(handleClose).toHaveBeenCalledTimes(1);
+
+      vi.useRealTimers();
+    });
+
+    it("cancels timer and does not invoke onClose if unmounted before expiry", () => {
+      vi.useFakeTimers();
+      const handleClose = vi.fn();
+      const { unmount } = render(
+        <Snackbar
+          isOpen={true}
+          message="Unmount cancellation test"
+          duration={2000}
+          onClose={handleClose}
+        />,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      expect(handleClose).not.toHaveBeenCalled();
+
+      // Unmount before 2000ms timer elapses
+      unmount();
+
+      act(() => {
+        vi.advanceTimersByTime(2000);
+      });
+      expect(handleClose).not.toHaveBeenCalled();
+
+      vi.useRealTimers();
+    });
+
+    it("does not auto-dismiss when duration is null (persistent)", () => {
+      vi.useFakeTimers();
+      const handleClose = vi.fn();
+      render(
+        <Snackbar
+          isOpen={true}
+          message="Persistent test"
+          duration={null}
+          onClose={handleClose}
+        />,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(60000);
+      });
+      expect(handleClose).not.toHaveBeenCalled();
+
+      vi.useRealTimers();
+    });
+
+    it("handles simulated React StrictMode remounting safely", () => {
+      vi.useFakeTimers();
+      const handleClose = vi.fn();
+
+      const { rerender } = render(
+        <React.StrictMode>
+          <Snackbar
+            isOpen={true}
+            message="Strict mode test"
+            duration={3000}
+            onClose={handleClose}
+          />
+        </React.StrictMode>,
+      );
+
+      rerender(
+        <React.StrictMode>
+          <Snackbar
+            isOpen={true}
+            message="Strict mode test"
+            duration={3000}
+            onClose={handleClose}
+          />
+        </React.StrictMode>,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(2999);
+      });
+      expect(handleClose).not.toHaveBeenCalled();
+
+      act(() => {
+        vi.advanceTimersByTime(2);
+      });
+      expect(handleClose).toHaveBeenCalledTimes(1);
+
+      vi.useRealTimers();
+    });
+  });
 });

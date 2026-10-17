@@ -20,6 +20,7 @@ import { Kbd } from "../Kbd";
 import { useControllableState } from "../../hooks/useControllableState";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { classNames } from "../../utils/classNames";
+import { getElementRef } from "../../utils/getElementRef";
 import type { TooltipProps } from "./Tooltip.types";
 
 /**
@@ -115,7 +116,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     const generatedId = React.useId();
     const tooltipId = `cl-tooltip-${(context.floatingId || generatedId).replace(/:/g, "")}`;
     const childRef = React.isValidElement(children)
-      ? (children as { ref?: React.Ref<unknown> }).ref
+      ? getElementRef(children)
       : undefined;
     const mergedReferenceRef = useMergeRefs(refs.setReference, childRef);
     const mergedFloatingRef = useMergeRefs(refs.setFloating, forwardedRef);

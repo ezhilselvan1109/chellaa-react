@@ -381,4 +381,40 @@ describe("Popover Component", () => {
       expect(results).toHaveNoViolations();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 8. Theme Tokens & Dark Mode (W2-F11)
+  // ---------------------------------------------------------------------------
+  describe("Theme Tokens & Dark Mode (W2-F11)", () => {
+    it("renders popover with custom tokens and dark theme support", () => {
+      render(
+        <div
+          data-theme="dark"
+          style={
+            {
+              "--cl-popover-bg": "rgb(30, 41, 59)",
+              "--cl-popover-border": "rgb(51, 65, 85)",
+            } as React.CSSProperties
+          }
+        >
+          <Popover defaultOpen>
+            <PopoverTrigger>
+              <button type="button">Dark Trigger</button>
+            </PopoverTrigger>
+            <PopoverContent data-testid="dark-popover-content">
+              <PopoverHeader>
+                <PopoverTitle>Dark Popover</PopoverTitle>
+                <PopoverClose />
+              </PopoverHeader>
+              <PopoverBody>Dark Content</PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </div>
+      );
+
+      const content = screen.getByTestId("dark-popover-content");
+      expect(content).toBeInTheDocument();
+      expect(content).toHaveClass("cl-popover");
+    });
+  });
 });

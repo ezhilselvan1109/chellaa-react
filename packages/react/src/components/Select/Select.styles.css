@@ -30,8 +30,8 @@
                 box-shadow var(--cl-motion-fast, 150ms) ease,
                 background-color var(--cl-motion-fast, 150ms) ease;
     border-radius: var(--cl-radius-md, 6px);
-    background-color: var(--cl-color-bg-canvas, #ffffff);
-    color: var(--cl-color-fg-primary, #0f172a);
+    background-color: var(--cl-select-bg, var(--cl-color-bg-canvas, #ffffff));
+    color: var(--cl-select-fg, var(--cl-color-fg-primary, #0f172a));
   }
 
   /* Trigger Sizes */
@@ -72,8 +72,8 @@
 
   /* Trigger Variants */
   .cl-select__trigger--outline {
-    border: 1px solid var(--cl-color-border-default, #cbd5e1);
-    background-color: var(--cl-color-bg-canvas, #ffffff);
+    border: 1px solid var(--cl-select-border, var(--cl-color-border-default, #cbd5e1));
+    background-color: var(--cl-select-bg, var(--cl-color-bg-canvas, #ffffff));
   }
 
   .cl-select__trigger--outline:hover:not(:disabled) {
@@ -86,7 +86,7 @@
   }
 
   .cl-select__trigger--filled:hover:not(:disabled) {
-    background-color: var(--cl-palette-slate-200, #e2e8f0);
+    background-color: var(--cl-color-bg-surface, #e2e8f0);
   }
 
   .cl-select__trigger--flushed {
@@ -180,8 +180,8 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: var(--cl-space-1, 4px);
-    background-color: var(--cl-color-bg-canvas, #ffffff);
-    border: 1px solid var(--cl-color-border-default, #e2e8f0);
+    background-color: var(--cl-select-menu-bg, var(--cl-color-bg-canvas, #ffffff));
+    border: 1px solid var(--cl-select-menu-border, var(--cl-color-border-default, #e2e8f0));
     border-radius: var(--cl-radius-md, 6px);
     box-shadow: var(--cl-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1));
     z-index: var(--cl-z-dropdown, 1000);
@@ -241,7 +241,7 @@
     box-sizing: border-box;
     font-size: var(--cl-font-size-sm, 14px);
     line-height: 1.4;
-    color: var(--cl-color-fg-primary, #0f172a);
+    color: var(--cl-select-fg, var(--cl-color-fg-primary, #0f172a));
     border-radius: var(--cl-radius-sm, 4px);
     cursor: pointer;
     outline: none;
@@ -253,22 +253,22 @@
   /* Item Highlight / Hover (Unselected) */
   .cl-select__item:hover:not([aria-disabled="true"]):not([data-disabled="true"]),
   .cl-select__item[data-highlighted="true"]:not([aria-disabled="true"]):not([data-disabled="true"]) {
-    background-color: var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.08));
-    color: var(--cl-color-primary-base, #4f46e5);
+    background-color: var(--cl-select-item-hover-bg, var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.08)));
+    color: var(--cl-select-item-hover-fg, var(--cl-color-primary-base, #4f46e5));
   }
 
   /* Item Selected */
   .cl-select__item[aria-selected="true"] {
     font-weight: var(--cl-font-weight-semibold, 600);
-    color: var(--cl-color-primary-base, #4f46e5);
-    background-color: var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.12));
+    color: var(--cl-select-item-selected-fg, var(--cl-color-primary-base, #4f46e5));
+    background-color: var(--cl-select-item-selected-bg, rgba(99, 102, 241, 0.12));
   }
 
   /* Item Selected AND Highlighted/Hovered */
   .cl-select__item[aria-selected="true"]:hover:not([aria-disabled="true"]):not([data-disabled="true"]),
   .cl-select__item[aria-selected="true"][data-highlighted="true"]:not([aria-disabled="true"]):not([data-disabled="true"]) {
-    color: var(--cl-color-primary-hover, #4338ca);
-    background-color: var(--cl-palette-indigo-100, rgba(99, 102, 241, 0.18));
+    color: var(--cl-select-item-selected-fg, var(--cl-color-primary-hover, #4338ca));
+    background-color: var(--cl-select-item-hover-bg, rgba(99, 102, 241, 0.18));
   }
 
   /* Item Disabled */
@@ -306,7 +306,57 @@
   }
 
   /* =========================================================================
-     9. Reduced Motion
+     9. Dark Theme Adaptations
+     ========================================================================= */
+  [data-theme="dark"] .cl-select__trigger--outline {
+    background-color: var(--cl-select-bg, var(--cl-color-bg-canvas, #090d16));
+    border-color: var(--cl-select-border, var(--cl-color-border-default, #334155));
+    color: var(--cl-select-fg, var(--cl-color-fg-primary, #f8fafc));
+  }
+
+  [data-theme="dark"] .cl-select__trigger--filled {
+    background-color: var(--cl-color-bg-muted, #1e293b);
+    color: var(--cl-select-fg, var(--cl-color-fg-primary, #f8fafc));
+  }
+
+  [data-theme="dark"] .cl-select__trigger--filled:hover:not(:disabled) {
+    background-color: var(--cl-color-bg-surface, #334155);
+  }
+
+  [data-theme="dark"] .cl-select__content {
+    background-color: var(--cl-select-menu-bg, var(--cl-color-bg-elev, #1e293b));
+    border-color: var(--cl-select-menu-border, var(--cl-color-border-subtle, #334155));
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  }
+
+  [data-theme="dark"] .cl-select__item {
+    color: var(--cl-select-fg, var(--cl-color-fg-primary, #f8fafc));
+  }
+
+  [data-theme="dark"] .cl-select__item:hover:not([aria-disabled="true"]):not([data-disabled="true"]),
+  [data-theme="dark"] .cl-select__item[data-highlighted="true"]:not([aria-disabled="true"]):not([data-disabled="true"]) {
+    background-color: var(--cl-select-item-hover-bg, rgba(99, 102, 241, 0.16));
+    color: var(--cl-select-item-hover-fg, #c7d2fe);
+  }
+
+  [data-theme="dark"] .cl-select__item[aria-selected="true"] {
+    background-color: var(--cl-select-item-selected-bg, rgba(99, 102, 241, 0.25));
+    color: var(--cl-select-item-selected-fg, #e0e7ff);
+  }
+
+  [data-theme="dark"] .cl-select__item[aria-selected="true"]:hover:not([aria-disabled="true"]):not([data-disabled="true"]),
+  [data-theme="dark"] .cl-select__item[aria-selected="true"][data-highlighted="true"]:not([aria-disabled="true"]):not([data-disabled="true"]) {
+    background-color: rgba(99, 102, 241, 0.35);
+    color: #ffffff;
+  }
+
+  [data-theme="dark"] .cl-select__item[aria-disabled="true"],
+  [data-theme="dark"] .cl-select__item[data-disabled="true"] {
+    color: var(--cl-color-fg-muted, #64748b);
+  }
+
+  /* =========================================================================
+     10. Reduced Motion
      ========================================================================= */
   @media (prefers-reduced-motion: reduce) {
     .cl-select__trigger,

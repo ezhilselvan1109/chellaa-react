@@ -1,6 +1,7 @@
 import * as React from "react";
 import { classNames } from "../utils/classNames";
 import { composeEventHandlers } from "../utils/composeEventHandlers";
+import { getElementRef } from "../utils/getElementRef";
 import { setRef } from "../hooks/useMergeRefs";
 
 export interface SlotProps extends React.HTMLAttributes<HTMLElement> {
@@ -36,23 +37,6 @@ export const Slot = React.forwardRef<HTMLElement, SlotProps>(
 );
 
 Slot.displayName = "Slot";
-
-/**
- * Extracts a ref from a React element across React 18 and React 19.
- */
-function getElementRef(
-  element: React.ReactElement,
-): React.Ref<HTMLElement> | undefined {
-  // In React 18 and earlier, ref is a property on the element instance.
-  // In React 19, ref is passed as a standard prop.
-  // Checking element.ref first avoids the React 18 special-props warning.
-  const elementRef = (element as unknown as { ref?: React.Ref<HTMLElement> })
-    ?.ref;
-  if (elementRef !== undefined) {
-    return elementRef;
-  }
-  return (element.props as { ref?: React.Ref<HTMLElement> })?.ref;
-}
 
 /**
  * Merges slot parent props with child props.

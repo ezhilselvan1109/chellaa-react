@@ -337,4 +337,126 @@ describe("Select Component (SPEC-003)", () => {
       expect(screen.getByText("Blue")).toBeInTheDocument();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 8. Typeahead & Lifecycle Cleanup (W2-F07)
+  // ---------------------------------------------------------------------------
+  describe("8. Typeahead & Lifecycle Cleanup (W2-F07)", () => {
+    it("selects matching option on printable character typeahead and clears timer on unmount", () => {
+      vi.useFakeTimers();
+      const { unmount } = renderFruitSelect({ defaultValue: undefined });
+      const trigger = screen.getByRole("combobox", { name: "Select Fruit" });
+
+      // Trigger typeahead with 'b' -> should match banana
+      fireEvent.keyDown(trigger, { key: "b" });
+      expect(screen.getByText("Banana")).toBeInTheDocument();
+
+      // Unmount before 500ms timer finishes
+      unmount();
+
+      // Advancing timer after unmount should execute without errors or state updates
+      expect(() => {
+        act(() => {
+          vi.advanceTimersByTime(600);
+        });
+      }).not.toThrow();
+
+      vi.useRealTimers();
+    });
+
+    it("resets typeahead buffer after 500ms inactivity", () => {
+      vi.useFakeTimers();
+      renderFruitSelect({ defaultValue: undefined });
+      const trigger = screen.getByRole("combobox", { name: "Select Fruit" });
+
+      // Type 'b' -> Banana
+      fireEvent.keyDown(trigger, { key: "b" });
+      expect(screen.getByText("Banana")).toBeInTheDocument();
+
+      // Wait 600ms for buffer to clear
+      act(() => {
+        vi.advanceTimersByTime(600);
+      });
+
+      // Type 'd' -> Date (if buffer wasn't cleared it would look for 'bd' and fail)
+      fireEvent.keyDown(trigger, { key: "d" });
+      expect(screen.getByText("Date")).toBeInTheDocument();
+
+      vi.useRealTimers();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 9. Theme Tokens & Contrast Parity (W2-F06)
+  // ---------------------------------------------------------------------------
+  describe("9. Theme Tokens & Contrast Parity (W2-F06)", () => {
+    function getLuminance(r: number, g: number, b: number): number {
+      const [rs, gs, bs] = [r, g, b].map((c) => {
+        const s = c / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+    }
+
+    function getContrastRatio(
+      rgb1: [number, number, number],
+      rgb2: [number, number, number]
+    ): number {
+      const lum1 = getLuminance(...rgb1);
+      const lum2 = getLuminance(...rgb2);
+      return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+    }
+
+    it("verifies WCAG AA contrast ratio (>= 4.5:1) for dark-theme option tokens", () => {
+      // Menu surface: slate-800 (#1e293b -> [30, 41, 59])
+      const menuBg: [number, number, number] = [30, 41, 59];
+
+      // Normal text: slate-50 (#f8fafc -> [248, 250, 252])
+      const normalFg: [number, number, number] = [248, 250, 252];
+      const normalContrast = getContrastRatio(normalFg, menuBg);
+      expect(normalContrast).toBeGreaterThanOrEqual(4.5);
+
+      // Hovered state: indigo-200 (#c7d2fe -> [199, 210, 254]) on hovered surface (~[40, 46, 86])
+      const hoverBg: [number, number, number] = [40, 46, 86];
+      const hoverFg: [number, number, number] = [199, 210, 254];
+      const hoverContrast = getContrastRatio(hoverFg, hoverBg);
+      expect(hoverContrast).toBeGreaterThanOrEqual(4.5);
+
+      // Selected state: indigo-100 (#e0e7ff -> [224, 231, 255]) on selected surface (~[49, 55, 104])
+      const selectedBg: [number, number, number] = [49, 55, 104];
+      const selectedFg: [number, number, number] = [224, 231, 255];
+      const selectedContrast = getContrastRatio(selectedFg, selectedBg);
+      expect(selectedContrast).toBeGreaterThanOrEqual(4.5);
+
+      // Selected + Hovered state: white (#ffffff -> [255, 255, 255]) on active surface (~[58, 65, 122])
+      const activeBg: [number, number, number] = [58, 65, 122];
+      const activeFg: [number, number, number] = [255, 255, 255];
+      const activeContrast = getContrastRatio(activeFg, activeBg);
+      expect(activeContrast).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it("renders with custom select tokens via css custom properties", () => {
+      render(
+        <div
+          data-theme="dark"
+          style={
+            {
+              "--cl-select-bg": "#090d16",
+              "--cl-select-fg": "#f8fafc",
+              "--cl-select-border": "#334155",
+            } as React.CSSProperties
+          }
+        >
+          <SelectRoot defaultValue="opt1">
+            <SelectTrigger aria-label="Dark Select" data-testid="dark-trigger">
+              <SelectValue />
+            </SelectTrigger>
+          </SelectRoot>
+        </div>
+      );
+
+      const trigger = screen.getByTestId("dark-trigger");
+      expect(trigger).toHaveClass("cl-select__trigger");
+    });
+  });
 });

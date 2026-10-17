@@ -256,6 +256,58 @@ describe("Tabs Component (SPEC-027)", () => {
       expect(tab1).toHaveAttribute("aria-selected", "true");
     });
 
+    it("does not navigate horizontal tabs with ArrowDown or ArrowUp", () => {
+      render(
+        <Tabs defaultValue="h1" orientation="horizontal">
+          <Tabs.List>
+            <Tabs.Trigger value="h1">Horizontal 1</Tabs.Trigger>
+            <Tabs.Trigger value="h2">Horizontal 2</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="h1">Content H1</Tabs.Content>
+          <Tabs.Content value="h2">Content H2</Tabs.Content>
+        </Tabs>,
+      );
+
+      const tab1 = screen.getByRole("tab", { name: "Horizontal 1" });
+      const tab2 = screen.getByRole("tab", { name: "Horizontal 2" });
+
+      tab1.focus();
+      fireEvent.keyDown(tab1, { key: "ArrowDown" });
+      expect(document.activeElement).toBe(tab1);
+      expect(tab1).toHaveAttribute("aria-selected", "true");
+
+      fireEvent.keyDown(tab1, { key: "ArrowUp" });
+      expect(document.activeElement).toBe(tab1);
+      expect(tab1).toHaveAttribute("aria-selected", "true");
+      expect(tab2).toHaveAttribute("aria-selected", "false");
+    });
+
+    it("does not navigate vertical tabs with ArrowRight or ArrowLeft", () => {
+      render(
+        <Tabs defaultValue="v1" orientation="vertical">
+          <Tabs.List>
+            <Tabs.Trigger value="v1">Vertical 1</Tabs.Trigger>
+            <Tabs.Trigger value="v2">Vertical 2</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="v1">Content V1</Tabs.Content>
+          <Tabs.Content value="v2">Content V2</Tabs.Content>
+        </Tabs>,
+      );
+
+      const tab1 = screen.getByRole("tab", { name: "Vertical 1" });
+      const tab2 = screen.getByRole("tab", { name: "Vertical 2" });
+
+      tab1.focus();
+      fireEvent.keyDown(tab1, { key: "ArrowRight" });
+      expect(document.activeElement).toBe(tab1);
+      expect(tab1).toHaveAttribute("aria-selected", "true");
+
+      fireEvent.keyDown(tab1, { key: "ArrowLeft" });
+      expect(document.activeElement).toBe(tab1);
+      expect(tab1).toHaveAttribute("aria-selected", "true");
+      expect(tab2).toHaveAttribute("aria-selected", "false");
+    });
+
     it("skips disabled tabs during arrow navigation", () => {
       render(
         <Tabs defaultValue="t1">

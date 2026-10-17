@@ -147,15 +147,32 @@ export const ToastItem = React.forwardRef<
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPausedRef = React.useRef<boolean>(false);
 
+  React.useEffect(() => {
+    if (typeof duration === "number") {
+      remainingRef.current = duration;
+    }
+  }, [duration]);
+
   const startTimer = React.useCallback(() => {
     if (duration === null || duration === undefined) return;
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+
     if (remainingRef.current <= 0) {
-      onClose();
+      timerRef.current = setTimeout(() => {
+        onClose();
+        timerRef.current = null;
+      }, 0);
       return;
     }
+
     startTimeRef.current = Date.now();
     timerRef.current = setTimeout(() => {
       onClose();
+      timerRef.current = null;
     }, remainingRef.current);
   }, [duration, onClose]);
 

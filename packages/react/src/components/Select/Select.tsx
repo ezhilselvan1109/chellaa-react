@@ -157,7 +157,12 @@ export const SelectRoot = React.forwardRef<HTMLDivElement, SelectRootProps>(
       }
       return new Map();
     });
-    const [itemsList, setItemsList] = React.useState<string[]>([]);
+    const [itemsList, setItemsList] = React.useState<string[]>(() => {
+      if (children) {
+        return Array.from(extractItemMapFromChildren(children).keys());
+      }
+      return [];
+    });
     const [disabledItems, setDisabledItems] = React.useState<Set<string>>(() => new Set());
 
     const triggerId = React.useId();
@@ -402,6 +407,16 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
     const typeaheadBuffer = React.useRef("");
     const typeaheadTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    // Cleanup pending typeahead timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (typeaheadTimeout.current) {
+          clearTimeout(typeaheadTimeout.current);
+          typeaheadTimeout.current = null;
+        }
+      };
+    }, []);
+
     const internal = ctx as unknown as InternalSelectContext;
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -452,10 +467,14 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
         ctx.setIsOpen(false);
       } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
         // Printable character typeahead
-        if (typeaheadTimeout.current) clearTimeout(typeaheadTimeout.current);
+        if (typeaheadTimeout.current) {
+          clearTimeout(typeaheadTimeout.current);
+          typeaheadTimeout.current = null;
+        }
         typeaheadBuffer.current += e.key.toLowerCase();
         typeaheadTimeout.current = setTimeout(() => {
           typeaheadBuffer.current = "";
+          typeaheadTimeout.current = null;
         }, 500);
 
         const match = enabledList.find((val) => {

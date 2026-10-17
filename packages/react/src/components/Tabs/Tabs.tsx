@@ -253,13 +253,13 @@ export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>
             }
             break;
           case "ArrowDown":
-            if (isVertical || isHorizontal) {
+            if (isVertical) {
               nextIndex = (currentIndex + 1) % triggers.length;
               shouldMove = true;
             }
             break;
           case "ArrowUp":
-            if (isVertical || isHorizontal) {
+            if (isVertical) {
               nextIndex = (currentIndex - 1 + triggers.length) % triggers.length;
               shouldMove = true;
             }
