@@ -11,6 +11,7 @@ import {
   ComboboxEmpty,
   ComboboxTag,
   ComboboxClear,
+  Autocomplete,
 } from "./Combobox";
 import { FormField } from "../FormField/FormField";
 import { FormLabel } from "../FormField/FormLabel";
@@ -30,10 +31,17 @@ const COUNTRIES = [
 ];
 
 const meta: Meta<typeof Combobox> = {
-  title: "Components/Combobox",
+  title: "Components/Forms & Inputs/Combobox",
   component: Combobox,
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Combobox is an accessible autocomplete input with integrated popup listbox, keyboard navigation, async search, tag-based multi-selection, and portal management. Also exported under the canonical `Autocomplete` alias.",
+      },
+    },
   },
   argTypes: {
     size: {
@@ -386,6 +394,31 @@ export const GroupedOptions: Story = {
           </Combobox.Group>
         </Combobox.Content>
       </Combobox.Root>
+    </div>
+  ),
+};
+
+export const AutocompleteAlias: Story = {
+  render: () => (
+    <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+      <p style={{ fontSize: 13, color: "var(--cl-color-fg-muted)", marginBottom: 8 }}>
+        Rendered using the <code>Autocomplete</code> canonical export alias:
+      </p>
+      <Autocomplete.Root>
+        <Autocomplete.Control>
+          <Autocomplete.Input placeholder="Autocomplete country..." />
+          <Autocomplete.Clear />
+          <Autocomplete.Trigger />
+        </Autocomplete.Control>
+        <Autocomplete.Content>
+          <Autocomplete.Empty>No countries found.</Autocomplete.Empty>
+          {COUNTRIES.map((c) => (
+            <Autocomplete.Item key={c.value} value={c.value}>
+              {c.label}
+            </Autocomplete.Item>
+          ))}
+        </Autocomplete.Content>
+      </Autocomplete.Root>
     </div>
   ),
 };

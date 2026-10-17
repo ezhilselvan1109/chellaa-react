@@ -3,10 +3,64 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Badge } from "./Badge";
 
 const meta: Meta<typeof Badge> = {
-  title: "Components/Badge",
+  title: "Components/Data Display/Badge",
   component: Badge,
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Badges are compact status and category indicators used to highlight attributes, numeric counts, and entity statuses. Supports subtle, solid, and outline variants, spatial sizing scales, status dots, and pill curvature.",
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["subtle", "solid", "outline"],
+      description: "Visual aesthetic treatment of the badge.",
+      table: { defaultValue: { summary: "subtle" } },
+    },
+    size: {
+      control: "select",
+      options: ["sm", "md", "lg"],
+      description: "Spatial sizing scale mapped to baseline tokens.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    colorScheme: {
+      control: "select",
+      options: [
+        "primary",
+        "secondary",
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "neutral",
+      ],
+      description: "Semantic color intent.",
+      table: { defaultValue: { summary: "neutral" } },
+    },
+    isPill: {
+      control: "boolean",
+      description: "If true, renders with fully rounded pill corners.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    hasDot: {
+      control: "boolean",
+      description: "If true, renders a small colored status dot before children.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    asChild: {
+      control: "boolean",
+      description: "If true, delegates rendering to the immediate child element using Slot.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    children: {
+      control: "text",
+      description: "Badge text content or numeric label.",
+    },
   },
 };
 
