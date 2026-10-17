@@ -113,4 +113,23 @@ describe("Badge Component (SPEC-006)", () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it("FR-BDG-09: supports sx prop integration without leaking props to DOM", () => {
+    render(
+      <Badge
+        variant="solid"
+        colorScheme="primary"
+        sx={{ textTransform: "uppercase", letterSpacing: "1px" }}
+        data-testid="badge-sx"
+      >
+        Styled Badge
+      </Badge>
+    );
+
+    const badge = screen.getByTestId("badge-sx");
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveClass("cl-badge", "cl-badge--solid", "cl-badge--primary");
+    expect(badge).not.toHaveAttribute("sx");
+    expect(badge).not.toHaveAttribute("colorScheme");
+  });
 });

@@ -172,6 +172,44 @@ describe("Input & TextField Components", () => {
   });
 
   // ---------------------------------------------------------------------------
+  // 4b. asChild Composition (W1-F06)
+  // ---------------------------------------------------------------------------
+  describe("asChild Composition", () => {
+    it("composes onto a single slotted child without duplicate inner input elements", () => {
+      const ref = React.createRef<HTMLInputElement>();
+      render(
+        <Input asChild error required placeholder="Slotted Search">
+          <input ref={ref} data-testid="slotted-input" type="search" />
+        </Input>
+      );
+
+      const slotted = screen.getByTestId("slotted-input");
+      expect(slotted).toBeInTheDocument();
+      expect(slotted.tagName).toBe("INPUT");
+      expect(slotted).toHaveClass("cl-input", "cl-input--outlined", "cl-input--error");
+      expect(slotted).toHaveAttribute("type", "search");
+      expect(slotted).toHaveAttribute("placeholder", "Slotted Search");
+      expect(slotted).toHaveAttribute("aria-invalid", "true");
+      expect(slotted).toBeRequired();
+      expect(ref.current).toBe(slotted);
+
+      // Verify exactly 1 input element exists (no duplicate void elements)
+      expect(document.querySelectorAll("input").length).toBe(1);
+    });
+
+    it("throws informative error when multiple children are passed to asChild", () => {
+      expect(() => {
+        render(
+          <Input asChild>
+            <input data-testid="input-1" />
+            <input data-testid="input-2" />
+          </Input>
+        );
+      }).toThrow();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
   // 5. TextField Composite
   // ---------------------------------------------------------------------------
   describe("TextField Composite", () => {
@@ -184,9 +222,11 @@ describe("Input & TextField Components", () => {
       expect(input).toHaveAttribute("id", "email-field");
     });
 
-    it("displays required asterisk when required={true}", () => {
+    it("displays required asterisk with aria-hidden when required={true}", () => {
       render(<TextField label="Username" required />);
-      expect(screen.getByText("*")).toBeInTheDocument();
+      const asterisk = screen.getByText("*");
+      expect(asterisk).toBeInTheDocument();
+      expect(asterisk).toHaveAttribute("aria-hidden", "true");
       expect(screen.getByLabelText(/Username/)).toBeRequired();
     });
 
@@ -205,7 +245,7 @@ describe("Input & TextField Components", () => {
       expect(input).toHaveAttribute("aria-describedby", "username-helper");
     });
 
-    it("displays errorMessage when error={true}", () => {
+    it("displays errorMessage when error={true} linked via aria-describedby and announced with alert/polite", () => {
       render(
         <TextField
           label="Password"
@@ -213,11 +253,17 @@ describe("Input & TextField Components", () => {
           errorMessage="Password is too short"
         />
       );
-      expect(screen.getByText("Password is too short")).toBeInTheDocument();
-      expect(screen.getByLabelText(/Password/)).toHaveAttribute(
+      const errorMsg = screen.getByText("Password is too short");
+      expect(errorMsg).toBeInTheDocument();
+      expect(errorMsg).toHaveAttribute("role", "alert");
+      expect(errorMsg).toHaveAttribute("aria-live", "polite");
+
+      const input = screen.getByLabelText(/Password/);
+      expect(input).toHaveAttribute(
         "aria-invalid",
         "true"
       );
+      expect(input).toHaveAttribute("aria-describedby", errorMsg.getAttribute("id"));
     });
   });
 

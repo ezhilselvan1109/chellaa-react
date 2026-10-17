@@ -110,7 +110,11 @@ export const Switch = React.forwardRef<HTMLLabelElement, SwitchProps>(
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         event.preventDefault();
-        nativeInputRef.current?.click();
+        if (!disabled && !readOnly && !loading) {
+          nativeInputRef.current?.click();
+        }
+      } else if (event.key === " " && (readOnly || loading)) {
+        event.preventDefault();
       }
       inputProps.onKeyDown?.(event);
     };

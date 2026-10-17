@@ -2,7 +2,7 @@ import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { Typography } from "./Typography";
+import { Typography, resolveTypographyColor } from "./Typography";
 import { Heading } from "./Heading";
 import { Text } from "./Text";
 import { Paragraph } from "./Paragraph";
@@ -267,6 +267,54 @@ describe("Typography System", () => {
       );
       const results = await axe(container);
       expect(results).toHaveNoViolations();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 7. Typography Color Resolution (W1-F09)
+  // ---------------------------------------------------------------------------
+  describe("resolveTypographyColor", () => {
+    it("returns inherit and currentColor directly", () => {
+      const mockTheme = { palette: {} } as any;
+      expect(resolveTypographyColor(mockTheme, "inherit")).toBe("inherit");
+      expect(resolveTypographyColor(mockTheme, "currentColor")).toBe("currentColor");
+      expect(resolveTypographyColor(mockTheme, undefined)).toBeUndefined();
+    });
+
+    it("resolves primary palette main color from theme", () => {
+      const mockTheme = {
+        palette: {
+          primary: { main: "#6366f1", light: "#a5b4fc", dark: "#4338ca", contrastText: "#fff" },
+        },
+      } as any;
+      expect(resolveTypographyColor(mockTheme, "primary")).toBe("#6366f1");
+    });
+
+    it("resolves nested dotted palette paths from theme", () => {
+      const mockTheme = {
+        palette: {
+          text: { primary: "#0f172a", secondary: "#334155", disabled: "#64748b" },
+          background: { default: "#fff", paper: "#f8fafc" },
+        },
+      } as any;
+      expect(resolveTypographyColor(mockTheme, "text.primary")).toBe("#0f172a");
+      expect(resolveTypographyColor(mockTheme, "background.paper")).toBe("#f8fafc");
+    });
+
+    it("falls back to documented CSS tokens when palette paths are missing from theme", () => {
+      const emptyTheme = { palette: {} } as any;
+      expect(resolveTypographyColor(emptyTheme, "primary")).toBe("var(--cl-color-primary-base)");
+      expect(resolveTypographyColor(emptyTheme, "text.primary")).toBe("var(--cl-color-fg-primary)");
+      expect(resolveTypographyColor(emptyTheme, "text.secondary")).toBe("var(--cl-color-fg-secondary)");
+      expect(resolveTypographyColor(emptyTheme, "text.disabled")).toBe("var(--cl-color-fg-muted)");
+      expect(resolveTypographyColor(emptyTheme, "error")).toBe("var(--cl-color-danger-base)");
+    });
+
+    it("passes raw CSS color values through without mutation", () => {
+      const emptyTheme = { palette: {} } as any;
+      expect(resolveTypographyColor(emptyTheme, "#ff5500")).toBe("#ff5500");
+      expect(resolveTypographyColor(emptyTheme, "rebeccapurple")).toBe("rebeccapurple");
+      expect(resolveTypographyColor(emptyTheme, "var(--custom-accent)")).toBe("var(--custom-accent)");
     });
   });
 });

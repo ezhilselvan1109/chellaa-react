@@ -6,7 +6,7 @@ import { useRipple } from "./useRipple";
 
 describe("TouchRipple Component", () => {
   it("renders a touch ripple container", () => {
-    const { container } = render(<TouchRipple data-testid="touch-ripple" />);
+    render(<TouchRipple data-testid="touch-ripple" />);
     const elem = screen.getByTestId("touch-ripple");
     expect(elem).toBeInTheDocument();
     expect(elem.tagName).toBe("SPAN");
@@ -59,6 +59,46 @@ describe("TouchRipple Component", () => {
 
     expect(container.querySelectorAll("span > span").length).toBe(0);
     vi.useRealTimers();
+  });
+
+  it("cleans up pending timeout handlers on unmount without throwing errors or updating unmounted state", () => {
+    vi.useFakeTimers();
+    const rippleRef = React.createRef<TouchRippleRef>();
+    const { unmount } = render(<TouchRipple ref={rippleRef} />);
+
+    act(() => {
+      rippleRef.current?.start();
+    });
+
+    act(() => {
+      rippleRef.current?.stop();
+    });
+
+    // Unmount while ripple is exiting (timer is active)
+    unmount();
+
+    // Advancing timers should not cause React act/unmounted state warnings
+    act(() => {
+      vi.advanceTimersByTime(600);
+    });
+
+    vi.useRealTimers();
+  });
+
+  it("handles touch events cleanly with touch coordinate narrowing", () => {
+    const rippleRef = React.createRef<TouchRippleRef>();
+    const { container } = render(<TouchRipple ref={rippleRef} />);
+
+    act(() => {
+      rippleRef.current?.start({
+        nativeEvent: {
+          touches: [{ clientX: 25, clientY: 30 }],
+        },
+      } as unknown as React.SyntheticEvent);
+    });
+
+    const ripples = container.querySelectorAll("span > span");
+    expect(ripples.length).toBe(1);
   });
 });
 

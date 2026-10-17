@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import { Stack } from "./Stack";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
@@ -93,5 +94,25 @@ describe("Stack Component", () => {
     expect(elem).not.toHaveAttribute("spacing");
     expect(elem).not.toHaveAttribute("direction");
     expect(elem).not.toHaveAttribute("sx");
+  });
+
+  it("passes axe accessibility checks with 0 violations across layouts and polymorphism", async () => {
+    const { container } = render(
+      <main>
+        <Stack component="nav" aria-label="Quick Links" direction="row" spacing={2}>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
+        </Stack>
+        <Stack asChild spacing={1}>
+          <section aria-label="Highlights">
+            <h2>Highlights</h2>
+            <p>First highlight</p>
+          </section>
+        </Stack>
+      </main>
+    );
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { SxProps } from "../../system/types";
 
 export type BadgeVariant = "subtle" | "solid" | "outline";
 export type BadgeSize = "sm" | "md" | "lg";
@@ -47,6 +48,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
    * @default false
    */
   asChild?: boolean | undefined;
+
+  /**
+   * The system-aware sx prop
+   */
+  sx?: SxProps | undefined;
 
   children?: React.ReactNode | undefined;
 }

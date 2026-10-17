@@ -4,6 +4,7 @@ import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
 import { classNames } from "../../utils/classNames";
+import { setRef } from "../../hooks/useMergeRefs";
 import { useFormField } from "../FormField/FormFieldContext";
 import type {
   TextareaProps,
@@ -83,10 +84,11 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
       onKeyDown,
       onKeyUp,
       "aria-describedby": ariaDescribedByProp,
+      children,
       ...restContainerProps
     } = props;
 
-    const id = idProp ?? formField?.id;
+    const id = idProp ?? (asChild ? undefined : formField?.id);
     const error = errorProp ?? formField?.error ?? false;
     const disabled = disabledProp ?? formField?.disabled ?? false;
     const readOnly = readOnlyProp ?? formField?.readOnly ?? false;
@@ -180,44 +182,46 @@ export const Textarea = React.forwardRef<HTMLDivElement, TextareaProps>(
       </div>
     ) : null;
 
+    const handleSlottedRef = React.useCallback(
+      (node: HTMLElement | null) => {
+        setRef(ref, node as HTMLDivElement | null);
+        setRef(textareaRefProp, node as HTMLTextAreaElement | null);
+        handleTextareaRef(node as HTMLTextAreaElement | null);
+      },
+      [ref, textareaRefProp, handleTextareaRef]
+    );
+
     if (asChild) {
       return (
-        <StyledTextareaContainer
-          as={Slot}
-          ref={ref as React.Ref<HTMLDivElement>}
+        <Slot
+          ref={handleSlottedRef}
           className={containerClassName}
           style={style}
-          sx={sx}
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          disabled={disabled || undefined}
+          readOnly={readOnly || undefined}
+          required={required || undefined}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={error ? true : undefined}
+          value={valueProp}
+          defaultValue={defaultValue}
+          onChange={handleChange}
+          maxLength={maxLength}
+          rows={rows ?? (asChild ? undefined : minRows)}
+          cols={cols}
+          autoFocus={autoFocus}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           onClick={handleWrapperClick}
+          {...textareaProps}
           {...restContainerProps}
         >
-          <textarea
-            ref={handleTextareaRef}
-            id={id}
-            name={name}
-            placeholder={placeholder}
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-            aria-describedby={ariaDescribedBy}
-            aria-invalid={error ? true : undefined}
-            value={valueProp}
-            defaultValue={defaultValue}
-            onChange={handleChange}
-            maxLength={maxLength}
-            rows={rows ?? minRows}
-            cols={cols}
-            autoFocus={autoFocus}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={onKeyDown}
-            onKeyUp={onKeyUp}
-            style={textareaStyle}
-            className="cl-textarea__input"
-            {...textareaProps}
-          />
-          {countDisplay}
-        </StyledTextareaContainer>
+          {children}
+        </Slot>
       );
     }
 

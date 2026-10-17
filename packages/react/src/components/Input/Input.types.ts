@@ -60,4 +60,8 @@ export interface InputProps
    * Ref forwarded directly to the native <input> element
    */
   inputRef?: React.Ref<HTMLInputElement>;
+  /**
+   * Slotted child element when asChild is true
+   */
+  children?: React.ReactNode;
 }

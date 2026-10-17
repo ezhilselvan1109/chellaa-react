@@ -56,6 +56,53 @@ const defaultVariantMapping: Record<TypographyVariant, React.ElementType> = {
   overline: "span",
 };
 
+type PaletteWithMain =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "warning"
+  | "info"
+  | "success";
+
+function isPaletteWithMain(key: string): key is PaletteWithMain {
+  return (
+    key === "primary" ||
+    key === "secondary" ||
+    key === "error" ||
+    key === "warning" ||
+    key === "info" ||
+    key === "success"
+  );
+}
+
+const paletteTokenFallbackMap: Record<string, string> = {
+  primary: "var(--cl-color-primary-base)",
+  secondary: "var(--cl-color-secondary-base)",
+  error: "var(--cl-color-danger-base)",
+  warning: "var(--cl-color-warning-base)",
+  info: "var(--cl-color-info-base)",
+  success: "var(--cl-color-success-base)",
+  "text.primary": "var(--cl-color-fg-primary)",
+  "text.secondary": "var(--cl-color-fg-secondary)",
+  "text.disabled": "var(--cl-color-fg-muted)",
+  "background.default": "var(--cl-color-bg-canvas)",
+  "background.paper": "var(--cl-color-bg-surface)",
+};
+
+function getNestedPaletteValue(obj: unknown, path: string): string | undefined {
+  if (obj === null || typeof obj !== "object") return undefined;
+  const parts = path.split(".");
+  let current: unknown = obj;
+  for (const part of parts) {
+    if (current !== null && typeof current === "object" && part in current) {
+      current = (current as Record<string, unknown>)[part];
+    } else {
+      return undefined;
+    }
+  }
+  return typeof current === "string" ? current : undefined;
+}
+
 export function resolveTypographyColor(
   theme: ChellaaTheme,
   color?: string
@@ -65,26 +112,24 @@ export function resolveTypographyColor(
   }
 
   // Check direct palette main colors (primary, secondary, error, warning, info, success)
-  const paletteAny = theme.palette as Record<string, any>;
-  if (paletteAny[color] && typeof paletteAny[color].main === "string") {
-    return paletteAny[color].main;
+  if (theme?.palette && isPaletteWithMain(color)) {
+    const paletteColor = theme.palette[color];
+    if (paletteColor && typeof paletteColor.main === "string") {
+      return paletteColor.main;
+    }
   }
 
   // Check dotted paths (text.primary, text.secondary, background.paper, etc.)
-  if (color.includes(".")) {
-    const parts = color.split(".");
-    let current: any = theme.palette;
-    for (const part of parts) {
-      if (current && typeof current === "object" && part in current) {
-        current = current[part];
-      } else {
-        current = undefined;
-        break;
-      }
+  if (color.includes(".") && theme?.palette) {
+    const resolved = getNestedPaletteValue(theme.palette, color);
+    if (resolved) {
+      return resolved;
     }
-    if (typeof current === "string") {
-      return current;
-    }
+  }
+
+  // Fallback to documented CSS token if defined for this palette key
+  if (color in paletteTokenFallbackMap) {
+    return paletteTokenFallbackMap[color];
   }
 
   return color;
@@ -163,7 +208,7 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       return (
         <StyledTypographyRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLSpanElement>}
           className={typographyClassName}
           style={inlineStyle}
           color={color}
@@ -178,7 +223,7 @@ export const Typography = React.forwardRef<HTMLElement, TypographyProps>(
     return (
       <StyledTypographyRoot
         as={targetTag}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLSpanElement>}
         className={typographyClassName}
         style={inlineStyle}
         color={color}

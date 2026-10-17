@@ -225,4 +225,41 @@ describe("Textarea Component", () => {
       expect(styleTags.length).toBeGreaterThan(0);
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 7. asChild Composition (W1-F06)
+  // ---------------------------------------------------------------------------
+  describe("asChild Composition", () => {
+    it("composes onto a single slotted child without duplicate textarea elements", () => {
+      const ref = React.createRef<HTMLTextAreaElement>();
+      render(
+        <Textarea asChild error required placeholder="Slotted Textarea">
+          <textarea ref={ref} data-testid="slotted-textarea" rows={5} />
+        </Textarea>
+      );
+
+      const slotted = screen.getByTestId("slotted-textarea");
+      expect(slotted).toBeInTheDocument();
+      expect(slotted.tagName).toBe("TEXTAREA");
+      expect(slotted).toHaveClass("cl-textarea", "cl-textarea--outlined", "cl-textarea--error");
+      expect(slotted).toHaveAttribute("placeholder", "Slotted Textarea");
+      expect(slotted).toHaveAttribute("aria-invalid", "true");
+      expect(slotted).toBeRequired();
+      expect(ref.current).toBe(slotted);
+
+      // Verify ZERO duplicate textarea elements exist
+      expect(document.querySelectorAll("textarea").length).toBe(1);
+    });
+
+    it("throws informative error when multiple children are passed to asChild", () => {
+      expect(() => {
+        render(
+          <Textarea asChild>
+            <textarea data-testid="t1" />
+            <textarea data-testid="t2" />
+          </Textarea>
+        );
+      }).toThrow();
+    });
+  });
 });

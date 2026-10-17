@@ -185,6 +185,85 @@ describe("Switch Component", () => {
       expect(handleChange).not.toHaveBeenCalled();
       expect(input).not.toBeChecked();
     });
+
+    it("does not toggle via Enter or Space key when disabled", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Switch disabled onChange={handleChange}>
+          Disabled Keyboard
+        </Switch>
+      );
+
+      const input = screen.getByRole("switch");
+      input.focus();
+
+      await user.keyboard("{Enter}");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).not.toBeChecked();
+
+      await user.keyboard(" ");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).not.toBeChecked();
+    });
+
+    it("does not toggle via Enter or Space key when readOnly", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Switch readOnly defaultChecked onChange={handleChange}>
+          ReadOnly Keyboard
+        </Switch>
+      );
+
+      const input = screen.getByRole("switch");
+      input.focus();
+
+      await user.keyboard("{Enter}");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).toBeChecked();
+
+      await user.keyboard(" ");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).toBeChecked();
+    });
+
+    it("does not toggle via Enter or Space key when loading", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Switch loading onChange={handleChange}>
+          Loading Keyboard
+        </Switch>
+      );
+
+      const input = screen.getByRole("switch");
+      input.focus();
+
+      await user.keyboard("{Enter}");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).not.toBeChecked();
+
+      await user.keyboard(" ");
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(input).not.toBeChecked();
+    });
+
+    it("fires exactly one change event per Enter keypress", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(<Switch onChange={handleChange}>Single Event Enter</Switch>);
+
+      const input = screen.getByRole("switch");
+      input.focus();
+
+      await user.keyboard("{Enter}");
+      expect(handleChange).toHaveBeenCalledTimes(1);
+    });
   });
 
   // ---------------------------------------------------------------------------

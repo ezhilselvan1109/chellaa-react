@@ -90,9 +90,9 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
 
     const generatedId = React.useId();
     const inputId = idProp || generatedId;
-    const helperId = `${inputId}-helper`;
-
-    const activeHelperContent = error && errorMessage ? errorMessage : helperText;
+    const isError = Boolean(error);
+    const activeHelperContent = isError && errorMessage ? errorMessage : helperText;
+    const messageId = isError && errorMessage ? `${inputId}-error` : `${inputId}-helper`;
 
     return (
       <StyledTextFieldRoot
@@ -105,7 +105,11 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
         {label && (
           <StyledLabel htmlFor={inputId} error={error} required={required}>
             {label}
-            {required && <span className="ChellaaTextField-requiredAsterisk">*</span>}
+            {required && (
+              <span className="ChellaaTextField-requiredAsterisk" aria-hidden="true">
+                *
+              </span>
+            )}
           </StyledLabel>
         )}
 
@@ -114,12 +118,17 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
           error={error}
           required={required}
           fullWidth={fullWidth}
-          aria-describedby={activeHelperContent ? helperId : undefined}
+          aria-describedby={activeHelperContent ? messageId : undefined}
           {...inputProps}
         />
 
         {activeHelperContent && (
-          <StyledHelperText id={helperId} error={error}>
+          <StyledHelperText
+            id={messageId}
+            error={error}
+            role={isError && errorMessage ? "alert" : undefined}
+            aria-live={isError && errorMessage ? "polite" : undefined}
+          >
             {activeHelperContent}
           </StyledHelperText>
         )}
