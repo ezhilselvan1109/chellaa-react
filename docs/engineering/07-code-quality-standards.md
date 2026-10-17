@@ -159,7 +159,7 @@ Internal implementation helpers, unexported utilities, and local variables **do 
 Do NOT write meaningless boilerplate comments such as:
 
 ```typescript
-// ❌ PROHIBITED BOILERPLATE:
+// [PROHIBITED BOILERPLATE]:
 /** Button component */
 export function Button() {}
 
@@ -175,13 +175,13 @@ Internal comments are expected only when explaining non-obvious algorithms, edge
 
 - **Never state the obvious:**
   ```typescript
-  // ❌ BAD:
+  // [BAD]:
   // increment count by 1
   count += 1;
   ```
 - **Document "Why", not "What":** Inline comments are reserved strictly for explaining non-obvious algorithmic decisions, W3C APG specifications, or browser quirk workarounds:
   ```typescript
-  // ✅ GOOD:
+  // [GOOD]:
   // Safari on iOS does not register button clicks if user touches within 4px of edge;
   // expand hit-slop target via pseudo-element.
   ```
@@ -265,3 +265,21 @@ Before any branch can be merged to `main`, the CI pipeline executes the non-nego
 │ Gate 5: Production Build pnpm build (tsup compilation & attw check)    │
 └────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 10. Decorative Emoji Policy & Automated Enforcement
+
+### 10.1 The Prohibition
+Do not introduce decorative Unicode emoji characters into product UI, maintained documentation, Storybook content, examples, marketing copy, error messages, success messages, notifications, button labels, headings or other repository-maintained user-facing text.
+
+Do not use emojis as substitutes for professional icons, status indicators, navigation elements or semantic labels. Use the existing supported icon system, accessible SVG icons, CSS indicators or clear text labels where appropriate.
+
+### 10.2 Preserved Elements
+Preserve existing icon-library components, Lucide icons, SVG artwork, logos and legitimate image assets. Do not remove meaningful mathematical symbols (e.g., `±`, `×`, `≤`, `≥`, `√`), ordinary Unicode typography (e.g., `©`, `®`, `™`, em-dash `—`, quotes, `⋮`, `↗`, `→`), non-emoji symbols, language characters (e.g., Tamil, accents) or accessibility labels merely because they are non-ASCII.
+
+### 10.3 CI Gate Verification
+Every pull request and build validation must execute the automated no-decorative-emoji validator:
+`node scripts/check-no-emojis.mjs`
+This script scans all maintained packages, apps, stories, documentation, and workflows, ensuring zero unauthorized decorative emojis enter the codebase.
+

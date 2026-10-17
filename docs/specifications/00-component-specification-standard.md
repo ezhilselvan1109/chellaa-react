@@ -240,18 +240,18 @@ Draft  ───►  Review  ───►  Approved  ───►  Implementatio
 ├───────────────────────────────────┬────────────────────────────────────┤
 │ Prohibited Anti-Pattern           │ Technical Violation                │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Dynamic polymorphic `as` prop  │ Violates `asChild` mandate; breaks │
+│ [PROHIBITED] Dynamic polymorphic `as` prop  │ Violates `asChild` mandate; breaks │
 │                                   │ TypeScript inference.              │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Hardcoded color hexes / pixels │ Violates design token architecture │
+│ [PROHIBITED] Hardcoded color hexes / pixels │ Violates design token architecture │
 │    for reusable design values     │ and dark mode theme switching.     │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Missing Accessible Name specs  │ Violates WCAG 2.2 AA SC 4.1.2.     │
+│ [PROHIBITED] Missing Accessible Name specs  │ Violates WCAG 2.2 AA SC 4.1.2.     │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Assuming manual CSS imports    │ Violates Zero-Config Styling       │
+│ [PROHIBITED] Assuming manual CSS imports    │ Violates Zero-Config Styling       │
 │                                   │ requirement (ADR-007).             │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Global "use client" banner     │ Breaks RSC compatibility in Next.js│
+│ [PROHIBITED] Global "use client" banner     │ Breaks RSC compatibility in Next.js│
 │                                   │ App Router.                        │
 └───────────────────────────────────┴────────────────────────────────────┘
 ```

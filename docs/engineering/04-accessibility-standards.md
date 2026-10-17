@@ -25,7 +25,7 @@ This document codifies the mandatory standards for semantic HTML, WAI-ARIA autho
 ┌────────────────────────────────────────────────────────────────────────┐
 │                      Semantic HTML vs. ARIA Matrix                     │
 ├─────────────────────┬───────────────────┬──────────────────────────────┤
-│ Interactive Intent  │ Native HTML (✅)  │ Prohibited ARIA Hack (❌)    │
+│ Interactive Intent  │ Native HTML [YES]  │ Prohibited ARIA Hack [NO]    │
 ├─────────────────────┼───────────────────┼──────────────────────────────┤
 │ Button / Action     │ <button type="..">│ <div role="button" tabIndex> │
 ├─────────────────────┼───────────────────┼──────────────────────────────┤

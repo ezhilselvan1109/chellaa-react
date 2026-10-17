@@ -327,7 +327,7 @@ export function ConsumerTypeFixture() {
         <CardHeader
           title="Card Title"
           subheader="Card Subtitle"
-          avatar={<span>👤</span>}
+          avatar={<span>CR</span>}
           action={<button type="button">⋮</button>}
         />
         <CardBody>

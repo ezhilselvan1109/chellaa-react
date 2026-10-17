@@ -40,19 +40,19 @@ export const Default: Story = {
         <Select.Portal>
           <Select.Content>
             <Select.Item value="apple">
-              <Select.ItemText>Apple 🍎</Select.ItemText>
+              <Select.ItemText>Apple</Select.ItemText>
               <Select.ItemIndicator />
             </Select.Item>
             <Select.Item value="banana">
-              <Select.ItemText>Banana 🍌</Select.ItemText>
+              <Select.ItemText>Banana</Select.ItemText>
               <Select.ItemIndicator />
             </Select.Item>
             <Select.Item value="blueberry">
-              <Select.ItemText>Blueberry 🫐</Select.ItemText>
+              <Select.ItemText>Blueberry</Select.ItemText>
               <Select.ItemIndicator />
             </Select.Item>
             <Select.Item value="grapes">
-              <Select.ItemText>Grapes 🍇</Select.ItemText>
+              <Select.ItemText>Grapes</Select.ItemText>
               <Select.ItemIndicator />
             </Select.Item>
           </Select.Content>

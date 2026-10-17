@@ -41,40 +41,40 @@ Status Classification Key:
 
 | Component | Architecture Tier | Codebase Status | Specification Status | Governing Spec File | Exported in `src/index.ts` | Test Suite Status |
 | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
-| **Button** | Tier 2 (General) | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | ✅ Yes | ✅ 50/50 Tests Pass (axe 0) |
-| **ButtonGroup** | Tier 2 (General) | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **Box** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`08-box.md`](./08-box.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
-| **Stack** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`09-stack.md`](./09-stack.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
-| **Flex** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`08-box.md`](./08-box.md) | ✅ Yes | ✅ 7/7 Tests Pass (axe 0) |
-| **Grid** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`10-grid.md`](./10-grid.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
-| **Container** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`11-container.md`](./11-container.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
-| **Divider** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`12-divider.md`](./12-divider.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
-| **Typography** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`13-typography.md`](./13-typography.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
-| **Kbd** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`14-kbd.md`](./14-kbd.md) | ✅ Yes | ✅ 10/10 Tests Pass (axe 0) |
-| **Input** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`02-input.md`](./02-input.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
-| **Textarea** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`16-textarea.md`](./16-textarea.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **FormField** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`17-form-field.md`](./17-form-field.md) | ✅ Yes | ✅ 10/10 Tests Pass (axe 0) |
-| **Checkbox** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`18-checkbox.md`](./18-checkbox.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
-| **Radio** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`19-radio.md`](./19-radio.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **Switch** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`20-switch.md`](./20-switch.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **Paper** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
-| **Card** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
-| **TouchRipple** | Primitives / Tactile | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
-| **Portal** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Portal.tsx` | ✅ Yes | ✅ 3/3 Tests Pass (axe 0) |
-| **Slot** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Slot.tsx` | ✅ Yes | ✅ 7/7 Tests Pass (axe 0) |
-| **Select** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`03-select.md`](./03-select.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
-| **Dialog / Modal** | Tier 5 (Overlays) | **Implemented** | Approved & Baseline | [`04-modal.md`](./04-modal.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
-| **Badge** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`06-badge.md`](./06-badge.md) | ✅ Yes | ✅ 9/9 Tests Pass (axe 0) |
-| **Table** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`07-table.md`](./07-table.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **Tooltip** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`22-tooltip.md`](./22-tooltip.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
-| **Popover** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`23-popover.md`](./23-popover.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
-| **Alert** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`24-alert.md`](./24-alert.md) | ✅ Yes | ✅ 38/38 Tests Pass (axe 0) |
-| **Snackbar / Toast** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`25-snackbar.md`](./25-snackbar.md) | ✅ Yes | ✅ 32/32 Tests Pass (axe 0) |
-| **Avatar / Group** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`26-avatar.md`](./26-avatar.md) | ✅ Yes | ✅ 41/41 Tests Pass (axe 0) |
-| **Tabs** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`27-tabs.md`](./27-tabs.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
-| **Accordion** | Tier 4 (Disclosure) | **Implemented** | Approved & Baseline | [`28-accordion.md`](./28-accordion.md) | ✅ Yes | ✅ 19/19 Tests Pass (axe 0) |
-| **Pagination** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`29-pagination.md`](./29-pagination.md) | ✅ Yes | ✅ 18/18 Tests Pass (axe 0) |
-| **Combobox / Autocomplete** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`30-combobox.md`](./30-combobox.md) | ✅ Yes | ✅ 17/17 Tests Pass (axe 0) |
+| **Button** | Tier 2 (General) | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | Yes | 50/50 Tests Pass (axe 0) |
+| **ButtonGroup** | Tier 2 (General) | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | Yes | 12/12 Tests Pass (axe 0) |
+| **Box** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`08-box.md`](./08-box.md) | Yes | 6/6 Tests Pass (axe 0) |
+| **Stack** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`09-stack.md`](./09-stack.md) | Yes | 6/6 Tests Pass (axe 0) |
+| **Flex** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`08-box.md`](./08-box.md) | Yes | 7/7 Tests Pass (axe 0) |
+| **Grid** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`10-grid.md`](./10-grid.md) | Yes | 6/6 Tests Pass (axe 0) |
+| **Container** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`11-container.md`](./11-container.md) | Yes | 8/8 Tests Pass (axe 0) |
+| **Divider** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`12-divider.md`](./12-divider.md) | Yes | 8/8 Tests Pass (axe 0) |
+| **Typography** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`13-typography.md`](./13-typography.md) | Yes | 14/14 Tests Pass (axe 0) |
+| **Kbd** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`14-kbd.md`](./14-kbd.md) | Yes | 10/10 Tests Pass (axe 0) |
+| **Input** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`02-input.md`](./02-input.md) | Yes | 16/16 Tests Pass (axe 0) |
+| **Textarea** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`16-textarea.md`](./16-textarea.md) | Yes | 12/12 Tests Pass (axe 0) |
+| **FormField** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`17-form-field.md`](./17-form-field.md) | Yes | 10/10 Tests Pass (axe 0) |
+| **Checkbox** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`18-checkbox.md`](./18-checkbox.md) | Yes | 14/14 Tests Pass (axe 0) |
+| **Radio** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`19-radio.md`](./19-radio.md) | Yes | 12/12 Tests Pass (axe 0) |
+| **Switch** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`20-switch.md`](./20-switch.md) | Yes | 12/12 Tests Pass (axe 0) |
+| **Paper** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | Yes | 8/8 Tests Pass (axe 0) |
+| **Card** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | Yes | 16/16 Tests Pass (axe 0) |
+| **TouchRipple** | Primitives / Tactile | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | Yes | 6/6 Tests Pass (axe 0) |
+| **Portal** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Portal.tsx` | Yes | 3/3 Tests Pass (axe 0) |
+| **Slot** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Slot.tsx` | Yes | 7/7 Tests Pass (axe 0) |
+| **Select** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`03-select.md`](./03-select.md) | Yes | 16/16 Tests Pass (axe 0) |
+| **Dialog / Modal** | Tier 5 (Overlays) | **Implemented** | Approved & Baseline | [`04-modal.md`](./04-modal.md) | Yes | 16/16 Tests Pass (axe 0) |
+| **Badge** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`06-badge.md`](./06-badge.md) | Yes | 9/9 Tests Pass (axe 0) |
+| **Table** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`07-table.md`](./07-table.md) | Yes | 12/12 Tests Pass (axe 0) |
+| **Tooltip** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`22-tooltip.md`](./22-tooltip.md) | Yes | 19/19 Tests Pass (axe 0) |
+| **Popover** | Tier 4 (Overlays) | **Implemented** | Approved & Baseline | [`23-popover.md`](./23-popover.md) | Yes | 14/14 Tests Pass (axe 0) |
+| **Alert** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`24-alert.md`](./24-alert.md) | Yes | 38/38 Tests Pass (axe 0) |
+| **Snackbar / Toast** | Tier 5 (Feedback) | **Implemented** | Approved & Baseline | [`25-snackbar.md`](./25-snackbar.md) | Yes | 32/32 Tests Pass (axe 0) |
+| **Avatar / Group** | Tier 4 (Data Display) | **Implemented** | Approved & Baseline | [`26-avatar.md`](./26-avatar.md) | Yes | 41/41 Tests Pass (axe 0) |
+| **Tabs** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`27-tabs.md`](./27-tabs.md) | Yes | 19/19 Tests Pass (axe 0) |
+| **Accordion** | Tier 4 (Disclosure) | **Implemented** | Approved & Baseline | [`28-accordion.md`](./28-accordion.md) | Yes | 19/19 Tests Pass (axe 0) |
+| **Pagination** | Tier 6 (Navigation) | **Implemented** | Approved & Baseline | [`29-pagination.md`](./29-pagination.md) | Yes | 18/18 Tests Pass (axe 0) |
+| **Combobox / Autocomplete** | Tier 7 (Organisms) | **Implemented** | Approved & Baseline | [`30-combobox.md`](./30-combobox.md) | Yes | 17/17 Tests Pass (axe 0) |
 
 ---
 

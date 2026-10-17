@@ -2,7 +2,7 @@
 
 ## Document 02: NPM Package Architecture & Consumer Contract
 
-**Document Status:** 🟢 COMPLETE & VALIDATED  
+**Document Status:** COMPLETE & VALIDATED  
 **Phase:** 6 — NPM Package Architecture  
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  

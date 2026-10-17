@@ -358,10 +358,10 @@ A critical architectural distinction in Chellaa React is the separation between:
 Consumers **never** manually import a Chellaa React global stylesheet:
 
 ```tsx
-// ✅ The Chellaa React Experience:
+// [PREFERRED] The Chellaa React Experience:
 import { Button } from "@chellaa/react";
 
-// ❌ Never required:
+// [PROHIBITED] Never required:
 // import "@chellaa/react/styles.css";
 ```
 

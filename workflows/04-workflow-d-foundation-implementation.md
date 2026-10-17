@@ -1,7 +1,7 @@
 # Workflow D: Foundation Implementation
 
 **Stage:** 4 of 8  
-**Status:** ⚪ PENDING APPROVAL TO START  
+**Status:** PENDING APPROVAL TO START  
 **Governing ADR:** ADR-011  
 
 ---

@@ -73,7 +73,7 @@ describe("Avatar Component", () => {
     it("renders custom icon when name and src are absent", () => {
       render(
         <Avatar
-          icon={<span data-testid="custom-icon">👤</span>}
+          icon={<span data-testid="custom-icon">User</span>}
           aria-label="User Icon"
         />,
       );

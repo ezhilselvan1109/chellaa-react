@@ -1,7 +1,7 @@
 # Workflow F: Incremental Component Migration
 
 **Stage:** 6 of 8  
-**Status:** ⚪ PENDING  
+**Status:** PENDING  
 **Governing ADR:** ADR-011  
 
 ---

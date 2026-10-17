@@ -1,7 +1,7 @@
 # Workflow H: Release Readiness & Documentation
 
 **Stage:** 8 of 8  
-**Status:** ⚪ PENDING  
+**Status:** PENDING  
 **Governing ADR:** ADR-011  
 
 ---

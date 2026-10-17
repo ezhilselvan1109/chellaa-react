@@ -263,7 +263,7 @@ describe("Alert Component", () => {
       render(
         <Alert status="info">
           <Alert.Icon>
-            <span data-testid="custom-icon-child">🔔</span>
+            <span data-testid="custom-icon-child">Icon</span>
           </Alert.Icon>
           <Alert.Title>Title</Alert.Title>
         </Alert>,

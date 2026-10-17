@@ -73,7 +73,7 @@ This document codifies the mandatory universal vocabulary, prop conventions, com
 All custom boolean properties must feature the `is` or `has` prefix.
 
 ```text
-✅ APPROVED CHELLAA PROPS:
+[APPROVED] CHELLAA PROPS:
 - isDisabled
 - isLoading
 - isInvalid
@@ -83,7 +83,7 @@ All custom boolean properties must feature the `is` or `has` prefix.
 - isOpen
 - hasDot
 
-❌ PROHIBITED ALTERNATIVES:
+[PROHIBITED] ALTERNATIVES:
 - disabled   (except when forwarding raw native HTML props directly)
 - loading
 - invalid
@@ -194,12 +194,12 @@ if (!context) {
 - Every component that renders a DOM element **must forward its ref**.
 - Refs must use exact DOM types:
   ```typescript
-  // ✅ EXACT:
+  // [EXACT]:
   React.forwardRef<HTMLButtonElement, ButtonProps>(...)
   React.forwardRef<HTMLInputElement, InputProps>(...)
   React.RefObject<HTMLElement | null>
 
-  // ❌ STRICTLY PROHIBITED:
+  // [STRICTLY PROHIBITED]:
   React.RefObject<any>
   ```
 - Must maintain forward-compatibility with React 18 (`React.forwardRef`) and React 19 native ref passing.

@@ -1,7 +1,7 @@
 # Workflow C: Workflow, Skill and Role Preparation
 
 **Stage:** 3 of 8  
-**Status:** 🟢 CURRENT WORKFLOW (COMPLETED & GATED)  
+**Status:** CURRENT WORKFLOW (COMPLETED & GATED)  
 **Governing ADR:** ADR-011  
 
 ---

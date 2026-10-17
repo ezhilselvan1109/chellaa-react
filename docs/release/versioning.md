@@ -2,7 +2,7 @@
 
 ## Document: Semantic Versioning & Changesets Specification
 
-**Document Status:** 🟢 COMPLETE & VALIDATED  
+**Document Status:** COMPLETE & VALIDATED  
 **Phase:** 8 & 9 — Versioning & Changesets  
 **Date:** 2026-10-03  
 **Target Package:** `@chellaa/react`  
