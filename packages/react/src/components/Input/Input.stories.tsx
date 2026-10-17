@@ -7,7 +7,7 @@ import { Flex } from "../Flex";
 import { Kbd } from "../Kbd";
 
 export default {
-  title: "Forms/Input",
+  title: "Components/Forms & Inputs/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {

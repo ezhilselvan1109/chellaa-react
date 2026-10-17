@@ -17,7 +17,7 @@ export interface StoryObject<T> {
 }
 
 const meta: StoryMeta<AlertProps> = {
-  title: "Components/Alert",
+  title: "Components/Feedback/Alert",
   component: Alert,
   tags: ["autodocs"],
   argTypes: {

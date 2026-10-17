@@ -18,7 +18,7 @@ import {
 import { FormField } from "../FormField";
 
 const meta: Meta<typeof SelectRoot> = {
-  title: "Components/Select",
+  title: "Components/Forms & Inputs/Select",
   component: SelectRoot,
   parameters: {
     layout: "centered",

@@ -3,7 +3,7 @@ import { Container } from "./Container";
 import { Box } from "../Box";
 
 export default {
-  title: "Layout/Container",
+  title: "Components/Layout/Container",
   component: Container,
   tags: ["autodocs"],
   argTypes: {

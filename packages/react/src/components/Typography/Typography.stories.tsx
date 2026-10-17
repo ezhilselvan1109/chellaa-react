@@ -8,7 +8,7 @@ import { Stack } from "../Stack";
 import { Box } from "../Box";
 
 export default {
-  title: "Layout/Typography",
+  title: "Components/Data Display/Typography",
   component: Typography,
   tags: ["autodocs"],
   argTypes: {

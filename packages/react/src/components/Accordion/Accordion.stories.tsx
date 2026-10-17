@@ -3,7 +3,7 @@ import { Accordion } from "./Accordion";
 import type { AccordionVariant } from "./Accordion.types";
 
 const meta: Meta<typeof Accordion> = {
-  title: "Components/Accordion",
+  title: "Components/Navigation/Accordion",
   component: Accordion,
   parameters: {
     layout: "centered",

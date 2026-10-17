@@ -20,7 +20,7 @@ import { Input } from "../Input";
 import { FormField } from "../FormField";
 
 const meta: Meta<typeof DialogRoot> = {
-  title: "Components/Dialog",
+  title: "Components/Overlays/Dialog",
   component: DialogRoot,
   tags: ["autodocs"],
   parameters: {

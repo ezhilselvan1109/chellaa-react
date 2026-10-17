@@ -47,7 +47,7 @@ const SearchOffIcon = () => (
 );
 
 const meta: Meta<typeof TableRoot> = {
-  title: "Components/Table",
+  title: "Components/Data Display/Table",
   component: TableRoot,
   tags: ["autodocs"],
   parameters: {

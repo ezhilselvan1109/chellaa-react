@@ -4,7 +4,7 @@ import { AvatarGroup } from "./AvatarGroup";
 import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
 
 const meta: Meta<typeof Avatar> = {
-  title: "Components/Avatar",
+  title: "Components/Data Display/Avatar",
   component: Avatar,
   parameters: {
     layout: "centered",

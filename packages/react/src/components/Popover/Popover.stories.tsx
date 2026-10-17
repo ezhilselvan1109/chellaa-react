@@ -26,7 +26,7 @@ export interface StoryObject<T> {
 }
 
 const meta: StoryMeta<PopoverProps> = {
-  title: "Components/Popover",
+  title: "Components/Overlays/Popover",
   component: Popover,
   tags: ["autodocs"],
   argTypes: {

@@ -22,7 +22,7 @@ export interface StoryObject<T> {
 }
 
 const meta: StoryMeta<SnackbarProps> = {
-  title: "Components/Snackbar",
+  title: "Components/Feedback/Snackbar",
   component: Snackbar,
   tags: ["autodocs"],
   argTypes: {

@@ -127,7 +127,7 @@ const ArrowRightIcon = () => (
 // ─── Storybook Meta ───────────────────────────────────────────────────────────
 
 const meta: Meta<typeof Card> = {
-  title: "Components/Card",
+  title: "Components/Data Display/Card",
   component: Card,
   tags: ["autodocs"],
   parameters: {

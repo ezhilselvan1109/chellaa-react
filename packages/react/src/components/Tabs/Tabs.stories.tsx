@@ -4,7 +4,7 @@ import { Tabs } from "./Tabs";
 import type { TabsVariant, TabsSize, TabsOrientation, TabsActivationMode } from "./Tabs.types";
 
 const meta: Meta<typeof Tabs> = {
-  title: "Components/Tabs",
+  title: "Components/Navigation/Tabs",
   component: Tabs,
   parameters: {
     layout: "centered",

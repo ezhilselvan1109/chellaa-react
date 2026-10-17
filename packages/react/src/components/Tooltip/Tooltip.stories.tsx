@@ -18,7 +18,7 @@ export interface StoryObject<T> {
 }
 
 const meta: StoryMeta<TooltipProps> = {
-  title: "Components/Tooltip",
+  title: "Components/Overlays/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {

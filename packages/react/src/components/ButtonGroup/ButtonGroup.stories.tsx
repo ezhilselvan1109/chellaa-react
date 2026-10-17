@@ -18,7 +18,7 @@ export interface StoryObject<T> {
 }
 
 const meta: StoryMeta<ButtonGroupProps> = {
-  title: "Components/ButtonGroup",
+  title: "Components/Actions/ButtonGroup",
   component: ButtonGroup,
   tags: ["autodocs"],
   argTypes: {

@@ -10,7 +10,7 @@ import { Box } from "../Box";
 import { Typography } from "../Typography";
 
 export default {
-  title: "Forms/FormField",
+  title: "Components/Forms & Inputs/FormField",
   component: FormField,
   subcomponents: { FormLabel, FormHelperText, FormErrorMessage },
   tags: ["autodocs"],

@@ -10,7 +10,7 @@ import { FormHelperText } from "../FormField/FormHelperText";
 import { FormErrorMessage } from "../FormField/FormErrorMessage";
 
 export default {
-  title: "Forms/Radio",
+  title: "Components/Forms & Inputs/Radio",
   component: Radio,
   subcomponents: { RadioGroup },
   tags: ["autodocs"],

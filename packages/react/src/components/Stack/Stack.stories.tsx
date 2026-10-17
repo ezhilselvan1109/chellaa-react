@@ -3,7 +3,7 @@ import { Stack } from "./Stack";
 import { Box } from "../Box";
 
 export default {
-  title: "Layout/Stack",
+  title: "Components/Layout/Stack",
   component: Stack,
   tags: ["autodocs"],
 };
