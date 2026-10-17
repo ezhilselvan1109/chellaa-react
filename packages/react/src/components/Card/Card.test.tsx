@@ -585,4 +585,61 @@ describe("CardTitle & CardDescription", () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it("FR-CRD-12: supports sx prop integration on CardTitle without leaking props to DOM", () => {
+    renderWithTheme(
+      <CardTitle
+        sx={{ textTransform: "uppercase", letterSpacing: "1px", mb: 2 }}
+        data-testid="title-sx"
+      >
+        Styled Title
+      </CardTitle>
+    );
+
+    const title = screen.getByTestId("title-sx");
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveClass("cl-card__title");
+    expect(title).not.toHaveAttribute("sx");
+    expect(title).not.toHaveAttribute("asChild");
+  });
+
+  it("FR-CRD-13: supports sx prop integration on CardDescription without leaking props to DOM", () => {
+    renderWithTheme(
+      <CardDescription
+        sx={{ opacity: 0.8, fontSize: "14px" }}
+        data-testid="desc-sx"
+      >
+        Styled Description
+      </CardDescription>
+    );
+
+    const desc = screen.getByTestId("desc-sx");
+    expect(desc).toBeInTheDocument();
+    expect(desc).toHaveClass("cl-card__description");
+    expect(desc).not.toHaveAttribute("sx");
+    expect(desc).not.toHaveAttribute("asChild");
+  });
+
+  it("FR-CRD-14: supports sx prop with asChild on CardTitle and CardDescription", () => {
+    renderWithTheme(
+      <div>
+        <CardTitle asChild sx={{ textTransform: "uppercase" }}>
+          <h1 data-testid="slotted-title">Slotted H1 Title</h1>
+        </CardTitle>
+        <CardDescription asChild sx={{ fontStyle: "italic" }}>
+          <span data-testid="slotted-desc">Slotted Span Desc</span>
+        </CardDescription>
+      </div>
+    );
+
+    const slottedTitle = screen.getByTestId("slotted-title");
+    expect(slottedTitle.tagName).toBe("H1");
+    expect(slottedTitle).toHaveClass("cl-card__title");
+    expect(slottedTitle).not.toHaveAttribute("sx");
+
+    const slottedDesc = screen.getByTestId("slotted-desc");
+    expect(slottedDesc.tagName).toBe("SPAN");
+    expect(slottedDesc).toHaveClass("cl-card__description");
+    expect(slottedDesc).not.toHaveAttribute("sx");
+  });
 });

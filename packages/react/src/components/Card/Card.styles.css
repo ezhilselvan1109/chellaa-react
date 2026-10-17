@@ -369,14 +369,14 @@
   [data-theme="dark"] .cl-card__footer--divider {
     border-top-color: var(--cl-color-border-subtle, #334155);
   }
-}
 
-/* Accessibility: Prefers Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .cl-card,
-  .cl-card__media img,
-  .cl-card__media video {
-    transition-duration: 0.01ms !important;
-    transform: none !important;
+  /* Accessibility: Prefers Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-card,
+    .cl-card__media img,
+    .cl-card__media video {
+      transition-duration: 0.01ms !important;
+      transform: none !important;
+    }
   }
 }

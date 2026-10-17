@@ -325,4 +325,17 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
       unmount();
     });
   });
+
+  it("FR-DLG-12: applies dialog overlay and content token styling classes", () => {
+    renderStandardDialog({ defaultOpen: true });
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    const overlay = screen.getByTestId("dialog-overlay");
+    const content = screen.getByTestId("dialog-content");
+
+    expect(overlay).toHaveClass("cl-dialog__overlay");
+    expect(content).toHaveClass("cl-dialog__content");
+  });
 });

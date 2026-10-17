@@ -249,6 +249,39 @@ describe("Table Component (SPEC-007)", () => {
     expect(screen.getByTestId("bordered-container")).toHaveClass("cl-table__container--bordered");
   });
 
+  it("FR-TBL-13: supports table theme token customization via css variables", () => {
+    render(
+      <div
+        style={
+          {
+            "--cl-table-border": "#3b82f6",
+            "--cl-table-header-bg": "#1e293b",
+            "--cl-table-row-hover-bg": "#334155",
+          } as React.CSSProperties
+        }
+      >
+        <TableContainer bordered data-testid="custom-token-container">
+          <TableRoot>
+            <TableThead>
+              <TableTr>
+                <TableTh data-testid="custom-th">Col 1</TableTh>
+              </TableTr>
+            </TableThead>
+            <TableTbody>
+              <TableTr isHoverable data-testid="custom-tr">
+                <TableTd data-testid="custom-td">Val 1</TableTd>
+              </TableTr>
+            </TableTbody>
+          </TableRoot>
+        </TableContainer>
+      </div>
+    );
+    expect(screen.getByTestId("custom-token-container")).toHaveClass("cl-table__container--bordered");
+    expect(screen.getByTestId("custom-th")).toBeInTheDocument();
+    expect(screen.getByTestId("custom-tr")).toHaveClass("cl-table__tr--hoverable");
+    expect(screen.getByTestId("custom-td")).toBeInTheDocument();
+  });
+
   it("NFR-TBL-03: passes axe-core accessibility audit with zero violations", async () => {
     const { container } = renderStandardTable();
     const results = await axe(container);

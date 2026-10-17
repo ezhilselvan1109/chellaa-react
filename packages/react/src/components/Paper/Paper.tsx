@@ -2,39 +2,16 @@
 
 import * as React from "react";
 import { styled } from "../../system/styled";
-import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
 import { classNames } from "../../utils/classNames";
 
-export type PaperVariant = "elevation" | "outlined";
+import type {
+  PaperVariant,
+  PaperOwnerState,
+  PaperProps,
+} from "./Paper.types";
 
-export interface PaperOwnerState {
-  elevation?: number | undefined;
-  variant?: PaperVariant | undefined;
-  square?: boolean | undefined;
-}
-
-export interface PaperProps
-  extends React.HTMLAttributes<HTMLElement>,
-    PaperOwnerState {
-  /**
-   * If true, delegate rendering to immediate child element using Slot
-   */
-  asChild?: boolean | undefined;
-  /**
-   * The underlying HTML element or component
-   */
-  component?: React.ElementType | undefined;
-  /**
-   * The underlying HTML element or component
-   */
-  as?: React.ElementType | undefined;
-  /**
-   * The system-aware sx prop
-   */
-  sx?: SxProps;
-  children?: React.ReactNode;
-}
+export type { PaperVariant, PaperOwnerState, PaperProps };
 
 const StyledPaperRoot = styled("div", {
   name: "ChellaaPaper",
@@ -87,7 +64,7 @@ export const Paper = React.forwardRef<HTMLElement, PaperProps>(
       return (
         <StyledPaperRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={paperClassName}
           style={style}
           sx={sx}
@@ -102,7 +79,7 @@ export const Paper = React.forwardRef<HTMLElement, PaperProps>(
       return (
         <StyledPaperRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={paperClassName}
           style={style}
           sx={sx}
@@ -115,7 +92,7 @@ export const Paper = React.forwardRef<HTMLElement, PaperProps>(
 
     return (
       <StyledPaperRoot
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={paperClassName}
         style={style}
         sx={sx}
