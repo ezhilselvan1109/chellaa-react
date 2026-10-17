@@ -159,6 +159,104 @@ import {
   type ComboboxClearProps,
   type ComboboxSize,
   type ComboboxVariant,
+  // 22. Select (Wave 2C)
+  Select,
+  SelectRoot,
+  SelectTrigger,
+  SelectValue,
+  SelectIcon,
+  SelectPortal,
+  SelectContent,
+  SelectItem,
+  SelectItemText,
+  SelectItemIndicator,
+  SelectGroup,
+  SelectLabel,
+  SelectSeparator,
+  useSelectContext,
+  type SelectOption,
+  type SelectRootProps,
+  type SelectTriggerProps,
+  type SelectValueProps,
+  type SelectIconProps,
+  type SelectPortalProps,
+  type SelectContentProps,
+  type SelectItemProps,
+  type SelectItemTextProps,
+  type SelectItemIndicatorProps,
+  type SelectGroupProps,
+  type SelectLabelProps,
+  type SelectSeparatorProps,
+  type SelectVariant,
+  type SelectSize,
+  type SelectContextValue,
+  // 23. Dialog & Modal Compatibility Alias (Wave 2C)
+  Dialog,
+  Modal,
+  DialogRoot,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+  type DialogSize,
+  type DialogRootProps,
+  type DialogTriggerProps,
+  type DialogPortalProps,
+  type DialogOverlayProps,
+  type DialogContentProps,
+  type DialogHeaderProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+  type DialogBodyProps,
+  type DialogFooterProps,
+  type DialogCloseProps,
+  type ModalSize,
+  type ModalRootProps,
+  type ModalTriggerProps,
+  type ModalPortalProps,
+  type ModalOverlayProps,
+  type ModalContentProps,
+  type ModalHeaderProps,
+  type ModalTitleProps,
+  type ModalDescriptionProps,
+  type ModalBodyProps,
+  type ModalFooterProps,
+  type ModalCloseProps,
+  // 24. Badge (Wave 2C)
+  Badge,
+  type BadgeProps,
+  type BadgeVariant,
+  type BadgeSize,
+  type BadgeColorScheme,
+  // 25. Table (Wave 2C)
+  Table,
+  TableRoot,
+  TableContainer,
+  TableCaption,
+  TableThead,
+  TableTbody,
+  TableTfoot,
+  TableTr,
+  TableTh,
+  TableTd,
+  type TableVariant,
+  type TableSize,
+  type TableRootProps,
+  type TableContainerProps,
+  type TableCaptionProps,
+  type TableTheadProps,
+  type TableTbodyProps,
+  type TableTfootProps,
+  type TableRowProps,
+  type TableHeaderCellProps,
+  type TableCellProps,
+  type TableContextValue,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -667,6 +765,310 @@ export function ConsumerTypeFixture() {
                         </ComboboxPortal>
                       </ComboboxRoot>
                     </>
+                  );
+                })()}
+              </div>
+
+              {/* 22. Select (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: SelectVariant = "outline";
+                  const size: SelectSize = "md";
+                  const options: SelectOption[] = [
+                    { value: "react", label: "React" },
+                    { value: "vue", label: "Vue", disabled: true },
+                    { value: "svelte", label: "Svelte" },
+                  ];
+
+                  const rootProps: SelectRootProps = {
+                    variant,
+                    size,
+                    placeholder: "Choose framework...",
+                    defaultValue: "react",
+                    isDisabled: false,
+                    isInvalid: false,
+                    isRequired: true,
+                    name: "framework-select",
+                    onValueChange: (val: string) => {
+                      const _selectedVal: string = val;
+                      void _selectedVal;
+                    },
+                    onOpenChange: (open: boolean) => {
+                      const _isOpen: boolean = open;
+                      void _isOpen;
+                    },
+                  };
+
+                  const triggerProps: SelectTriggerProps = {
+                    "aria-label": "Select framework",
+                  };
+                  const valueProps: SelectValueProps = {
+                    placeholder: "Select an option",
+                  };
+                  const iconProps: SelectIconProps = {};
+                  const portalProps: SelectPortalProps = { children: null };
+                  const contentProps: SelectContentProps = {};
+                  const groupProps: SelectGroupProps = {};
+                  const labelProps: SelectLabelProps = {};
+                  const separatorProps: SelectSeparatorProps = {};
+                  const itemProps: SelectItemProps = { value: "react" };
+                  const itemTextProps: SelectItemTextProps = {};
+                  const itemIndicatorProps: SelectItemIndicatorProps = {};
+
+                  void useSelectContext;
+                  void SelectRoot;
+                  void SelectTrigger;
+                  void SelectValue;
+                  void SelectIcon;
+                  void SelectPortal;
+                  void SelectContent;
+                  void SelectGroup;
+                  void SelectLabel;
+                  void SelectSeparator;
+                  const _selectCtx: SelectContextValue | null = null;
+                  void _selectCtx;
+
+                  return (
+                    <>
+                      {/* Shortcut options array contract */}
+                      <Select options={options} defaultValue="react" />
+
+                      {/* Compound pattern contract */}
+                      <Select.Root {...rootProps}>
+                        <Select.Trigger {...triggerProps}>
+                          <Select.Value {...valueProps} />
+                          <Select.Icon {...iconProps} />
+                        </Select.Trigger>
+                        <Select.Portal {...portalProps}>
+                          <Select.Content {...contentProps}>
+                            <Select.Group {...groupProps}>
+                              <Select.Label {...labelProps}>Frameworks</Select.Label>
+                              <Select.Item {...itemProps}>
+                                <Select.ItemIndicator {...itemIndicatorProps}>✓</Select.ItemIndicator>
+                                <Select.ItemText {...itemTextProps}>React</Select.ItemText>
+                              </Select.Item>
+                              <Select.Separator {...separatorProps} />
+                              <SelectItem value="svelte">
+                                <SelectItemIndicator>✓</SelectItemIndicator>
+                                <SelectItemText>Svelte</SelectItemText>
+                              </SelectItem>
+                            </Select.Group>
+                          </Select.Content>
+                        </Select.Portal>
+                      </Select.Root>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 23. Dialog & Modal Compatibility Alias (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const dialogSize: DialogSize = "md";
+                  const modalSize: ModalSize = "lg";
+
+                  const dialogRootProps: DialogRootProps = {
+                    size: dialogSize,
+                    isOpen: false,
+                    closeOnEsc: true,
+                    closeOnOverlayClick: true,
+                    isCentered: true,
+                    onClose: () => {},
+                    children: null,
+                  };
+
+                  const dialogTriggerProps: DialogTriggerProps = { asChild: true, children: null };
+                  const dialogPortalProps: DialogPortalProps = { children: null };
+                  const dialogOverlayProps: DialogOverlayProps = {};
+                  const dialogContentProps: DialogContentProps = {};
+                  const dialogHeaderProps: DialogHeaderProps = {};
+                  const dialogTitleProps: DialogTitleProps = {};
+                  const dialogDescriptionProps: DialogDescriptionProps = {};
+                  const dialogBodyProps: DialogBodyProps = {};
+                  const dialogFooterProps: DialogFooterProps = {};
+                  const dialogCloseProps: DialogCloseProps = { asChild: true };
+
+                  const modalRootProps: ModalRootProps = {
+                    size: modalSize,
+                    isOpen: false,
+                    onClose: () => {},
+                    children: null,
+                  };
+                  const modalTriggerProps: ModalTriggerProps = { asChild: true, children: null };
+                  const modalPortalProps: ModalPortalProps = { children: null };
+                  const modalOverlayProps: ModalOverlayProps = {};
+                  const modalContentProps: ModalContentProps = {};
+                  const modalHeaderProps: ModalHeaderProps = {};
+                  const modalTitleProps: ModalTitleProps = {};
+                  const modalDescriptionProps: ModalDescriptionProps = {};
+                  const modalBodyProps: ModalBodyProps = {};
+                  const modalFooterProps: ModalFooterProps = {};
+                  const modalCloseProps: ModalCloseProps = { asChild: true };
+
+                  void dialogRootProps;
+                  void modalRootProps;
+                  void DialogRoot;
+                  void DialogTrigger;
+                  void DialogPortal;
+                  void DialogOverlay;
+                  void DialogContent;
+                  void DialogHeader;
+                  void DialogTitle;
+                  void DialogDescription;
+                  void DialogBody;
+                  void DialogFooter;
+                  void DialogClose;
+
+                  return (
+                    <>
+                      {/* Dialog compound component usage */}
+                      <Dialog.Root size={dialogSize} isOpen={false} onClose={() => {}}>
+                        <Dialog.Trigger {...dialogTriggerProps}>
+                          <button type="button">Open Dialog</button>
+                        </Dialog.Trigger>
+                        <Dialog.Portal {...dialogPortalProps}>
+                          <Dialog.Overlay {...dialogOverlayProps} />
+                          <Dialog.Content {...dialogContentProps}>
+                            <Dialog.Header {...dialogHeaderProps}>
+                              <Dialog.Title {...dialogTitleProps}>Confirm Delete</Dialog.Title>
+                              <Dialog.Description {...dialogDescriptionProps}>
+                                Are you sure you want to proceed?
+                              </Dialog.Description>
+                            </Dialog.Header>
+                            <Dialog.Body {...dialogBodyProps}>
+                              <p>Dialog body content</p>
+                            </Dialog.Body>
+                            <Dialog.Footer {...dialogFooterProps}>
+                              <Dialog.Close {...dialogCloseProps}>
+                                <button type="button">Cancel</button>
+                              </Dialog.Close>
+                              <button type="button">Confirm</button>
+                            </Dialog.Footer>
+                          </Dialog.Content>
+                        </Dialog.Portal>
+                      </Dialog.Root>
+
+                      {/* Modal compatibility alias contract verification */}
+                      <Modal.Root size={modalSize} isOpen={false} onClose={() => {}}>
+                        <Modal.Trigger {...modalTriggerProps}>
+                          <button type="button">Open Modal Alias</button>
+                        </Modal.Trigger>
+                        <Modal.Portal {...modalPortalProps}>
+                          <Modal.Overlay {...modalOverlayProps} />
+                          <Modal.Content {...modalContentProps}>
+                            <Modal.Header {...modalHeaderProps}>
+                              <Modal.Title {...modalTitleProps}>Modal Title</Modal.Title>
+                              <Modal.Description {...modalDescriptionProps}>
+                                Modal description alias
+                              </Modal.Description>
+                            </Modal.Header>
+                            <Modal.Body {...modalBodyProps}>
+                              <p>Modal body content</p>
+                            </Modal.Body>
+                            <Modal.Footer {...modalFooterProps}>
+                              <Modal.Close {...modalCloseProps}>
+                                <button type="button">Close</button>
+                              </Modal.Close>
+                            </Modal.Footer>
+                          </Modal.Content>
+                        </Modal.Portal>
+                      </Modal.Root>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 24. Badge (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: BadgeVariant = "subtle";
+                  const size: BadgeSize = "md";
+                  const colorScheme: BadgeColorScheme = "primary";
+
+                  const badgeProps: BadgeProps = {
+                    variant,
+                    size,
+                    colorScheme,
+                    children: "New Feature",
+                  };
+
+                  return (
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <Badge {...badgeProps} />
+                      <Badge variant="solid" colorScheme="success" size="lg">
+                        Active
+                      </Badge>
+                      <Badge variant="outline" colorScheme="danger" size="sm">
+                        Failed
+                      </Badge>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* 25. Table (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: TableVariant = "simple";
+                  const size: TableSize = "md";
+
+                  const rootProps: TableRootProps = {
+                    variant,
+                    size,
+                    isHoverable: true,
+                    children: null,
+                  };
+                  const containerProps: TableContainerProps = {
+                    bordered: true,
+                    children: null,
+                  };
+                  const captionProps: TableCaptionProps = { placement: "bottom" };
+                  const theadProps: TableTheadProps = {};
+                  const tbodyProps: TableTbodyProps = {};
+                  const tfootProps: TableTfootProps = {};
+                  const rowProps: TableRowProps = { isSelected: false };
+                  const thProps: TableHeaderCellProps = { isNumeric: false };
+                  const thNumericProps: TableHeaderCellProps = { isNumeric: true };
+                  const tdProps: TableCellProps = {};
+                  const tdNumericProps: TableCellProps = { isNumeric: true };
+
+                  void rootProps;
+                  void containerProps;
+                  void TableRoot;
+                  void TableContainer;
+                  void TableCaption;
+                  void TableThead;
+                  void TableTbody;
+                  void TableTfoot;
+                  const _tableCtx: TableContextValue | null = null;
+                  void _tableCtx;
+
+                  return (
+                    <Table.Container bordered>
+                      <Table.Root variant={variant} size={size} isHoverable>
+                        <Table.Caption {...captionProps}>User Metrics Summary</Table.Caption>
+                        <Table.Thead {...theadProps}>
+                          <Table.Tr {...rowProps}>
+                            <Table.Th {...thProps}>User</Table.Th>
+                            <Table.Th {...thProps}>Role</Table.Th>
+                            <Table.Th {...thNumericProps}>Score</Table.Th>
+                          </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody {...tbodyProps}>
+                          <Table.Tr>
+                            <Table.Td {...tdProps}>Sarah Connor</Table.Td>
+                            <Table.Td {...tdProps}>Admin</Table.Td>
+                            <Table.Td {...tdNumericProps}>98.5</Table.Td>
+                          </Table.Tr>
+                        </Table.Tbody>
+                        <Table.Tfoot {...tfootProps}>
+                          <TableTr>
+                            <TableTh>Total</TableTh>
+                            <TableTd colSpan={2}>1 Active</TableTd>
+                          </TableTr>
+                        </Table.Tfoot>
+                      </Table.Root>
+                    </Table.Container>
                   );
                 })()}
               </div>

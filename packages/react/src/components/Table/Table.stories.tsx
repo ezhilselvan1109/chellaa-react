@@ -49,6 +49,7 @@ const SearchOffIcon = () => (
 const meta: Meta<typeof TableRoot> = {
   title: "Components/Table",
   component: TableRoot,
+  tags: ["autodocs"],
   parameters: {
     layout: "padded",
   },

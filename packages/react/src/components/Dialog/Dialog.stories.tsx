@@ -22,6 +22,7 @@ import { FormField } from "../FormField";
 const meta: Meta<typeof DialogRoot> = {
   title: "Components/Dialog",
   component: DialogRoot,
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
