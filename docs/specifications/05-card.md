@@ -8,6 +8,7 @@
 **Priority:** P1 High  
 **Governing Standard:** [00-component-specification-standard.md](./00-component-specification-standard.md), [00-component-feature-matrix.md](./00-component-feature-matrix.md), [01-api-conventions.md](./01-api-conventions.md), [ADR-007-css-delivery.md](../adr/ADR-007-css-delivery.md), [ADR-011-hybrid-styling-architecture-and-engine-boundary.md](../adr/ADR-011-hybrid-styling-architecture-and-engine-boundary.md)  
 **Dependencies:** Chellaa Design Tokens (`--cl-*`), `@emotion/react`, `@emotion/styled`, React 18/19  
+**Historical Consolidation Note:** Rev 2.0.0 canonically supersedes and consolidates legacy draft SPEC-021 (`docs/specifications/21-card.md`) with full preservation of compound subcomponent contracts, elevation semantics, and testing matrices.
 
 ---
 

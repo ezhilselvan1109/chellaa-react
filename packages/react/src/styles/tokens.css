@@ -116,6 +116,8 @@
     --cl-space-10: 2.5rem; /* 40px */
     --cl-space-12: 3rem; /* 48px */
     --cl-space-16: 4rem; /* 64px */
+    --cl-space-1-5: 0.375rem; /* 6px */
+    --cl-space-2-5: 0.625rem; /* 10px */
 
     /* -------------------------------------------------------------------------
      * Typography Stacks, Sizes & Weights
@@ -167,6 +169,30 @@
     --cl-font-weight-medium: 500;
     --cl-font-weight-semibold: 600;
     --cl-font-weight-bold: 700;
+    --cl-font-weight-normal: var(--cl-font-weight-regular);
+
+    /* Canonical Font Size & Family Aliases */
+    --cl-font-size-2xs: 0.6875rem; /* 11px */
+    --cl-font-size-xs: var(--cl-font-xs); /* 12px */
+    --cl-font-size-sm: var(--cl-font-sm); /* 14px */
+    --cl-font-size-md: var(--cl-font-base); /* 16px */
+    --cl-font-size-base: var(--cl-font-base); /* 16px */
+    --cl-font-size-lg: var(--cl-font-lg); /* 18px */
+    --cl-font-size-xl: var(--cl-font-xl); /* 20px */
+    --cl-font-size-2xl: var(--cl-font-2xl); /* 24px */
+    --cl-font-size-3xl: var(--cl-font-3xl); /* 30px */
+    --cl-font-size-4xl: var(--cl-font-4xl); /* 36px */
+    --cl-font-size-5xl: var(--cl-font-5xl); /* 48px */
+
+    --cl-font-family-sans: var(--cl-font-sans);
+    --cl-font-family-mono: var(--cl-font-mono);
+
+    /* Relative Line Heights & Leading */
+    --cl-line-height-tight: 1.25;
+    --cl-line-height-normal: 1.5;
+    --cl-leading-normal: 1.5;
+    --cl-lh-snug: 1.375;
+    --cl-lh-normal: 1.5;
 
     /* -------------------------------------------------------------------------
      * Border Radii
@@ -179,6 +205,17 @@
     --cl-rad-xl: 12px;
     --cl-rad-2xl: 16px;
     --cl-rad-full: 9999px;
+
+    /* Canonical Border Radii Aliases */
+    --cl-radius-none: var(--cl-rad-none);
+    --cl-radius-xs: var(--cl-rad-xs);
+    --cl-radius-sm: var(--cl-rad-sm);
+    --cl-radius-md: var(--cl-rad-md);
+    --cl-radius-lg: var(--cl-rad-lg);
+    --cl-radius-xl: var(--cl-rad-xl);
+    --cl-radius-2xl: var(--cl-rad-2xl);
+    --cl-radius-full: var(--cl-rad-full);
+    --cl-rad-base: var(--cl-rad-md);
 
     /* -------------------------------------------------------------------------
      * Elevation Shadows (Light baseline)
@@ -206,6 +243,15 @@
     --cl-z-tooltip: 1600;
 
     /* -------------------------------------------------------------------------
+     * Responsive Breakpoints (Matching createBreakpoints defaults)
+     * ----------------------------------------------------------------------- */
+    --cl-breakpoint-xs: 0px;
+    --cl-breakpoint-sm: 600px;
+    --cl-breakpoint-md: 900px;
+    --cl-breakpoint-lg: 1200px;
+    --cl-breakpoint-xl: 1536px;
+
+    /* -------------------------------------------------------------------------
      * Motion & Transitions
      * ----------------------------------------------------------------------- */
     --cl-duration-fast: 150ms;
@@ -216,6 +262,12 @@
     --cl-ease-out: cubic-bezier(0, 0, 0.2, 1);
     --cl-ease-in: cubic-bezier(0.4, 0, 1, 1);
     --cl-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Canonical Motion Scale Aliases */
+    --cl-motion-fast: var(--cl-duration-fast);
+    --cl-motion-duration-fast: var(--cl-duration-fast);
+    --cl-motion-easing-standard: var(--cl-ease-default);
+    --cl-easing-standard: var(--cl-ease-default);
 
     --cl-transition-colors:
       color var(--cl-duration-fast) var(--cl-ease-default),
@@ -233,6 +285,8 @@
       --cl-duration-fast: 0ms !important;
       --cl-duration-normal: 0ms !important;
       --cl-duration-slow: 0ms !important;
+      --cl-motion-fast: 0ms !important;
+      --cl-motion-duration-fast: 0ms !important;
       --cl-transition-colors: none !important;
       --cl-transition-transform: none !important;
       --cl-transition-opacity: none !important;

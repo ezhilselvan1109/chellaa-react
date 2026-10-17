@@ -14,7 +14,7 @@
 - `docs/foundation/04-styling-architecture.md`
 - `docs/foundation/05-theme-architecture.md`
 - `docs/foundation/06-library-architecture.md`
-- `docs/adr/007-zero-configuration-styling.md`
+- `docs/adr/ADR-007-css-delivery.md`
 
 ---
 
@@ -176,7 +176,7 @@ All six foundation documents have been analyzed across 14 vital architectural di
   ```
 - **Consumer DX:** Importing `{ Button } from "@chellaa/react"` delivers a fully styled component out of the box.
 - **Status:** Public contract is finalized. Internal bundling mechanism is subject to validation in `apps/test-consumer` (ADR-007).
-- **Consistency Check:** Aligned across `007-zero-configuration-styling.md`, `04-styling-architecture.md`, and `06-library-architecture.md`.
+- **Consistency Check:** Aligned across `ADR-007-css-delivery.md`, `04-styling-architecture.md`, and `06-library-architecture.md`.
 
 ### 3.12 Public API Expectations
 

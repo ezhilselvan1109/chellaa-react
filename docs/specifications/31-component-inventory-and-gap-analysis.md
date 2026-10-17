@@ -51,14 +51,14 @@ Status Classification Key:
 | **Divider** | Tier 1 (Layout) | **Implemented** | Approved & Baseline | [`12-divider.md`](./12-divider.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
 | **Typography** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`13-typography.md`](./13-typography.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
 | **Kbd** | Tier 2 (Typography) | **Implemented** | Approved & Baseline | [`14-kbd.md`](./14-kbd.md) | ✅ Yes | ✅ 10/10 Tests Pass (axe 0) |
-| **Input** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`02-input.md`](./02-input.md) / [`15-input.md`](./15-input.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
+| **Input** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`02-input.md`](./02-input.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
 | **Textarea** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`16-textarea.md`](./16-textarea.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
 | **FormField** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`17-form-field.md`](./17-form-field.md) | ✅ Yes | ✅ 10/10 Tests Pass (axe 0) |
 | **Checkbox** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`18-checkbox.md`](./18-checkbox.md) | ✅ Yes | ✅ 14/14 Tests Pass (axe 0) |
 | **Radio** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`19-radio.md`](./19-radio.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
 | **Switch** | Tier 3 (Forms) | **Implemented** | Approved & Baseline | [`20-switch.md`](./20-switch.md) | ✅ Yes | ✅ 12/12 Tests Pass (axe 0) |
-| **Paper** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`21-card.md`](./21-card.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
-| **Card** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) / [`21-card.md`](./21-card.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
+| **Paper** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | ✅ Yes | ✅ 8/8 Tests Pass (axe 0) |
+| **Card** | Tier 4 (Surfaces) | **Implemented** | Approved & Baseline | [`05-card.md`](./05-card.md) | ✅ Yes | ✅ 16/16 Tests Pass (axe 0) |
 | **TouchRipple** | Primitives / Tactile | **Implemented** | Approved & Baseline | [`01-button.md`](./01-button.md) | ✅ Yes | ✅ 6/6 Tests Pass (axe 0) |
 | **Portal** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Portal.tsx` | ✅ Yes | ✅ 3/3 Tests Pass (axe 0) |
 | **Slot** | Headless Primitive | **Implemented** | Approved & Baseline | `primitives/Slot.tsx` | ✅ Yes | ✅ 7/7 Tests Pass (axe 0) |
@@ -87,7 +87,7 @@ Our audit verified that five candidate components mentioned in typical design sy
 
 1. **`Dialog` (Modal):** Fully specified in [`docs/specifications/04-modal.md`](./04-modal.md). Defines `Dialog` as canonical name, `Modal` as alias, static CSS centering per ADR-010, focus trapping, Escape dismissal, backdrop locking, and full WAI-ARIA APG Dialog compliance.
 2. **`Select`:** Fully specified in [`docs/specifications/03-select.md`](./03-select.md). Defines compound WAI-ARIA APG Listbox architecture, generic type parameter `<TValue>`, `@floating-ui/react` positioning per ADR-010, and roving tabindex.
-3. **`Card`:** Fully specified in [`docs/specifications/05-card.md`](./05-card.md) and [`docs/specifications/21-card.md`](./21-card.md) and implemented in `packages/react/src/components/Card/`.
+3. **`Card`:** Fully specified in [`docs/specifications/05-card.md`](./05-card.md) and implemented in `packages/react/src/components/Card/`.
 4. **`Badge`:** Fully specified in [`docs/specifications/06-badge.md`](./06-badge.md). Defines standalone status indicator and pill metadata label with all 7 semantic color schemes.
 5. **`Table`:** Fully specified in [`docs/specifications/07-table.md`](./07-table.md). Defines semantic HTML table primitives (`Table.Root`, `Thead`, `Tbody`, `Tr`, `Th`, `Td`), sticky header, numeric alignment, and headless TanStack Table compatibility.
 

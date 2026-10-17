@@ -47,7 +47,7 @@ A physical scan of the workspace (`d:/learning/Microservice/ui-componenet/chella
 
 ### 2.3 Architecture Decision Records (`docs/adr/`) — 1 Document
 
-1. `007-zero-configuration-styling.md` (10.6 KB): Documents the decision that consumers must not manually import stylesheets (`import "@chellaa/react/styles.css"` is deprecated as a requirement). Establishes public API contract as finalized and details 4 candidate internal delivery mechanisms.
+1. `ADR-007-css-delivery.md` (10.6 KB): Documents the decision that consumers must not manually import stylesheets (`import "@chellaa/react/styles.css"` is deprecated as a requirement). Establishes public API contract as finalized and details 4 candidate internal delivery mechanisms.
 
 ### 2.4 Engineering Standards (`docs/engineering/`) — 9 Documents
 
@@ -169,7 +169,7 @@ The audit revealed the following cross-document contradictions that must be form
   ADR-008-npm-release-strategy.md
   ADR-009-versioning-strategy.md
   ```
-  Furthermore, the single existing file in `docs/adr/` is named `007-zero-configuration-styling.md` rather than `ADR-007-css-delivery.md`.
+  Furthermore, the canonical ADR in `docs/adr/` is consolidated as `ADR-007-css-delivery.md`.
 - **Resolution:** Align the ADR directory with standard prefixed naming (`ADR-001-package-architecture.md` through `ADR-009-versioning-strategy.md`). Author formal standalone ADR documents for all 9 decisions.
 
 ### 5.2 CSS Delivery Mechanism: Finalized vs. Empirical Investigation
