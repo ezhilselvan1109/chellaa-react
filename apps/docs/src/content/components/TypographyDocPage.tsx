@@ -51,6 +51,8 @@ export function TypographyDocPage() {
       title="Typography"
       description="Typographic family including Heading, Text, Paragraph, and inline Code primitives with fluid theme scale."
       status="stable"
+      version="v0.2.0"
+      storybookId="components-data-display-typography--docs"
     >
       <section id="import">
         <h2 className="docs-heading-2">

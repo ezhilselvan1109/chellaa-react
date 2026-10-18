@@ -141,7 +141,7 @@ export function ButtonDocPage() {
       description="The Button component triggers an action or event, such as submitting a form, opening a dialog, canceling an operation, or performing a deletion."
       status="stable"
       version="v0.2.0"
-      storybookId="components-button--default"
+      storybookId="components-actions-button--docs"
     >
       <div id="interactive-sandbox">
         <InteractiveButtonSandbox />

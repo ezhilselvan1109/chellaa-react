@@ -18,10 +18,15 @@ export const docsNavigation: NavSection[] = [
     ],
   },
   {
-    title: "Form Controls",
+    title: "Actions",
     items: [
       { id: "button", title: "Button", path: "/components/button" },
       { id: "button-group", title: "ButtonGroup", path: "/components/button-group" },
+    ],
+  },
+  {
+    title: "Forms & Inputs",
+    items: [
       { id: "input", title: "Input & TextField", path: "/components/input" },
       { id: "textarea", title: "Textarea", path: "/components/textarea" },
       { id: "form-field", title: "FormField", path: "/components/form-field" },
@@ -31,23 +36,25 @@ export const docsNavigation: NavSection[] = [
     ],
   },
   {
-    title: "Surfaces & Data Display",
+    title: "Data Display",
     items: [
-      { id: "paper", title: "Paper", path: "/components/paper" },
+      { id: "avatar", title: "Avatar", path: "/components/avatar" },
+      { id: "badge", title: "Badge", path: "/components/badge" },
       { id: "card", title: "Card", path: "/components/card" },
-      { id: "typography", title: "Typography", path: "/components/typography" },
       { id: "kbd", title: "Kbd", path: "/components/kbd" },
+      { id: "typography", title: "Typography", path: "/components/typography" },
     ],
   },
   {
-    title: "Layout Primitives",
+    title: "Layout",
     items: [
       { id: "box", title: "Box", path: "/components/box" },
       { id: "container", title: "Container", path: "/components/container" },
       { id: "divider", title: "Divider", path: "/components/divider" },
-      { id: "stack", title: "Stack", path: "/components/stack" },
       { id: "flex", title: "Flex", path: "/components/flex" },
       { id: "grid", title: "Grid", path: "/components/grid" },
+      { id: "paper", title: "Paper", path: "/components/paper" },
+      { id: "stack", title: "Stack", path: "/components/stack" },
     ],
   },
   {

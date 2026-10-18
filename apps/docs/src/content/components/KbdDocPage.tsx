@@ -38,6 +38,8 @@ export function KbdDocPage() {
       title="Kbd (Keyboard Shortcut)"
       description="Visual keycap chip indicating keyboard shortcuts and key combinations."
       status="stable"
+      version="v0.2.0"
+      storybookId="components-data-display-kbd--docs"
     >
       <section id="import">
         <h2 className="docs-heading-2">

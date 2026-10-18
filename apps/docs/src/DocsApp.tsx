@@ -2,6 +2,7 @@ import * as React from "react";
 import { ThemeProvider } from "@chellaa/react";
 import { DocsLayout } from "./components/DocsLayout/DocsLayout";
 import { LandingPage } from "./pages/LandingPage/LandingPage";
+import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
 import { TocItem } from "./components/DocsLayout/TableOfContents";
 
 // Content Pages
@@ -25,7 +26,9 @@ import { CheckboxDocPage, checkboxToc } from "./content/components/CheckboxDocPa
 import { RadioDocPage, radioToc } from "./content/components/RadioDocPage";
 import { SwitchDocPage, switchToc } from "./content/components/SwitchDocPage";
 
-// 2. Surfaces & Data Display Pages
+// 2. Data Display Pages
+import { AvatarDocPage, avatarToc } from "./content/components/AvatarDocPage";
+import { BadgeDocPage, badgeToc } from "./content/components/BadgeDocPage";
 import { PaperDocPage, paperToc } from "./content/components/PaperDocPage";
 import { CardDocPage, cardToc } from "./content/components/CardDocPage";
 import { TypographyDocPage, typographyToc } from "./content/components/TypographyDocPage";
@@ -56,11 +59,12 @@ const titleMap: Record<string, string> = {
   "/components/checkbox": "Checkbox Component — Chellaa React",
   "/components/radio": "Radio Component — Chellaa React",
   "/components/switch": "Switch Component — Chellaa React",
-  // Surfaces
-  "/components/paper": "Paper Surface — Chellaa React",
+  // Data Display
+  "/components/avatar": "Avatar Component — Chellaa React",
+  "/components/badge": "Badge Component — Chellaa React",
   "/components/card": "Card Component — Chellaa React",
-  "/components/typography": "Typography Component — Chellaa React",
   "/components/kbd": "Kbd Component — Chellaa React",
+  "/components/typography": "Typography Component — Chellaa React",
   // Layouts
   "/components/box": "Box Component — Chellaa React",
   "/components/container": "Container Component — Chellaa React",
@@ -68,6 +72,7 @@ const titleMap: Record<string, string> = {
   "/components/stack": "Stack Component — Chellaa React",
   "/components/flex": "Flex Component — Chellaa React",
   "/components/grid": "Grid Component — Chellaa React",
+  "/components/paper": "Paper Surface — Chellaa React",
   // Guides & Resources
   "/guides/as-child": "Polymorphism (asChild) — Chellaa React",
   "/guides/accessibility": "Accessibility Standards — Chellaa React",
@@ -123,7 +128,7 @@ export function DocsApp() {
   }, []);
 
   React.useEffect(() => {
-    const title = titleMap[currentPath] || "Chellaa React Documentation";
+    const title = titleMap[currentPath] || "Page Not Found — Chellaa React";
     document.title = title;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPath]);
@@ -164,17 +169,21 @@ export function DocsApp() {
       case "/components/switch":
         return { content: <SwitchDocPage />, toc: switchToc };
 
-      // 2. Surfaces & Data Display
-      case "/components/paper":
-        return { content: <PaperDocPage />, toc: paperToc };
+      // 2. Data Display
+      case "/components/avatar":
+        return { content: <AvatarDocPage />, toc: avatarToc };
+      case "/components/badge":
+        return { content: <BadgeDocPage />, toc: badgeToc };
       case "/components/card":
         return { content: <CardDocPage />, toc: cardToc };
-      case "/components/typography":
-        return { content: <TypographyDocPage />, toc: typographyToc };
       case "/components/kbd":
         return { content: <KbdDocPage />, toc: kbdToc };
+      case "/components/typography":
+        return { content: <TypographyDocPage />, toc: typographyToc };
 
       // 3. Layout Primitives
+      case "/components/paper":
+        return { content: <PaperDocPage />, toc: paperToc };
       case "/components/box":
         return { content: <BoxDocPage />, toc: boxToc };
       case "/components/container":
@@ -196,7 +205,15 @@ export function DocsApp() {
       case "/changelog":
         return { content: <ChangelogPage />, toc: [] };
       default:
-        return { content: <OverviewPage />, toc: overviewToc };
+        return {
+          content: (
+            <NotFoundPage
+              onNavigate={handleNavigate}
+              currentPath={currentPath}
+            />
+          ),
+          toc: [],
+        };
     }
   }, [currentPath]);
 

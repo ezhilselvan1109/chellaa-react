@@ -95,7 +95,7 @@ export function ButtonGroupDocPage() {
       description="ButtonGroup wraps and manages a collection of related Button components, providing unified spacing, attached borders, and Context-driven prop propagation."
       status="stable"
       version="v0.2.0"
-      storybookId="components-buttongroup--default"
+      storybookId="components-actions-buttongroup--docs"
     >
       <section id="import" style={{ marginBottom: "40px" }}>
         <h2 className="docs-heading-2">
