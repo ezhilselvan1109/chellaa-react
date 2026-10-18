@@ -1,5 +1,6 @@
 import { ComponentDocLayout } from "../../components/ComponentDoc/ComponentDocLayout";
 import { ApiTable, PropRow } from "../../components/ComponentDoc/ApiTable";
+import { AccessibilitySection } from "../../components/ComponentDoc/AccessibilitySection";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 import { Divider, Flex, Text, Box, Stack } from "@chellaa/react";
 
@@ -9,6 +10,7 @@ export const dividerToc = [
   { id: "vertical-divider", title: "Vertical Orientation" },
   { id: "labels", title: "Text Labels & Alignment" },
   { id: "variants", title: "Variants & Line Styles" },
+  { id: "accessibility", title: "Accessibility" },
   { id: "api-reference", title: "API Reference" },
 ];
 
@@ -38,10 +40,67 @@ const dividerPropsData: PropRow[] = [
     description: "Enables vertical divider to stretch to flex container height without height 0 collapse.",
   },
   {
+    name: "light",
+    type: "boolean",
+    default: "false",
+    description: "Renders a more subtle, reduced-opacity separator stroke.",
+  },
+  {
     name: "textAlign",
     type: '"left" | "center" | "right"',
     default: '"center"',
-    description: "Alignment of embedded child text label.",
+    description: "Alignment of embedded child text label or badge.",
+  },
+  {
+    name: "asChild",
+    type: "boolean",
+    default: "false",
+    description: "Delegates rendering to immediate child element using the Slot primitive.",
+  },
+  {
+    name: "component",
+    type: "ElementType",
+    default: '"hr" (or "div" for vertical/children)',
+    description: "Underlying HTML element to render.",
+  },
+  {
+    name: "as",
+    type: "ElementType",
+    default: "undefined",
+    description: "Alias for the component prop for polymorphic element selection.",
+  },
+  {
+    name: "sx",
+    type: "SxProps",
+    default: "undefined",
+    description: "System sx styling prop for custom theme overrides.",
+  },
+  {
+    name: "children",
+    type: "ReactNode",
+    default: "undefined",
+    description: "Optional text label, chip, or badge to display centered or aligned within the divider.",
+  },
+];
+
+const a11yRoles = [
+  {
+    attributeOrKey: "role='separator'",
+    description:
+      "Native <hr> elements communicate implicit separator semantics. When rendering vertical dividers or dividers with child text, Divider automatically applies role='separator'.",
+  },
+  {
+    attributeOrKey: "aria-orientation",
+    description:
+      "Automatically set to 'vertical' when orientation='vertical' to communicate directional flow to screen readers.",
+  },
+];
+
+const a11yKeyboard = [
+  {
+    attributeOrKey: "Non-interactive",
+    description:
+      "Dividers are purely structural and visual separators; they do not receive keyboard tab focus.",
   },
 ];
 
@@ -51,6 +110,8 @@ export function DividerDocPage() {
       title="Divider"
       description="Visual or semantic separator rule between content sections with support for text chips, vertical flex items, and dashed line styles."
       status="stable"
+      version="v0.2.0"
+      storybookId="components-layout-divider--docs"
     >
       <section id="import">
         <h2 className="docs-heading-2">
@@ -144,6 +205,12 @@ export function DividerDocPage() {
           language="tsx"
         />
       </section>
+
+      <AccessibilitySection
+        componentName="Divider"
+        roles={a11yRoles}
+        keyboardKeys={a11yKeyboard}
+      />
 
       <ApiTable componentName="Divider" props={dividerPropsData} />
     </ComponentDocLayout>
