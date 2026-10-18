@@ -7,7 +7,7 @@ import { Flex } from "../Flex";
 import { Kbd } from "../Kbd";
 
 export default {
-  title: "Forms/Input",
+  title: "Components/Forms & Inputs/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {
@@ -63,7 +63,20 @@ export const WithAdornments = {
         placeholder="Search components..."
         startAdornment={
           <InputAdornment position="start" disablePointerEvents>
-            🔍
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
           </InputAdornment>
         }
         endAdornment={

@@ -72,12 +72,12 @@ All packages and applications in the repository inherit from a centralized base 
 - If a value has an unknown shape, developers **must** use `unknown` and narrow it via runtime type guards:
 
 ```typescript
-// ❌ PROHIBITED:
+// [PROHIBITED]:
 function parseValue(value: any) {
   return value.toUpperCase();
 }
 
-// ✅ PREFERRED:
+// [PREFERRED]:
 function parseValue(value: unknown): string {
   if (typeof value === "string") {
     return value.toUpperCase();
@@ -144,7 +144,7 @@ Chellaa React enforces clear, deterministic rules on when to use `interface` ver
 Component props must always be declared as an exported `interface` ending in `Props`:
 
 ```typescript
-// ✅ PREFERRED:
+// [PREFERRED]:
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ComponentSize;
@@ -166,14 +166,14 @@ TypeScript `enum` constructs are **prohibited**. Enums generate bloated, non-sta
 - **Rule:** Use `const` object maps or string union types:
 
 ```typescript
-// ❌ PROHIBITED:
+// [PROHIBITED]:
 export enum ButtonSize {
   Small = "sm",
   Medium = "md",
   Large = "lg",
 }
 
-// ✅ PREFERRED:
+// [PREFERRED]:
 export const BUTTON_SIZES = ["sm", "md", "lg"] as const;
 export type ButtonSize = (typeof BUTTON_SIZES)[number];
 ```
@@ -183,7 +183,7 @@ export type ButtonSize = (typeof BUTTON_SIZES)[number];
 When a component cannot logically exist in two states simultaneously, enforce mutual exclusion via discriminated unions:
 
 ```typescript
-// ✅ PREFERRED: Loading state contract
+// [PREFERRED]: Loading state contract
 export type ButtonContentProps =
   | {
       isLoading: true;
@@ -289,10 +289,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 - If a value is guaranteed to exist at runtime (e.g. an element fetched via DOM query or context hook), use an explicit invariant assertion utility:
 
 ```typescript
-// ❌ PROHIBITED:
+// [PROHIBITED]:
 const ctx = useContext(ThemeContext)!;
 
-// ✅ PREFERRED:
+// [PREFERRED]:
 const ctx = useThemeContext(); // Throws descriptive error if outside provider
 ```
 
@@ -343,7 +343,7 @@ TSDoc is **mandatory for public API symbols**:
 Do **not** write meaningless boilerplate comments such as:
 
 ```typescript
-// ❌ PROHIBITED: Meaningless boilerplate
+// [PROHIBITED]: Meaningless boilerplate
 /** Button component */
 export function Button() {}
 ```

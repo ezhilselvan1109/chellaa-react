@@ -50,7 +50,7 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>(
       return (
         <StyledBoxRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={boxClassName}
           style={style}
           sx={sx}
@@ -65,7 +65,7 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>(
       return (
         <StyledBoxRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={boxClassName}
           style={style}
           sx={sx}
@@ -78,7 +78,7 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>(
 
     return (
       <StyledBoxRoot
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={boxClassName}
         style={style}
         sx={sx}

@@ -1,0 +1,30 @@
+export {
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  PaginationContext,
+  usePaginationContext,
+  getPaginationRange,
+} from "./Pagination";
+
+export type {
+  PaginationProps,
+  PaginationRootProps,
+  PaginationListProps,
+  PaginationItemProps,
+  PaginationActionProps,
+  PaginationEllipsisProps,
+  PaginationSizeSelectProps,
+  PaginationJumperProps,
+  PaginationContextValue,
+  PaginationSize,
+  PaginationVariant,
+} from "./Pagination.types";

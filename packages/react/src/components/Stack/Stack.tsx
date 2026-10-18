@@ -177,7 +177,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       return (
         <StyledStackRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={stackClassName}
           style={style}
           ownerState={ownerState}
@@ -193,7 +193,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       return (
         <StyledStackRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={stackClassName}
           style={style}
           ownerState={ownerState}
@@ -207,7 +207,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
 
     return (
       <StyledStackRoot
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={stackClassName}
         style={style}
         ownerState={ownerState}

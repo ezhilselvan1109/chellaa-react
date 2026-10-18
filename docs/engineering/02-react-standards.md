@@ -152,7 +152,7 @@ export function composeEventHandlers<E extends React.SyntheticEvent | Event>(
 Chellaa React strongly prefers **Compound Components** over monolithic components with 40 props:
 
 ```tsx
-// ❌ MONOLITHIC ANTI-PATTERN:
+// [ANTI-PATTERN]:
 <Dialog
   title="Edit Profile"
   description="Make changes below"
@@ -162,7 +162,7 @@ Chellaa React strongly prefers **Compound Components** over monolithic component
   onConfirm={handleSave}
 />
 
-// ✅ COMPOUND COMPOSABLE STANDARD:
+// [PREFERRED STANDARD]:
 <Dialog open={isOpen} onOpenChange={setIsOpen}>
   <Dialog.Trigger asChild>
     <Button>Edit Profile</Button>
@@ -199,13 +199,13 @@ Premature and unnecessary hook usage is the #1 cause of React performance regres
 
 - **Prohibited for Derived State:** Never calculate a value in `useEffect` and write it to state. Compute it synchronously during render:
   ```tsx
-  // ❌ PROHIBITED:
+  // [PROHIBITED]:
   const [fullName, setFullName] = useState("");
   useEffect(() => {
     setFullName(`${firstName} ${lastName}`);
   }, [firstName, lastName]);
 
-  // ✅ PREFERRED:
+  // [PREFERRED]:
   const fullName = `${firstName} ${lastName}`;
   ```
 - **Prohibited for User Actions:** If an action occurs in response to a button click, execute it in `onClick`, not in a `useEffect` watching a boolean flag.

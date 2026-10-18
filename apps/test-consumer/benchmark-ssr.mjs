@@ -34,6 +34,20 @@ import {
   Stack,
   Flex,
   Grid,
+  Alert,
+  Snackbar,
+  Avatar,
+  AvatarGroup,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
+  // 19. Navigation Primitives (Wave 3)
+  Tabs,
+  Pagination,
+  Combobox,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -156,6 +170,79 @@ function App() {
           React.createElement(Grid, { item: true, xs: 6 }, "Grid Column A"),
           React.createElement(Grid, { item: true, xs: 6 }, "Grid Column B"),
         ),
+
+        // 15. Alert (Wave 2B)
+        React.createElement(
+          Alert,
+          { status: "warning", variant: "subtle" },
+          React.createElement(Alert.Icon),
+          React.createElement(
+            Alert.Body,
+            null,
+            React.createElement(Alert.Title, null, "SSR Alert Title"),
+            React.createElement(Alert.Description, null, "SSR Alert Description"),
+          ),
+          React.createElement(Alert.CloseButton),
+        ),
+
+        // 16. Snackbar (Wave 2B) - portaled notification, SSR safe
+        React.createElement(Snackbar, {
+          isOpen: true,
+          message: "SSR Snackbar Notification",
+          status: "info",
+        }),
+
+        // 17. Visual Data Display & Identity (Wave 3)
+        React.createElement(
+          AvatarGroup,
+          { max: 2 },
+          React.createElement(Avatar, { name: "Ezhil Selvan" }),
+          React.createElement(Avatar, { name: "Sarah Connor" }),
+          React.createElement(Avatar, { name: "John Doe" }),
+        ),
+
+        // 18. Disclosure & Accordion (Wave 3)
+        React.createElement(
+          Accordion,
+          { type: "single", defaultValue: "faq-1", collapsible: true },
+          React.createElement(
+            AccordionItem,
+            { value: "faq-1" },
+            React.createElement(
+              AccordionHeader,
+              null,
+              React.createElement(AccordionTrigger, null, "FAQ Question 1", React.createElement(AccordionIcon, null)),
+            ),
+            React.createElement(AccordionContent, null, "FAQ Answer 1"),
+          ),
+        ),
+
+        // 19. Navigation & Tabs (Wave 3)
+        React.createElement(
+          Tabs,
+          { defaultValue: "tab-1" },
+          React.createElement(
+            Tabs.List,
+            { "aria-label": "SSR Tabs" },
+            React.createElement(Tabs.Trigger, { value: "tab-1" }, "Tab 1"),
+            React.createElement(Tabs.Trigger, { value: "tab-2" }, "Tab 2"),
+          ),
+          React.createElement(Tabs.Content, { value: "tab-1" }, "Tab 1 Content"),
+          React.createElement(Tabs.Content, { value: "tab-2" }, "Tab 2 Content"),
+        ),
+
+        // 20. Navigation & Pagination (Wave 3)
+        React.createElement(Pagination, {
+          total: 100,
+          pageSize: 10,
+          defaultPage: 1,
+        }),
+
+        // 21. Combobox & Autocomplete (Wave 3)
+        React.createElement(Combobox, {
+          placeholder: "Search in SSR...",
+          options: [{ value: "us", label: "United States" }],
+        }),
       ),
     ),
   );
@@ -186,6 +273,37 @@ const mandatoryAssertions = [
   { name: "Divider class (cl-divider)", check: html.includes("cl-divider") },
   { name: "Flex class (cl-flex)", check: html.includes("cl-flex") },
   { name: "Grid class (cl-grid)", check: html.includes("cl-grid") },
+  // Feedback & Alert (Wave 2B)
+  { name: "Alert class (cl-alert)", check: html.includes("cl-alert") },
+  { name: "Alert icon class (cl-alert__icon)", check: html.includes("cl-alert__icon") },
+  { name: "Alert title class (cl-alert__title)", check: html.includes("cl-alert__title") },
+  // Identity & Avatar (Wave 3)
+  { name: "Avatar class (cl-avatar)", check: html.includes("cl-avatar") },
+  { name: "AvatarGroup class (cl-avatar-group)", check: html.includes("cl-avatar-group") },
+  { name: "Avatar initials (ES)", check: html.includes("ES") },
+  { name: "AvatarGroup excess (+1)", check: html.includes("+1") },
+  // Disclosure & Accordion (Wave 3)
+  { name: "Accordion class (cl-accordion)", check: html.includes("cl-accordion") },
+  { name: "Accordion item class (cl-accordion__item)", check: html.includes("cl-accordion__item") },
+  { name: "Accordion trigger class (cl-accordion__trigger)", check: html.includes("cl-accordion__trigger") },
+  { name: "Accordion content class (cl-accordion__content)", check: html.includes("cl-accordion__content") },
+  { name: "Accordion inner class (cl-accordion__inner)", check: html.includes("cl-accordion__inner") },
+  { name: "Accordion icon class (cl-accordion__icon)", check: html.includes("cl-accordion__icon") },
+  // Navigation & Tabs (Wave 3)
+  { name: "Tabs class (cl-tabs)", check: html.includes("cl-tabs") },
+  { name: "Tabs list class (cl-tabs__list)", check: html.includes("cl-tabs__list") },
+  { name: "Tabs trigger class (cl-tabs__trigger)", check: html.includes("cl-tabs__trigger") },
+  { name: "Tabs content class (cl-tabs__content)", check: html.includes("cl-tabs__content") },
+  // Navigation & Pagination (Wave 3)
+  { name: "Pagination class (cl-pagination)", check: html.includes("cl-pagination") },
+  { name: "Pagination list class (cl-pagination__list)", check: html.includes("cl-pagination__list") },
+  { name: "Pagination item class (cl-pagination__item)", check: html.includes("cl-pagination__item") },
+  { name: "Pagination prev class (cl-pagination__prev)", check: html.includes("cl-pagination__prev") },
+  { name: "Pagination next class (cl-pagination__next)", check: html.includes("cl-pagination__next") },
+  // Organisms & Combobox (Wave 3)
+  { name: "Combobox class (cl-combobox)", check: html.includes("cl-combobox") },
+  { name: "Combobox control class (cl-combobox__control)", check: html.includes("cl-combobox__control") },
+  { name: "Combobox input class (cl-combobox__input)", check: html.includes("cl-combobox__input") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -195,5 +313,5 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all 18 components (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );

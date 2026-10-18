@@ -213,19 +213,19 @@ When a component is disabled (`:disabled` or `[aria-disabled='true']` or `.is-di
 ├───────────────────────────────────┬────────────────────────────────────┤
 │ Prohibited Item                   │ Technical Reason                   │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Tailwind CSS                   │ Violates zero-dependency and       │
+│ [PROHIBITED] Tailwind CSS                   │ Violates zero-dependency and       │
 │                                   │ zero-config styling requirements;  │
 │                                   │ causes class collision bugs.       │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ !important in components       │ Breaks consumer customization and  │
+│ [PROHIBITED] !important in components       │ Breaks consumer customization and  │
 │                                   │ token cascading.                   │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Hardcoded Hex / RGB / Px       │ Breaks dark mode, custom themes,   │
+│ [PROHIBITED] Hardcoded Hex / RGB / Px       │ Breaks dark mode, custom themes,   │
 │                                   │ and accessibility zoom scales.     │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Global element selectors       │ Pollutes consumer DOM styles.      │
+│ [PROHIBITED] Global element selectors       │ Pollutes consumer DOM styles.      │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ ❌ Runtime CSS-in-JS (Emotion)    │ Breaks React 18/19 RSC, adds CPU   │
+│ [PROHIBITED] Runtime CSS-in-JS (Emotion)    │ Breaks React 18/19 RSC, adds CPU   │
 │                                   │ runtime overhead, causes FOUC.     │
 └───────────────────────────────────┴────────────────────────────────────┘
 ```

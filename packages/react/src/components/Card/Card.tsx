@@ -8,6 +8,8 @@ import { CardContext } from "./CardContext";
 import type {
   CardProps,
   CardHeaderProps,
+  CardTitleProps,
+  CardDescriptionProps,
   CardMediaProps,
   CardBodyProps,
   CardFooterProps,
@@ -46,13 +48,14 @@ const StyledCardRoot = styled("div", {
  *   </CardActions>
  * </Card>
  */
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  function Card(props, ref) {
+export const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(
+  function CardRoot(props, ref) {
     const {
       variant = "elevated",
       elevation = 1,
       size = "md",
       hoverable = false,
+      isClickable = false,
       square = false,
       asChild = false,
       component,
@@ -64,12 +67,16 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ...rest
     } = props;
 
+    const normalizedVariant = variant === "outline" ? "outlined" : variant;
+
     const cardClassName = classNames(
       "cl-card",
       `cl-card--${size}`,
-      `cl-card--${variant}`,
+      `cl-card--${normalizedVariant}`,
+      variant === "outline" && "cl-card--outline",
       square && "cl-card--square",
-      hoverable && "cl-card--hoverable",
+      (hoverable || isClickable) && "cl-card--hoverable",
+      isClickable && "cl-card--clickable",
       className
     );
 
@@ -79,8 +86,8 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <CardContext.Provider value={{ size }}>
         {asChild ? (
           <StyledCardRoot
-            as={Slot as any}
-            ref={ref as any}
+            as={Slot}
+            ref={ref}
             className={cardClassName}
             style={style}
             sx={sx}
@@ -91,7 +98,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ) : (
           <StyledCardRoot
             as={targetTag}
-            ref={ref as any}
+            ref={ref}
             className={cardClassName}
             style={style}
             sx={sx}
@@ -105,7 +112,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   }
 );
 
-Card.displayName = "Card";
+CardRoot.displayName = "Card";
 
 // ─── CardHeader Styled Components ────────────────────────────────────────────
 
@@ -147,8 +154,8 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
     if (asChild) {
       return (
         <StyledCardHeaderRoot
-          as={Slot as any}
-          ref={ref as any}
+          as={Slot}
+          ref={ref}
           className={headerClassName}
           style={style}
           sx={sx}
@@ -161,7 +168,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 
     return (
       <StyledCardHeaderRoot
-        ref={ref as any}
+        ref={ref}
         className={headerClassName}
         style={style}
         sx={sx}
@@ -255,7 +262,7 @@ export const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
     return (
       <StyledCardMediaRoot
         as={component}
-        ref={ref as any}
+        ref={ref}
         className={mediaClassName}
         style={mediaStyle}
         sx={sx}
@@ -292,7 +299,7 @@ export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
 
     return (
       <StyledCardBodyRoot
-        ref={ref as any}
+        ref={ref}
         className={bodyClassName}
         style={style}
         sx={sx}
@@ -332,7 +339,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 
     return (
       <StyledCardFooterRoot
-        ref={ref as any}
+        ref={ref}
         className={footerClassName}
         style={style}
         sx={sx}
@@ -363,17 +370,26 @@ const StyledCardActionsRoot = styled("div", {
  */
 export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
   function CardActions(props, ref) {
-    const { disableSpacing = false, children, className, style, sx, ...rest } = props;
+    const {
+      disableSpacing = false,
+      align = "start",
+      children,
+      className,
+      style,
+      sx,
+      ...rest
+    } = props;
     const actionsClassName = classNames(
       "cl-card__actions",
       "ChellaaCard-actions",
+      `cl-card__actions--align-${align}`,
       disableSpacing && "cl-card__actions--disable-spacing",
       className
     );
 
     return (
       <StyledCardActionsRoot
-        ref={ref as any}
+        ref={ref}
         className={actionsClassName}
         style={style}
         sx={sx}
@@ -386,3 +402,110 @@ export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
 );
 
 CardActions.displayName = "CardActions";
+
+// ─── CardTitle Styled Component ──────────────────────────────────────────────
+
+const StyledCardTitleRoot = styled("h3", {
+  name: "ChellaaCard",
+  slot: "Title",
+  shouldForwardProp: (prop) => prop !== "asChild",
+})({});
+
+// ─── CardTitle Component ─────────────────────────────────────────────────────
+
+/**
+ * Semantic heading component for a Card, typically rendered inside CardHeader.
+ * Supports `asChild` for slot delegation to custom heading levels.
+ */
+export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  function CardTitle({ asChild = false, className, children, style, sx, ...rest }, ref) {
+    const titleClassName = classNames("cl-card__title", className);
+    if (asChild) {
+      return (
+        <StyledCardTitleRoot
+          as={Slot}
+          ref={ref}
+          className={titleClassName}
+          style={style}
+          sx={sx}
+          {...rest}
+        >
+          {children}
+        </StyledCardTitleRoot>
+      );
+    }
+    return (
+      <StyledCardTitleRoot
+        ref={ref}
+        className={titleClassName}
+        style={style}
+        sx={sx}
+        {...rest}
+      >
+        {children}
+      </StyledCardTitleRoot>
+    );
+  }
+);
+
+CardTitle.displayName = "CardTitle";
+
+// ─── CardDescription Styled Component ────────────────────────────────────────
+
+const StyledCardDescriptionRoot = styled("p", {
+  name: "ChellaaCard",
+  slot: "Description",
+  shouldForwardProp: (prop) => prop !== "asChild",
+})({});
+
+// ─── CardDescription Component ───────────────────────────────────────────────
+
+/**
+ * Supporting subtext or subtitle paragraph for a Card.
+ * Supports `asChild` for slot delegation.
+ */
+export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  function CardDescription({ asChild = false, className, children, style, sx, ...rest }, ref) {
+    const descClassName = classNames("cl-card__description", "cl-card__desc", className);
+    if (asChild) {
+      return (
+        <StyledCardDescriptionRoot
+          as={Slot}
+          ref={ref}
+          className={descClassName}
+          style={style}
+          sx={sx}
+          {...rest}
+        >
+          {children}
+        </StyledCardDescriptionRoot>
+      );
+    }
+    return (
+      <StyledCardDescriptionRoot
+        ref={ref}
+        className={descClassName}
+        style={style}
+        sx={sx}
+        {...rest}
+      >
+        {children}
+      </StyledCardDescriptionRoot>
+    );
+  }
+);
+
+CardDescription.displayName = "CardDescription";
+
+// ─── Compound Export ─────────────────────────────────────────────────────────
+
+export const Card = Object.assign(CardRoot, {
+  Root: CardRoot,
+  Header: CardHeader,
+  Title: CardTitle,
+  Description: CardDescription,
+  Body: CardBody,
+  Footer: CardFooter,
+  Media: CardMedia,
+  Actions: CardActions,
+});

@@ -3,7 +3,7 @@ import { Grid } from "./Grid";
 import { Box } from "../Box";
 
 export default {
-  title: "Layout/Grid",
+  title: "Components/Layout/Grid",
   component: Grid,
   tags: ["autodocs"],
 };

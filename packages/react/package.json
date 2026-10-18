@@ -1,6 +1,6 @@
 {
   "name": "@chellaa/react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Production-grade, accessible, high-performance React component library and design system engine built with zero-runtime CSS custom properties.",
   "keywords": [
     "react",
@@ -112,6 +112,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@floating-ui/react": "^0.27.20",
     "clsx": "^2.1.1"
   }
 }

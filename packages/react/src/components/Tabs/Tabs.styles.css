@@ -1,0 +1,270 @@
+@layer cl-components {
+  /* ---------------------------------------------------------------------------
+   * Tabs Root
+   * ------------------------------------------------------------------------- */
+  .cl-tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cl-tabs--horizontal {
+    flex-direction: column;
+  }
+
+  .cl-tabs--vertical {
+    flex-direction: row;
+    gap: var(--cl-space-6, 24px);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Tabs List
+   * ------------------------------------------------------------------------- */
+  .cl-tabs__list {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cl-tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-tabs--horizontal .cl-tabs__list {
+    border-bottom: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+    gap: var(--cl-space-2, 8px);
+  }
+
+  .cl-tabs--vertical .cl-tabs__list {
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+    overflow-x: visible;
+    gap: var(--cl-space-1, 4px);
+    flex-shrink: 0;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Tabs Trigger (Base)
+   * ------------------------------------------------------------------------- */
+  .cl-tabs__trigger {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--cl-font-sans, inherit);
+    font-weight: var(--cl-font-weight-medium, 500);
+    color: var(--cl-color-fg-secondary, #475569);
+    outline: none;
+    white-space: nowrap;
+    text-decoration: none;
+    box-sizing: border-box;
+    user-select: none;
+    transition: color var(--cl-duration-fast, 150ms) ease,
+                background-color var(--cl-duration-fast, 150ms) ease,
+                border-color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-tabs__trigger:hover:not([disabled]):not([data-disabled]) {
+    color: var(--cl-color-fg-primary, #0f172a);
+  }
+
+  .cl-tabs__trigger[data-state="active"] {
+    color: var(--cl-color-primary-base, #4f46e5);
+    font-weight: var(--cl-font-weight-semibold, 600);
+  }
+
+  .cl-tabs__trigger:focus-visible {
+    outline: 2px solid var(--cl-color-primary-base, #4f46e5);
+    outline-offset: -2px;
+  }
+
+  .cl-tabs__trigger:disabled,
+  .cl-tabs__trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Sizes (sm, md, lg)
+   * ------------------------------------------------------------------------- */
+  .cl-tabs--sm .cl-tabs__trigger {
+    height: 32px;
+    font-size: 13px;
+    padding: var(--cl-space-1, 4px) var(--cl-space-3, 12px);
+  }
+
+  .cl-tabs--md .cl-tabs__trigger {
+    height: 40px;
+    font-size: var(--cl-font-sm, 14px);
+    padding: var(--cl-space-2, 8px) var(--cl-space-4, 16px);
+  }
+
+  .cl-tabs--lg .cl-tabs__trigger {
+    height: 48px;
+    font-size: var(--cl-font-base, 16px);
+    padding: 10px var(--cl-space-5, 20px);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Line (Default)
+   * ------------------------------------------------------------------------- */
+  .cl-tabs--line.cl-tabs--horizontal .cl-tabs__trigger[data-state="active"]::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--cl-color-primary-base, #4f46e5);
+    border-radius: 2px 2px 0 0;
+    transition: background-color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-tabs--line.cl-tabs--vertical .cl-tabs__trigger[data-state="active"]::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -1px;
+    width: 2px;
+    background-color: var(--cl-color-primary-base, #4f46e5);
+    border-radius: 0 2px 2px 0;
+    transition: background-color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Enclosed
+   * ------------------------------------------------------------------------- */
+  .cl-tabs--enclosed.cl-tabs--horizontal .cl-tabs__list {
+    gap: 2px;
+  }
+
+  .cl-tabs--enclosed.cl-tabs--horizontal .cl-tabs__trigger {
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: var(--cl-rad-md, 6px) var(--cl-rad-md, 6px) 0 0;
+    margin-bottom: -1px;
+  }
+
+  .cl-tabs--enclosed.cl-tabs--horizontal .cl-tabs__trigger:hover:not([disabled]):not([data-disabled]):not([data-state="active"]) {
+    background-color: var(--cl-color-bg-surface, rgba(0, 0, 0, 0.02));
+  }
+
+  .cl-tabs--enclosed.cl-tabs--horizontal .cl-tabs__trigger[data-state="active"] {
+    background-color: var(--cl-color-bg-canvas, #ffffff);
+    border-color: var(--cl-color-border-subtle, #e2e8f0);
+    border-bottom-color: var(--cl-color-bg-canvas, #ffffff);
+    color: var(--cl-color-primary-base, #4f46e5);
+    z-index: 1;
+  }
+
+  .cl-tabs--enclosed.cl-tabs--vertical .cl-tabs__trigger {
+    border: 1px solid transparent;
+    border-right: none;
+    border-radius: var(--cl-rad-md, 6px) 0 0 var(--cl-rad-md, 6px);
+    margin-right: -1px;
+  }
+
+  .cl-tabs--enclosed.cl-tabs--vertical .cl-tabs__trigger[data-state="active"] {
+    background-color: var(--cl-color-bg-canvas, #ffffff);
+    border-color: var(--cl-color-border-subtle, #e2e8f0);
+    border-right-color: var(--cl-color-bg-canvas, #ffffff);
+    color: var(--cl-color-primary-base, #4f46e5);
+    z-index: 1;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Pill
+   * ------------------------------------------------------------------------- */
+  .cl-tabs--pill .cl-tabs__list {
+    border-bottom: none;
+    border-right: none;
+    background-color: var(--cl-color-bg-muted, #f1f5f9);
+    padding: var(--cl-space-1, 4px);
+    border-radius: var(--cl-rad-lg, 8px);
+    gap: var(--cl-space-1, 4px);
+    display: inline-flex;
+    width: fit-content;
+  }
+
+  .cl-tabs--pill .cl-tabs__trigger {
+    border-radius: var(--cl-rad-md, 6px);
+  }
+
+  .cl-tabs--pill .cl-tabs__trigger[data-state="active"] {
+    background-color: var(--cl-color-bg-canvas, #ffffff);
+    color: var(--cl-color-fg-primary, #0f172a);
+    box-shadow: var(--cl-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Variant: Unstyled
+   * ------------------------------------------------------------------------- */
+  .cl-tabs--unstyled .cl-tabs__list {
+    border: none;
+    gap: 0;
+  }
+
+  .cl-tabs--unstyled .cl-tabs__trigger {
+    border: none;
+    background: transparent;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Tabs Content Panel
+   * ------------------------------------------------------------------------- */
+  .cl-tabs__content {
+    padding: var(--cl-space-4, 16px) 0;
+    outline: none;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    color: var(--cl-color-fg-primary, #0f172a);
+  }
+
+  .cl-tabs__content:focus-visible {
+    outline: 2px solid var(--cl-color-primary-base, #4f46e5);
+    outline-offset: 2px;
+    border-radius: var(--cl-rad-sm, 4px);
+  }
+
+  .cl-tabs__content[data-state="inactive"],
+  .cl-tabs__content[hidden] {
+    display: none !important;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Tabs Indicator (Track)
+   * ------------------------------------------------------------------------- */
+  .cl-tabs__indicator {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background-color: var(--cl-color-primary-base, #4f46e5);
+    transition: all var(--cl-duration-normal, 200ms) ease;
+    pointer-events: none;
+  }
+
+  .cl-tabs--vertical .cl-tabs__indicator {
+    bottom: auto;
+    right: -1px;
+    width: 2px;
+    height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-tabs__trigger,
+  .cl-tabs__trigger::after,
+  .cl-tabs__indicator {
+    transition-duration: 0.01ms !important;
+  }
+}

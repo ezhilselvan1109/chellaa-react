@@ -1,7 +1,7 @@
 # Workflow E: Representative Component Integration
 
 **Stage:** 5 of 8  
-**Status:** ⚪ PENDING  
+**Status:** PENDING  
 **Governing ADR:** ADR-011  
 
 ---

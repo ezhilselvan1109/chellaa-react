@@ -58,5 +58,9 @@ export interface TextareaProps
    * Additional HTML attributes forwarded to the native HTMLTextAreaElement.
    */
   textareaProps?: React.TextareaHTMLAttributes<HTMLTextAreaElement> | undefined;
+  /**
+   * Slotted child element when asChild is true
+   */
+  children?: React.ReactNode;
 }
 

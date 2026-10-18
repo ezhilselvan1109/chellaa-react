@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import { Flex } from "./Flex";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
@@ -100,5 +101,24 @@ describe("Flex Component", () => {
     expect(elem).toBeInTheDocument();
     expect(elem).not.toHaveAttribute("gap");
     expect(elem).not.toHaveAttribute("sx");
+  });
+
+  it("passes axe accessibility checks with 0 violations across layouts and polymorphism", async () => {
+    const { container } = render(
+      <main>
+        <Flex component="nav" aria-label="Main Navigation" gap={2}>
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+        </Flex>
+        <Flex asChild center>
+          <header>
+            <h1>Application Title</h1>
+          </header>
+        </Flex>
+      </main>
+    );
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Box } from "./Box";
 
 export default {
-  title: "Layout/Box",
+  title: "Components/Layout/Box",
   component: Box,
   tags: ["autodocs"],
 };

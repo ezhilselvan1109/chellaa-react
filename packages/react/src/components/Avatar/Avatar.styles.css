@@ -1,0 +1,233 @@
+@layer cl-components {
+  /* ---------------------------------------------------------------------------
+   * Avatar Root Surface
+   * ------------------------------------------------------------------------- */
+  .cl-avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    user-select: none;
+    background-color: var(--cl-color-bg-muted, var(--cl-palette-slate-100, #f1f5f9));
+    color: var(--cl-color-fg-secondary, var(--cl-palette-slate-700, #475569));
+    font-family: var(--cl-font-sans, inherit);
+    font-weight: var(--cl-font-weight-semibold, 600);
+    box-sizing: border-box;
+    vertical-align: middle;
+  }
+
+  /* Shapes */
+  .cl-avatar--circular {
+    border-radius: var(--cl-rad-full, 9999px);
+  }
+
+  .cl-avatar--rounded {
+    border-radius: var(--cl-rad-md, 6px);
+  }
+
+  .cl-avatar--square {
+    border-radius: var(--cl-rad-none, 0);
+  }
+
+  /* Sizes */
+  .cl-avatar--xs {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .cl-avatar--sm {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .cl-avatar--md {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .cl-avatar--lg {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .cl-avatar--xl {
+    width: 56px;
+    height: 56px;
+    font-size: 18px;
+  }
+
+  .cl-avatar--2xl {
+    width: 72px;
+    height: 72px;
+    font-size: 24px;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Avatar Image
+   * ------------------------------------------------------------------------- */
+  .cl-avatar__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Avatar Fallback
+   * ------------------------------------------------------------------------- */
+  .cl-avatar__fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: inherit;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Avatar Presence Badge
+   * ------------------------------------------------------------------------- */
+  .cl-avatar__badge {
+    position: absolute;
+    box-sizing: content-box;
+    border: 2px solid var(--cl-color-bg-surface, var(--cl-palette-white, #ffffff));
+    border-radius: var(--cl-rad-full, 9999px);
+    z-index: 1;
+  }
+
+  /* Badge placements */
+  .cl-avatar__badge--bottom-end {
+    bottom: 0;
+    right: 0;
+    transform: translate(15%, 15%);
+  }
+
+  .cl-avatar__badge--bottom-start {
+    bottom: 0;
+    left: 0;
+    transform: translate(-15%, 15%);
+  }
+
+  .cl-avatar__badge--top-end {
+    top: 0;
+    right: 0;
+    transform: translate(15%, -15%);
+  }
+
+  .cl-avatar__badge--top-start {
+    top: 0;
+    left: 0;
+    transform: translate(-15%, -15%);
+  }
+
+  /* Square / rounded placement adjustments */
+  .cl-avatar--square .cl-avatar__badge--bottom-end,
+  .cl-avatar--rounded .cl-avatar__badge--bottom-end {
+    transform: translate(25%, 25%);
+  }
+
+  .cl-avatar--square .cl-avatar__badge--bottom-start,
+  .cl-avatar--rounded .cl-avatar__badge--bottom-start {
+    transform: translate(-25%, 25%);
+  }
+
+  .cl-avatar--square .cl-avatar__badge--top-end,
+  .cl-avatar--rounded .cl-avatar__badge--top-end {
+    transform: translate(25%, -25%);
+  }
+
+  .cl-avatar--square .cl-avatar__badge--top-start,
+  .cl-avatar--rounded .cl-avatar__badge--top-start {
+    transform: translate(-25%, -25%);
+  }
+
+  /* Badge sizes aligned with optical scale */
+  .cl-avatar--xs .cl-avatar__badge {
+    width: 6px;
+    height: 6px;
+  }
+
+  .cl-avatar--sm .cl-avatar__badge {
+    width: 8px;
+    height: 8px;
+  }
+
+  .cl-avatar--md .cl-avatar__badge {
+    width: 10px;
+    height: 10px;
+  }
+
+  .cl-avatar--lg .cl-avatar__badge {
+    width: 12px;
+    height: 12px;
+  }
+
+  .cl-avatar--xl .cl-avatar__badge {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cl-avatar--2xl .cl-avatar__badge {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Badge statuses */
+  .cl-avatar__badge--online {
+    background-color: var(--cl-color-success-base, #10b981);
+  }
+
+  .cl-avatar__badge--offline {
+    background-color: var(--cl-color-neutral-base, #64748b);
+  }
+
+  .cl-avatar__badge--busy {
+    background-color: var(--cl-color-danger-base, #f43f5e);
+  }
+
+  .cl-avatar__badge--away {
+    background-color: var(--cl-color-warning-base, #f59e0b);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Avatar Group
+   * ------------------------------------------------------------------------- */
+  .cl-avatar-group {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .cl-avatar-group .cl-avatar {
+    margin-left: var(--cl-avatar-group-spacing, -8px);
+    border: 2px solid var(--cl-color-bg-surface, var(--cl-palette-white, #ffffff));
+    position: relative;
+  }
+
+  .cl-avatar-group .cl-avatar:first-child {
+    margin-left: 0;
+  }
+
+  .cl-avatar-group__excess {
+    background-color: var(--cl-color-bg-muted, var(--cl-palette-slate-200, #e2e8f0));
+    color: var(--cl-color-fg-secondary, var(--cl-palette-slate-700, #475569));
+    font-size: 0.85em;
+    font-weight: var(--cl-font-weight-semibold, 600);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-avatar__image {
+    transition: none !important;
+  }
+}

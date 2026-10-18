@@ -84,12 +84,23 @@ const StyledRippleSpan = styled("span", {
   backgroundColor: "currentColor",
   opacity: 0.3,
   animation: `${enterKeyframe} 550ms cubic-bezier(0.4, 0, 0.2, 1)`,
+  "@media (prefers-reduced-motion: reduce)": {
+    animationDuration: "1ms !important",
+    transitionDuration: "1ms !important",
+  },
   ...(pulsating && {
     animation: `${pulsateKeyframe} 2500ms ease-in-out infinite 200ms`,
+    "@media (prefers-reduced-motion: reduce)": {
+      animation: "none !important",
+    },
   }),
   ...(leaving && {
     opacity: 0,
     animation: `${exitKeyframe} 550ms cubic-bezier(0.4, 0, 0.2, 1) forwards`,
+    "@media (prefers-reduced-motion: reduce)": {
+      animationDuration: "1ms !important",
+      transitionDuration: "1ms !important",
+    },
   }),
 }));
 
@@ -102,6 +113,17 @@ export const TouchRipple = React.forwardRef<TouchRippleRef, TouchRippleProps>(
     const [ripples, setRipples] = React.useState<RippleItem[]>([]);
     const nextKey = React.useRef(0);
     const containerRef = React.useRef<HTMLSpanElement | null>(null);
+    const timeoutIdsRef = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+    const isMountedRef = React.useRef(true);
+
+    React.useEffect(() => {
+      isMountedRef.current = true;
+      return () => {
+        isMountedRef.current = false;
+        timeoutIdsRef.current.forEach((id) => clearTimeout(id));
+        timeoutIdsRef.current = [];
+      };
+    }, []);
 
     const start = React.useCallback(
       (
@@ -119,22 +141,37 @@ export const TouchRipple = React.forwardRef<TouchRippleRef, TouchRippleProps>(
         let rippleY: number;
         let rippleSize: number;
 
+        const nativeEvent = event?.nativeEvent;
+        let clientX: number | undefined;
+        let clientY: number | undefined;
+
         if (
-          center ||
-          !event ||
-          (event.nativeEvent as any).clientX === undefined
+          nativeEvent &&
+          "clientX" in nativeEvent &&
+          "clientY" in nativeEvent &&
+          typeof (nativeEvent as MouseEvent).clientX === "number" &&
+          typeof (nativeEvent as MouseEvent).clientY === "number"
         ) {
+          clientX = (nativeEvent as MouseEvent).clientX;
+          clientY = (nativeEvent as MouseEvent).clientY;
+        } else if (
+          nativeEvent &&
+          "touches" in nativeEvent &&
+          (nativeEvent as TouchEvent).touches &&
+          (nativeEvent as TouchEvent).touches.length > 0
+        ) {
+          const touch = (nativeEvent as TouchEvent).touches[0];
+          if (touch) {
+            clientX = touch.clientX;
+            clientY = touch.clientY;
+          }
+        }
+
+        if (center || clientX === undefined || clientY === undefined) {
           rippleX = Math.round(rect.width / 2);
           rippleY = Math.round(rect.height / 2);
           rippleSize = Math.max(rect.width, rect.height);
         } else {
-          const clientX =
-            (event.nativeEvent as any).clientX ??
-            (event.nativeEvent as any).touches?.[0]?.clientX;
-          const clientY =
-            (event.nativeEvent as any).clientY ??
-            (event.nativeEvent as any).touches?.[0]?.clientY;
-
           rippleX = Math.round(clientX - rect.left);
           rippleY = Math.round(clientY - rect.top);
 
@@ -169,10 +206,19 @@ export const TouchRipple = React.forwardRef<TouchRippleRef, TouchRippleProps>(
         return prev.map((ripple) => ({ ...ripple, leaving: true }));
       });
 
-      // Cleanup finished ripples after transition animation completes
-      setTimeout(() => {
+      const prefersReduced =
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const cleanupDelay = prefersReduced ? 10 : 550;
+
+      const timerId = setTimeout(() => {
+        if (!isMountedRef.current) return;
         setRipples((prev) => prev.filter((r) => !r.leaving));
-      }, 550);
+        timeoutIdsRef.current = timeoutIdsRef.current.filter((id) => id !== timerId);
+      }, cleanupDelay);
+
+      timeoutIdsRef.current.push(timerId);
     }, []);
 
     const pulsate = React.useCallback(() => {

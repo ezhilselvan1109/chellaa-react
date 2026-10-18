@@ -1,0 +1,175 @@
+@layer cl-components {
+  /* ---------------------------------------------------------------------------
+   * Accordion Root
+   * ------------------------------------------------------------------------- */
+  .cl-accordion {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  /* Visual Variants */
+  .cl-accordion--outline {
+    background-color: var(--cl-color-bg-canvas, #ffffff);
+    border: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+    border-radius: var(--cl-rad-lg, 8px);
+    box-shadow: var(--cl-shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+    overflow: hidden;
+  }
+
+  .cl-accordion--separated {
+    gap: var(--cl-space-3, 12px);
+  }
+
+  .cl-accordion--flush {
+    border: none;
+    background: transparent;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Accordion Item
+   * ------------------------------------------------------------------------- */
+  .cl-accordion__item {
+    box-sizing: border-box;
+  }
+
+  .cl-accordion--outline .cl-accordion__item {
+    border-bottom: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+  }
+  .cl-accordion--outline .cl-accordion__item:last-child {
+    border-bottom: none;
+  }
+
+  .cl-accordion--separated .cl-accordion__item {
+    background-color: var(--cl-color-bg-canvas, #ffffff);
+    border: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+    border-radius: var(--cl-rad-lg, 8px);
+    box-shadow: var(--cl-shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+    overflow: hidden;
+    transition: border-color var(--cl-duration-fast, 150ms) ease,
+                box-shadow var(--cl-duration-fast, 150ms) ease;
+  }
+  .cl-accordion--separated .cl-accordion__item:hover:not([data-disabled]) {
+    border-color: var(--cl-color-border-default, #cbd5e1);
+  }
+
+  .cl-accordion--flush .cl-accordion__item {
+    border-bottom: 1px solid var(--cl-color-border-subtle, #e2e8f0);
+  }
+  .cl-accordion--flush .cl-accordion__item:last-child {
+    border-bottom: none;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Accordion Header & Trigger
+   * ------------------------------------------------------------------------- */
+  .cl-accordion__header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  .cl-accordion__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--cl-space-4, 16px) var(--cl-space-5, 20px);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--cl-font-sans, inherit);
+    font-size: var(--cl-font-base, 16px);
+    font-weight: var(--cl-font-weight-medium, 500);
+    color: var(--cl-color-fg-primary, #0f172a);
+    text-align: left;
+    outline: none;
+    box-sizing: border-box;
+    transition: background-color var(--cl-duration-fast, 150ms) ease,
+                color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-accordion__trigger:hover:not([disabled]):not([data-disabled]) {
+    background-color: var(--cl-color-bg-surface, rgba(0, 0, 0, 0.02));
+  }
+
+  .cl-accordion__trigger[aria-expanded="true"],
+  .cl-accordion__trigger[data-state="open"] {
+    font-weight: var(--cl-font-weight-semibold, 600);
+  }
+
+  .cl-accordion__trigger:focus-visible {
+    outline: 2px solid var(--cl-color-primary-base, #4f46e5);
+    outline-offset: -2px;
+  }
+
+  .cl-accordion__trigger:disabled,
+  .cl-accordion__trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Accordion Chevron Icon
+   * ------------------------------------------------------------------------- */
+  .cl-accordion__icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: var(--cl-color-fg-muted, #64748b);
+    transition: transform var(--cl-duration-normal, 200ms) cubic-bezier(0.4, 0, 0.2, 1),
+                color var(--cl-duration-fast, 150ms) ease;
+  }
+
+  .cl-accordion__trigger:hover:not([disabled]):not([data-disabled]) .cl-accordion__icon {
+    color: var(--cl-color-fg-primary, #0f172a);
+  }
+
+  .cl-accordion__trigger[aria-expanded="true"] .cl-accordion__icon,
+  .cl-accordion__trigger[data-state="open"] .cl-accordion__icon {
+    transform: rotate(180deg);
+    color: var(--cl-color-primary-base, #4f46e5);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Modern CSS Grid Height Animation
+   * ------------------------------------------------------------------------- */
+  .cl-accordion__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows var(--cl-duration-normal, 200ms) cubic-bezier(0.4, 0, 0.2, 1),
+                visibility var(--cl-duration-normal, 200ms) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cl-accordion__content[data-state="open"] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  .cl-accordion__content[data-state="closed"] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+
+  .cl-accordion__inner {
+    overflow: hidden;
+    min-height: 0;
+    padding: 0 var(--cl-space-5, 20px) var(--cl-space-4, 16px) var(--cl-space-5, 20px);
+    color: var(--cl-color-fg-secondary, #475569);
+    font-size: var(--cl-font-sm, 14px);
+    line-height: 1.6;
+    box-sizing: border-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-accordion__content,
+  .cl-accordion__icon,
+  .cl-accordion__trigger {
+    transition-duration: 0.01ms !important;
+  }
+}

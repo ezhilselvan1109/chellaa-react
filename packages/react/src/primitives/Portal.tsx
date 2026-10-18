@@ -36,3 +36,5 @@ export function Portal({
 
   return ReactDOM.createPortal(children, portalContainer);
 }
+
+Portal.displayName = "Portal";

@@ -63,6 +63,54 @@ const mandatoryRules = [
   { name: "Class: cl-stack", check: combined.includes("cl-stack") },
   { name: "Class: cl-flex", check: combined.includes("cl-flex") },
   { name: "Class: cl-grid", check: combined.includes("cl-grid") },
+  // 8. Feedback & Alert (Wave 2B)
+  { name: "Class: cl-alert", check: combined.includes("cl-alert") },
+  { name: "Class: cl-alert__icon", check: combined.includes("cl-alert__icon") },
+  { name: "Class: cl-alert__title", check: combined.includes("cl-alert__title") },
+  { name: "Class: cl-alert__close", check: combined.includes("cl-alert__close") },
+  // 9. Toast / Snackbar (Wave 2B)
+  { name: "Class: cl-toast-container", check: combined.includes("cl-toast-container") },
+  { name: "Class: cl-toast", check: combined.includes("cl-toast") },
+  { name: "Class: cl-toast__close", check: combined.includes("cl-toast__close") },
+  { name: "Class: cl-toast__action", check: combined.includes("cl-toast__action") },
+  // 10. Visual Data Display & Identity (Wave 3)
+  { name: "Class: cl-avatar", check: combined.includes("cl-avatar") },
+  { name: "Class: cl-avatar-group", check: combined.includes("cl-avatar-group") },
+  { name: "Class: cl-avatar__badge", check: combined.includes("cl-avatar__badge") },
+  { name: "Class: cl-avatar__fallback", check: combined.includes("cl-avatar__fallback") },
+  // 11. Disclosure & Accordion (Wave 3)
+  { name: "Class: cl-accordion", check: combined.includes("cl-accordion") },
+  { name: "Class: cl-accordion__item", check: combined.includes("cl-accordion__item") },
+  { name: "Class: cl-accordion__header", check: combined.includes("cl-accordion__header") },
+  { name: "Class: cl-accordion__trigger", check: combined.includes("cl-accordion__trigger") },
+  { name: "Class: cl-accordion__content", check: combined.includes("cl-accordion__content") },
+  { name: "Class: cl-accordion__inner", check: combined.includes("cl-accordion__inner") },
+  { name: "Class: cl-accordion__icon", check: combined.includes("cl-accordion__icon") },
+  // 12. Navigation & Tabs (Wave 3)
+  { name: "Class: cl-tabs", check: combined.includes("cl-tabs") },
+  { name: "Class: cl-tabs__list", check: combined.includes("cl-tabs__list") },
+  { name: "Class: cl-tabs__trigger", check: combined.includes("cl-tabs__trigger") },
+  { name: "Class: cl-tabs__content", check: combined.includes("cl-tabs__content") },
+  { name: "Class: cl-tabs__indicator", check: combined.includes("cl-tabs__indicator") },
+  // 13. Navigation & Pagination (Wave 3)
+  { name: "Class: cl-pagination", check: combined.includes("cl-pagination") },
+  { name: "Class: cl-pagination__list", check: combined.includes("cl-pagination__list") },
+  { name: "Class: cl-pagination__item", check: combined.includes("cl-pagination__item") },
+  { name: "Class: cl-pagination__prev", check: combined.includes("cl-pagination__prev") },
+  { name: "Class: cl-pagination__next", check: combined.includes("cl-pagination__next") },
+  { name: "Class: cl-pagination__ellipsis", check: combined.includes("cl-pagination__ellipsis") },
+  { name: "Class: cl-pagination__size-select", check: combined.includes("cl-pagination__size-select") },
+  { name: "Class: cl-pagination__jumper", check: combined.includes("cl-pagination__jumper") },
+  // 14. Organisms & Combobox (Wave 3)
+  { name: "Class: cl-combobox", check: combined.includes("cl-combobox") },
+  { name: "Class: cl-combobox__control", check: combined.includes("cl-combobox__control") },
+  { name: "Class: cl-combobox__input", check: combined.includes("cl-combobox__input") },
+  { name: "Class: cl-combobox__trigger", check: combined.includes("cl-combobox__trigger") },
+  { name: "Class: cl-combobox__content", check: combined.includes("cl-combobox__content") },
+  { name: "Class: cl-combobox__item", check: combined.includes("cl-combobox__item") },
+  { name: "Class: cl-combobox__empty", check: combined.includes("cl-combobox__empty") },
+  { name: "Class: cl-combobox__tag", check: combined.includes("cl-combobox__tag") },
+  { name: "Class: cl-combobox__clear", check: combined.includes("cl-combobox__clear") },
 ];
 
 for (const rule of mandatoryRules) {

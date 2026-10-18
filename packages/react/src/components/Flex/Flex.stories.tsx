@@ -3,7 +3,7 @@ import { Flex } from "./Flex";
 import { Box } from "../Box";
 
 export default {
-  title: "Layout/Flex",
+  title: "Components/Layout/Flex",
   component: Flex,
   tags: ["autodocs"],
   argTypes: {

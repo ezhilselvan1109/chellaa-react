@@ -5,7 +5,7 @@ import { Paper } from "../components/Paper";
 import { ThemeProvider } from "../theme/ThemeProvider";
 
 export default {
-  title: "Feedback/TouchRipple",
+  title: "Components/Feedback/TouchRipple",
   component: TouchRipple,
   tags: ["autodocs"],
 };

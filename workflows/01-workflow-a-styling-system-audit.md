@@ -1,7 +1,7 @@
 # Workflow A: Styling System Audit
 
 **Stage:** 1 of 8  
-**Status:** 🟢 COMPLETED & VERIFIED  
+**Status:** COMPLETED & VERIFIED  
 **Governing ADR:** ADR-011  
 
 ---

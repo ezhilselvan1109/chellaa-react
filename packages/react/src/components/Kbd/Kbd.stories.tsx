@@ -6,7 +6,7 @@ import { Box } from "../Box";
 import { Typography } from "../Typography";
 
 export default {
-  title: "Layout/Kbd",
+  title: "Components/Data Display/Kbd",
   component: Kbd,
   tags: ["autodocs"],
   argTypes: {

@@ -4,6 +4,7 @@ import * as React from "react";
 import { styled } from "../../system/styled";
 import { Slot } from "../../primitives/Slot";
 import { classNames } from "../../utils/classNames";
+import { setRef } from "../../hooks/useMergeRefs";
 import { useFormField } from "../FormField/FormFieldContext";
 import type {
   InputProps,
@@ -80,17 +81,19 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
       value: valueProp,
       defaultValue,
       onChange,
-      type = "text",
+      type: typeProp,
       id: idProp,
       className,
       style,
       sx,
       inputProps,
       "aria-describedby": ariaDescribedByProp,
+      children,
       ...restInputProps
     } = props;
 
-    const id = idProp ?? formField?.id;
+    const id = idProp ?? (asChild ? undefined : formField?.id);
+    const type = typeProp ?? (asChild ? undefined : "text");
     const error = errorProp ?? formField?.error ?? false;
     const disabled = disabledProp ?? formField?.disabled ?? false;
     const readOnly = readOnlyProp ?? formField?.readOnly ?? false;
@@ -192,36 +195,37 @@ export const Input = React.forwardRef<HTMLDivElement, InputProps>(
 
     const targetTag = component || as;
 
+    const handleSlottedRef = React.useCallback(
+      (node: HTMLElement | null) => {
+        setRef(ref, node as HTMLDivElement | null);
+        setRef(inputRefProp, node as HTMLInputElement | null);
+        handleInputRef(node as HTMLInputElement | null);
+      },
+      [ref, inputRefProp, handleInputRef]
+    );
+
     if (asChild) {
       return (
-        <StyledInputRoot
-          as={Slot}
-          ref={ref as React.Ref<HTMLDivElement>}
+        <Slot
+          ref={handleSlottedRef}
           className={inputWrapperClassName}
           style={style}
-          sx={sx}
+          id={id}
+          type={type}
+          disabled={disabled || undefined}
+          readOnly={readOnly || undefined}
+          required={required || undefined}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={error ? true : undefined}
+          value={valueProp}
+          defaultValue={defaultValue}
+          onChange={handleChange}
           onClick={handleWrapperClick}
+          {...inputProps}
+          {...restInputProps}
         >
-          {startAdornment}
-          <input
-            ref={handleInputRef}
-            id={id}
-            type={type}
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-            aria-describedby={ariaDescribedBy}
-            value={valueProp}
-            defaultValue={defaultValue}
-            onChange={handleChange}
-            aria-invalid={error ? true : undefined}
-            className="cl-input__input"
-            {...inputProps}
-            {...restInputProps}
-          />
-          {clearButton}
-          {endAdornment}
-        </StyledInputRoot>
+          {children}
+        </Slot>
       );
     }
 

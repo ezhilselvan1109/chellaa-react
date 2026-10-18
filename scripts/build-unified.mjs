@@ -27,7 +27,7 @@ const playgroundDist = path.join(rootDir, "apps", "playground", "dist");
 const storybookDist = path.join(rootDir, "apps", "storybook", "dist");
 
 function run(command, cwd = rootDir) {
-  console.log(`\n🚀 Running: ${command} in ${cwd}`);
+  console.log(`\nRunning: ${command} in ${cwd}`);
   execSync(command, {
     cwd,
     stdio: "inherit",
@@ -83,7 +83,7 @@ fs.mkdirSync(targetStorybook, { recursive: true });
 fs.cpSync(storybookDist, targetStorybook, { recursive: true });
 
 console.log("\n=========================================");
-console.log("✅ Unified build complete!");
+console.log("Unified build complete!");
 console.log("   - Docs:       dist/index.html (/)");
 console.log("   - Playground: dist/playground/index.html (/playground/)");
 console.log("   - Storybook:  dist/storybook/index.html (/storybook/)");

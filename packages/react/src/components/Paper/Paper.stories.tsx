@@ -3,7 +3,7 @@ import { Paper } from "./Paper";
 import { Stack } from "../Stack";
 
 export default {
-  title: "Surfaces/Paper",
+  title: "Components/Layout/Paper",
   component: Paper,
   tags: ["autodocs"],
   argTypes: {

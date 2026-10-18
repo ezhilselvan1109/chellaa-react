@@ -122,7 +122,7 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
       return (
         <StyledDividerRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLHRElement>}
           className={dividerClassName}
           style={style}
           sx={sx}
@@ -142,7 +142,7 @@ export const Divider = React.forwardRef<HTMLElement, DividerProps>(
     return (
       <StyledDividerRoot
         as={targetTag}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLHRElement>}
         className={dividerClassName}
         style={style}
         sx={sx}

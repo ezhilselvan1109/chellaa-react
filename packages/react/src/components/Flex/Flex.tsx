@@ -194,7 +194,7 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       return (
         <StyledFlexRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={flexClassName}
           style={style}
           ownerState={ownerState}
@@ -210,7 +210,7 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       return (
         <StyledFlexRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={flexClassName}
           style={style}
           ownerState={ownerState}
@@ -224,7 +224,7 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
 
     return (
       <StyledFlexRoot
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={flexClassName}
         style={style}
         ownerState={ownerState}

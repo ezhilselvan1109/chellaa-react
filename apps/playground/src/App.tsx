@@ -120,7 +120,7 @@ function Header({ activeTab, setActiveTab }: HeaderProps) {
           size="sm"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
-          {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
         </Button>
         <Button asChild variant="solid" colorScheme="primary" size="sm">
           <a
@@ -479,7 +479,13 @@ function SurfacesSection() {
               <CardHeader
                 title="Chellaa React Hybrid Architecture"
                 subheader="Static CSS Layer + Dynamic Emotion"
-                avatar={<span style={{ fontSize: "1.5rem" }}>⚡</span>}
+                avatar={
+                  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "50%", background: "var(--cl-color-primary-subtle, #eff6ff)", color: "var(--cl-color-primary-base, #2563eb)" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                  </span>
+                }
                 action={
                   <Button size="xs" variant="ghost">
                     ⋮
@@ -773,7 +779,7 @@ function ScenarioForm() {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      setSubmitFeedback("✅ Profile configuration successfully updated!");
+      setSubmitFeedback("Profile configuration successfully updated.");
       setTimeout(() => setSubmitFeedback(null), 4000);
     }, 1200);
   };

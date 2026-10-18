@@ -57,6 +57,76 @@ const {
   Stack,
   Flex,
   Grid,
+  // 13. Headless Primitives (Wave 1)
+  Portal,
+  Slot,
+  // 14. Floating Overlays (Wave 2)
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  // 15. Feedback & Notification Primitives (Wave 2B)
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertCloseButton,
+  AlertIcon,
+  AlertAction,
+  AlertBody,
+  Snackbar,
+  Toast,
+  ToastProvider,
+  useToast,
+  // 17. Visual Data Display & Identity Primitives (Wave 3)
+  Avatar,
+  AvatarGroup,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  getInitials,
+  // 18. Disclosure Primitives (Wave 3)
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
+  // 19. Navigation Primitives (Wave 3)
+  Tabs,
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsIndicator,
+  // 20. Pagination Navigation Primitives (Wave 3)
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  getPaginationRange,
+  // 21. Combobox & Autocomplete Organisms (Wave 3)
+  Combobox,
+  Autocomplete,
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxTrigger,
+  ComboboxPortal,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxGroupLabel,
+  ComboboxEmpty,
+  ComboboxTag,
+  ComboboxClear,
+  useCombobox,
 } = require("@chellaa/react");
 
 console.log("[Benchmark Node CJS] Testing CommonJS require for all 18 library components...");
@@ -146,6 +216,117 @@ assertComponent("Stack", Stack);
 assertComponent("Flex", Flex);
 assertComponent("Grid", Grid);
 
+// 14. Headless Primitives (Wave 1)
+assertComponent("Portal", Portal);
+assertComponent("Slot", Slot);
+
+// 15. Floating Overlays (Wave 2)
+assertComponent("Tooltip", Tooltip);
+assertComponent("Popover", Popover);
+assertComponent("Popover.Trigger", PopoverTrigger);
+assertComponent("Popover.Content", PopoverContent);
+assertComponent("Popover.Close", PopoverClose);
+
+// 16. Feedback & Notification Primitives (Wave 2B)
+assertComponent("Alert", Alert);
+assertComponent("Alert.Root", Alert.Root);
+assertComponent("Alert.Icon", Alert.Icon);
+assertComponent("Alert.Title", Alert.Title);
+assertComponent("Alert.Description", Alert.Description);
+assertComponent("Alert.CloseButton", Alert.CloseButton);
+assertComponent("Alert.Action", Alert.Action);
+assertComponent("Alert.Body", Alert.Body);
+assertComponent("Snackbar", Snackbar);
+assertComponent("Toast", Toast);
+assertFunction("ToastProvider", ToastProvider);
+assertFunction("useToast", useToast);
+
+// 17. Visual Data Display & Identity Primitives (Wave 3)
+assertComponent("Avatar", Avatar);
+assertComponent("AvatarGroup", AvatarGroup);
+assertComponent("Avatar.Image", AvatarImage);
+assertComponent("Avatar.Fallback", AvatarFallback);
+assertComponent("Avatar.Badge", AvatarBadge);
+assertFunction("getInitials", getInitials);
+
+// 18. Disclosure Primitives (Wave 3)
+assertComponent("Accordion", Accordion);
+assertComponent("Accordion.Root", Accordion.Root);
+assertComponent("Accordion.Item", Accordion.Item);
+assertComponent("Accordion.Header", Accordion.Header);
+assertComponent("Accordion.Trigger", Accordion.Trigger);
+assertComponent("Accordion.Content", Accordion.Content);
+assertComponent("Accordion.Icon", Accordion.Icon);
+assertComponent("AccordionItem", AccordionItem);
+assertComponent("AccordionHeader", AccordionHeader);
+assertComponent("AccordionTrigger", AccordionTrigger);
+assertComponent("AccordionContent", AccordionContent);
+assertComponent("AccordionIcon", AccordionIcon);
+
+// 19. Navigation Primitives (Wave 3)
+assertComponent("Tabs", Tabs);
+assertComponent("Tabs.Root", Tabs.Root);
+assertComponent("Tabs.List", Tabs.List);
+assertComponent("Tabs.Trigger", Tabs.Trigger);
+assertComponent("Tabs.Content", Tabs.Content);
+assertComponent("Tabs.Indicator", Tabs.Indicator);
+assertComponent("TabsRoot", TabsRoot);
+assertComponent("TabsList", TabsList);
+assertComponent("TabsTrigger", TabsTrigger);
+assertComponent("TabsContent", TabsContent);
+assertComponent("TabsIndicator", TabsIndicator);
+
+// 20. Pagination Navigation Primitives (Wave 3)
+assertComponent("Pagination", Pagination);
+assertComponent("Pagination.Root", Pagination.Root);
+assertComponent("Pagination.List", Pagination.List);
+assertComponent("Pagination.Item", Pagination.Item);
+assertComponent("Pagination.Prev", Pagination.Prev);
+assertComponent("Pagination.Next", Pagination.Next);
+assertComponent("Pagination.First", Pagination.First);
+assertComponent("Pagination.Last", Pagination.Last);
+assertComponent("Pagination.Ellipsis", Pagination.Ellipsis);
+assertComponent("Pagination.SizeSelect", Pagination.SizeSelect);
+assertComponent("Pagination.Jumper", Pagination.Jumper);
+assertComponent("PaginationRoot", PaginationRoot);
+assertComponent("PaginationList", PaginationList);
+assertComponent("PaginationItem", PaginationItem);
+assertComponent("PaginationPrev", PaginationPrev);
+assertComponent("PaginationNext", PaginationNext);
+assertComponent("PaginationFirst", PaginationFirst);
+assertComponent("PaginationLast", PaginationLast);
+assertComponent("PaginationEllipsis", PaginationEllipsis);
+assertComponent("PaginationSizeSelect", PaginationSizeSelect);
+assertComponent("PaginationJumper", PaginationJumper);
+assertFunction("getPaginationRange", getPaginationRange);
+
+// 21. Combobox & Autocomplete Organisms (Wave 3)
+assertComponent("Combobox", Combobox);
+assertComponent("Autocomplete", Autocomplete);
+assertComponent("Combobox.Root", Combobox.Root);
+assertComponent("Combobox.Input", Combobox.Input);
+assertComponent("Combobox.Trigger", Combobox.Trigger);
+assertComponent("Combobox.Portal", Combobox.Portal);
+assertComponent("Combobox.Content", Combobox.Content);
+assertComponent("Combobox.Item", Combobox.Item);
+assertComponent("Combobox.Group", Combobox.Group);
+assertComponent("Combobox.GroupLabel", Combobox.GroupLabel);
+assertComponent("ComboboxEmpty", ComboboxEmpty);
+assertComponent("ComboboxTag", ComboboxTag);
+assertComponent("ComboboxClear", ComboboxClear);
+assertComponent("ComboboxRoot", ComboboxRoot);
+assertComponent("ComboboxInput", ComboboxInput);
+assertComponent("ComboboxTrigger", ComboboxTrigger);
+assertComponent("ComboboxPortal", ComboboxPortal);
+assertComponent("ComboboxContent", ComboboxContent);
+assertComponent("ComboboxItem", ComboboxItem);
+assertComponent("ComboboxGroup", ComboboxGroup);
+assertComponent("ComboboxGroupLabel", ComboboxGroupLabel);
+assertComponent("ComboboxEmpty", ComboboxEmpty);
+assertComponent("ComboboxTag", ComboboxTag);
+assertComponent("ComboboxClear", ComboboxClear);
+assertFunction("useCombobox", useCombobox);
+
 console.log(
-  "[Benchmark Node CJS] PASSED: All 18 library components and public symbols required cleanly in CommonJS without CSS syntax errors.",
+  "[Benchmark Node CJS] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox required cleanly in CommonJS without CSS syntax errors.",
 );

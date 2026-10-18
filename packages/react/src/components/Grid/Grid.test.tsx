@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import { Grid } from "./Grid";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
@@ -91,5 +92,31 @@ describe("Grid Component", () => {
     expect(elem).toBeInTheDocument();
     expect(elem).not.toHaveAttribute("spacing");
     expect(elem).not.toHaveAttribute("sx");
+  });
+
+  it("passes axe accessibility checks with 0 violations across layouts and polymorphism", async () => {
+    const { container } = render(
+      <main>
+        <Grid container component="section" aria-label="Feature Section" spacing={2}>
+          <Grid item xs={12} sm={6} component="article">
+            <h2>Feature 1</h2>
+            <p>Details about feature 1</p>
+          </Grid>
+          <Grid item xs={12} sm={6} component="article">
+            <h2>Feature 2</h2>
+            <p>Details about feature 2</p>
+          </Grid>
+        </Grid>
+        <Grid container asChild>
+          <ul aria-label="Items List">
+            <li>First element</li>
+            <li>Second element</li>
+          </ul>
+        </Grid>
+      </main>
+    );
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

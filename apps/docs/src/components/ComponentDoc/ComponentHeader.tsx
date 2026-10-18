@@ -69,7 +69,7 @@ export function ComponentHeader({
             endIcon={<FiExternalLink size={13} />}
           >
             <a
-              href={`${STORYBOOK_URL}/?path=/story/${storybookId}`}
+              href={`${STORYBOOK_URL.replace(/\/$/, "")}/?path=/story/${storybookId}`}
               target="_blank"
               rel="noreferrer"
             >

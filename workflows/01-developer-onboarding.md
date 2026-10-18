@@ -2,7 +2,7 @@
 
 ## Workflow 01: Developer Onboarding & Environment Setup
 
-**Document Status:** 🟢 COMPLETE & ENFORCED  
+**Document Status:** COMPLETE & ENFORCED  
 **Target Package:** `@chellaa/react`
 
 ---

@@ -1,6 +1,7 @@
-# Dialog (Modal) Component Specification
+# SPEC-004: Dialog (Modal) Component Specification
 
-**Document Status:** Approved & Baseline  
+**Document Identifier:** SPEC-004  
+**Document Status:** Approved & Implementation Ready  
 **Phase:** 3 — Component Specifications  
 **Target Package:** `@chellaa/react`  
 **Governing Standard:** [00-component-feature-matrix.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/00-component-feature-matrix.md) & [01-api-conventions.md](file:///d:/learning/Microservice/ui-componenet/chellaa-react/docs/specifications/01-api-conventions.md)
@@ -10,6 +11,7 @@
 ## 1. Identity
 
 ```text
+Specification ID:   SPEC-004
 Component Name:     Dialog (Canonical) / Modal (Compatibility Alias)
 Package Export:     import { Dialog, Modal } from "@chellaa/react";
 Category:           Overlays
@@ -540,19 +542,64 @@ Under `prefers-reduced-motion: reduce`:
 
 ---
 
-## 29. Acceptance Criteria
+## 29. Functional & Non-Functional Requirements
 
-- [ ] Focus strictly trapped inside dialog while open.
-- [ ] Focus restored to trigger element upon closing.
-- [ ] Escape key dismisses dialog.
-- [ ] Backdrop click dismisses dialog (when enabled).
-- [ ] Background scroll locked when dialog is open.
-- [ ] `aria-modal="true"`, `role="dialog"`, `aria-labelledby`, `aria-describedby` properly set.
-- [ ] Zero axe-core accessibility violations.
-- [ ] Styled in `@layer cl-components` using `--cl-*` tokens.
+### 29.1 Functional Requirements
+
+- **FR-DLG-01:** The component shall expose a compound component API: `Dialog.Root`, `Dialog.Trigger`, `Dialog.Portal`, `Dialog.Overlay`, `Dialog.Content`, `Dialog.Header`, `Dialog.Title`, `Dialog.Description`, `Dialog.Body`, `Dialog.Footer`, and `Dialog.Close`.
+- **FR-DLG-02:** The component shall provide an exact compatibility alias: `export const Modal = Dialog; export type ModalProps = DialogProps;`.
+- **FR-DLG-03:** The component shall support both controlled (`isOpen`, `onClose`) and uncontrolled (`defaultOpen`) visibility states.
+- **FR-DLG-04:** Overlays and content shall use static CSS centering per ADR-010 without external positioning math libraries, centering vertically and horizontally via `isCentered` (default `true`).
+- **FR-DLG-05:** While open, keyboard focus shall be strictly trapped inside `Dialog.Content` so `Tab` and `Shift+Tab` cycle within the container and never leak to the background document.
+- **FR-DLG-06:** The dialog shall support initial focus targeting via `initialFocusRef`, falling back to the first interactive element or the content container itself.
+- **FR-DLG-07:** Upon closure, keyboard focus shall be returned to the triggering element or explicit `finalFocusRef`.
+- **FR-DLG-08:** The dialog shall support dismissal via the `Escape` key (`closeOnEsc`, default `true`), overlay backdrop click (`closeOnOverlayClick`, default `true`), and explicit close button (`Dialog.Close`).
+- **FR-DLG-09:** While the dialog is open, background scrolling on `document.body` shall be locked, and safely unlocked on unmount or dismissal.
+- **FR-DLG-10:** The component shall provide semantic accessibility attributes: `role="dialog"`, `aria-modal="true"`, automatic ID linkage for `aria-labelledby` from `Dialog.Title` and `aria-describedby` from `Dialog.Description`.
+- **FR-DLG-11:** The component shall support 5 standardized spatial sizes (`sm`, `md`, `lg`, `xl`, `full`) mapped to design tokens.
+
+### 29.2 Non-Functional Requirements
+
+- **NFR-DLG-01:** Styling shall reside in static CSS under `@layer cl-components` using `--cl-*` design tokens with zero Tailwind or runtime CSS-in-JS.
+- **NFR-DLG-02:** The portal rendering shall be SSR-safe and hydration-safe, mounting DOM nodes only on the client.
+- **NFR-DLG-03:** Motion transitions shall collapse under `prefers-reduced-motion: reduce`.
+
+### 29.3 Requirements Traceability Matrix
+
+| Requirement ID | Description | Test Verification Case | Storybook Story |
+| --- | --- | --- | --- |
+| `FR-DLG-01` | Compound exports | `renders compound dialog structure correctly` | `Default` |
+| `FR-DLG-02` | Modal alias | `exports Modal alias identical to Dialog` | `ModalAlias` |
+| `FR-DLG-03` | Controlled/Uncontrolled | `supports controlled and uncontrolled open state` | `Controlled`, `Default` |
+| `FR-DLG-04` | ADR-010 static centering | `applies centered overlay class and static flex centering` | `Default`, `Sizes` |
+| `FR-DLG-05` | Focus trap | `traps Tab and Shift+Tab navigation within content` | `Default`, `FormDialog` |
+| `FR-DLG-06` | Initial focus | `focuses initialFocusRef element on open` | `InitialFocus` |
+| `FR-DLG-07` | Focus restoration | `restores focus to trigger element on close` | `Default` |
+| `FR-DLG-08` | Dismissal physics | `dismisses on Escape and backdrop click` | `Default` |
+| `FR-DLG-09` | Body scroll locking | `locks and restores document.body overflow` | `ScrollingContent` |
+| `FR-DLG-10` | WAI-ARIA semantics | `passes axe-core accessibility checks and links titles/desc` | `Default`, `FormDialog` |
+| `FR-DLG-11` | Size scale | `applies sm, md, lg, xl, full size modifier classes` | `Sizes` |
+| `NFR-DLG-01` | CSS Layering & Tokens | `uses .cl-dialog classes and token variables` | Visual Inspection |
+| `NFR-DLG-02` | SSR / Hydration | `does not render portal during SSR / before mount` | SSR Suite |
+| `NFR-DLG-03` | Reduced motion | `collapses animation duration under reduced motion query` | Visual Inspection |
 
 ---
 
-## 30. Definition of Done
+## 30. Acceptance Criteria
 
-The Dialog/Modal specification is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 4 implementation.
+- [x] Compound components exported and fully typed.
+- [x] `Modal` exported as exact compatibility alias.
+- [x] Focus strictly trapped inside dialog while open.
+- [x] Focus restored to trigger element upon closing.
+- [x] Escape key dismisses dialog.
+- [x] Backdrop click dismisses dialog (when enabled).
+- [x] Background scroll locked when dialog is open.
+- [x] `aria-modal="true"`, `role="dialog"`, `aria-labelledby`, `aria-describedby` properly set.
+- [x] Zero axe-core accessibility violations.
+- [x] Styled in `@layer cl-components` using `--cl-*` tokens.
+
+---
+
+## 31. Definition of Done
+
+The Dialog/Modal specification (SPEC-004) is approved, hardened against reference libraries, verified for cross-document consistency, and ready for Phase 4 implementation.

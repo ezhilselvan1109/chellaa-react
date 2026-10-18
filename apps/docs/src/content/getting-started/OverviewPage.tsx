@@ -3,7 +3,21 @@ import { Button } from "@chellaa/react";
 import { FiZap, FiShield, FiLayers, FiArrowRight } from "react-icons/fi";
 import { LuPalette } from "react-icons/lu";
 
-export function OverviewPage() {
+interface OverviewPageProps {
+  onNavigate?: (path: string) => void;
+}
+
+export function OverviewPage({ onNavigate }: OverviewPageProps = {}) {
+  const handleLinkClick = (path: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(path);
+    } else {
+      window.history.pushState(null, "", path);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    }
+  };
+
   return (
     <article className="docs-page">
       <h1>Chellaa React Overview</h1>
@@ -19,17 +33,21 @@ export function OverviewPage() {
         properties and zero-runtime overhead.
       </p>
 
-      <div style={{ display: "flex", gap: "16px", margin: "24px 0" }}>
+      <div style={{ display: "flex", gap: "16px", margin: "24px 0", flexWrap: "wrap" }}>
         <Button
           asChild
           variant="solid"
           colorScheme="primary"
           endIcon={<FiArrowRight size={14} />}
         >
-          <a href="#/installation">Get Started</a>
+          <a href="/installation" onClick={handleLinkClick("/installation")}>
+            Get Started
+          </a>
         </Button>
         <Button asChild variant="outline">
-          <a href="#/components/button">Explore Components</a>
+          <a href="/components/button" onClick={handleLinkClick("/components/button")}>
+            Explore Components
+          </a>
         </Button>
       </div>
 

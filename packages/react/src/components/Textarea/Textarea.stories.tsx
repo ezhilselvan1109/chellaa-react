@@ -5,7 +5,7 @@ import { Box } from "../Box";
 import { Typography } from "../Typography";
 
 export default {
-  title: "Forms/Textarea",
+  title: "Components/Forms & Inputs/Textarea",
   component: Textarea,
   tags: ["autodocs"],
   argTypes: {

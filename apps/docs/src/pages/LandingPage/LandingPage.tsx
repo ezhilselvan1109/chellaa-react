@@ -52,6 +52,11 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
     "pnpm" | "npm" | "yarn" | "bun"
   >("pnpm");
 
+  const [step3Variant, setStep3Variant] = React.useState<
+    "solid" | "outline" | "subtle" | "ghost"
+  >("solid");
+  const [step3Count, setStep3Count] = React.useState(0);
+
   const stepCommands = {
     pnpm: "pnpm add @chellaa/react",
     npm: "npm install @chellaa/react",
@@ -82,7 +87,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           }}
         >
           <span className="landing-badge-pill">NEW</span>
-          <span>Chellaa React v0.2.1 Released — Zero-Config Styling</span>
+          <span>Chellaa React v0.2.2 Released — Zero-Config Styling</span>
           <FiArrowRight size={13} />
         </a>
 
@@ -318,97 +323,113 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* Quick Start Code Walkthrough */}
       <section className="landing-quickstart-section">
         <div className="landing-section-header">
-          <span className="landing-section-tag">Developer Experience</span>
+          <span className="landing-section-tag">DEVELOPER EXPERIENCE</span>
           <h2 className="landing-section-title">
             Get Up and Running in 3 Steps
           </h2>
           <p className="landing-section-desc">
-            Start building accessible, responsive interfaces in minutes.
+            Start building accessible, responsive interfaces in minutes. Zero
+            CSS-in-JS runtime overhead and zero complex build plugins.
           </p>
         </div>
 
         <div className="landing-steps-container">
           {/* Step 1 */}
           <div className="landing-step-card">
-            <div className="landing-step-num">1</div>
-            <div className="landing-step-content">
-              <h3 className="landing-step-title">Install the Package</h3>
-              <p className="landing-step-desc">
-                Add <code>@chellaa/react</code> to your existing React 18 or 19
-                project using your package manager of choice.
-              </p>
-              <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
-                {(["pnpm", "npm", "yarn", "bun"] as const).map((pkg) => (
-                  <button
-                    key={pkg}
-                    type="button"
-                    onClick={() => setStepPkg(pkg)}
-                    style={{
-                      padding: "5px 12px",
-                      borderRadius: "6px",
-                      border: "1px solid var(--docs-border)",
-                      backgroundColor:
-                        stepPkg === pkg
-                          ? "var(--docs-primary-bg)"
-                          : "var(--docs-surface)",
-                      color:
-                        stepPkg === pkg
-                          ? "var(--docs-primary)"
-                          : "var(--docs-text-muted)",
-                      fontWeight: stepPkg === pkg ? 700 : 500,
-                      fontSize: "0.8rem",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    {pkg.toUpperCase()}
-                  </button>
-                ))}
+            <div className="landing-step-card-header">
+              <div className="landing-step-meta">
+                <span className="landing-step-pill">Step 01</span>
+                <h3 className="landing-step-title">Install @chellaa/react</h3>
               </div>
-              <CodeBlock
-                code={stepCommands[stepPkg]}
-                language="bash"
-                title={`${stepPkg.toUpperCase()} TERMINAL`}
-              />
+              <span className="landing-step-category">Package Manager</span>
+            </div>
+
+            <p className="landing-step-desc">
+              Add <code>@chellaa/react</code> to your existing React 18 or 19
+              application using your package manager of choice.
+            </p>
+
+            <div className="landing-pkg-switcher" role="tablist" aria-label="Package Manager">
+              {(["pnpm", "npm", "yarn", "bun"] as const).map((pkg) => (
+                <button
+                  key={pkg}
+                  type="button"
+                  role="tab"
+                  aria-selected={stepPkg === pkg}
+                  onClick={() => setStepPkg(pkg)}
+                  className={`landing-pkg-btn ${stepPkg === pkg ? "active" : ""}`}
+                >
+                  {pkg.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <CodeBlock
+              code={stepCommands[stepPkg]}
+              language="bash"
+              title={`${stepPkg.toUpperCase()} TERMINAL`}
+            />
+
+            <div className="landing-step-info-row">
+              <span><strong>Peer Requirements:</strong> React &ge; 18.2.0, React-DOM &ge; 18.2.0</span>
+              <span><strong>TypeScript:</strong> Built-in full type definitions</span>
             </div>
           </div>
 
           {/* Step 2 */}
           <div className="landing-step-card">
-            <div className="landing-step-num">2</div>
-            <div className="landing-step-content">
-              <h3 className="landing-step-title">Wrap with ThemeProvider</h3>
-              <p className="landing-step-desc">
-                Enables automatic theme management, dark mode, and design token
-                propagation.
-              </p>
-              <CodeBlock
-                code={`import { ThemeProvider } from "@chellaa/react";
+            <div className="landing-step-card-header">
+              <div className="landing-step-meta">
+                <span className="landing-step-pill">Step 02</span>
+                <h3 className="landing-step-title">Wrap with ThemeProvider</h3>
+              </div>
+              <span className="landing-step-category">Root Context</span>
+            </div>
 
-export function AppRoot({ children }) {
+            <p className="landing-step-desc">
+              Mount <code>&lt;ThemeProvider&gt;</code> at your application root. It automatically
+              synchronizes with system dark mode, prevents SSR theme flicker (FOUC), and cascades
+              3-tier CSS variables without JavaScript runtime overhead.
+            </p>
+
+            <CodeBlock
+              code={`import { ThemeProvider } from "@chellaa/react";
+
+export function AppRoot({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="system">
+    <ThemeProvider defaultTheme="system" enableSystem>
       {children}
     </ThemeProvider>
   );
 }`}
-                language="tsx"
-                title="Root Layout"
-              />
+              language="tsx"
+              title="AppRoot.tsx"
+            />
+
+            <div className="landing-step-info-row">
+              <span><strong>Zero-Config:</strong> CSS styles are delivered automatically</span>
+              <span><strong>Modes:</strong> Light, Dark, System Automatic</span>
             </div>
           </div>
 
           {/* Step 3 */}
           <div className="landing-step-card">
-            <div className="landing-step-num">3</div>
-            <div className="landing-step-content">
-              <h3 className="landing-step-title">Import &amp; Render</h3>
-              <p className="landing-step-desc">
-                Import any component directly. Styles are delivered
-                automatically with zero manual CSS imports!
-              </p>
-              <CodeBlock
-                code={`import { Button, ButtonGroup } from "@chellaa/react";
+            <div className="landing-step-card-header">
+              <div className="landing-step-meta">
+                <span className="landing-step-pill">Step 03</span>
+                <h3 className="landing-step-title">Import &amp; Compose Components</h3>
+              </div>
+              <span className="landing-step-category">Interactive UI</span>
+            </div>
+
+            <p className="landing-step-desc">
+              Import production-ready components and use them directly in your views.
+              Polymorphic <code>asChild</code> composition, full keyboard navigation,
+              and design token color schemes work out of the box.
+            </p>
+
+            <CodeBlock
+              code={`import { Button, ButtonGroup } from "@chellaa/react";
 
 export function ActionToolbar() {
   return (
@@ -419,59 +440,67 @@ export function ActionToolbar() {
     </ButtonGroup>
   );
 }`}
-                language="tsx"
-                title="ActionToolbar.tsx"
-              />
+              language="tsx"
+              title="ActionToolbar.tsx"
+            />
 
-              {/* Live Rendered Component Result */}
-              <div
-                style={{
-                  marginTop: "12px",
-                  padding: "16px 20px",
-                  borderRadius: "10px",
-                  background: "var(--docs-surface)",
-                  border: "1px solid var(--docs-border)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "12px",
-                }}
-              >
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "50%",
-                      backgroundColor: "#10b981",
-                      boxShadow: "0 0 8px #10b981",
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "0.82rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.04em",
-                      color: "var(--docs-text-muted)",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Live Rendered Component
-                  </span>
+            {/* Live Interactive Playground */}
+            <div className="landing-step-live-panel">
+              <div className="landing-step-live-header">
+                <div className="landing-step-live-indicator">
+                  <span className="landing-step-live-dot" />
+                  <span>Interactive Live Preview</span>
                 </div>
 
-                <ButtonGroup isAttached variant="solid" colorScheme="primary">
-                  <Button size="sm">Create</Button>
-                  <Button size="sm">Edit</Button>
-                  <Button size="sm" colorScheme="danger">
-                    Delete
+                <div className="landing-step-live-controls">
+                  {(["solid", "outline", "subtle", "ghost"] as const).map((variant) => (
+                    <button
+                      key={variant}
+                      type="button"
+                      onClick={() => setStep3Variant(variant)}
+                      className={`landing-step-live-control-btn ${step3Variant === variant ? "active" : ""}`}
+                    >
+                      {variant}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="landing-step-live-stage">
+                <ButtonGroup isAttached variant={step3Variant} colorScheme="primary">
+                  <Button
+                    size="sm"
+                    onClick={() => setStep3Count((c) => c + 1)}
+                  >
+                    Click Me ({step3Count})
+                  </Button>
+                  <Button
+                    size="sm"
+                    colorScheme="neutral"
+                    onClick={() => setStep3Count(0)}
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    size="sm"
+                    colorScheme="danger"
+                    onClick={() => setStep3Count((c) => Math.max(0, c - 1))}
+                  >
+                    Decrement
                   </Button>
                 </ButtonGroup>
               </div>
+            </div>
+
+            <div style={{ marginTop: "20px", display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                variant="outline"
+                size="sm"
+                endIcon={<FiArrowRight size={13} />}
+                onClick={() => onNavigate("/overview")}
+              >
+                Explore Full Documentation
+              </Button>
             </div>
           </div>
         </div>

@@ -10,9 +10,9 @@ interface CalloutProps {
 export function Callout({ type = "info", title, children }: CalloutProps) {
   const configs = {
     info: {
-      border: "var(--cl-color-primary-base, #3b82f6)",
-      bg: "rgba(59, 130, 246, 0.08)",
-      icon: <FiInfo size={18} style={{ color: "#3b82f6" }} />,
+      border: "var(--cl-color-primary-base, #4f46e5)",
+      bg: "var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.08))",
+      icon: <FiInfo size={18} style={{ color: "var(--cl-color-primary-base, #4f46e5)" }} />,
       title: title || "Note",
     },
     warning: {

@@ -2,7 +2,7 @@
 
 ## Document 06: Multi-Tier Component Validation & Environment Taxonomy
 
-**Document Status:** 🟢 COMPLETE & ENFORCED  
+**Document Status:** COMPLETE & ENFORCED  
 **Phase:** 16 — Component Validation Architecture  
 **Target Package:** `@chellaa/react`  
 **Governing Standard:** Phase 2 Engineering Standards & ADR-007
@@ -173,7 +173,7 @@ To prevent engineering fatigue and duplicated maintenance:
             pnpm --filter @chellaa/docs build
                         │
                         ▼
-                 All Gates Passed 🟢
+                 All Gates Passed [PASS]
 ```
 
 ---

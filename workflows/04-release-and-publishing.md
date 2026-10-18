@@ -2,7 +2,7 @@
 
 ## Workflow 04: Automated Release & NPM Publishing
 
-**Document Status:** 🟢 COMPLETE & ENFORCED  
+**Document Status:** COMPLETE & ENFORCED  
 **Target Package:** `@chellaa/react`
 
 ---

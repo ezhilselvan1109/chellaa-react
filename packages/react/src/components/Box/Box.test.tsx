@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import { Box } from "./Box";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
@@ -81,5 +82,24 @@ describe("Box Component", () => {
     expect(elem).toHaveAttribute("aria-label", "Test Region");
     expect(elem).toHaveClass("cl-box");
     expect(ref.current).toBe(elem);
+  });
+
+  it("passes axe accessibility checks with 0 violations across variants and polymorphism", async () => {
+    const { container } = render(
+      <main>
+        <Box component="section" aria-label="Overview Section">
+          <h2>Overview</h2>
+          <p>Description text inside accessible box.</p>
+        </Box>
+        <Box asChild>
+          <nav aria-label="Secondary Navigation">
+            <a href="#link1">Link 1</a>
+          </nav>
+        </Box>
+      </main>
+    );
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

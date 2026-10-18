@@ -1,0 +1,89 @@
+@layer cl-components {
+  .cl-tooltip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: var(--cl-z-tooltip, 1400);
+    max-width: var(--cl-size-tooltip-max, 320px);
+    padding: var(--cl-space-1, 4px) var(--cl-space-2, 8px);
+    font-family: var(--cl-font-family-sans, system-ui, -apple-system, sans-serif);
+    font-size: var(--cl-font-size-xs, 12px);
+    line-height: var(--cl-line-height-tight, 1.4);
+    font-weight: var(--cl-font-weight-medium, 500);
+    color: var(--cl-color-text-inverse, #ffffff);
+    background-color: var(--cl-color-bg-inverse, #0f172a);
+    border: 1px solid var(--cl-color-border-subtle, rgba(255, 255, 255, 0.1));
+    border-radius: var(--cl-radius-sm, 4px);
+    box-shadow: var(--cl-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1));
+    pointer-events: auto;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    transition: opacity var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+                transform var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .cl-tooltip[data-state="closed"] {
+    opacity: 0;
+    transform: scale(0.96);
+    pointer-events: none;
+  }
+
+  .cl-tooltip[data-state="open"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .cl-tooltip__label {
+    display: inline-block;
+  }
+
+  .cl-tooltip__arrow {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: inherit;
+    border: inherit;
+    transform: rotate(45deg);
+    box-sizing: border-box;
+  }
+
+  .cl-tooltip[data-placement^="top"] > .cl-tooltip__arrow {
+    bottom: -3px;
+    border-top: none;
+    border-left: none;
+  }
+
+  .cl-tooltip[data-placement^="bottom"] > .cl-tooltip__arrow {
+    top: -3px;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  .cl-tooltip[data-placement^="left"] > .cl-tooltip__arrow {
+    right: -3px;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .cl-tooltip[data-placement^="right"] > .cl-tooltip__arrow {
+    left: -3px;
+    border-right: none;
+    border-top: none;
+  }
+
+  .cl-tooltip__shortcut {
+    margin-left: var(--cl-space-2, 8px);
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl-tooltip {
+      transition: none;
+      transform: none !important;
+    }
+  }
+}

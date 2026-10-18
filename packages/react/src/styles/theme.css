@@ -135,10 +135,26 @@
     --cl-paper-bg: var(--cl-color-bg-canvas);
     --cl-paper-border: var(--cl-color-border-subtle);
 
+    /* Form Controls: Select */
+    --cl-select-bg: var(--cl-color-bg-canvas);
+    --cl-select-fg: var(--cl-color-fg-primary);
+    --cl-select-border: var(--cl-color-border-default);
+    --cl-select-focus-border: var(--cl-color-primary-base);
+    --cl-select-menu-bg: var(--cl-color-bg-elev);
+    --cl-select-menu-border: var(--cl-color-border-default);
+    --cl-select-item-hover-bg: var(--cl-color-primary-subtle);
+    --cl-select-item-hover-fg: var(--cl-color-primary-base);
+    --cl-select-item-selected-bg: rgba(99, 102, 241, 0.12);
+    --cl-select-item-selected-fg: var(--cl-color-primary-base);
+
     /* Modals & Dialogs */
     --cl-dialog-bg: var(--cl-color-bg-elev);
     --cl-dialog-border: var(--cl-color-border-subtle);
     --cl-dialog-backdrop: var(--cl-color-backdrop);
+
+    /* Floating Overlays: Popover */
+    --cl-popover-bg: var(--cl-color-bg-elev);
+    --cl-popover-border: var(--cl-color-border-subtle);
 
     /* Data Display: Badge, Table, Kbd, Divider */
     --cl-badge-default-bg: var(--cl-color-primary-subtle);
@@ -153,6 +169,29 @@
     --cl-kbd-border: var(--cl-color-border-default);
 
     --cl-divider-color: var(--cl-color-border-subtle);
+
+    /* -------------------------------------------------------------------------
+     * Semantic Compatibility Aliases & Component Dimensions
+     * ----------------------------------------------------------------------- */
+    --cl-color-text-primary: var(--cl-color-fg-primary);
+    --cl-color-text-secondary: var(--cl-color-fg-secondary);
+    --cl-color-text-muted: var(--cl-color-fg-muted);
+    --cl-color-text-inverse: var(--cl-color-fg-inverse);
+    --cl-color-bg-inverse: var(--cl-palette-slate-900);
+    --cl-color-bg-subtle: var(--cl-color-bg-surface);
+    --cl-color-bg-hover: var(--cl-color-bg-muted);
+    --cl-color-border-sub: var(--cl-color-border-subtle);
+    --cl-color-fg-second: var(--cl-color-fg-secondary);
+    --cl-color-primary: var(--cl-color-primary-base);
+    --cl-color-primary-solid: var(--cl-color-primary-base);
+    --cl-color-focus: var(--cl-color-primary-base);
+    --cl-color-error-base: var(--cl-color-danger-base);
+    --cl-color-error-subtle: var(--cl-color-danger-subtle);
+
+    --cl-size-tooltip-max: 320px;
+    --cl-size-popover-max: 400px;
+    --cl-size-toast-max: 420px;
+    --cl-avatar-group-spacing: -8px;
   }
 
   /* ---------------------------------------------------------------------------
@@ -250,8 +289,27 @@
     --cl-paper-bg: var(--cl-palette-slate-900);
     --cl-dialog-bg: var(--cl-palette-slate-900);
     --cl-dialog-border: var(--cl-palette-slate-800);
+    --cl-popover-bg: var(--cl-palette-slate-900);
+    --cl-popover-border: var(--cl-palette-slate-800);
+    --cl-select-bg: var(--cl-palette-slate-900);
+    --cl-select-fg: var(--cl-palette-slate-50);
+    --cl-select-border: var(--cl-palette-slate-700);
+    --cl-select-focus-border: var(--cl-palette-indigo-500);
+    --cl-select-menu-bg: var(--cl-palette-slate-800);
+    --cl-select-menu-border: var(--cl-palette-slate-700);
+    --cl-select-item-hover-bg: rgba(99, 102, 241, 0.16);
+    --cl-select-item-hover-fg: var(--cl-palette-indigo-200);
+    --cl-select-item-selected-bg: rgba(99, 102, 241, 0.25);
+    --cl-select-item-selected-fg: var(--cl-palette-indigo-100);
     --cl-kbd-bg: var(--cl-palette-slate-900);
     --cl-table-header-bg: #131b2e;
     --cl-table-row-hover-bg: var(--cl-palette-slate-800);
+
+    /* Semantic Compatibility Overrides for Dark Mode */
+    --cl-color-bg-inverse: var(--cl-palette-slate-100);
+    --cl-color-text-inverse: var(--cl-palette-slate-900);
+    --cl-color-bg-hover: var(--cl-palette-slate-800);
+    --cl-color-border-sub: var(--cl-palette-slate-800);
+    --cl-color-fg-second: var(--cl-palette-slate-300);
   }
 }

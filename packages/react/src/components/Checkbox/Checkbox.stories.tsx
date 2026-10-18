@@ -10,7 +10,7 @@ import { FormHelperText } from "../FormField/FormHelperText";
 import { FormErrorMessage } from "../FormField/FormErrorMessage";
 
 export default {
-  title: "Forms/Checkbox",
+  title: "Components/Forms & Inputs/Checkbox",
   component: Checkbox,
   subcomponents: { CheckboxGroup },
   tags: ["autodocs"],

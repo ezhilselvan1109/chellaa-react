@@ -1,5 +1,6 @@
 import { ComponentDocLayout } from "../../components/ComponentDoc/ComponentDocLayout";
 import { ApiTable, PropRow } from "../../components/ComponentDoc/ApiTable";
+import { AccessibilitySection } from "../../components/ComponentDoc/AccessibilitySection";
 import { CodeBlock } from "../../components/Common/CodeBlock";
 import { Kbd, Flex, Text, Box } from "@chellaa/react";
 
@@ -8,6 +9,7 @@ export const kbdToc = [
   { id: "basic-usage", title: "Basic Usage" },
   { id: "modifier-keys", title: "Modifier Keys" },
   { id: "variants-sizes", title: "Variants & Sizes" },
+  { id: "accessibility", title: "Accessibility" },
   { id: "api-reference", title: "API Reference" },
 ];
 
@@ -16,7 +18,7 @@ const kbdPropsData: PropRow[] = [
     name: "modifier",
     type: '"command" | "shift" | "ctrl" | "option" | "alt" | "enter" | "backspace" | "escape" | "tab"',
     default: "undefined",
-    description: "Renders standardized platform shortcut symbol automatically.",
+    description: "Renders standardized platform shortcut symbol automatically (e.g. ⌘, ⇧, ⌃, ⌥, ↵).",
   },
   {
     name: "variant",
@@ -30,14 +32,55 @@ const kbdPropsData: PropRow[] = [
     default: '"md"',
     description: "Keycap dimension and typography size scale.",
   },
+  {
+    name: "asChild",
+    type: "boolean",
+    default: "false",
+    description: "Delegates rendering to immediate child element using the Slot primitive.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Additional CSS class names appended to the keycap element ('cl-kbd').",
+  },
+  {
+    name: "children",
+    type: "ReactNode",
+    default: "undefined",
+    description: "Key letter, number, or symbol to display inside the keycap.",
+  },
+];
+
+const a11yRoles = [
+  {
+    attributeOrKey: "Semantic <kbd>",
+    description:
+      "Kbd renders the semantic HTML5 <kbd> tag representing user keyboard input, conveying keyboard shortcuts to screen readers.",
+  },
+  {
+    attributeOrKey: "Aria Descriptions",
+    description:
+      "When using symbol modifiers (such as ⌘ or ⌥), ensure surrounding text or an aria-label provides a clear text explanation for screen readers.",
+  },
+];
+
+const a11yKeyboard = [
+  {
+    attributeOrKey: "Presentational Indicator",
+    description:
+      "Keycap badges are inline text elements that do not receive tab focus.",
+  },
 ];
 
 export function KbdDocPage() {
   return (
     <ComponentDocLayout
       title="Kbd (Keyboard Shortcut)"
-      description="Visual keycap chip indicating keyboard shortcuts and key combinations."
+      description="Visual keycap chip indicating keyboard shortcuts and key combinations using semantic <kbd> markup."
       status="stable"
+      version="v0.2.0"
+      storybookId="components-data-display-kbd--docs"
     >
       <section id="import">
         <h2 className="docs-heading-2">
@@ -117,6 +160,12 @@ export function KbdDocPage() {
           language="tsx"
         />
       </section>
+
+      <AccessibilitySection
+        componentName="Kbd"
+        roles={a11yRoles}
+        keyboardKeys={a11yKeyboard}
+      />
 
       <ApiTable componentName="Kbd" props={kbdPropsData} />
     </ComponentDocLayout>

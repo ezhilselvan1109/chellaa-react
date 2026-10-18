@@ -25,8 +25,8 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       label: "Experimental",
     },
     new: {
-      bg: "rgba(37, 99, 235, 0.12)",
-      text: "#2563eb",
+      bg: "var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.12))",
+      text: "var(--cl-color-primary-base, #4f46e5)",
       label: "New",
     },
   };

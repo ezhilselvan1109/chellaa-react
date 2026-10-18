@@ -14,8 +14,8 @@ This skill governs the visual quality, responsive engineering, icon standards, a
 Chellaa React is a production-grade enterprise design system. Visual elements must look clean, cohesive, and professional:
 
 1. **Strictly Prohibit Raw Emojis in UI Controls:**
-   - ❌ Never use raw emojis (e.g., `📋 Copy`, `👁️ Preview`, `💻 Code`, `⚡`, `♿`, `🎨`, `🌙`) in buttons, tabs, callouts, or component playgrounds. Emojis render inconsistently across operating systems (Windows, macOS, Linux, iOS, Android) and feel unpolished.
-   - ✅ Always use crisp, scalable React SVG icons (e.g., from `react-icons/fi`, `react-icons/lu`, or internal Chellaa SVG primitives).
+   - [PROHIBITED] Never use raw emojis in buttons, tabs, callouts, or component playgrounds. Emojis render inconsistently across operating systems (Windows, macOS, Linux, iOS, Android) and feel unpolished.
+   - [REQUIRED] Always use crisp, scalable React SVG icons (e.g., from `react-icons/fi`, `react-icons/lu`, or internal Chellaa SVG primitives).
 
 2. **Standard React Icons Mapping:**
    - **Copy to Clipboard:** `<FiCopy />` (default) and `<FiCheck />` (copied state)
@@ -42,8 +42,8 @@ The documentation playground is the consumer's first hands-on experience with a 
    - Separate visual properties (Variant, Size, Color Scheme) from content and configuration (Icons, Spinners, Text Label).
 
 2. **Modern State Toggles (No Raw HTML Checkboxes):**
-   - ❌ Do not use unstyled browser checkboxes (`<input type="checkbox"> <code>isLoading</code>`).
-   - ✅ Use interactive toggle chips or switch pills with active glow indicators:
+   - [PROHIBITED] Do not use unstyled browser checkboxes (`<input type="checkbox"> <code>isLoading</code>`).
+   - [PREFERRED] Use interactive toggle chips or switch pills with active glow indicators:
      ```tsx
      <button
        type="button"

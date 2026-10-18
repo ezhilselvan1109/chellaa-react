@@ -1,33 +1,34 @@
 import * as React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
 import type { ButtonProps } from "./Button.types";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
-export interface StoryMeta<T> {
-  title: string;
-  component?: React.ComponentType<T>;
-  tags?: string[];
-  argTypes?: Record<string, unknown>;
-  parameters?: Record<string, unknown>;
-}
-
-export interface StoryObject<T> {
-  args?: Partial<T>;
-  render?: (args: T) => React.ReactNode;
-}
-
-const meta: StoryMeta<ButtonProps> = {
-  title: "Components/Button",
+const meta: Meta<typeof Button> = {
+  title: "Components/Actions/Button",
   component: Button,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Buttons represent interactive triggers for user actions, form submissions, and dialog confirmations. Supports multiple visual variants, baseline sizes, semantic color schemes, asynchronous loading indicators with accessible announcements, touch ripple tactile feedback, and polymorphic composition via `asChild`.",
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",
       options: ["solid", "outline", "ghost", "subtle", "link"],
+      description: "Visual aesthetic treatment of the button.",
+      table: { defaultValue: { summary: "solid" } },
     },
     size: {
       control: "select",
       options: ["xs", "sm", "md", "lg", "xl"],
+      description: "Sizing scale mapped to the spatial baseline grid.",
+      table: { defaultValue: { summary: "md" } },
     },
     colorScheme: {
       control: "select",
@@ -40,21 +41,63 @@ const meta: StoryMeta<ButtonProps> = {
         "danger",
         "info",
       ],
+      description: "Semantic color intent.",
+      table: { defaultValue: { summary: "primary" } },
     },
-    isDisabled: { control: "boolean" },
-    isLoading: { control: "boolean" },
-    isFullWidth: { control: "boolean" },
+    isDisabled: {
+      control: "boolean",
+      description:
+        "If true, the button is disabled and completely non-interactive (attaches native disabled and aria-disabled='true').",
+      table: { defaultValue: { summary: "false" } },
+    },
+    isLoading: {
+      control: "boolean",
+      description:
+        "If true, displays an animated spinner and suppresses user interaction (sets aria-busy='true').",
+      table: { defaultValue: { summary: "false" } },
+    },
+    loadingText: {
+      control: "text",
+      description:
+        "Optional accessible text displayed alongside the spinner when isLoading is true.",
+    },
     loadingPosition: {
       control: "select",
       options: ["start", "end", "center"],
+      description: "Position of the loading spinner relative to the label.",
+      table: { defaultValue: { summary: "start" } },
     },
-    loadingText: { control: "text" },
+    isFullWidth: {
+      control: "boolean",
+      description:
+        "If true, the button expands to fill 100% of its parent container.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    disableRipple: {
+      control: "boolean",
+      description:
+        "If true, disables the tactile touch ripple effect on click/pointer interactions.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    asChild: {
+      control: "boolean",
+      description:
+        "If true, delegates rendering to the immediate child element using Slot.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    children: {
+      control: "text",
+      description: "Button content or label.",
+    },
   },
 };
 
 export default meta;
+type Story = StoryObj<typeof Button>;
 
-export const Default: StoryObject<ButtonProps> = {
+export type StoryObject<T> = StoryObj<typeof Button>;
+
+export const Default: Story = {
   args: {
     children: "Button Action",
     variant: "solid",

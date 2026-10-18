@@ -246,7 +246,7 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       return (
         <StyledGridRoot
           as={Slot}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={gridClassName}
           style={style}
           ownerState={ownerState}
@@ -262,7 +262,7 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       return (
         <StyledGridRoot
           as={targetTag}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLDivElement>}
           className={gridClassName}
           style={style}
           ownerState={ownerState}
@@ -276,7 +276,7 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
 
     return (
       <StyledGridRoot
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={gridClassName}
         style={style}
         ownerState={ownerState}

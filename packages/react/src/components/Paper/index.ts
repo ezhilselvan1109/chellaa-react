@@ -1,6 +1,6 @@
-export {
-  Paper,
-  type PaperProps,
-  type PaperOwnerState,
-  type PaperVariant,
-} from "./Paper";
+export { Paper } from "./Paper";
+export type {
+  PaperProps,
+  PaperOwnerState,
+  PaperVariant,
+} from "./Paper.types";

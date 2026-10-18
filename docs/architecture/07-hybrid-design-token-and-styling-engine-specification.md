@@ -124,24 +124,24 @@ To ensure deterministic specificity and effortless consumer overrides without `!
 
 | # | Component | Current Implementation | Target Styling Approach | Migration Priority | Validation Requirement |
 | :- | :--- | :--- | :--- | :-: | :--- |
-| 1 | **Button** | Collocated `.styles.css` + CSS variables + Emotion touch ripple bridge | Static native CSS (`Button.styles.css`) + Ripple | 🟢 Done | 50 Vitest unit/a11y tests passing |
-| 2 | **ButtonGroup**| Collocated `.styles.css` + CSS variables + Context | Static native CSS (`ButtonGroup.styles.css`) | 🟢 Done | Storybook + visual check passing |
-| 3 | **Input** | Emotion `styled` | Static native CSS (`Input.styles.css`) in `@layer cl-components` | 🔴 **Batch 1 (P0)** | Representative migration + Vitest |
-| 4 | **Textarea** | Emotion `styled` | Static native CSS (`Textarea.styles.css`) in `@layer cl-components` | 🟡 **Batch 2 (P1)** | Vitest autoResize & counter tests |
-| 5 | **FormField** | Emotion `styled` | Static native CSS (`FormField.styles.css`) in `@layer cl-components` | 🟡 **Batch 2 (P1)** | Vitest a11y context tests |
-| 6 | **Checkbox** | Emotion `styled` | Static native CSS (`Checkbox.styles.css`) in `@layer cl-components` | 🟡 **Batch 2 (P1)** | Vitest group & indeterminate tests |
-| 7 | **Radio** | Emotion `styled` | Static native CSS (`Radio.styles.css`) in `@layer cl-components` | 🟡 **Batch 2 (P1)** | Vitest group keyboard navigation |
-| 8 | **Switch** | Emotion `styled` | Static native CSS (`Switch.styles.css`) in `@layer cl-components` | 🟡 **Batch 2 (P1)** | Vitest a11y role="switch" tests |
-| 9 | **Paper** | Emotion `styled` (M3 Dark Overlay) | Static native CSS (`Paper.styles.css`) + M3 elevation tint | 🔵 **Batch 3 (P2)** | 7 Vitest elevation tests |
-| 10| **Card** | Emotion `styled` + CardContext | Static native CSS (`Card.styles.css`) + size context | 🔵 **Batch 3 (P2)** | Compound sub-zone layout tests |
-| 11| **Box** | Emotion `styled` (Universal sx primitive) | Hybrid: Lightweight `sx` engine backed by CSS variables | 🔵 **Batch 4 (P2)** | sx parsing & polymorphism tests |
-| 12| **Stack** | Emotion `styled` (1D Layout primitive) | Hybrid: CSS flexbox classes + dynamic gap fallback | 🔵 **Batch 4 (P2)** | 6 Vitest spacing & divider tests |
-| 13| **Flex** | Emotion `styled` | Static native CSS classes (`Flex.styles.css`) | 🔵 **Batch 4 (P2)** | 7 Vitest center/inline tests |
-| 14| **Grid** | Emotion `styled` (12-col grid) | Static native CSS grid (`Grid.styles.css`) | 🔵 **Batch 4 (P2)** | 6 Vitest responsive span tests |
-| 15| **Container**| Emotion `styled` | Static native CSS (`Container.styles.css`) | 🔵 **Batch 4 (P2)** | 8 Vitest maxWidth & a11y tests |
-| 16| **Divider** | Emotion `styled` | Static native CSS (`Divider.styles.css`) | 🔵 **Batch 5 (P3)** | Orientation & label tests |
-| 17| **Typography**| Emotion `styled` | Static native CSS (`Typography.styles.css`) | 🔵 **Batch 5 (P3)** | Semantic heading & clamp tests |
-| 18| **Kbd** | Emotion `styled` | Static native CSS (`Kbd.styles.css`) | 🔵 **Batch 5 (P3)** | 10 Vitest shortcut tests |
+| 1 | **Button** | Collocated `.styles.css` + CSS variables + Emotion touch ripple bridge | Static native CSS (`Button.styles.css`) + Ripple | [PASS] Done | 50 Vitest unit/a11y tests passing |
+| 2 | **ButtonGroup**| Collocated `.styles.css` + CSS variables + Context | Static native CSS (`ButtonGroup.styles.css`) | [PASS] Done | Storybook + visual check passing |
+| 3 | **Input** | Emotion `styled` | Static native CSS (`Input.styles.css`) in `@layer cl-components` | [BLOCKED] **Batch 1 (P0)** | Representative migration + Vitest |
+| 4 | **Textarea** | Emotion `styled` | Static native CSS (`Textarea.styles.css`) in `@layer cl-components` | [IN PROGRESS] **Batch 2 (P1)** | Vitest autoResize & counter tests |
+| 5 | **FormField** | Emotion `styled` | Static native CSS (`FormField.styles.css`) in `@layer cl-components` | [IN PROGRESS] **Batch 2 (P1)** | Vitest a11y context tests |
+| 6 | **Checkbox** | Emotion `styled` | Static native CSS (`Checkbox.styles.css`) in `@layer cl-components` | [IN PROGRESS] **Batch 2 (P1)** | Vitest group & indeterminate tests |
+| 7 | **Radio** | Emotion `styled` | Static native CSS (`Radio.styles.css`) in `@layer cl-components` | [IN PROGRESS] **Batch 2 (P1)** | Vitest group keyboard navigation |
+| 8 | **Switch** | Emotion `styled` | Static native CSS (`Switch.styles.css`) in `@layer cl-components` | [IN PROGRESS] **Batch 2 (P1)** | Vitest a11y role="switch" tests |
+| 9 | **Paper** | Emotion `styled` (M3 Dark Overlay) | Static native CSS (`Paper.styles.css`) + M3 elevation tint | [INFO] **Batch 3 (P2)** | 7 Vitest elevation tests |
+| 10| **Card** | Emotion `styled` + CardContext | Static native CSS (`Card.styles.css`) + size context | [INFO] **Batch 3 (P2)** | Compound sub-zone layout tests |
+| 11| **Box** | Emotion `styled` (Universal sx primitive) | Hybrid: Lightweight `sx` engine backed by CSS variables | [INFO] **Batch 4 (P2)** | sx parsing & polymorphism tests |
+| 12| **Stack** | Emotion `styled` (1D Layout primitive) | Hybrid: CSS flexbox classes + dynamic gap fallback | [INFO] **Batch 4 (P2)** | 6 Vitest spacing & divider tests |
+| 13| **Flex** | Emotion `styled` | Static native CSS classes (`Flex.styles.css`) | [INFO] **Batch 4 (P2)** | 7 Vitest center/inline tests |
+| 14| **Grid** | Emotion `styled` (12-col grid) | Static native CSS grid (`Grid.styles.css`) | [INFO] **Batch 4 (P2)** | 6 Vitest responsive span tests |
+| 15| **Container**| Emotion `styled` | Static native CSS (`Container.styles.css`) | [INFO] **Batch 4 (P2)** | 8 Vitest maxWidth & a11y tests |
+| 16| **Divider** | Emotion `styled` | Static native CSS (`Divider.styles.css`) | [INFO] **Batch 5 (P3)** | Orientation & label tests |
+| 17| **Typography**| Emotion `styled` | Static native CSS (`Typography.styles.css`) | [INFO] **Batch 5 (P3)** | Semantic heading & clamp tests |
+| 18| **Kbd** | Emotion `styled` | Static native CSS (`Kbd.styles.css`) | [INFO] **Batch 5 (P3)** | 10 Vitest shortcut tests |
 
 ---
 

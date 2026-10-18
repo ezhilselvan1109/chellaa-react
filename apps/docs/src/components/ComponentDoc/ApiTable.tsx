@@ -37,6 +37,7 @@ export function ApiTable({ componentName, props }: ApiTableProps) {
           <table
             style={{
               width: "100%",
+              minWidth: "560px",
               borderCollapse: "collapse",
               fontSize: "0.88rem",
               textAlign: "left",

@@ -1,0 +1,185 @@
+@layer cl-components {
+  .cl-toast-container {
+    position: fixed;
+    z-index: var(--cl-z-toast, 1500);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cl-space-2, 8px);
+    pointer-events: none;
+    padding: var(--cl-space-4, 16px);
+    box-sizing: border-box;
+  }
+
+  .cl-toast-container--bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+
+  .cl-toast-container--top-right {
+    top: 0;
+    right: 0;
+  }
+
+  .cl-toast-container--bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+
+  .cl-toast-container--top-left {
+    top: 0;
+    left: 0;
+  }
+
+  .cl-toast-container--top {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .cl-toast-container--bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .cl-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--cl-space-3, 12px);
+    min-width: 280px;
+    max-width: var(--cl-size-toast-max, 420px);
+    padding: var(--cl-space-3, 12px) var(--cl-space-4, 16px);
+    background-color: var(--cl-color-bg-surface);
+    color: var(--cl-color-text-primary, var(--cl-color-fg-primary));
+    border: 1px solid var(--cl-color-border-subtle);
+    border-radius: var(--cl-radius-md, 6px);
+    box-shadow: var(--cl-shadow-lg);
+    box-sizing: border-box;
+    font-family: var(--cl-font-sans);
+    transition: opacity var(--cl-duration-normal, 200ms) ease,
+                transform var(--cl-duration-normal, 200ms) ease;
+  }
+
+  .cl-toast--info {
+    border-left: 4px solid var(--cl-color-info-base);
+  }
+
+  .cl-toast--success {
+    border-left: 4px solid var(--cl-color-success-base);
+  }
+
+  .cl-toast--warning {
+    border-left: 4px solid var(--cl-color-warning-base);
+  }
+
+  .cl-toast--danger {
+    border-left: 4px solid var(--cl-color-danger-base);
+  }
+
+  .cl-toast--neutral {
+    border-left: 4px solid var(--cl-color-neutral-base);
+  }
+
+  .cl-toast__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cl-toast--info .cl-toast__icon {
+    color: var(--cl-color-info-base);
+  }
+
+  .cl-toast--success .cl-toast__icon {
+    color: var(--cl-color-success-base);
+  }
+
+  .cl-toast--warning .cl-toast__icon {
+    color: var(--cl-color-warning-base);
+  }
+
+  .cl-toast--danger .cl-toast__icon {
+    color: var(--cl-color-danger-base);
+  }
+
+  .cl-toast--neutral .cl-toast__icon {
+    color: var(--cl-color-neutral-base);
+  }
+
+  .cl-toast__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cl-toast__title {
+    font-weight: var(--cl-font-weight-semibold, 600);
+    font-size: var(--cl-font-size-sm, 14px);
+    margin: 0;
+    line-height: var(--cl-line-height-tight, 1.4);
+    color: inherit;
+  }
+
+  .cl-toast__description {
+    font-size: var(--cl-font-size-xs, 13px);
+    margin: 2px 0 0 0;
+    opacity: 0.85;
+    line-height: var(--cl-line-height-normal, 1.4);
+    color: inherit;
+  }
+
+  .cl-toast__action {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--cl-space-2, 8px);
+  }
+
+  .cl-toast__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    padding: var(--cl-space-1, 4px);
+    border-radius: var(--cl-radius-sm, 4px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--cl-duration-fast, 150ms) ease;
+    margin-left: auto;
+  }
+
+  .cl-toast__close:hover {
+    opacity: 1;
+  }
+
+  .cl-toast__close:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .cl-toast-container {
+      left: 0 !important;
+      right: 0 !important;
+      transform: none !important;
+      padding: var(--cl-space-2, 8px);
+      width: 100%;
+    }
+
+    .cl-toast {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl-toast {
+      transition: none !important;
+    }
+  }
+}

@@ -40,6 +40,48 @@ const preview: Preview = {
   decorators: [withThemeProvider],
 
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          "Introduction",
+          ["Welcome", "Getting Started"],
+          "Foundations",
+          [
+            "Design Tokens Overview",
+            "Colors & Semantic Tokens",
+            "Typography Scale",
+            "Spacing & Layout Tokens",
+            "Radius, Shadows & Motion",
+            "Theming & Dark Mode",
+          ],
+          "Components",
+          [
+            "Actions",
+            "Forms & Inputs",
+            "Data Display",
+            "Navigation",
+            "Overlays",
+            "Feedback",
+            "Layout",
+            "Utilities",
+          ],
+          "Patterns & Recipes",
+          [
+            "Form Validation",
+            "Confirmation Workflows",
+            "Search and Selection",
+            "Data Table Workflows",
+            "Notifications & Feedback",
+          ],
+          "Accessibility & Contribution",
+          [
+            "Keyboard Navigation Matrix",
+            "ARIA & Focus Standards",
+            "Testing & Contributing Guide",
+          ],
+        ],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

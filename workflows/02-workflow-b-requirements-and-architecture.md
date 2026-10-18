@@ -1,7 +1,7 @@
 # Workflow B: Requirements and Architecture Specifications
 
 **Stage:** 2 of 8  
-**Status:** 🟢 COMPLETED & VERIFIED  
+**Status:** COMPLETED & VERIFIED  
 **Governing ADR:** ADR-011  
 
 ---

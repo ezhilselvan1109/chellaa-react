@@ -1,7 +1,7 @@
 # Workflow G: Independent Verification & Regression Firewall
 
 **Stage:** 7 of 8  
-**Status:** ⚪ PENDING  
+**Status:** PENDING  
 **Governing ADR:** ADR-011  
 
 ---

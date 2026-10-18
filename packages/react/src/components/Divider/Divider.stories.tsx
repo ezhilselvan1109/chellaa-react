@@ -6,7 +6,7 @@ import { Stack } from "../Stack";
 import { Button } from "../Button";
 
 export default {
-  title: "Layout/Divider",
+  title: "Components/Layout/Divider",
   component: Divider,
   tags: ["autodocs"],
   argTypes: {

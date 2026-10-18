@@ -39,6 +39,224 @@ import {
   Stack,
   Flex,
   Grid,
+  // Headless Primitives (Wave 1)
+  Portal,
+  Slot,
+  // Floating Overlays (Wave 2)
+  Tooltip,
+  type TooltipProps,
+  type TooltipPlacement,
+  Popover,
+  type PopoverProps,
+  type PopoverPlacement,
+  // Feedback & Alert (Wave 2B)
+  Alert,
+  type AlertProps,
+  type AlertStatus,
+  type AlertVariant,
+  Snackbar,
+  type SnackbarProps,
+  Toast,
+  ToastProvider,
+  type ToastProviderProps,
+  useToast,
+  type UseToastReturn,
+  type ToastOptions,
+  type ToastPosition,
+  type ToastStatus,
+  // Visual Data Display & Identity (Wave 3)
+  Avatar,
+  type AvatarProps,
+  AvatarGroup,
+  type AvatarGroupProps,
+  type AvatarSize,
+  type AvatarShape,
+  type AvatarStatus,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+  getInitials,
+  // Disclosure Primitives (Wave 3)
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionIcon,
+  type AccordionProps,
+  type AccordionSingleProps,
+  type AccordionMultipleProps,
+  type AccordionItemProps,
+  type AccordionHeaderProps,
+  type AccordionTriggerProps,
+  type AccordionContentProps,
+  type AccordionIconProps,
+  type AccordionVariant,
+  // Navigation Primitives (Wave 3)
+  Tabs,
+  TabsRoot,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsIndicator,
+  type TabsProps,
+  type TabsRootProps,
+  type TabsListProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+  type TabsIndicatorProps,
+  type TabsOrientation,
+  type TabsVariant,
+  type TabsSize,
+  type TabsActivationMode,
+  // Navigation Primitives - Pagination (Wave 3)
+  Pagination,
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationPrev,
+  PaginationNext,
+  PaginationFirst,
+  PaginationLast,
+  PaginationEllipsis,
+  PaginationSizeSelect,
+  PaginationJumper,
+  type PaginationProps,
+  type PaginationRootProps,
+  type PaginationListProps,
+  type PaginationItemProps,
+  type PaginationActionProps,
+  type PaginationEllipsisProps,
+  type PaginationSizeSelectProps,
+  type PaginationJumperProps,
+  type PaginationSize,
+  type PaginationVariant,
+  // 21. Combobox & Autocomplete (Wave 3)
+  Combobox,
+  Autocomplete,
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxTrigger,
+  ComboboxPortal,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxGroupLabel,
+  ComboboxEmpty,
+  ComboboxTag,
+  ComboboxClear,
+  type ComboboxProps,
+  type ComboboxRootProps,
+  type ComboboxInputProps,
+  type ComboboxTriggerProps,
+  type ComboboxPortalProps,
+  type ComboboxContentProps,
+  type ComboboxItemProps,
+  type ComboboxGroupProps,
+  type ComboboxGroupLabelProps,
+  type ComboboxEmptyProps,
+  type ComboboxTagProps,
+  type ComboboxClearProps,
+  type ComboboxSize,
+  type ComboboxVariant,
+  // 22. Select (Wave 2C)
+  Select,
+  SelectRoot,
+  SelectTrigger,
+  SelectValue,
+  SelectIcon,
+  SelectPortal,
+  SelectContent,
+  SelectItem,
+  SelectItemText,
+  SelectItemIndicator,
+  SelectGroup,
+  SelectLabel,
+  SelectSeparator,
+  useSelectContext,
+  type SelectOption,
+  type SelectRootProps,
+  type SelectTriggerProps,
+  type SelectValueProps,
+  type SelectIconProps,
+  type SelectPortalProps,
+  type SelectContentProps,
+  type SelectItemProps,
+  type SelectItemTextProps,
+  type SelectItemIndicatorProps,
+  type SelectGroupProps,
+  type SelectLabelProps,
+  type SelectSeparatorProps,
+  type SelectVariant,
+  type SelectSize,
+  type SelectContextValue,
+  // 23. Dialog & Modal Compatibility Alias (Wave 2C)
+  Dialog,
+  Modal,
+  DialogRoot,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+  type DialogSize,
+  type DialogRootProps,
+  type DialogTriggerProps,
+  type DialogPortalProps,
+  type DialogOverlayProps,
+  type DialogContentProps,
+  type DialogHeaderProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+  type DialogBodyProps,
+  type DialogFooterProps,
+  type DialogCloseProps,
+  type ModalSize,
+  type ModalRootProps,
+  type ModalTriggerProps,
+  type ModalPortalProps,
+  type ModalOverlayProps,
+  type ModalContentProps,
+  type ModalHeaderProps,
+  type ModalTitleProps,
+  type ModalDescriptionProps,
+  type ModalBodyProps,
+  type ModalFooterProps,
+  type ModalCloseProps,
+  // 24. Badge (Wave 2C)
+  Badge,
+  type BadgeProps,
+  type BadgeVariant,
+  type BadgeSize,
+  type BadgeColorScheme,
+  // 25. Table (Wave 2C)
+  Table,
+  TableRoot,
+  TableContainer,
+  TableCaption,
+  TableThead,
+  TableTbody,
+  TableTfoot,
+  TableTr,
+  TableTh,
+  TableTd,
+  type TableVariant,
+  type TableSize,
+  type TableRootProps,
+  type TableContainerProps,
+  type TableCaptionProps,
+  type TableTheadProps,
+  type TableTbodyProps,
+  type TableTfootProps,
+  type TableRowProps,
+  type TableHeaderCellProps,
+  type TableCellProps,
+  type TableContextValue,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -109,7 +327,7 @@ export function ConsumerTypeFixture() {
         <CardHeader
           title="Card Title"
           subheader="Card Subtitle"
-          avatar={<span>👤</span>}
+          avatar={<span>CR</span>}
           action={<button type="button">⋮</button>}
         />
         <CardBody>
@@ -168,7 +386,720 @@ export function ConsumerTypeFixture() {
             <Paper elevation={1} sx={{ p: 2 }}>Col 2</Paper>
           </Grid>
         </Grid>
+        {/* 16. Headless Primitives (Wave 1) */}
+        <Portal>
+          <div data-testid="consumer-portal-content">Portal Consumer Render</div>
+        </Portal>
+        <Slot id="consumer-slot">
+          <span>Slotted Consumer Element</span>
+        </Slot>
+        {/* 17. Floating Overlays (Wave 2) */}
+        {(() => {
+          const _tooltipProps: TooltipProps = {
+            content: "Consumer Tooltip Info",
+            placement: "bottom-end" as TooltipPlacement,
+            shortcut: "Ctrl+S",
+            children: <button type="button" id="consumer-tooltip-btn">Consumer Hover</button>,
+          };
+          return (
+            <Tooltip {..._tooltipProps}>
+              <button type="button" id="consumer-tooltip-btn">Consumer Hover</button>
+            </Tooltip>
+          );
+        })()}
+        {/* 18. Popover Compound Overlays (Wave 2) */}
+        {(() => {
+          const _popoverProps: PopoverProps = {
+            placement: "top-start" as PopoverPlacement,
+            trapFocus: true,
+            children: (
+              <>
+                <Popover.Trigger asChild>
+                  <button type="button" id="consumer-popover-trigger">Open Popover</button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Content>
+                    <Popover.Header>
+                      <Popover.Title>Consumer Title</Popover.Title>
+                      <Popover.Close />
+                    </Popover.Header>
+                    <Popover.Body>Consumer Popover Body</Popover.Body>
+                  </Popover.Content>
+                </Popover.Portal>
+              </>
+            ),
+          };
+          return <Popover {..._popoverProps} />;
+        })()}
+        {/* 19. Alert Compound Feedback (Wave 2B) */}
+        {(() => {
+          const _alertProps: AlertProps = {
+            status: "info" as AlertStatus,
+            variant: "subtle" as AlertVariant,
+            isClosable: true,
+            onClose: () => {},
+            children: (
+              <>
+                <Alert.Icon />
+                <Alert.Body>
+                  <Alert.Title>Consumer Alert Title</Alert.Title>
+                  <Alert.Description>Consumer Alert Description</Alert.Description>
+                </Alert.Body>
+                <Alert.Action>
+                  <button type="button">Action</button>
+                </Alert.Action>
+                <Alert.CloseButton />
+              </>
+            ),
+          };
+          return <Alert {..._alertProps} />;
+        })()}
+        {/* 20. Snackbar & Toast Notifications (Wave 2B) */}
+        {(() => {
+          const _providerProps: ToastProviderProps = {
+            maxVisibleToasts: 5,
+            defaultDuration: 4000,
+            defaultPosition: "bottom-left" as ToastPosition,
+          };
+          const _snackbarProps: SnackbarProps = {
+            isOpen: true,
+            message: "Consumer Snackbar",
+            status: "success" as ToastStatus,
+            position: "bottom-left" as ToastPosition,
+            duration: 4000,
+            isClosable: true,
+            action: <button type="button">Undo</button>,
+          };
+          return (
+            <ToastProvider {..._providerProps}>
+              <Snackbar {..._snackbarProps} />
+              <Toast isOpen={false} message="Toast Alias" />
+              <ToastConsumerDemo />
+            </ToastProvider>
+          );
+        })()}
+        {/* 21. Avatar & AvatarGroup Identity Primitives (Wave 3) */}
+        {(() => {
+          const _avatarProps: AvatarProps = {
+            src: "https://example.com/photo.jpg",
+            name: "Ezhil Selvan",
+            size: "lg" as AvatarSize,
+            shape: "rounded" as AvatarShape,
+          };
+          const _groupProps: AvatarGroupProps = {
+            max: 3,
+            size: "md" as AvatarSize,
+            shape: "circular" as AvatarShape,
+            spacing: -8,
+            children: (
+              <>
+                <Avatar name="Alice" />
+                <Avatar name="Bob" />
+                <Avatar name="Charlie" />
+                <Avatar name="David" />
+              </>
+            ),
+          };
+          const initials = getInitials("Ezhil Selvan");
+          void initials;
+          return (
+            <div data-testid="avatar-fixture">
+              <Avatar {..._avatarProps}>
+                <AvatarImage src="https://example.com/photo.jpg" alt="Photo" />
+                <AvatarFallback>ES</AvatarFallback>
+                <AvatarBadge status={"online" as AvatarStatus} />
+              </Avatar>
+              <AvatarGroup {..._groupProps} />
+            </div>
+          );
+        })()}
+
+        {/* 22. Accordion Disclosure Primitives (Wave 3) */}
+        {(() => {
+          const _accordionProps: AccordionProps = {
+            type: "single",
+            collapsible: true,
+            defaultValue: "item-1",
+            variant: "outline" as AccordionVariant,
+            children: null,
+          };
+          const _singleProps: AccordionSingleProps = {
+            type: "single",
+            collapsible: true,
+            defaultValue: "item-1",
+          };
+          const _multiProps: AccordionMultipleProps = {
+            type: "multiple",
+            defaultValue: ["item-1"],
+          };
+          const _itemProps: AccordionItemProps = {
+            value: "item-1",
+            children: null,
+          };
+          const _headerProps: AccordionHeaderProps = {
+            level: 3,
+            children: null,
+          };
+          const _triggerProps: AccordionTriggerProps = {
+            asChild: false,
+            children: null,
+          };
+          const _contentProps: AccordionContentProps = {
+            children: null,
+          };
+          const _iconProps: AccordionIconProps = {
+            className: "custom-icon",
+          };
+          void _accordionProps;
+          void _singleProps;
+          void _multiProps;
+          void _itemProps;
+          void _headerProps;
+          void _triggerProps;
+          void _contentProps;
+          void _iconProps;
+          return (
+            <>
+              <div data-testid="accordion-fixture">
+                <Accordion type="single" collapsible defaultValue="item-1" variant="outline">
+                  <Accordion.Item value="item-1">
+                    <Accordion.Header level={3}>
+                      <Accordion.Trigger>
+                        Section 1
+                        <Accordion.Icon />
+                      </Accordion.Trigger>
+                    </Accordion.Header>
+                    <Accordion.Content>Section 1 body content</Accordion.Content>
+                  </Accordion.Item>
+                </Accordion>
+                <Accordion type="multiple" defaultValue={["flat-1"]}>
+                  <AccordionItem value="flat-1">
+                    <AccordionHeader>
+                      <AccordionTrigger>
+                        Flat Header
+                        <AccordionIcon />
+                      </AccordionTrigger>
+                    </AccordionHeader>
+                    <AccordionContent>Flat Content</AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+
+              {/* 19. Navigation Primitives: Tabs */}
+              <div style={{ marginTop: "24px" }}>
+                <Typography variant="h3">Tabs Fixture</Typography>
+                {(() => {
+                  const orientation: TabsOrientation = "horizontal";
+                  const variant: TabsVariant = "line";
+                  const size: TabsSize = "md";
+                  const activationMode: TabsActivationMode = "automatic";
+                  const _rootProps: TabsRootProps = {
+                    orientation,
+                    children: null,
+                  };
+                  const _listProps: TabsListProps = {
+                    "aria-label": "Test",
+                    children: null,
+                  };
+                  const _triggerProps: TabsTriggerProps = {
+                    value: "t1",
+                    isDisabled: false,
+                    asChild: false,
+                    children: "T1",
+                  };
+                  const _contentProps: TabsContentProps = {
+                    value: "t1",
+                    children: null,
+                  };
+                  const _indicatorProps: TabsIndicatorProps = {
+                    className: "custom-indicator",
+                  };
+                  void TabsRoot;
+                  void TabsList;
+                  void TabsTrigger;
+                  void TabsContent;
+                  void TabsIndicator;
+                  void _rootProps;
+                  void _listProps;
+                  void _triggerProps;
+                  void _contentProps;
+                  void _indicatorProps;
+
+                  const tabsProps: TabsProps = {
+                    orientation,
+                    variant,
+                    size,
+                    activationMode,
+                    defaultValue: "tab-1",
+                    onValueChange: (val: string) => {
+                      const _v: string = val;
+                      void _v;
+                    },
+                    children: (
+                      <>
+                        <Tabs.List aria-label="Consumer Navigation Tabs">
+                          <Tabs.Trigger value="tab-1">Overview</Tabs.Trigger>
+                          <Tabs.Trigger value="tab-2" isDisabled>
+                            Billing (Disabled)
+                          </Tabs.Trigger>
+                          <Tabs.Trigger value="tab-3" asChild>
+                            <a href="#settings">Settings</a>
+                          </Tabs.Trigger>
+                          <Tabs.Indicator />
+                        </Tabs.List>
+                        <Tabs.Content value="tab-1">Overview Content</Tabs.Content>
+                        <Tabs.Content value="tab-2">Billing Content</Tabs.Content>
+                        <Tabs.Content value="tab-3">Settings Content</Tabs.Content>
+                      </>
+                    ),
+                  };
+                  return <Tabs {...tabsProps} />;
+                })()}
+              </div>
+
+              {/* 20. Pagination (Wave 3) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const size: PaginationSize = "md";
+                  const variant: PaginationVariant = "outline";
+                  const rootProps: PaginationRootProps = {
+                    total: 100,
+                    pageSize: 10,
+                    size,
+                    variant,
+                  };
+                  const listProps: PaginationListProps = {};
+                  const itemProps: PaginationItemProps = { page: 1, isCurrent: true };
+                  const prevProps: PaginationActionProps = {};
+                  const nextProps: PaginationActionProps = {};
+                  const firstProps: PaginationActionProps = {};
+                  const lastProps: PaginationActionProps = {};
+                  const ellipsisProps: PaginationEllipsisProps = {};
+                  const sizeSelectProps: PaginationSizeSelectProps = {
+                    options: [10, 20, 50],
+                  };
+                  const jumperProps: PaginationJumperProps = {};
+                  const paginationProps: PaginationProps = {
+                    total: 200,
+                    pageSize: 20,
+                    page: 2,
+                    onPageChange: (page: number) => console.log(page),
+                  };
+
+                  return (
+                    <>
+                      <Pagination {...paginationProps} />
+                      <PaginationRoot {...rootProps}>
+                        <PaginationPrev {...prevProps} />
+                        <PaginationFirst {...firstProps} />
+                        <PaginationList {...listProps}>
+                          <PaginationItem {...itemProps}>1</PaginationItem>
+                          <PaginationEllipsis {...ellipsisProps} />
+                          <PaginationItem page={10}>10</PaginationItem>
+                        </PaginationList>
+                        <PaginationLast {...lastProps} />
+                        <PaginationNext {...nextProps} />
+                        <PaginationSizeSelect {...sizeSelectProps} />
+                        <PaginationJumper {...jumperProps} />
+                      </PaginationRoot>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 21. Combobox & Autocomplete (Wave 3) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const size: ComboboxSize = "md";
+                  const variant: ComboboxVariant = "outline";
+                  const rootProps: ComboboxRootProps = {
+                    size,
+                    variant,
+                    isMulti: true,
+                    value: ["us"],
+                  };
+                  const inputProps: ComboboxInputProps = {
+                    placeholder: "Search...",
+                  };
+                  const triggerProps: ComboboxTriggerProps = {};
+                  const portalProps: ComboboxPortalProps = {
+                    children: null,
+                  };
+                  const contentProps: ComboboxContentProps = {};
+                  const groupProps: ComboboxGroupProps = {
+                    heading: "Countries",
+                  };
+                  const groupLabelProps: ComboboxGroupLabelProps = {};
+                  const itemProps: ComboboxItemProps = {
+                    value: "us",
+                    children: "United States",
+                  };
+                  const emptyProps: ComboboxEmptyProps = {};
+                  const tagProps: ComboboxTagProps = {
+                    value: "us",
+                  };
+                  const clearProps: ComboboxClearProps = {};
+                  const comboboxProps: ComboboxProps = {
+                    options: [{ value: "us", label: "USA" }],
+                  };
+
+                  return (
+                    <>
+                      <Combobox {...comboboxProps} />
+                      <Autocomplete {...comboboxProps} />
+                      <ComboboxRoot {...rootProps}>
+                        <div className="cl-combobox__control">
+                          <ComboboxTag {...tagProps}>US</ComboboxTag>
+                          <ComboboxInput {...inputProps} />
+                          <ComboboxClear {...clearProps} />
+                          <ComboboxTrigger {...triggerProps} />
+                        </div>
+                        <ComboboxPortal {...portalProps}>
+                          <ComboboxContent {...contentProps}>
+                            <ComboboxEmpty {...emptyProps}>Empty</ComboboxEmpty>
+                            <ComboboxGroup {...groupProps}>
+                              <ComboboxGroupLabel {...groupLabelProps}>Group</ComboboxGroupLabel>
+                              <ComboboxItem {...itemProps} />
+                            </ComboboxGroup>
+                          </ComboboxContent>
+                        </ComboboxPortal>
+                      </ComboboxRoot>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 22. Select (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: SelectVariant = "outline";
+                  const size: SelectSize = "md";
+                  const options: SelectOption[] = [
+                    { value: "react", label: "React" },
+                    { value: "vue", label: "Vue", disabled: true },
+                    { value: "svelte", label: "Svelte" },
+                  ];
+
+                  const rootProps: SelectRootProps = {
+                    variant,
+                    size,
+                    placeholder: "Choose framework...",
+                    defaultValue: "react",
+                    isDisabled: false,
+                    isInvalid: false,
+                    isRequired: true,
+                    name: "framework-select",
+                    onValueChange: (val: string) => {
+                      const _selectedVal: string = val;
+                      void _selectedVal;
+                    },
+                    onOpenChange: (open: boolean) => {
+                      const _isOpen: boolean = open;
+                      void _isOpen;
+                    },
+                  };
+
+                  const triggerProps: SelectTriggerProps = {
+                    "aria-label": "Select framework",
+                  };
+                  const valueProps: SelectValueProps = {
+                    placeholder: "Select an option",
+                  };
+                  const iconProps: SelectIconProps = {};
+                  const portalProps: SelectPortalProps = { children: null };
+                  const contentProps: SelectContentProps = {};
+                  const groupProps: SelectGroupProps = {};
+                  const labelProps: SelectLabelProps = {};
+                  const separatorProps: SelectSeparatorProps = {};
+                  const itemProps: SelectItemProps = { value: "react" };
+                  const itemTextProps: SelectItemTextProps = {};
+                  const itemIndicatorProps: SelectItemIndicatorProps = {};
+
+                  void useSelectContext;
+                  void SelectRoot;
+                  void SelectTrigger;
+                  void SelectValue;
+                  void SelectIcon;
+                  void SelectPortal;
+                  void SelectContent;
+                  void SelectGroup;
+                  void SelectLabel;
+                  void SelectSeparator;
+                  const _selectCtx: SelectContextValue | null = null;
+                  void _selectCtx;
+
+                  return (
+                    <>
+                      {/* Shortcut options array contract */}
+                      <Select options={options} defaultValue="react" />
+
+                      {/* Compound pattern contract */}
+                      <Select.Root {...rootProps}>
+                        <Select.Trigger {...triggerProps}>
+                          <Select.Value {...valueProps} />
+                          <Select.Icon {...iconProps} />
+                        </Select.Trigger>
+                        <Select.Portal {...portalProps}>
+                          <Select.Content {...contentProps}>
+                            <Select.Group {...groupProps}>
+                              <Select.Label {...labelProps}>Frameworks</Select.Label>
+                              <Select.Item {...itemProps}>
+                                <Select.ItemIndicator {...itemIndicatorProps}>✓</Select.ItemIndicator>
+                                <Select.ItemText {...itemTextProps}>React</Select.ItemText>
+                              </Select.Item>
+                              <Select.Separator {...separatorProps} />
+                              <SelectItem value="svelte">
+                                <SelectItemIndicator>✓</SelectItemIndicator>
+                                <SelectItemText>Svelte</SelectItemText>
+                              </SelectItem>
+                            </Select.Group>
+                          </Select.Content>
+                        </Select.Portal>
+                      </Select.Root>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 23. Dialog & Modal Compatibility Alias (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const dialogSize: DialogSize = "md";
+                  const modalSize: ModalSize = "lg";
+
+                  const dialogRootProps: DialogRootProps = {
+                    size: dialogSize,
+                    isOpen: false,
+                    closeOnEsc: true,
+                    closeOnOverlayClick: true,
+                    isCentered: true,
+                    onClose: () => {},
+                    children: null,
+                  };
+
+                  const dialogTriggerProps: DialogTriggerProps = { asChild: true, children: null };
+                  const dialogPortalProps: DialogPortalProps = { children: null };
+                  const dialogOverlayProps: DialogOverlayProps = {};
+                  const dialogContentProps: DialogContentProps = {};
+                  const dialogHeaderProps: DialogHeaderProps = {};
+                  const dialogTitleProps: DialogTitleProps = {};
+                  const dialogDescriptionProps: DialogDescriptionProps = {};
+                  const dialogBodyProps: DialogBodyProps = {};
+                  const dialogFooterProps: DialogFooterProps = {};
+                  const dialogCloseProps: DialogCloseProps = { asChild: true };
+
+                  const modalRootProps: ModalRootProps = {
+                    size: modalSize,
+                    isOpen: false,
+                    onClose: () => {},
+                    children: null,
+                  };
+                  const modalTriggerProps: ModalTriggerProps = { asChild: true, children: null };
+                  const modalPortalProps: ModalPortalProps = { children: null };
+                  const modalOverlayProps: ModalOverlayProps = {};
+                  const modalContentProps: ModalContentProps = {};
+                  const modalHeaderProps: ModalHeaderProps = {};
+                  const modalTitleProps: ModalTitleProps = {};
+                  const modalDescriptionProps: ModalDescriptionProps = {};
+                  const modalBodyProps: ModalBodyProps = {};
+                  const modalFooterProps: ModalFooterProps = {};
+                  const modalCloseProps: ModalCloseProps = { asChild: true };
+
+                  void dialogRootProps;
+                  void modalRootProps;
+                  void DialogRoot;
+                  void DialogTrigger;
+                  void DialogPortal;
+                  void DialogOverlay;
+                  void DialogContent;
+                  void DialogHeader;
+                  void DialogTitle;
+                  void DialogDescription;
+                  void DialogBody;
+                  void DialogFooter;
+                  void DialogClose;
+
+                  return (
+                    <>
+                      {/* Dialog compound component usage */}
+                      <Dialog.Root size={dialogSize} isOpen={false} onClose={() => {}}>
+                        <Dialog.Trigger {...dialogTriggerProps}>
+                          <button type="button">Open Dialog</button>
+                        </Dialog.Trigger>
+                        <Dialog.Portal {...dialogPortalProps}>
+                          <Dialog.Overlay {...dialogOverlayProps} />
+                          <Dialog.Content {...dialogContentProps}>
+                            <Dialog.Header {...dialogHeaderProps}>
+                              <Dialog.Title {...dialogTitleProps}>Confirm Delete</Dialog.Title>
+                              <Dialog.Description {...dialogDescriptionProps}>
+                                Are you sure you want to proceed?
+                              </Dialog.Description>
+                            </Dialog.Header>
+                            <Dialog.Body {...dialogBodyProps}>
+                              <p>Dialog body content</p>
+                            </Dialog.Body>
+                            <Dialog.Footer {...dialogFooterProps}>
+                              <Dialog.Close {...dialogCloseProps}>
+                                <button type="button">Cancel</button>
+                              </Dialog.Close>
+                              <button type="button">Confirm</button>
+                            </Dialog.Footer>
+                          </Dialog.Content>
+                        </Dialog.Portal>
+                      </Dialog.Root>
+
+                      {/* Modal compatibility alias contract verification */}
+                      <Modal.Root size={modalSize} isOpen={false} onClose={() => {}}>
+                        <Modal.Trigger {...modalTriggerProps}>
+                          <button type="button">Open Modal Alias</button>
+                        </Modal.Trigger>
+                        <Modal.Portal {...modalPortalProps}>
+                          <Modal.Overlay {...modalOverlayProps} />
+                          <Modal.Content {...modalContentProps}>
+                            <Modal.Header {...modalHeaderProps}>
+                              <Modal.Title {...modalTitleProps}>Modal Title</Modal.Title>
+                              <Modal.Description {...modalDescriptionProps}>
+                                Modal description alias
+                              </Modal.Description>
+                            </Modal.Header>
+                            <Modal.Body {...modalBodyProps}>
+                              <p>Modal body content</p>
+                            </Modal.Body>
+                            <Modal.Footer {...modalFooterProps}>
+                              <Modal.Close {...modalCloseProps}>
+                                <button type="button">Close</button>
+                              </Modal.Close>
+                            </Modal.Footer>
+                          </Modal.Content>
+                        </Modal.Portal>
+                      </Modal.Root>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* 24. Badge (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: BadgeVariant = "subtle";
+                  const size: BadgeSize = "md";
+                  const colorScheme: BadgeColorScheme = "primary";
+
+                  const badgeProps: BadgeProps = {
+                    variant,
+                    size,
+                    colorScheme,
+                    children: "New Feature",
+                  };
+
+                  return (
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <Badge {...badgeProps} />
+                      <Badge variant="solid" colorScheme="success" size="lg">
+                        Active
+                      </Badge>
+                      <Badge variant="outline" colorScheme="danger" size="sm">
+                        Failed
+                      </Badge>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* 25. Table (Wave 2C / W2-F08) */}
+              <div style={{ marginTop: "1rem" }}>
+                {(() => {
+                  const variant: TableVariant = "simple";
+                  const size: TableSize = "md";
+
+                  const rootProps: TableRootProps = {
+                    variant,
+                    size,
+                    isHoverable: true,
+                    children: null,
+                  };
+                  const containerProps: TableContainerProps = {
+                    bordered: true,
+                    children: null,
+                  };
+                  const captionProps: TableCaptionProps = { placement: "bottom" };
+                  const theadProps: TableTheadProps = {};
+                  const tbodyProps: TableTbodyProps = {};
+                  const tfootProps: TableTfootProps = {};
+                  const rowProps: TableRowProps = { isSelected: false };
+                  const thProps: TableHeaderCellProps = { isNumeric: false };
+                  const thNumericProps: TableHeaderCellProps = { isNumeric: true };
+                  const tdProps: TableCellProps = {};
+                  const tdNumericProps: TableCellProps = { isNumeric: true };
+
+                  void rootProps;
+                  void containerProps;
+                  void TableRoot;
+                  void TableContainer;
+                  void TableCaption;
+                  void TableThead;
+                  void TableTbody;
+                  void TableTfoot;
+                  const _tableCtx: TableContextValue | null = null;
+                  void _tableCtx;
+
+                  return (
+                    <Table.Container bordered>
+                      <Table.Root variant={variant} size={size} isHoverable>
+                        <Table.Caption {...captionProps}>User Metrics Summary</Table.Caption>
+                        <Table.Thead {...theadProps}>
+                          <Table.Tr {...rowProps}>
+                            <Table.Th {...thProps}>User</Table.Th>
+                            <Table.Th {...thProps}>Role</Table.Th>
+                            <Table.Th {...thNumericProps}>Score</Table.Th>
+                          </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody {...tbodyProps}>
+                          <Table.Tr>
+                            <Table.Td {...tdProps}>Sarah Connor</Table.Td>
+                            <Table.Td {...tdProps}>Admin</Table.Td>
+                            <Table.Td {...tdNumericProps}>98.5</Table.Td>
+                          </Table.Tr>
+                        </Table.Tbody>
+                        <Table.Tfoot {...tfootProps}>
+                          <TableTr>
+                            <TableTh>Total</TableTh>
+                            <TableTd colSpan={2}>1 Active</TableTd>
+                          </TableTr>
+                        </Table.Tfoot>
+                      </Table.Root>
+                    </Table.Container>
+                  );
+                })()}
+              </div>
+            </>
+          );
+        })()}
       </Container>
     </ThemeProvider>
+  );
+}
+
+function ToastConsumerDemo() {
+  const toast: UseToastReturn = useToast();
+  const options: ToastOptions = {
+    title: "Consumer hook toast",
+    status: "info",
+    duration: 3000,
+  };
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const id = toast(options);
+        toast.close(id);
+        toast.closeAll();
+        toast.update(id, { title: "Updated" });
+        const _active: boolean = toast.isActive(id);
+        void _active;
+      }}
+    >
+      Trigger Toast
+    </button>
   );
 }
