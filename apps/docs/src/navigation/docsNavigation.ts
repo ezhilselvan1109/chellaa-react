@@ -33,6 +33,32 @@ export const docsNavigation: NavSection[] = [
       { id: "checkbox", title: "Checkbox", path: "/components/checkbox" },
       { id: "radio", title: "Radio", path: "/components/radio" },
       { id: "switch", title: "Switch", path: "/components/switch" },
+      { id: "select", title: "Select", path: "/components/select" },
+      { id: "combobox", title: "Combobox", path: "/components/combobox" },
+    ],
+  },
+  {
+    title: "Navigation",
+    items: [
+      { id: "accordion", title: "Accordion", path: "/components/accordion" },
+      { id: "tabs", title: "Tabs", path: "/components/tabs" },
+      { id: "pagination", title: "Pagination", path: "/components/pagination" },
+    ],
+  },
+  {
+    title: "Overlays",
+    items: [
+      { id: "dialog", title: "Dialog & Modal", path: "/components/dialog" },
+      { id: "popover", title: "Popover", path: "/components/popover" },
+      { id: "tooltip", title: "Tooltip", path: "/components/tooltip" },
+    ],
+  },
+  {
+    title: "Feedback",
+    items: [
+      { id: "alert", title: "Alert", path: "/components/alert" },
+      { id: "snackbar", title: "Snackbar & Toast", path: "/components/snackbar" },
+      { id: "touch-ripple", title: "TouchRipple", path: "/components/touch-ripple" },
     ],
   },
   {
@@ -42,6 +68,7 @@ export const docsNavigation: NavSection[] = [
       { id: "badge", title: "Badge", path: "/components/badge" },
       { id: "card", title: "Card", path: "/components/card" },
       { id: "kbd", title: "Kbd", path: "/components/kbd" },
+      { id: "table", title: "Table", path: "/components/table" },
       { id: "typography", title: "Typography", path: "/components/typography" },
     ],
   },
@@ -55,6 +82,13 @@ export const docsNavigation: NavSection[] = [
       { id: "grid", title: "Grid", path: "/components/grid" },
       { id: "paper", title: "Paper", path: "/components/paper" },
       { id: "stack", title: "Stack", path: "/components/stack" },
+    ],
+  },
+  {
+    title: "Utilities",
+    items: [
+      { id: "portal", title: "Portal", path: "/components/portal" },
+      { id: "slot", title: "Slot", path: "/components/slot" },
     ],
   },
   {
