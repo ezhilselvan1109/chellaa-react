@@ -222,7 +222,6 @@ export function ButtonDocPage() {
         />
       </section>
 
-
       <section id="variants" style={{ marginTop: "32px" }}>
         <h2 className="docs-heading-2">
           <span>Aesthetic Variants</span>
