@@ -448,7 +448,7 @@ import Link from "next/link";
             sx={{
               borderRadius: "9999px",
               px: 6,
-              boxShadow: "0 4px 14px rgba(59, 130, 246, 0.4)",
+              boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)",
             }}
           >
             Custom Pill Button with Shadow
@@ -460,7 +460,7 @@ import Link from "next/link";
   sx={{
     borderRadius: "9999px",
     px: 6,
-    boxShadow: "0 4px 14px rgba(59, 130, 246, 0.4)",
+    boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)",
   }}
 >
   Custom Pill Button

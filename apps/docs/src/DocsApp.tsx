@@ -184,7 +184,7 @@ export function DocsApp() {
   const { content, toc } = React.useMemo(() => {
     switch (currentPath) {
       case "/overview":
-        return { content: <OverviewPage />, toc: overviewToc };
+        return { content: <OverviewPage onNavigate={handleNavigate} />, toc: overviewToc };
       case "/installation":
         return { content: <InstallationPage />, toc: installationToc };
       case "/quick-start":

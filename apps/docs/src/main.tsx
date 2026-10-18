@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { DocsApp } from "./DocsApp";
+import "@chellaa/react/styles.css";
 import "./index.css";
 
 const root = document.getElementById("root");

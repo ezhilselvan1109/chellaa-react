@@ -35,7 +35,7 @@ export function NotFoundPage({ onNavigate, currentPath }: NotFoundPageProps) {
             fontWeight: 700,
             textTransform: "uppercase",
             letterSpacing: "0.08em",
-            color: "var(--cl-color-primary, #2563eb)",
+            color: "var(--cl-color-primary-base, #4f46e5)",
             marginBottom: "12px",
           }}
         >

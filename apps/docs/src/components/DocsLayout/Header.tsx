@@ -65,12 +65,12 @@ export function Header({
               width: "28px",
               height: "28px",
               borderRadius: "8px",
-              background: "linear-gradient(135deg, #2563eb, #7c3aed)",
+              background: "var(--docs-gradient)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#ffffff",
-              boxShadow: "0 2px 8px rgba(37, 99, 235, 0.3)",
+              boxShadow: "0 2px 8px rgba(79, 70, 229, 0.3)",
               flexShrink: 0,
             }}
           >
@@ -78,7 +78,7 @@ export function Header({
           </div>
           <span className="docs-logo-brand">Chellaa</span>
           <span className="docs-logo-react">React</span>
-          <span className="docs-version-tag">v0.2.1</span>
+          <span className="docs-version-tag">v0.2.2</span>
         </a>
 
         {/* Primary Navigation Links */}

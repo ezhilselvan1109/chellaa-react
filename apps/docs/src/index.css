@@ -7,10 +7,10 @@
   --docs-text: #0f172a;
   --docs-text-muted: #64748b;
   --docs-text-dim: #94a3b8;
-  --docs-primary: #2563eb;
-  --docs-primary-hover: #1d4ed8;
-  --docs-primary-bg: rgba(37, 99, 235, 0.08);
-  --docs-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  --docs-primary: var(--cl-color-primary-base, #4f46e5);
+  --docs-primary-hover: var(--cl-color-primary-hover, #4338ca);
+  --docs-primary-bg: var(--cl-color-primary-subtle, #eef2ff);
+  --docs-gradient: linear-gradient(135deg, var(--cl-color-primary-base, #4f46e5) 0%, var(--cl-color-secondary-base, #7c3aed) 100%);
   --docs-dot-color: rgba(0, 0, 0, 0.05);
   --docs-code-bg: #0f172a;
   --docs-code-fg: #f8fafc;
@@ -19,7 +19,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --docs-shadow-lg:
     0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
-  --docs-glow: 0 0 24px -4px rgba(37, 99, 235, 0.15);
+  --docs-glow: 0 0 24px -4px rgba(79, 70, 229, 0.22);
 }
 
 [data-theme="dark"] {
@@ -31,17 +31,17 @@
   --docs-text: #f8fafc;
   --docs-text-muted: #94a3b8;
   --docs-text-dim: #64748b;
-  --docs-primary: #3b82f6;
-  --docs-primary-hover: #60a5fa;
-  --docs-primary-bg: rgba(59, 130, 246, 0.12);
-  --docs-gradient: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+  --docs-primary: var(--cl-color-primary-base, #6366f1);
+  --docs-primary-hover: var(--cl-color-primary-hover, #818cf8);
+  --docs-primary-bg: var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.15));
+  --docs-gradient: linear-gradient(135deg, var(--cl-color-primary-base, #6366f1) 0%, var(--cl-color-secondary-base, #8b5cf6) 100%);
   --docs-dot-color: rgba(255, 255, 255, 0.04);
   --docs-code-bg: #050811;
   --docs-code-fg: #f1f5f9;
   --docs-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --docs-shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
   --docs-shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.6);
-  --docs-glow: 0 0 32px -4px rgba(59, 130, 246, 0.25);
+  --docs-glow: 0 0 32px -4px rgba(99, 102, 241, 0.3);
 }
 
 *,
@@ -112,6 +112,6 @@ pre {
 }
 
 ::selection {
-  background-color: rgba(37, 99, 235, 0.25);
+  background-color: rgba(99, 102, 241, 0.25);
   color: inherit;
 }

@@ -83,19 +83,19 @@ export function TokensPage() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "10px",
-                backgroundColor: "rgba(37, 99, 235, 0.12)",
+                backgroundColor: "var(--docs-primary-bg)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: "14px",
               }}
             >
-              <FiLayers size={20} color="#2563eb" />
+              <FiLayers size={20} color="var(--docs-primary)" />
             </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
-                color: "#2563eb",
+                color: "var(--docs-primary)",
                 fontSize: "1.1rem",
               }}
             >
@@ -113,7 +113,7 @@ export function TokensPage() {
               durations. Never used directly in components.
             </p>
             <code style={{ fontSize: "0.8rem", color: "var(--docs-text-dim)" }}>
-              --cl-palette-blue-500: #3b82f6;
+              --cl-palette-indigo-500: #6366f1;
             </code>
           </div>
 

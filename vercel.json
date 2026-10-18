@@ -3,23 +3,26 @@
   "framework": null,
   "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "dist",
-  "cleanUrls": true,
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/playground/(.*)",
-      "destination": "/playground/$1"
+      "source": "/storybook",
+      "destination": "/storybook/",
+      "permanent": true
     },
     {
       "source": "/playground",
-      "destination": "/playground/index.html"
-    },
+      "destination": "/playground/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
     {
       "source": "/storybook/(.*)",
       "destination": "/storybook/$1"
     },
     {
-      "source": "/storybook",
-      "destination": "/storybook/index.html"
+      "source": "/playground/(.*)",
+      "destination": "/playground/$1"
     },
     {
       "source": "/(.*)",
