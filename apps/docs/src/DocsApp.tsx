@@ -300,7 +300,7 @@ export function DocsApp() {
           toc: [],
         };
     }
-  }, [currentPath]);
+  }, [currentPath, handleNavigate]);
 
   return (
     <ThemeProvider defaultTheme="light">
