@@ -459,4 +459,80 @@ describe("Select Component (SPEC-003)", () => {
       expect(trigger).toHaveClass("cl-select__trigger");
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 9. Flat Options Mode & Empty Options (DEF-002)
+  // ---------------------------------------------------------------------------
+  describe("Flat Options Mode & Empty Options (DEF-002)", () => {
+    it("renders trigger and placeholder when options is an empty array", () => {
+      render(
+        <Select
+          options={[]}
+          placeholder="No options available"
+          data-testid="empty-select"
+        />
+      );
+
+      const root = screen.getByTestId("empty-select");
+      expect(root).toBeInTheDocument();
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveTextContent("No options available");
+    });
+
+    it("opens empty dropdown without crashing when options={[]}", async () => {
+      const user = userEvent.setup();
+
+      render(
+        <Select
+          options={[]}
+          placeholder="Empty list"
+        />
+      );
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+      await user.click(trigger);
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+      expect(listbox.children.length).toBe(0);
+    });
+
+    it("renders options properly when non-empty flat options array is provided", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+
+      render(
+        <Select
+          options={[
+            { label: "Option A", value: "a" },
+            { label: "Option B", value: "b", disabled: true },
+            { label: "Option C", value: "c" },
+          ]}
+          placeholder="Select an option"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toHaveTextContent("Select an option");
+
+      await user.click(trigger);
+      const optionA = screen.getByRole("option", { name: "Option A" });
+      const optionB = screen.getByRole("option", { name: "Option B" });
+      const optionC = screen.getByRole("option", { name: "Option C" });
+
+      expect(optionA).toBeInTheDocument();
+      expect(optionB).toHaveAttribute("aria-disabled", "true");
+      expect(optionC).toBeInTheDocument();
+
+      await user.click(optionA);
+      expect(handleValueChange).toHaveBeenCalledWith("a");
+      expect(trigger).toHaveTextContent("Option A");
+    });
+  });
 });

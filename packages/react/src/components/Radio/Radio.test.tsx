@@ -362,5 +362,66 @@ describe("Radio & RadioGroup Components", () => {
       expect(group.className).toMatch(/css-/);
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 8. asChild Composition (DEF-001)
+  // ---------------------------------------------------------------------------
+  describe("asChild Composition (DEF-001)", () => {
+    it("renders custom element root while preserving native radio input and control", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Radio asChild onChange={handleChange} name="plan" value="pro">
+          <label data-testid="custom-radio-root">Professional Plan</label>
+        </Radio>
+      );
+
+      const customRoot = screen.getByTestId("custom-radio-root");
+      expect(customRoot).toBeInTheDocument();
+      expect(customRoot).toHaveClass("cl-radio");
+
+      const input = screen.getByRole("radio", {
+        name: "Professional Plan",
+      });
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", "plan");
+      expect(input).toHaveAttribute("value", "pro");
+      expect(input).not.toBeChecked();
+
+      await user.click(customRoot);
+      expect(handleChange).toHaveBeenCalled();
+      expect(input).toBeChecked();
+    });
+
+    it("integrates within RadioGroup under asChild", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <RadioGroup name="pricing" defaultValue="monthly" onChange={handleChange}>
+          <Radio asChild value="monthly">
+            <label data-testid="radio-monthly">Billed Monthly</label>
+          </Radio>
+          <Radio asChild value="annually">
+            <label data-testid="radio-annually">Billed Annually</label>
+          </Radio>
+        </RadioGroup>
+      );
+
+      const monthlyInput = screen.getByRole("radio", { name: "Billed Monthly" });
+      const annuallyInput = screen.getByRole("radio", { name: "Billed Annually" });
+
+      expect(monthlyInput).toBeChecked();
+      expect(annuallyInput).not.toBeChecked();
+
+      const annuallyRoot = screen.getByTestId("radio-annually");
+      await user.click(annuallyRoot);
+
+      expect(handleChange).toHaveBeenCalledWith("annually");
+      expect(annuallyInput).toBeChecked();
+      expect(monthlyInput).not.toBeChecked();
+    });
+  });
 });
 

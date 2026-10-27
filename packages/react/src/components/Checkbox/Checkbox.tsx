@@ -177,7 +177,49 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
       .filter(Boolean)
       .join(" ") || undefined;
 
+    const nativeInputNode = (
+      <input
+        type="checkbox"
+        id={id}
+        name={name}
+        value={valueProp}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        checked={isControlled ? effectiveChecked : undefined}
+        defaultChecked={!isControlled ? defaultChecked : undefined}
+        onChange={handleChange}
+        ref={mergedInputRef}
+        aria-checked={indeterminate ? "mixed" : effectiveChecked}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={ariaDescribedBy}
+        className="cl-checkbox__input"
+        {...inputProps}
+      />
+    );
+
     if (asChild) {
+      const childElement = React.isValidElement(children)
+        ? (children as React.ReactElement<{ children?: React.ReactNode }>)
+        : null;
+
+      if (!childElement) {
+        return (
+          <StyledCheckboxRoot
+            as={Slot}
+            ref={ref as React.Ref<HTMLLabelElement>}
+            className={checkboxClassName}
+            style={style}
+            sx={sx}
+            {...rest}
+          >
+            {children}
+          </StyledCheckboxRoot>
+        );
+      }
+
+      const childLabel = childElement.props.children;
+
       return (
         <StyledCheckboxRoot
           as={Slot}
@@ -187,7 +229,19 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
           sx={sx}
           {...rest}
         >
-          {children}
+          {React.cloneElement(
+            childElement,
+            undefined,
+            <>
+              {nativeInputNode}
+              {controlBox}
+              {childLabel && (
+                <span className="cl-checkbox__label ChellaaCheckbox-Label">
+                  {childLabel}
+                </span>
+              )}
+            </>
+          )}
         </StyledCheckboxRoot>
       );
     }
@@ -201,24 +255,7 @@ export const Checkbox = React.forwardRef<HTMLLabelElement, CheckboxProps>(
         sx={sx}
         {...rest}
       >
-        <input
-          type="checkbox"
-          id={id}
-          name={name}
-          value={valueProp}
-          disabled={disabled}
-          readOnly={readOnly}
-          required={required}
-          checked={isControlled ? effectiveChecked : undefined}
-          defaultChecked={!isControlled ? defaultChecked : undefined}
-          onChange={handleChange}
-          ref={mergedInputRef}
-          aria-checked={indeterminate ? "mixed" : effectiveChecked}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={ariaDescribedBy}
-          className="cl-checkbox__input"
-          {...inputProps}
-        />
+        {nativeInputNode}
         {controlBox}
         {children && (
           <span className="cl-checkbox__label ChellaaCheckbox-Label">

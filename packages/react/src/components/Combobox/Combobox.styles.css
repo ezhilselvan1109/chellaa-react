@@ -188,6 +188,11 @@
     background-color: var(--cl-color-bg-muted, #f1f5f9);
   }
 
+  .cl-combobox__clear:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
   /* Spinner */
   .cl-combobox__spinner {
     display: inline-block;
@@ -244,12 +249,18 @@
     height: 14px;
     line-height: 1;
     font-size: 14px;
+    outline: none;
     transition: color var(--cl-motion-fast, 150ms) ease, background-color var(--cl-motion-fast, 150ms) ease;
   }
 
   .cl-combobox__tag-remove:hover {
     color: var(--cl-color-error-base, #ef4444);
     background-color: rgba(239, 68, 68, 0.1);
+  }
+
+  .cl-combobox__tag-remove:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
   }
 
   /* Content (Popup Listbox) */

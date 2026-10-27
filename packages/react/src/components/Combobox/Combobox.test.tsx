@@ -456,4 +456,92 @@ describe("Combobox Component (SPEC-030)", () => {
     expect(input).toHaveAttribute("aria-expanded", "false");
     expect(input).toHaveFocus();
   });
+
+  describe("Subcontrols Keyboard Accessibility (DEF-007)", () => {
+    it("makes ComboboxClear focusable and activatable via Enter and Space", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="us"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveValue("United States");
+
+      const clearBtn = screen.getByRole("button", { name: "Clear selection" });
+      expect(clearBtn).toBeInTheDocument();
+      expect(clearBtn).toHaveAttribute("tabindex", "0");
+
+      clearBtn.focus();
+      expect(clearBtn).toHaveFocus();
+
+      // Activate with Space
+      await user.keyboard(" ");
+      expect(handleValueChange).toHaveBeenCalledWith("");
+      expect(input).toHaveFocus();
+    });
+
+    it("makes ComboboxClear activatable via Enter key", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="ca"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveValue("Canada");
+
+      const clearBtn = screen.getByRole("button", { name: "Clear selection" });
+      clearBtn.focus();
+
+      // Activate with Enter
+      await user.keyboard("{Enter}");
+      expect(handleValueChange).toHaveBeenCalledWith("");
+      expect(input).toHaveFocus();
+    });
+
+    it("makes ComboboxTag remove buttons focusable and activatable via Enter and Space", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+
+      render(
+        <Combobox
+          options={COUNTRIES}
+          isMulti
+          defaultValue={["us", "ca"]}
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      const removeUS = screen.getByRole("button", { name: "Remove United States" });
+      const removeCA = screen.getByRole("button", { name: "Remove Canada" });
+
+      expect(removeUS).toHaveAttribute("tabindex", "0");
+      expect(removeCA).toHaveAttribute("tabindex", "0");
+
+      removeUS.focus();
+      expect(removeUS).toHaveFocus();
+
+      // Press Enter to remove
+      await user.keyboard("{Enter}");
+      expect(handleValueChange).toHaveBeenCalledWith(["ca"]);
+      expect(input).toHaveFocus();
+
+      // Now focus and remove Canada via Space
+      const removeCAAfter = screen.getByRole("button", { name: "Remove Canada" });
+      removeCAAfter.focus();
+      await user.keyboard(" ");
+      expect(handleValueChange).toHaveBeenCalledWith([]);
+      expect(input).toHaveFocus();
+    });
+  });
 });

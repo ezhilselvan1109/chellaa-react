@@ -328,7 +328,7 @@ export const SelectRoot = React.forwardRef<HTMLDivElement, SelectRootProps>(
       if (children) {
         return children;
       }
-      if (options && options.length > 0) {
+      if (options !== undefined) {
         return (
           <>
             <SelectTrigger>

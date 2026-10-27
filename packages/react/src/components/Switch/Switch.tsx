@@ -171,7 +171,51 @@ export const Switch = React.forwardRef<HTMLLabelElement, SwitchProps>(
       .filter(Boolean)
       .join(" ") || undefined;
 
+    const nativeInputNode = (
+      <input
+        type="checkbox"
+        role="switch"
+        id={id}
+        name={name}
+        value={value}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        checked={isControlled ? effectiveChecked : undefined}
+        defaultChecked={!isControlled ? defaultChecked : undefined}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        ref={mergedInputRef}
+        aria-checked={effectiveChecked}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={ariaDescribedBy}
+        className="cl-switch__input"
+        {...inputProps}
+      />
+    );
+
     if (asChild) {
+      const childElement = React.isValidElement(children)
+        ? (children as React.ReactElement<{ children?: React.ReactNode }>)
+        : null;
+
+      if (!childElement) {
+        return (
+          <StyledSwitchRoot
+            as={Slot}
+            ref={ref as React.Ref<HTMLLabelElement>}
+            className={switchClassName}
+            style={style}
+            sx={sx}
+            {...rest}
+          >
+            {children}
+          </StyledSwitchRoot>
+        );
+      }
+
+      const childLabel = childElement.props.children;
+
       return (
         <StyledSwitchRoot
           as={Slot}
@@ -181,7 +225,19 @@ export const Switch = React.forwardRef<HTMLLabelElement, SwitchProps>(
           sx={sx}
           {...rest}
         >
-          {children}
+          {React.cloneElement(
+            childElement,
+            undefined,
+            <>
+              {nativeInputNode}
+              {trackControl}
+              {childLabel && (
+                <span className="cl-switch__label ChellaaSwitch-Label">
+                  {childLabel}
+                </span>
+              )}
+            </>
+          )}
         </StyledSwitchRoot>
       );
     }
@@ -195,26 +251,7 @@ export const Switch = React.forwardRef<HTMLLabelElement, SwitchProps>(
         sx={sx}
         {...rest}
       >
-        <input
-          type="checkbox"
-          role="switch"
-          id={id}
-          name={name}
-          value={value}
-          disabled={disabled}
-          readOnly={readOnly}
-          required={required}
-          checked={isControlled ? effectiveChecked : undefined}
-          defaultChecked={!isControlled ? defaultChecked : undefined}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          ref={mergedInputRef}
-          aria-checked={effectiveChecked}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={ariaDescribedBy}
-          className="cl-switch__input"
-          {...inputProps}
-        />
+        {nativeInputNode}
         {trackControl}
         {children && (
           <span className="cl-switch__label ChellaaSwitch-Label">

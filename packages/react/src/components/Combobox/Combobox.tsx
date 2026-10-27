@@ -1130,13 +1130,23 @@ export const ComboboxTag = React.forwardRef<HTMLSpanElement, ComboboxTagProps>(
 
     const isDisabled = disabledProp ?? ctx.isDisabled;
 
-    const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleRemove = (
+      e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>
+    ) => {
       e.stopPropagation();
       if (isDisabled) return;
       if (onRemove) {
         onRemove();
       } else {
         ctx.removeItem(tagVal);
+      }
+      ctx.inputRef.current?.focus();
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleRemove(e);
       }
     };
 
@@ -1149,11 +1159,13 @@ export const ComboboxTag = React.forwardRef<HTMLSpanElement, ComboboxTagProps>(
         <span>{children}</span>
         <button
           type="button"
-          tabIndex={-1}
+          tabIndex={isDisabled ? -1 : 0}
           aria-label={`Remove ${typeof children === "string" ? children : tagVal}`}
           className="cl-combobox__tag-remove"
           disabled={isDisabled}
           onClick={handleRemove}
+          onKeyDown={handleKeyDown}
+          onMouseDown={(e) => e.preventDefault()}
         >
           ×
         </button>
@@ -1169,7 +1181,15 @@ export const ComboboxTag = React.forwardRef<HTMLSpanElement, ComboboxTagProps>(
 export const ComboboxClear = React.forwardRef<HTMLButtonElement, ComboboxClearProps>(
   function ComboboxClear(props, ref) {
     const ctx = useComboboxContext();
-    const { className, onClick, children, disabled: disabledProp, ...rest } = props;
+    const {
+      className,
+      onClick,
+      onKeyDown,
+      children,
+      disabled: disabledProp,
+      tabIndex = 0,
+      ...rest
+    } = props;
 
     const isDisabled = disabledProp ?? ctx.isDisabled;
 
@@ -1182,22 +1202,35 @@ export const ComboboxClear = React.forwardRef<HTMLButtonElement, ComboboxClearPr
       return null;
     }
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (
+      e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>
+    ) => {
       e.stopPropagation();
       if (isDisabled) return;
       ctx.clearSelection();
-      onClick?.(e);
+      ctx.inputRef.current?.focus();
+      onClick?.(e as React.MouseEvent<HTMLButtonElement>);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleClick(e);
+      }
+      onKeyDown?.(e);
     };
 
     return (
       <button
         ref={ref}
         type="button"
-        tabIndex={-1}
+        tabIndex={isDisabled ? -1 : tabIndex}
         aria-label="Clear selection"
         className={classNames("cl-combobox__clear", className)}
         disabled={isDisabled}
         onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        onMouseDown={(e) => e.preventDefault()}
         {...rest}
       >
         {children ?? (

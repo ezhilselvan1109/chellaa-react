@@ -1,6 +1,7 @@
 import * as React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import {
   Table,
@@ -286,5 +287,48 @@ describe("Table Component (SPEC-007)", () => {
     const { container } = renderStandardTable();
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("FR-TBL-14 [DEF-016]: provides keyboard operability and focus management for sortable headers", async () => {
+    const handleSort = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <TableRoot>
+        <TableThead>
+          <TableTr>
+            <TableTh isSortable sortDirection="asc" onClick={handleSort} data-testid="sortable-th">
+              Username
+            </TableTh>
+            <TableTh data-testid="regular-th">
+              Role
+            </TableTh>
+          </TableTr>
+        </TableThead>
+      </TableRoot>
+    );
+
+    const sortableTh = screen.getByTestId("sortable-th");
+    const regularTh = screen.getByTestId("regular-th");
+
+    // Sortable header has tabIndex="0", non-sortable does not have tabIndex
+    expect(sortableTh).toHaveAttribute("tabindex", "0");
+    expect(regularTh).not.toHaveAttribute("tabindex");
+
+    // Keyboard focus
+    sortableTh.focus();
+    expect(sortableTh).toHaveFocus();
+
+    // Enter key triggers sort
+    await user.keyboard("{Enter}");
+    expect(handleSort).toHaveBeenCalledTimes(1);
+
+    // Space key triggers sort
+    await user.keyboard(" ");
+    expect(handleSort).toHaveBeenCalledTimes(2);
+
+    // Mouse click still works
+    await user.click(sortableTh);
+    expect(handleSort).toHaveBeenCalledTimes(3);
   });
 });
