@@ -6,7 +6,9 @@ import { axe } from "vitest-axe";
 import {
   Combobox,
   ComboboxRoot,
+  ComboboxControl,
   ComboboxInput,
+  ComboboxActions,
   ComboboxTrigger,
   ComboboxContent,
   ComboboxItem,
@@ -455,5 +457,167 @@ describe("Combobox Component (SPEC-030)", () => {
     await user.click(trigger);
     expect(input).toHaveAttribute("aria-expanded", "false");
     expect(input).toHaveFocus();
+  });
+
+  describe("Subcontrols Keyboard Accessibility (DEF-007)", () => {
+    it("makes ComboboxClear focusable and activatable via Enter and Space", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="us"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveValue("United States");
+
+      const clearBtn = screen.getByRole("button", { name: "Clear selection" });
+      expect(clearBtn).toBeInTheDocument();
+      expect(clearBtn).toHaveAttribute("tabindex", "0");
+
+      clearBtn.focus();
+      expect(clearBtn).toHaveFocus();
+
+      // Activate with Space
+      await user.keyboard(" ");
+      expect(handleValueChange).toHaveBeenCalledWith("");
+      expect(input).toHaveFocus();
+    });
+
+    it("makes ComboboxClear activatable via Enter key", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="ca"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveValue("Canada");
+
+      const clearBtn = screen.getByRole("button", { name: "Clear selection" });
+      clearBtn.focus();
+
+      // Activate with Enter
+      await user.keyboard("{Enter}");
+      expect(handleValueChange).toHaveBeenCalledWith("");
+      expect(input).toHaveFocus();
+    });
+
+    it("makes ComboboxTag remove buttons focusable and activatable via Enter and Space", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+
+      render(
+        <Combobox
+          options={COUNTRIES}
+          isMulti
+          defaultValue={["us", "ca"]}
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const input = screen.getByRole("combobox");
+      const removeUS = screen.getByRole("button", { name: "Remove United States" });
+      const removeCA = screen.getByRole("button", { name: "Remove Canada" });
+
+      expect(removeUS).toHaveAttribute("tabindex", "0");
+      expect(removeCA).toHaveAttribute("tabindex", "0");
+
+      removeUS.focus();
+      expect(removeUS).toHaveFocus();
+
+      // Press Enter to remove
+      await user.keyboard("{Enter}");
+      expect(handleValueChange).toHaveBeenCalledWith(["ca"]);
+      expect(input).toHaveFocus();
+
+      // Now focus and remove Canada via Space
+      const removeCAAfter = screen.getByRole("button", { name: "Remove Canada" });
+      removeCAAfter.focus();
+      await user.keyboard(" ");
+      expect(handleValueChange).toHaveBeenCalledWith([]);
+      expect(input).toHaveFocus();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // DEF-UI-002 Regression: Subcontrol Alignment, Layout Grouping & Placeholder
+  // ---------------------------------------------------------------------------
+  describe("DEF-UI-002 Regression: Subcontrol Alignment, Layout Grouping & Placeholder", () => {
+    it("renders ComboboxActions grouping Clear and Trigger buttons at end of control", () => {
+      render(
+        <ComboboxRoot defaultValue="us">
+          <ComboboxControl>
+            <ComboboxInput />
+            <ComboboxActions data-testid="combobox-actions">
+              <ComboboxClear />
+              <ComboboxTrigger />
+            </ComboboxActions>
+          </ComboboxControl>
+        </ComboboxRoot>
+      );
+
+      const actions = screen.getByTestId("combobox-actions");
+      expect(actions).toHaveClass("cl-combobox__actions");
+      expect(actions.querySelector(".cl-combobox__clear")).toBeInTheDocument();
+      expect(actions.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
+    });
+
+    it("propagates root placeholder prop to Combobox.Input via context", () => {
+      render(
+        <ComboboxRoot placeholder="Search or select country...">
+          <ComboboxControl>
+            <ComboboxInput />
+            <ComboboxTrigger />
+          </ComboboxControl>
+        </ComboboxRoot>
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveAttribute("placeholder", "Search or select country...");
+    });
+
+    it("renders multi-select tags with cl-combobox__tag-label for text truncation", () => {
+      render(
+        <Combobox
+          isMulti
+          defaultValue={["us"]}
+          options={[
+            {
+              value: "us",
+              label: "United States of America with a very long descriptive region label",
+            },
+          ]}
+        />
+      );
+
+      const tagLabel = document.querySelector(".cl-combobox__tag-label");
+      expect(tagLabel).toBeInTheDocument();
+      expect(tagLabel).toHaveTextContent(
+        "United States of America with a very long descriptive region label"
+      );
+    });
+
+    it("auto-layout wraps clear and trigger buttons inside cl-combobox__actions", () => {
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="us"
+          placeholder="Select country"
+        />
+      );
+
+      const actions = document.querySelector(".cl-combobox__actions");
+      expect(actions).toBeInTheDocument();
+      expect(actions?.querySelector(".cl-combobox__clear")).toBeInTheDocument();
+      expect(actions?.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
+    });
   });
 });

@@ -459,4 +459,198 @@ describe("Select Component (SPEC-003)", () => {
       expect(trigger).toHaveClass("cl-select__trigger");
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 9. Flat Options Mode & Empty Options (DEF-002)
+  // ---------------------------------------------------------------------------
+  describe("Flat Options Mode & Empty Options (DEF-002)", () => {
+    it("renders trigger and placeholder when options is an empty array", () => {
+      render(
+        <Select
+          options={[]}
+          placeholder="No options available"
+          data-testid="empty-select"
+        />
+      );
+
+      const root = screen.getByTestId("empty-select");
+      expect(root).toBeInTheDocument();
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveTextContent("No options available");
+    });
+
+    it("opens empty dropdown without crashing when options={[]}", async () => {
+      const user = userEvent.setup();
+
+      render(
+        <Select
+          options={[]}
+          placeholder="Empty list"
+        />
+      );
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+      await user.click(trigger);
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+      expect(listbox.children.length).toBe(0);
+    });
+
+    it("renders options properly when non-empty flat options array is provided", async () => {
+      const user = userEvent.setup();
+      const handleValueChange = vi.fn();
+
+      render(
+        <Select
+          options={[
+            { label: "Option A", value: "a" },
+            { label: "Option B", value: "b", disabled: true },
+            { label: "Option C", value: "c" },
+          ]}
+          placeholder="Select an option"
+          onValueChange={handleValueChange}
+        />
+      );
+
+      const trigger = screen.getByRole("combobox");
+      expect(trigger).toHaveTextContent("Select an option");
+
+      await user.click(trigger);
+      const optionA = screen.getByRole("option", { name: "Option A" });
+      const optionB = screen.getByRole("option", { name: "Option B" });
+      const optionC = screen.getByRole("option", { name: "Option C" });
+
+      expect(optionA).toBeInTheDocument();
+      expect(optionB).toHaveAttribute("aria-disabled", "true");
+      expect(optionC).toBeInTheDocument();
+
+      await user.click(optionA);
+      expect(handleValueChange).toHaveBeenCalledWith("a");
+      expect(trigger).toHaveTextContent("Option A");
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 10. DEF-UI-001 Regression: Positioning & Layout Stability
+  // ---------------------------------------------------------------------------
+  describe("10. DEF-UI-001 Regression: Positioning & Layout Stability", () => {
+    it("associates popup content with trigger and assigns floating styles", async () => {
+      const user = userEvent.setup();
+      renderFruitSelect();
+      const trigger = screen.getByRole("combobox");
+
+      await user.click(trigger);
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+      expect(listbox).toHaveAttribute("aria-labelledby", trigger.id);
+      expect(trigger).toHaveAttribute("aria-controls", listbox.id);
+      expect(listbox.style.position).toBe("absolute");
+    });
+
+    it("supports opening, closing, and reopening repeatedly without state corruption", async () => {
+      const user = userEvent.setup();
+      renderFruitSelect();
+      const trigger = screen.getByRole("combobox");
+
+      // Open
+      await user.click(trigger);
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+      // Close via Escape
+      await user.keyboard("{Escape}");
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+      // Reopen via click
+      await user.click(trigger);
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+      // Close via selecting an option
+      const banana = screen.getByRole("option", { name: "Banana" });
+      await user.click(banana);
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+      expect(screen.getByText("Banana")).toBeInTheDocument();
+
+      // Reopen again
+      await user.click(trigger);
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+    });
+
+    it("dismisses on outside click and preserves trigger focus capability", async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <button data-testid="outside-button">Outside</button>
+          <SelectRoot defaultValue="apple">
+            <SelectTrigger aria-label="Select Fruit">
+              <SelectValue />
+              <SelectIcon />
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectContent>
+                <SelectItem value="apple">
+                  <SelectItemText>Apple</SelectItemText>
+                </SelectItem>
+              </SelectContent>
+            </SelectPortal>
+          </SelectRoot>
+        </div>
+      );
+
+      const trigger = screen.getByRole("combobox");
+      await user.click(trigger);
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+
+      // Click outside
+      const outsideBtn = screen.getByTestId("outside-button");
+      await user.click(outsideBtn);
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("does not scroll the page window to top when opened while scrolled down", async () => {
+      const user = userEvent.setup();
+      const scrollToSpy = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+
+      // Simulate scrolled window
+      Object.defineProperty(window, "scrollY", { value: 650, writable: true, configurable: true });
+
+      render(
+        <div style={{ height: "2000px", paddingTop: "650px" }}>
+          <SelectRoot defaultValue="apple">
+            <SelectTrigger aria-label="Scrolled Select">
+              <SelectValue />
+              <SelectIcon />
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectContent>
+                <SelectItem value="apple">Apple</SelectItem>
+                <SelectItem value="banana">Banana</SelectItem>
+              </SelectContent>
+            </SelectPortal>
+          </SelectRoot>
+        </div>
+      );
+
+      const trigger = screen.getByRole("combobox", { name: "Scrolled Select" });
+      await user.click(trigger);
+
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      // Ensure window.scrollTo was not called to jump to (0, 0)
+      expect(scrollToSpy).not.toHaveBeenCalledWith(expect.anything(), 0);
+      expect(window.scrollY).toBe(650);
+
+      scrollToSpy.mockRestore();
+    });
+  });
 });

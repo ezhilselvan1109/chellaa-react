@@ -33,6 +33,7 @@ export interface SelectContextValue<TValue extends string = string> {
     setFloating: (node: HTMLElement | null) => void;
   };
   floatingStyles: React.CSSProperties;
+  isPositioned?: boolean;
 }
 
 export interface SelectRootProps<TValue extends string = string> {

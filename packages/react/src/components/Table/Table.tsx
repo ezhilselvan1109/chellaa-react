@@ -212,6 +212,9 @@ export const TableTh = React.forwardRef<
       scope = "col",
       className,
       children,
+      tabIndex,
+      onClick,
+      onKeyDown,
       ...props
     },
     ref
@@ -237,12 +240,23 @@ export const TableTh = React.forwardRef<
       .filter(Boolean)
       .join(" ");
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTableCellElement>) => {
+      if (isSortable && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        onClick?.(e as unknown as React.MouseEvent<HTMLTableCellElement>);
+      }
+      onKeyDown?.(e);
+    };
+
     return (
       <th
         ref={ref}
         scope={scope}
+        tabIndex={tabIndex ?? (isSortable ? 0 : undefined)}
         aria-sort={computedAriaSort}
         className={classNames}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
         {...props}
       >
         {children}

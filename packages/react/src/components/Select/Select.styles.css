@@ -187,18 +187,24 @@
     z-index: var(--cl-z-dropdown, 1000);
     outline: none;
     user-select: none;
-    animation: cl-select-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     overscroll-behavior: contain;
+  }
+
+  .cl-select__content:not([data-positioned="true"]) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cl-select__content[data-positioned="true"] {
+    animation: cl-select-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   @keyframes cl-select-fade-in {
     from {
       opacity: 0;
-      transform: translateY(-4px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 
@@ -261,14 +267,14 @@
   .cl-select__item[aria-selected="true"] {
     font-weight: var(--cl-font-weight-semibold, 600);
     color: var(--cl-select-item-selected-fg, var(--cl-color-primary-base, #4f46e5));
-    background-color: var(--cl-select-item-selected-bg, rgba(99, 102, 241, 0.12));
+    background-color: var(--cl-select-item-selected-bg, var(--cl-color-primary-subtle, rgba(99, 102, 241, 0.08)));
   }
 
   /* Item Selected AND Highlighted/Hovered */
   .cl-select__item[aria-selected="true"]:hover:not([aria-disabled="true"]):not([data-disabled="true"]),
   .cl-select__item[aria-selected="true"][data-highlighted="true"]:not([aria-disabled="true"]):not([data-disabled="true"]) {
     color: var(--cl-select-item-selected-fg, var(--cl-color-primary-hover, #4338ca));
-    background-color: var(--cl-select-item-hover-bg, rgba(99, 102, 241, 0.18));
+    background-color: var(--cl-select-item-hover-bg, rgba(99, 102, 241, 0.14));
   }
 
   /* Item Disabled */
