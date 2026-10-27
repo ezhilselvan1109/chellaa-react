@@ -422,3 +422,80 @@ export const AutocompleteAlias: Story = {
     </div>
   ),
 };
+
+export const KeyboardAccessibleSubcontrols: Story = {
+  render: function KeyboardSubcontrolsDemo() {
+    const [selected, setSelected] = React.useState<string[]>(["us", "in", "jp"]);
+
+    return (
+      <div style={{ width: 440, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+        <div
+          style={{
+            background: "var(--cl-color-bg-muted, #f8fafc)",
+            border: "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+            borderRadius: "8px",
+            padding: "14px 16px",
+            marginBottom: "16px",
+            fontSize: "13px",
+            lineHeight: 1.5,
+          }}
+        >
+          <strong style={{ display: "block", marginBottom: "6px", color: "var(--cl-color-fg-primary)" }}>
+            Keyboard Navigation Instructions (DEF-007):
+          </strong>
+          <ul style={{ margin: 0, paddingLeft: "18px", color: "var(--cl-color-fg-muted, #64748b)" }}>
+            <li><strong>Tab / Shift+Tab:</strong> Cycle focus between the input, Clear button, and individual tag-remove buttons.</li>
+            <li><strong>Enter / Space:</strong> Activate focused tag-remove button to delete tag, or Clear button to clear all.</li>
+            <li><strong>Arrow Down / Up:</strong> Navigate popup options and press Enter to toggle selection.</li>
+            <li><strong>Escape:</strong> Close the dropdown listbox.</li>
+          </ul>
+        </div>
+
+        <Combobox.Root
+          isMulti
+          value={selected}
+          onValueChange={setSelected}
+        >
+          <Combobox.Control>
+            <div className="cl-combobox__tags">
+              {selected.map((val) => {
+                const country = COUNTRIES.find((c) => c.value === val);
+                return (
+                  <Combobox.Tag key={val} value={val}>
+                    {country?.label ?? val}
+                  </Combobox.Tag>
+                );
+              })}
+            </div>
+            <Combobox.Input placeholder="Search or select country..." />
+            <Combobox.Clear aria-label="Clear all selected countries" />
+            <Combobox.Trigger aria-label="Toggle countries list" />
+          </Combobox.Control>
+          <Combobox.Content>
+            <Combobox.Empty>No countries found.</Combobox.Empty>
+            {COUNTRIES.map((c) => (
+              <Combobox.Item key={c.value} value={c.value}>
+                {c.label}
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>
+    );
+  },
+};
+
+export const DisabledState: Story = {
+  render: () => (
+    <div style={{ width: 320, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+      <Combobox.Root isDisabled defaultValue="us">
+        <Combobox.Control>
+          <Combobox.Input placeholder="Country selection disabled..." />
+          <Combobox.Clear />
+          <Combobox.Trigger />
+        </Combobox.Control>
+      </Combobox.Root>
+    </div>
+  ),
+};
+

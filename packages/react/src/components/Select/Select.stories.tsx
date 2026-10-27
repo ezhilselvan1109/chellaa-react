@@ -277,3 +277,53 @@ export const FlatOptions: Story = {
     </div>
   ),
 };
+
+export const EmptyOptions: Story = {
+  render: () => (
+    <div style={{ width: "360px", display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div>
+        <h4 style={{ fontSize: "14px", fontWeight: 600, margin: "0 0 6px 0", color: "var(--cl-color-fg-primary)" }}>
+          Empty Options Array (DEF-002)
+        </h4>
+        <p style={{ fontSize: "13px", color: "var(--cl-color-fg-muted)", margin: "0 0 12px 0" }}>
+          Verifies that passing <code>options={[]}</code> preserves the trigger button, displays the
+          placeholder, and remains focusable/clickable when options load asynchronously.
+        </p>
+        <Select.Root
+          placeholder="No options available (empty dataset)..."
+          options={[]}
+        />
+      </div>
+
+      <div>
+        <h4 style={{ fontSize: "14px", fontWeight: 600, margin: "0 0 6px 0", color: "var(--cl-color-fg-primary)" }}>
+          Empty State with Compound Composition
+        </h4>
+        <p style={{ fontSize: "13px", color: "var(--cl-color-fg-muted)", margin: "0 0 12px 0" }}>
+          Compound Select with empty content showing an accessible placeholder.
+        </p>
+        <Select.Root>
+          <Select.Trigger aria-label="Empty Categories">
+            <Select.Value placeholder="Select category..." />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <div
+                style={{
+                  padding: "16px",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  color: "var(--cl-color-fg-muted)",
+                }}
+              >
+                No categories found.
+              </div>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      </div>
+    </div>
+  ),
+};
+

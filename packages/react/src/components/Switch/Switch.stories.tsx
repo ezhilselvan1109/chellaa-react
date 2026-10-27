@@ -147,3 +147,97 @@ export const WithFormField = {
     </Box>
   ),
 };
+
+export const ControlledAndUncontrolled = {
+  render: function ControlledDemo() {
+    const [enabled, setEnabled] = React.useState(true);
+
+    return (
+      <Stack spacing={4} sx={{ p: 4, maxWidth: 520 }}>
+        <Box>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Controlled Switch Mode:
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 2, color: "var(--cl-color-fg-muted)" }}>
+            Current state: <strong>{enabled ? "ACTIVE (true)" : "INACTIVE (false)"}</strong>
+          </Typography>
+          <Switch
+            checked={enabled}
+            onChange={(e) => setEnabled(e.target.checked)}
+            aria-label="Toggle maintenance mode"
+          >
+            Maintenance Mode
+          </Switch>
+        </Box>
+        <Box>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Uncontrolled Switch Mode:
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 2, color: "var(--cl-color-fg-muted)" }}>
+            Maintains internal state via defaultChecked without requiring React state.
+          </Typography>
+          <Switch defaultChecked aria-label="Toggle hardware acceleration">
+            Hardware Acceleration (defaultChecked)
+          </Switch>
+        </Box>
+      </Stack>
+    );
+  },
+};
+
+export const AsChildComposition = {
+  render: function AsChildSwitchDemo() {
+    const [enabled, setEnabled] = React.useState(false);
+
+    return (
+      <Box sx={{ p: 4, maxWidth: 480 }}>
+        <Typography variant="subtitle2" sx={{ mb: 2 }}>
+          Polymorphic asChild Composition (DEF-001)
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3, color: "var(--cl-color-fg-muted)" }}>
+          Custom interactive card rendered via polymorphic asChild composition. Preserves native
+          checkbox input, role=&quot;switch&quot;, switch indicator track/thumb, and keyboard actuation.
+        </Typography>
+        <Switch
+          asChild
+          checked={enabled}
+          onChange={(e) => setEnabled(e.target.checked)}
+        >
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "16px",
+              padding: "16px",
+              border: enabled
+                ? "2px solid var(--cl-color-primary-base, #2563eb)"
+                : "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+              borderRadius: "8px",
+              backgroundColor: enabled
+                ? "var(--cl-color-bg-muted, #f8fafc)"
+                : "transparent",
+              cursor: "pointer",
+              transition: "border-color 0.2s, background-color 0.2s",
+            }}
+          >
+            <span>
+              <strong style={{ display: "block" }}>Two-Factor Authentication (2FA)</strong>
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "13px",
+                  color: "var(--cl-color-fg-muted, #64748b)",
+                  marginTop: "2px",
+                }}
+              >
+                Require authenticator app verification code on every login.
+              </span>
+            </span>
+          </label>
+        </Switch>
+      </Box>
+    );
+  },
+};
+

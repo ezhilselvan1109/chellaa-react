@@ -371,15 +371,45 @@ export const SortableColumns: Story = {
 
     return (
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
+        <div
+          style={{
+            background: "var(--cl-color-bg-muted, #f8fafc)",
+            border: "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+            borderRadius: "8px",
+            padding: "14px 16px",
+            marginBottom: "16px",
+            fontSize: "13px",
+            lineHeight: 1.5,
+          }}
+        >
+          <strong style={{ display: "block", marginBottom: "6px", color: "var(--cl-color-fg-primary)" }}>
+            Keyboard-Operable Sortable Columns (DEF-016):
+          </strong>
+          <ul style={{ margin: 0, paddingLeft: "18px", color: "var(--cl-color-fg-muted, #64748b)" }}>
+            <li>
+              <strong>Tab Navigation:</strong> Sortable headers (<code>User ID</code>, <code>Name</code>, <code>Monthly Spend</code>) receive keyboard focus (<code>tabIndex=0</code>).
+            </li>
+            <li>
+              <strong>Keyboard Activation:</strong> Press <strong>Enter</strong> or <strong>Space</strong> while focused on any sortable header to toggle sort direction: <em>Ascending → Descending → None</em>.
+            </li>
+            <li>
+              <strong>Accessibility &amp; ARIA:</strong> Automatically manages <code>aria-sort=&quot;ascending&quot; | &quot;descending&quot; | &quot;none&quot;</code> and exposes <code>role=&quot;columnheader&quot;</code>.
+            </li>
+          </ul>
+        </div>
+
         <TableContainer bordered>
           <TableRoot isHoverable>
-            <TableCaption>Click headers to toggle ascending / descending sorting</TableCaption>
+            <TableCaption>
+              Interactive Sortable Team Directory — Active Sort: {sortField.toUpperCase()} ({sortDirection})
+            </TableCaption>
             <TableThead>
               <TableTr>
                 <TableTh
                   isSortable
                   sortDirection={sortField === "id" ? sortDirection : "none"}
                   onClick={() => handleSort("id")}
+                  style={{ cursor: "pointer" }}
                 >
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                     User ID {renderSortIcon("id")}
@@ -389,18 +419,20 @@ export const SortableColumns: Story = {
                   isSortable
                   sortDirection={sortField === "name" ? sortDirection : "none"}
                   onClick={() => handleSort("name")}
+                  style={{ cursor: "pointer" }}
                 >
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                     Name {renderSortIcon("name")}
                   </span>
                 </TableTh>
-                <TableTh>Role</TableTh>
-                <TableTh>Status</TableTh>
+                <TableTh>Role (Non-Sortable)</TableTh>
+                <TableTh>Status (Non-Sortable)</TableTh>
                 <TableTh
                   isNumeric
                   isSortable
                   sortDirection={sortField === "spendRaw" ? sortDirection : "none"}
                   onClick={() => handleSort("spendRaw")}
+                  style={{ cursor: "pointer" }}
                 >
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 6, justifyContent: "flex-end" }}>
                     Monthly Spend {renderSortIcon("spendRaw")}
@@ -427,6 +459,7 @@ export const SortableColumns: Story = {
     );
   },
 };
+
 
 export const WithPagination: Story = {
   render: () => {
@@ -615,3 +648,5 @@ export const DarkTheme: Story = {
     </ThemeProvider>
   ),
 };
+
+
