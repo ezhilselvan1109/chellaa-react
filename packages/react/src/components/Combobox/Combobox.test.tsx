@@ -6,7 +6,9 @@ import { axe } from "vitest-axe";
 import {
   Combobox,
   ComboboxRoot,
+  ComboboxControl,
   ComboboxInput,
+  ComboboxActions,
   ComboboxTrigger,
   ComboboxContent,
   ComboboxItem,
@@ -542,6 +544,80 @@ describe("Combobox Component (SPEC-030)", () => {
       await user.keyboard(" ");
       expect(handleValueChange).toHaveBeenCalledWith([]);
       expect(input).toHaveFocus();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // DEF-UI-002 Regression: Subcontrol Alignment, Layout Grouping & Placeholder
+  // ---------------------------------------------------------------------------
+  describe("DEF-UI-002 Regression: Subcontrol Alignment, Layout Grouping & Placeholder", () => {
+    it("renders ComboboxActions grouping Clear and Trigger buttons at end of control", () => {
+      render(
+        <ComboboxRoot defaultValue="us">
+          <ComboboxControl>
+            <ComboboxInput />
+            <ComboboxActions data-testid="combobox-actions">
+              <ComboboxClear />
+              <ComboboxTrigger />
+            </ComboboxActions>
+          </ComboboxControl>
+        </ComboboxRoot>
+      );
+
+      const actions = screen.getByTestId("combobox-actions");
+      expect(actions).toHaveClass("cl-combobox__actions");
+      expect(actions.querySelector(".cl-combobox__clear")).toBeInTheDocument();
+      expect(actions.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
+    });
+
+    it("propagates root placeholder prop to Combobox.Input via context", () => {
+      render(
+        <ComboboxRoot placeholder="Search or select country...">
+          <ComboboxControl>
+            <ComboboxInput />
+            <ComboboxTrigger />
+          </ComboboxControl>
+        </ComboboxRoot>
+      );
+
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveAttribute("placeholder", "Search or select country...");
+    });
+
+    it("renders multi-select tags with cl-combobox__tag-label for text truncation", () => {
+      render(
+        <Combobox
+          isMulti
+          defaultValue={["us"]}
+          options={[
+            {
+              value: "us",
+              label: "United States of America with a very long descriptive region label",
+            },
+          ]}
+        />
+      );
+
+      const tagLabel = document.querySelector(".cl-combobox__tag-label");
+      expect(tagLabel).toBeInTheDocument();
+      expect(tagLabel).toHaveTextContent(
+        "United States of America with a very long descriptive region label"
+      );
+    });
+
+    it("auto-layout wraps clear and trigger buttons inside cl-combobox__actions", () => {
+      render(
+        <Combobox
+          options={COUNTRIES}
+          defaultValue="us"
+          placeholder="Select country"
+        />
+      );
+
+      const actions = document.querySelector(".cl-combobox__actions");
+      expect(actions).toBeInTheDocument();
+      expect(actions?.querySelector(".cl-combobox__clear")).toBeInTheDocument();
+      expect(actions?.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
     });
   });
 });

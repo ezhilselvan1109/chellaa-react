@@ -20,6 +20,7 @@ import type {
   ComboboxRootProps,
   ComboboxControlProps,
   ComboboxInputProps,
+  ComboboxActionsProps,
   ComboboxTriggerProps,
   ComboboxPortalProps,
   ComboboxContentProps,
@@ -51,6 +52,17 @@ export function useComboboxContext(): ComboboxContextValue {
 }
 
 export const useCombobox = useComboboxContext;
+
+function scrollItemIntoView(container: HTMLElement, item: HTMLElement) {
+  const containerRect = container.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+
+  if (itemRect.top < containerRect.top) {
+    container.scrollTop -= containerRect.top - itemRect.top;
+  } else if (itemRect.bottom > containerRect.bottom) {
+    container.scrollTop += itemRect.bottom - containerRect.bottom;
+  }
+}
 
 /* =========================================================================
    1. ComboboxRoot / Combobox
@@ -180,6 +192,7 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
     const {
       refs,
       floatingStyles,
+      isPositioned,
       context: floatingContext,
     } = useFloating({
       open: isOpen,
@@ -302,6 +315,8 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         updateItemVisibility,
         visibleItems: [],
         filteredCount: hasOptions ? 1 : 0,
+        placeholder,
+        isPositioned,
       }),
       [
         value,
@@ -335,6 +350,8 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
         name,
         registerItem,
         updateItemVisibility,
+        placeholder,
+        isPositioned,
       ]
     );
 
@@ -366,8 +383,10 @@ export const ComboboxRoot = React.forwardRef<HTMLDivElement, ComboboxRootProps>(
                   </div>
                 )}
                 <ComboboxInput placeholder={placeholder} />
-                <ComboboxClear />
-                <ComboboxTrigger />
+                <ComboboxActions>
+                  <ComboboxClear />
+                  <ComboboxTrigger />
+                </ComboboxActions>
               </ComboboxControl>
               <ComboboxContent>
                 <ComboboxEmpty>No results found.</ComboboxEmpty>
@@ -496,7 +515,9 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             const target = options[nextIndex];
             if (target) {
               ctx.setActiveId(target.id);
-              target.scrollIntoView?.({ block: "nearest" });
+              if (ctx.contentElementRef.current) {
+                scrollItemIntoView(ctx.contentElementRef.current, target);
+              }
             }
           }
           break;
@@ -515,7 +536,9 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             const target = options[prevIndex];
             if (target) {
               ctx.setActiveId(target.id);
-              target.scrollIntoView?.({ block: "nearest" });
+              if (ctx.contentElementRef.current) {
+                scrollItemIntoView(ctx.contentElementRef.current, target);
+              }
             }
           }
           break;
@@ -527,7 +550,9 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             const target = options[0];
             if (target) {
               ctx.setActiveId(target.id);
-              target.scrollIntoView?.({ block: "nearest" });
+              if (ctx.contentElementRef.current) {
+                scrollItemIntoView(ctx.contentElementRef.current, target);
+              }
             }
           }
           break;
@@ -539,7 +564,9 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             const target = options[options.length - 1];
             if (target) {
               ctx.setActiveId(target.id);
-              target.scrollIntoView?.({ block: "nearest" });
+              if (ctx.contentElementRef.current) {
+                scrollItemIntoView(ctx.contentElementRef.current, target);
+              }
             }
           }
           break;
@@ -627,6 +654,9 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
     const inputValue =
       inputValProp !== undefined ? inputValProp : ctx.searchValue;
 
+    const resolvedPlaceholder =
+      placeholder !== undefined ? placeholder : ctx.placeholder;
+
     const inputClasses = classNames("cl-combobox__input", className);
 
     if (asChild) {
@@ -656,7 +686,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
             onFocus: handleFocus,
             onBlur: handleBlur,
             onClick: handleClick,
-            placeholder,
+            placeholder: resolvedPlaceholder,
             className: inputClasses,
             ...rest,
           } as any)}
@@ -691,7 +721,7 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
         onFocus={handleFocus}
         onBlur={handleBlur}
         onClick={handleClick}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         className={inputClasses}
         {...rest}
       />
@@ -700,7 +730,32 @@ export const ComboboxInput = React.forwardRef<HTMLInputElement, ComboboxInputPro
 );
 
 /* =========================================================================
-   3. ComboboxTrigger
+   3b. ComboboxActions
+   ========================================================================= */
+
+export const ComboboxActions = React.forwardRef<HTMLDivElement, ComboboxActionsProps>(
+  function ComboboxActions(props, ref) {
+    const { asChild = false, className, children, ...rest } = props;
+    const actionClasses = classNames("cl-combobox__actions", className);
+
+    if (asChild) {
+      return (
+        <Slot ref={ref} className={actionClasses} {...rest}>
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <div ref={ref} className={actionClasses} {...rest}>
+        {children}
+      </div>
+    );
+  }
+);
+
+/* =========================================================================
+   4. ComboboxTrigger
    ========================================================================= */
 
 export const ComboboxTrigger = React.forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
@@ -845,7 +900,7 @@ export const ComboboxContent = React.forwardRef<HTMLDivElement, ComboboxContentP
 
           if (targetEl) {
             ctx.setActiveId(targetEl.id);
-            targetEl.scrollIntoView?.({ block: "nearest" });
+            scrollItemIntoView(container, targetEl);
           }
           ctx.setPendingHighlight(null);
         }
@@ -873,6 +928,7 @@ export const ComboboxContent = React.forwardRef<HTMLDivElement, ComboboxContentP
           aria-busy={ctx.isLoading ? true : undefined}
           tabIndex={-1}
           data-state="open"
+          data-positioned={ctx.isPositioned ? "true" : undefined}
           style={mergedStyles}
           className={contentClasses}
           {...rest}
@@ -892,6 +948,7 @@ export const ComboboxContent = React.forwardRef<HTMLDivElement, ComboboxContentP
         aria-busy={ctx.isLoading ? true : undefined}
         tabIndex={-1}
         data-state="open"
+        data-positioned={ctx.isPositioned ? "true" : undefined}
         style={mergedStyles}
         className={contentClasses}
         {...rest}
@@ -1156,7 +1213,7 @@ export const ComboboxTag = React.forwardRef<HTMLSpanElement, ComboboxTagProps>(
         className={classNames("cl-combobox__tag", className)}
         {...rest}
       >
-        <span>{children}</span>
+        <span className="cl-combobox__tag-label">{children}</span>
         <button
           type="button"
           tabIndex={isDisabled ? -1 : 0}
@@ -1265,6 +1322,7 @@ export interface ComboboxComponent
   Root: typeof ComboboxRoot;
   Control: typeof ComboboxControl;
   Input: typeof ComboboxInput;
+  Actions: typeof ComboboxActions;
   Trigger: typeof ComboboxTrigger;
   Portal: typeof ComboboxPortal;
   Content: typeof ComboboxContent;
@@ -1280,6 +1338,7 @@ export const Combobox = ComboboxRoot as ComboboxComponent;
 Combobox.Root = ComboboxRoot;
 Combobox.Control = ComboboxControl;
 Combobox.Input = ComboboxInput;
+Combobox.Actions = ComboboxActions;
 Combobox.Trigger = ComboboxTrigger;
 Combobox.Portal = ComboboxPortal;
 Combobox.Content = ComboboxContent;

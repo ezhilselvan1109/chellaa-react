@@ -71,6 +71,12 @@ export interface ComboboxInputProps
   asChild?: boolean | undefined;
 }
 
+export interface ComboboxActionsProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** When true, delegates rendering to child element via Slot */
+  asChild?: boolean | undefined;
+}
+
 export interface ComboboxTriggerProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** When true, delegates rendering to child element via Slot */
@@ -171,4 +177,6 @@ export interface ComboboxContextValue {
   updateItemVisibility: (id: string, isVisible: boolean) => void;
   visibleItems: RegisteredItem[];
   filteredCount: number;
+  placeholder?: string | undefined;
+  isPositioned?: boolean | undefined;
 }

@@ -11,6 +11,7 @@ import {
   ComboboxEmpty,
   ComboboxTag,
   ComboboxClear,
+  ComboboxActions,
   Autocomplete,
 } from "./Combobox";
 import { FormField } from "../FormField/FormField";
@@ -468,8 +469,10 @@ export const KeyboardAccessibleSubcontrols: Story = {
               })}
             </div>
             <Combobox.Input placeholder="Search or select country..." />
-            <Combobox.Clear aria-label="Clear all selected countries" />
-            <Combobox.Trigger aria-label="Toggle countries list" />
+            <Combobox.Actions>
+              <Combobox.Clear aria-label="Clear all selected countries" />
+              <Combobox.Trigger aria-label="Toggle countries list" />
+            </Combobox.Actions>
           </Combobox.Control>
           <Combobox.Content>
             <Combobox.Empty>No countries found.</Combobox.Empty>
@@ -491,11 +494,126 @@ export const DisabledState: Story = {
       <Combobox.Root isDisabled defaultValue="us">
         <Combobox.Control>
           <Combobox.Input placeholder="Country selection disabled..." />
-          <Combobox.Clear />
-          <Combobox.Trigger />
+          <Combobox.Actions>
+            <Combobox.Clear />
+            <Combobox.Trigger />
+          </Combobox.Actions>
         </Combobox.Control>
       </Combobox.Root>
     </div>
   ),
+};
+
+export const LongSelectedLabels: Story = {
+  render: function LongLabelsDemo() {
+    const LONG_OPTIONS = [
+      {
+        value: "north-america-united-states",
+        label: "United States of America (North America Region - Federal District)",
+      },
+      {
+        value: "in",
+        label: "Republic of India (South Asia Multi-State Territory)",
+      },
+      {
+        value: "uk",
+        label: "United Kingdom of Great Britain and Northern Ireland",
+      },
+    ];
+
+    const [selected, setSelected] = React.useState<string[]>([
+      "north-america-united-states",
+      "in",
+    ]);
+
+    return (
+      <div style={{ width: 300, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+        <p style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)", marginBottom: "8px" }}>
+          Narrow 300px width with long selected labels demonstrating text truncation and actions alignment (DEF-UI-002):
+        </p>
+        <Combobox.Root
+          isMulti
+          value={selected}
+          onValueChange={setSelected}
+        >
+          <Combobox.Control>
+            <div className="cl-combobox__tags">
+              {selected.map((val) => {
+                const opt = LONG_OPTIONS.find((o) => o.value === val);
+                return (
+                  <Combobox.Tag key={val} value={val}>
+                    {opt?.label ?? val}
+                  </Combobox.Tag>
+                );
+              })}
+            </div>
+            <Combobox.Input placeholder="Add region..." />
+            <Combobox.Actions>
+              <Combobox.Clear aria-label="Clear all selections" />
+              <Combobox.Trigger aria-label="Toggle region list" />
+            </Combobox.Actions>
+          </Combobox.Control>
+          <Combobox.Content>
+            {LONG_OPTIONS.map((o) => (
+              <Combobox.Item key={o.value} value={o.value}>
+                {o.label}
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>
+    );
+  },
+};
+
+export const ManySelectedTags: Story = {
+  render: function ManyTagsDemo() {
+    const [selected, setSelected] = React.useState<string[]>([
+      "us",
+      "ca",
+      "in",
+      "de",
+      "fr",
+      "jp",
+    ]);
+
+    return (
+      <div style={{ width: 380, fontFamily: "var(--cl-font-sans, system-ui, -apple-system, sans-serif)" }}>
+        <p style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)", marginBottom: "8px" }}>
+          6 tags wrapping across multiple rows while actions stay aligned at the end of the control:
+        </p>
+        <Combobox.Root
+          isMulti
+          value={selected}
+          onValueChange={setSelected}
+        >
+          <Combobox.Control>
+            <div className="cl-combobox__tags">
+              {selected.map((val) => {
+                const country = COUNTRIES.find((c) => c.value === val);
+                return (
+                  <Combobox.Tag key={val} value={val}>
+                    {country?.label ?? val}
+                  </Combobox.Tag>
+                );
+              })}
+            </div>
+            <Combobox.Input placeholder="Add more..." />
+            <Combobox.Actions>
+              <Combobox.Clear aria-label="Clear all countries" />
+              <Combobox.Trigger aria-label="Toggle countries list" />
+            </Combobox.Actions>
+          </Combobox.Control>
+          <Combobox.Content>
+            {COUNTRIES.map((c) => (
+              <Combobox.Item key={c.value} value={c.value}>
+                {c.label}
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox.Root>
+      </div>
+    );
+  },
 };
 

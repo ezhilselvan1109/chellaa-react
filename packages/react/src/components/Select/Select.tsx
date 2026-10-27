@@ -45,6 +45,7 @@ interface InternalSelectContext<TValue extends string = string> extends SelectCo
   ariaDescribedBy?: string | undefined;
   getReferenceProps?: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
   getFloatingProps?: (userProps?: React.HTMLProps<HTMLElement>) => Record<string, unknown>;
+  isPositioned: boolean;
 }
 
 function extractText(node: React.ReactNode): string {
@@ -171,7 +172,7 @@ export const SelectRoot = React.forwardRef<HTMLDivElement, SelectRootProps>(
     const contentRef = React.useRef<HTMLDivElement | null>(null);
 
     // Floating UI positioning
-    const { refs, floatingStyles, context: floatingContext } = useFloating({
+    const { refs, floatingStyles, isPositioned, context: floatingContext } = useFloating({
       open: isOpen,
       onOpenChange: (open) => {
         if (!open && !isOpen) return;
@@ -292,6 +293,7 @@ export const SelectRoot = React.forwardRef<HTMLDivElement, SelectRootProps>(
           setFloating: refs.setFloating,
         },
         floatingStyles,
+        isPositioned,
         getReferenceProps,
         getFloatingProps,
       }),
@@ -318,6 +320,7 @@ export const SelectRoot = React.forwardRef<HTMLDivElement, SelectRootProps>(
         refs.setReference,
         refs.setFloating,
         floatingStyles,
+        isPositioned,
         getReferenceProps,
         getFloatingProps,
       ]
@@ -616,7 +619,7 @@ export function SelectPortal({ children, container }: SelectPortalProps) {
 export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
   function SelectContent(props, forwardedRef) {
     const ctx = useSelectContext();
-    const { className, children, onKeyDown, ...rest } = props;
+    const { className, style, children, onKeyDown, ...rest } = props;
 
     const mergedRef = useMergeRefs(ctx.contentRef, (node: HTMLElement | null) => {
       ctx.refs.setFloating(node);
@@ -629,17 +632,28 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
 
     const internal = ctx as unknown as InternalSelectContext;
 
-    // Auto-scroll highlighted item into view
+function scrollItemIntoView(container: HTMLElement, item: HTMLElement) {
+  const containerRect = container.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+
+  if (itemRect.top < containerRect.top) {
+    container.scrollTop -= containerRect.top - itemRect.top;
+  } else if (itemRect.bottom > containerRect.bottom) {
+    container.scrollTop += itemRect.bottom - containerRect.bottom;
+  }
+}
+
+    // Auto-scroll highlighted item into view within the dropdown list container only
     React.useLayoutEffect(() => {
-      if (ctx.isOpen && ctx.highlightedValue && ctx.contentRef.current) {
+      if (ctx.isOpen && internal.isPositioned && ctx.highlightedValue && ctx.contentRef.current) {
         const itemEl = ctx.contentRef.current.querySelector<HTMLElement>(
           `[data-value="${CSS.escape(ctx.highlightedValue)}"]`
         );
-        if (itemEl && typeof itemEl.scrollIntoView === "function") {
-          itemEl.scrollIntoView({ block: "nearest" });
+        if (itemEl && ctx.contentRef.current) {
+          scrollItemIntoView(ctx.contentRef.current, itemEl);
         }
       }
-    }, [ctx.isOpen, ctx.highlightedValue]);
+    }, [ctx.isOpen, internal.isPositioned, ctx.highlightedValue]);
 
     // Keyboard navigation inside listbox
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -684,13 +698,19 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
 
     if (!ctx.isOpen) return null;
 
+    const isPositioned = internal.isPositioned;
+
     const baseContentProps = {
       ref: mergedRef,
       id: ctx.contentId,
       role: "listbox",
       "aria-labelledby": ctx.triggerId,
       tabIndex: -1,
-      style: ctx.floatingStyles,
+      style: {
+        ...ctx.floatingStyles,
+        ...style,
+      },
+      "data-positioned": isPositioned ? "true" : undefined,
       className: classNames("cl-select__content", className),
       onKeyDown: handleKeyDown,
       ...rest,

@@ -327,3 +327,101 @@ export const EmptyOptions: Story = {
   ),
 };
 
+export const OpeningRepeatedly: Story = {
+  render: function OpeningRepeatedlyDemo() {
+    const [toggleCount, setToggleCount] = React.useState(0);
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const handleOpenChange = (open: boolean) => {
+      setIsOpen(open);
+      if (open) {
+        setToggleCount((c) => c + 1);
+      }
+    };
+
+    return (
+      <div style={{ width: "320px", display: "flex", flexDirection: "column", gap: "12px" }}>
+        <p style={{ fontSize: "13px", color: "var(--cl-color-fg-muted)", margin: 0 }}>
+          Demonstrates repeated opening and closing to verify initial position stability (DEF-UI-001).
+        </p>
+        <Select.Root
+          isOpen={isOpen}
+          onOpenChange={handleOpenChange}
+          defaultValue="item-1"
+        >
+          <Select.Trigger aria-label="Repeated Select">
+            <Select.Value placeholder="Select option..." />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Item value="item-1">
+                <Select.ItemText>First Option</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+              <Select.Item value="item-2">
+                <Select.ItemText>Second Option</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+              <Select.Item value="item-3">
+                <Select.ItemText>Third Option</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+        <div style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>
+          Times opened: <strong>{toggleCount}</strong>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const ViewportEdges: Story = {
+  render: () => (
+    <div
+      style={{
+        width: "360px",
+        height: "280px",
+        border: "1px dashed var(--cl-color-border-subtle, #cbd5e1)",
+        borderRadius: "8px",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: "16px",
+        boxSizing: "border-box",
+      }}
+    >
+      <div style={{ fontSize: "12px", color: "var(--cl-color-fg-muted)" }}>
+        Boundary Container: Dropdown flips upwards when positioned near the bottom edge.
+      </div>
+      <div style={{ alignSelf: "flex-end", width: "240px" }}>
+        <Select.Root defaultValue="bottom-option">
+          <Select.Trigger aria-label="Bottom Edge Select">
+            <Select.Value placeholder="Near boundary edge..." />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content>
+              <Select.Item value="bottom-option">
+                <Select.ItemText>Bottom Anchored Item</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+              <Select.Item value="opt-2">
+                <Select.ItemText>Alternate Item 2</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+              <Select.Item value="opt-3">
+                <Select.ItemText>Alternate Item 3</Select.ItemText>
+                <Select.ItemIndicator />
+              </Select.Item>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      </div>
+    </div>
+  ),
+};
+
