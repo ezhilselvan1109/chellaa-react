@@ -136,7 +136,48 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
       .filter(Boolean)
       .join(" ") || undefined;
 
+    const nativeInputNode = (
+      <input
+        type="radio"
+        id={id}
+        name={name}
+        value={valueProp}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        checked={isControlled ? effectiveChecked : undefined}
+        defaultChecked={!isControlled ? defaultChecked : undefined}
+        onChange={handleChange}
+        ref={mergedInputRef}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={ariaDescribedBy}
+        className="cl-radio__input"
+        {...inputProps}
+      />
+    );
+
     if (asChild) {
+      const childElement = React.isValidElement(children)
+        ? (children as React.ReactElement<{ children?: React.ReactNode }>)
+        : null;
+
+      if (!childElement) {
+        return (
+          <StyledRadioRoot
+            as={Slot}
+            ref={ref as React.Ref<HTMLLabelElement>}
+            className={radioClassName}
+            style={style}
+            sx={sx}
+            {...rest}
+          >
+            {children}
+          </StyledRadioRoot>
+        );
+      }
+
+      const childLabel = childElement.props.children;
+
       return (
         <StyledRadioRoot
           as={Slot}
@@ -146,7 +187,19 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
           sx={sx}
           {...rest}
         >
-          {children}
+          {React.cloneElement(
+            childElement,
+            undefined,
+            <>
+              {nativeInputNode}
+              {controlBox}
+              {childLabel && (
+                <span className="cl-radio__label ChellaaRadio-Label">
+                  {childLabel}
+                </span>
+              )}
+            </>
+          )}
         </StyledRadioRoot>
       );
     }
@@ -160,23 +213,7 @@ export const Radio = React.forwardRef<HTMLLabelElement, RadioProps>(
         sx={sx}
         {...rest}
       >
-        <input
-          type="radio"
-          id={id}
-          name={name}
-          value={valueProp}
-          disabled={disabled}
-          readOnly={readOnly}
-          required={required}
-          checked={isControlled ? effectiveChecked : undefined}
-          defaultChecked={!isControlled ? defaultChecked : undefined}
-          onChange={handleChange}
-          ref={mergedInputRef}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={ariaDescribedBy}
-          className="cl-radio__input"
-          {...inputProps}
-        />
+        {nativeInputNode}
         {controlBox}
         {children && (
           <span className="cl-radio__label ChellaaRadio-Label">

@@ -13,6 +13,7 @@ export {
   ComboboxEmpty,
   ComboboxTag,
   ComboboxClear,
+  ComboboxActions,
   useCombobox,
   useComboboxContext,
 } from "./Combobox";
@@ -25,6 +26,7 @@ export type {
   ComboboxRootProps,
   ComboboxControlProps,
   ComboboxInputProps,
+  ComboboxActionsProps,
   ComboboxTriggerProps,
   ComboboxPortalProps,
   ComboboxContentProps,

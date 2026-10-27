@@ -341,5 +341,79 @@ describe("Checkbox & CheckboxGroup Components", () => {
       expect(root.className).toMatch(/css-/);
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 8. asChild Composition (DEF-001)
+  // ---------------------------------------------------------------------------
+  describe("asChild Composition (DEF-001)", () => {
+    it("renders custom element root while preserving native input and control", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Checkbox asChild onChange={handleChange} name="accept" value="yes">
+          <label data-testid="custom-root">Accept terms and conditions</label>
+        </Checkbox>
+      );
+
+      const customRoot = screen.getByTestId("custom-root");
+      expect(customRoot).toBeInTheDocument();
+      expect(customRoot).toHaveClass("cl-checkbox");
+
+      const input = screen.getByRole("checkbox", {
+        name: "Accept terms and conditions",
+      });
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", "accept");
+      expect(input).toHaveAttribute("value", "yes");
+      expect(input).not.toBeChecked();
+
+      await user.click(customRoot);
+      expect(handleChange).toHaveBeenCalled();
+      expect(input).toBeChecked();
+    });
+
+    it("participates in form submission under asChild", async () => {
+      const handleSubmitData = vi.fn();
+      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        handleSubmitData(Object.fromEntries(data.entries()));
+      };
+
+      render(
+        <form onSubmit={handleSubmit} data-testid="test-form">
+          <Checkbox asChild defaultChecked name="newsletter" value="subscribed">
+            <label data-testid="custom-checkbox-wrapper">Subscribe</label>
+          </Checkbox>
+          <button type="submit">Submit</button>
+        </form>
+      );
+
+      const input = screen.getByRole("checkbox", { name: "Subscribe" });
+      expect(input).toBeChecked();
+
+      const submitBtn = screen.getByText("Submit");
+      await userEvent.click(submitBtn);
+
+      expect(handleSubmitData).toHaveBeenCalledWith({
+        newsletter: "subscribed",
+      });
+    });
+
+    it("preserves disabled state under asChild", () => {
+      render(
+        <Checkbox asChild disabled>
+          <label data-testid="disabled-root">Disabled option</label>
+        </Checkbox>
+      );
+
+      const root = screen.getByTestId("disabled-root");
+      expect(root).toHaveClass("cl-checkbox--disabled");
+
+      const input = screen.getByRole("checkbox", { name: "Disabled option" });
+      expect(input).toBeDisabled();
+    });
+  });
 });
 

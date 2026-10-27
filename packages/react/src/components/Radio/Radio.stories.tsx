@@ -140,3 +140,99 @@ export const WithFormField = {
     </Box>
   ),
 };
+
+export const AsChildComposition = {
+  render: function AsChildRadioDemo() {
+    const [selected, setSelected] = React.useState<string | number>("cloud");
+
+    return (
+      <Box sx={{ p: 4, maxWidth: 520 }}>
+        <Typography variant="subtitle2" sx={{ mb: 2 }}>
+          Polymorphic asChild Composition in RadioGroup (DEF-001)
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3, color: "var(--cl-color-fg-muted)" }}>
+          Custom plan selection cards rendered via polymorphic asChild composition. Preserves native
+          radio inputs, mutual exclusivity, name grouping, and keyboard Arrow key navigation.
+        </Typography>
+        <RadioGroup
+          value={selected}
+          onChange={setSelected}
+          orientation="vertical"
+          spacing={2}
+        >
+          <Radio asChild value="cloud">
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "16px",
+                border:
+                  selected === "cloud"
+                    ? "2px solid var(--cl-color-primary-base, #2563eb)"
+                    : "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+                borderRadius: "8px",
+                backgroundColor:
+                  selected === "cloud"
+                    ? "var(--cl-color-bg-muted, #f8fafc)"
+                    : "transparent",
+                cursor: "pointer",
+                transition: "border-color 0.2s, background-color 0.2s",
+              }}
+            >
+              <span>
+                <strong style={{ display: "block" }}>Cloud Hosted</strong>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "13px",
+                    color: "var(--cl-color-fg-muted, #64748b)",
+                    marginTop: "2px",
+                  }}
+                >
+                  Fully managed multi-region cluster with automated scaling.
+                </span>
+              </span>
+            </label>
+          </Radio>
+          <Radio asChild value="self-hosted">
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "16px",
+                border:
+                  selected === "self-hosted"
+                    ? "2px solid var(--cl-color-primary-base, #2563eb)"
+                    : "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+                borderRadius: "8px",
+                backgroundColor:
+                  selected === "self-hosted"
+                    ? "var(--cl-color-bg-muted, #f8fafc)"
+                    : "transparent",
+                cursor: "pointer",
+                transition: "border-color 0.2s, background-color 0.2s",
+              }}
+            >
+              <span>
+                <strong style={{ display: "block" }}>Self Hosted / On-Premise</strong>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "13px",
+                    color: "var(--cl-color-fg-muted, #64748b)",
+                    marginTop: "2px",
+                  }}
+                >
+                  Deploy within your own VPC or bare-metal Kubernetes infrastructure.
+                </span>
+              </span>
+            </label>
+          </Radio>
+        </RadioGroup>
+      </Box>
+    );
+  },
+};
+

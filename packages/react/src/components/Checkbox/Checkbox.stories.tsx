@@ -166,3 +166,59 @@ export const WithFormField = {
     </Box>
   ),
 };
+
+export const AsChildComposition = {
+  render: function AsChildDemo() {
+    const [checked, setChecked] = React.useState(true);
+
+    return (
+      <Box sx={{ p: 4, maxWidth: 480 }}>
+        <Typography variant="subtitle2" sx={{ mb: 2 }}>
+          Polymorphic asChild Composition (DEF-001)
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3, color: "var(--cl-color-fg-muted)" }}>
+          Renders a custom interactive label card via the Slot primitive while preserving
+          the underlying hidden native checkbox input, accessible role, and form bindings.
+        </Typography>
+        <Checkbox
+          asChild
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+        >
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "16px",
+              border: checked
+                ? "2px solid var(--cl-color-primary-base, #2563eb)"
+                : "1px solid var(--cl-color-border-subtle, #e2e8f0)",
+              borderRadius: "8px",
+              backgroundColor: checked
+                ? "var(--cl-color-bg-muted, #f8fafc)"
+                : "transparent",
+              cursor: "pointer",
+              transition: "border-color 0.2s, background-color 0.2s",
+            }}
+          >
+            <span>
+              <strong style={{ display: "block" }}>Developer License</strong>
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "13px",
+                  color: "var(--cl-color-fg-muted, #64748b)",
+                  marginTop: "2px",
+                }}
+              >
+                Full source code access, automated builds, and priority support.
+              </span>
+            </span>
+          </label>
+        </Checkbox>
+      </Box>
+    );
+  },
+};
+

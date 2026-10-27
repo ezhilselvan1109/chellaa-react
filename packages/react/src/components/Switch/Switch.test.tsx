@@ -432,5 +432,69 @@ describe("Switch Component", () => {
       expect(root.className).toMatch(/css-/);
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 8. asChild Composition (DEF-001)
+  // ---------------------------------------------------------------------------
+  describe("asChild Composition (DEF-001)", () => {
+    it("renders custom element root while preserving native switch input and track", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Switch asChild onChange={handleChange} name="notifications">
+          <label data-testid="custom-switch-root">Enable Notifications</label>
+        </Switch>
+      );
+
+      const customRoot = screen.getByTestId("custom-switch-root");
+      expect(customRoot).toBeInTheDocument();
+      expect(customRoot).toHaveClass("cl-switch");
+
+      const input = screen.getByRole("switch", {
+        name: "Enable Notifications",
+      });
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", "notifications");
+      expect(input).not.toBeChecked();
+
+      await user.click(customRoot);
+      expect(handleChange).toHaveBeenCalled();
+      expect(input).toBeChecked();
+    });
+
+    it("toggles via keyboard Space when input is focused under asChild", async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+
+      render(
+        <Switch asChild onChange={handleChange}>
+          <label data-testid="keyboard-switch-root">Dark Mode</label>
+        </Switch>
+      );
+
+      const input = screen.getByRole("switch", { name: "Dark Mode" });
+      input.focus();
+      expect(input).toHaveFocus();
+
+      await user.keyboard(" ");
+      expect(handleChange).toHaveBeenCalled();
+      expect(input).toBeChecked();
+    });
+
+    it("preserves disabled state under asChild", () => {
+      render(
+        <Switch asChild disabled>
+          <label data-testid="disabled-switch-root">Disabled Switch</label>
+        </Switch>
+      );
+
+      const root = screen.getByTestId("disabled-switch-root");
+      expect(root).toHaveClass("cl-switch--disabled");
+
+      const input = screen.getByRole("switch", { name: "Disabled Switch" });
+      expect(input).toBeDisabled();
+    });
+  });
 });
 
