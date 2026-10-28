@@ -559,7 +559,7 @@ describe("Accordion Component", () => {
               <Accordion.Trigger
                 title="Account Settings"
                 description="Manage your profile and security credentials"
-                leadingIcon={<span data-testid="leading-icon">🔒</span>}
+                leadingIcon={<span data-testid="leading-icon">[Icon]</span>}
                 trailingBadge={<span data-testid="trailing-badge">Active</span>}
               />
             </Accordion.Header>
@@ -738,7 +738,7 @@ describe("Accordion Component", () => {
               <Accordion.Trigger
                 title="System Notifications"
                 description="Configure delivery preferences for email and push"
-                leadingIcon={<span>🔔</span>}
+                leadingIcon={<span>[Alert]</span>}
                 trailingBadge={<span>3 Unread</span>}
               />
             </Accordion.Header>

@@ -78,17 +78,28 @@ export const ItemVariants: StoryObject<DropdownMenuRootProps> = {
         <DropdownMenuContent style={{ minWidth: "220px" }}>
           <DropdownMenuLabel>File Actions</DropdownMenuLabel>
           <DropdownMenuItem>
-            <span>📄</span> New Document
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginRight: 6 }}>
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            New Document
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>📁</span> Open Folder
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginRight: 6 }}>
+              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 8 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+            </svg>
+            Open Folder
           </DropdownMenuItem>
           <DropdownMenuItem inset>
             Duplicate (Inset)
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem disabled>
-            <span>🔒</span> Restricted Admin Access
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginRight: 6 }}>
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Restricted Admin Access
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

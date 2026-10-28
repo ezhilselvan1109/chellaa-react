@@ -56,7 +56,10 @@ export const BasicContextRegion: StoryObject<ContextMenuRootProps> = {
             cursor: "context-menu",
           }}
         >
-          <span style={{ fontSize: "28px" }}>🖱️</span>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect width="14" height="20" x="5" y="2" rx="7" />
+            <path d="M12 6v4" />
+          </svg>
           <strong style={{ color: "#334155" }}>Right-Click Anywhere Inside</strong>
           <span style={{ fontSize: "12px", color: "#64748b" }}>
             Native menu is preserved outside this region

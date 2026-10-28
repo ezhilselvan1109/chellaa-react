@@ -104,7 +104,7 @@ As an enterprise UI system, Chellaa React requires an accessible, lightweight, z
 │ DatePicker.Root (.cl-datepicker)                        │
 │  ┌───────────────────────────────────────────────────┐  │
 │  │ Composed Input / Trigger (.cl-datepicker__trigger)│  │
-│  │  [ 📅 2026-10-28 ]                [ Clear / 🗓️ ]  │  │
+│  │  [ [Date] 2026-10-28 ]            [ Clear / [Cal] ]  │  │
 │  └───────────────────────────────────────────────────┘  │
 │  ┌───────────────────────────────────────────────────┐  │
 │  │ Composed Popover.Content (.cl-datepicker__content)│  │

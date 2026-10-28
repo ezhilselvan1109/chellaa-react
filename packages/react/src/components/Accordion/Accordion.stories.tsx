@@ -277,7 +277,12 @@ export const RichHeaderContent: Story = {
             <Accordion.Trigger
               title="System Alerts"
               description="Critical alerts and automated monitoring notifications"
-              leadingIcon={<span>🔔</span>}
+              leadingIcon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+              }
               trailingBadge={
                 <span
                   style={{
@@ -304,7 +309,11 @@ export const RichHeaderContent: Story = {
             <Accordion.Trigger
               title="Security & Permissions"
               description="Multi-factor authentication and role assignments"
-              leadingIcon={<span>🛡️</span>}
+              leadingIcon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              }
               trailingBadge={
                 <span
                   style={{
@@ -511,7 +520,11 @@ export const DarkTheme: Story = {
             <Accordion.Trigger
               title="Dark Mode Optimization"
               description="Tokens seamlessly adapt in dark mode environments"
-              leadingIcon={<span>🌙</span>}
+              leadingIcon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              }
             />
           </Accordion.Header>
           <Accordion.Content>
@@ -523,7 +536,11 @@ export const DarkTheme: Story = {
             <Accordion.Trigger
               title="Contrast & Focus Rings"
               description="Clear 2px focus indicators on dark surfaces"
-              leadingIcon={<span>✨</span>}
+              leadingIcon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                </svg>
+              }
             />
           </Accordion.Header>
           <Accordion.Content>

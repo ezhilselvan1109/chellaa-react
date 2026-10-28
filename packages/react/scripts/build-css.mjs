@@ -36,21 +36,40 @@ fs.writeFileSync(dtsFile, cssDtsContent);
 fs.writeFileSync(dctsFile, cssDtsContent);
 console.log(`[TypeScript] Emitted ${dtsFile} and ${dctsFile}`);
 
-// Zero-Configuration Styling Delivery Automation (ADR-007):
-// 1. Create dist/index.node.mjs without CSS imports for pure Node.js runtime.
-// 2. Ensure dist/index.mjs has `import "./styles.css";` at the top for browser bundlers.
+// Zero-Configuration Styling & Next.js App Router Directive Delivery:
+// 1. Ensure dist/index.mjs starts with `"use client";` directive prologue followed by `import "./styles.css";` for browser bundlers.
+// 2. Ensure dist/index.node.mjs starts with `"use client";` without CSS imports for Node.js / RSC server runtimes.
+// 3. Ensure dist/index.cjs starts with `"use client";` for CommonJS consumers.
 const indexMjsPath = path.resolve("dist/index.mjs");
 const indexNodeMjsPath = path.resolve("dist/index.node.mjs");
+const indexCjsPath = path.resolve("dist/index.cjs");
+
+function cleanDirectivesAndCss(code) {
+  return code
+    .replace(/^\s*(['"])use client\1;?\s*\n?/m, "")
+    .replace(/^import\s+['"][^'"]+\.css['"];?\s*\n?/gm, "");
+}
 
 if (fs.existsSync(indexMjsPath)) {
-  const originalCode = fs.readFileSync(indexMjsPath, "utf-8");
-  // Clean Node version without CSS side-effect imports
-  const codeWithoutCss = originalCode.replace(/^import\s+['"][^'"]+\.css['"];?\s*\n?/gm, "");
-  fs.writeFileSync(indexNodeMjsPath, codeWithoutCss, "utf-8");
-  console.log(`[Zero-Config] Emitted ${indexNodeMjsPath} for Node.js runtime`);
+  const originalMjs = fs.readFileSync(indexMjsPath, "utf-8");
+  const cleanMjs = cleanDirectivesAndCss(originalMjs);
 
-  // Browser/Bundler version with automatic CSS delivery
-  const codeWithCss = `import "./styles.css";\n` + codeWithoutCss;
+  // 1. Browser/Bundler version with "use client" in directive prologue followed by CSS delivery
+  const codeWithCss = `"use client";\nimport "./styles.css";\n` + cleanMjs;
   fs.writeFileSync(indexMjsPath, codeWithCss, "utf-8");
-  console.log(`[Zero-Config] Injected styles.css into ${indexMjsPath} for Browser/Bundlers`);
+  console.log(`[Zero-Config] Injected "use client" + styles.css into ${indexMjsPath} for Browser/Bundlers`);
+
+  // 2. Clean Node/RSC version with "use client" but without CSS side-effect imports
+  const codeWithoutCss = `"use client";\n` + cleanMjs;
+  fs.writeFileSync(indexNodeMjsPath, codeWithoutCss, "utf-8");
+  console.log(`[Zero-Config] Emitted ${indexNodeMjsPath} with "use client" for Node.js / RSC runtime`);
 }
+
+if (fs.existsSync(indexCjsPath)) {
+  const originalCjs = fs.readFileSync(indexCjsPath, "utf-8");
+  const cleanCjs = originalCjs.replace(/^\s*(['"])use client\1;?\s*\n?/m, "");
+  const cjsWithDirective = `"use client";\n` + cleanCjs;
+  fs.writeFileSync(indexCjsPath, cjsWithDirective, "utf-8");
+  console.log(`[Zero-Config] Injected "use client" into ${indexCjsPath} for CommonJS`);
+}
+
