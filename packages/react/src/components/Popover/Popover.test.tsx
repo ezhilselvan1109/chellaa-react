@@ -63,7 +63,11 @@ describe("Popover Component", () => {
                 <PopoverClose data-testid="popover-close" />
               </PopoverHeader>
               <PopoverBody data-testid="popover-body">
-                <input type="text" placeholder="Search..." data-testid="search-input" />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  data-testid="search-input"
+                />
               </PopoverBody>
               <PopoverFooter data-testid="popover-footer">
                 <button type="button">Apply</button>
@@ -77,7 +81,9 @@ describe("Popover Component", () => {
       expect(dialog).toBeInTheDocument();
       expect(dialog).toHaveAttribute("data-state", "open");
       expect(screen.getByTestId("popover-header")).toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: "Filter Options" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: "Filter Options" }),
+      ).toBeInTheDocument();
       expect(screen.getByTestId("popover-close")).toBeInTheDocument();
       expect(screen.getByTestId("popover-body")).toBeInTheDocument();
       expect(screen.getByTestId("search-input")).toBeInTheDocument();
@@ -111,7 +117,10 @@ describe("Popover Component", () => {
       const dialog = screen.getByRole("dialog");
       expect(dialog).toBeInTheDocument();
       expect(trigger).toHaveAttribute("aria-expanded", "true");
-      expect(trigger).toHaveAttribute("aria-controls", dialog.getAttribute("id"));
+      expect(trigger).toHaveAttribute(
+        "aria-controls",
+        dialog.getAttribute("id"),
+      );
 
       await user.click(trigger);
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -244,7 +253,10 @@ describe("Popover Component", () => {
       const dialog = screen.getByRole("dialog", { name: "Account Settings" });
       const title = screen.getByRole("heading", { name: "Account Settings" });
 
-      expect(dialog).toHaveAttribute("aria-labelledby", title.getAttribute("id"));
+      expect(dialog).toHaveAttribute(
+        "aria-labelledby",
+        title.getAttribute("id"),
+      );
     });
 
     it("sets aria-modal='true' when trapFocus is true", () => {
@@ -409,12 +421,89 @@ describe("Popover Component", () => {
               <PopoverBody>Dark Content</PopoverBody>
             </PopoverContent>
           </Popover>
-        </div>
+        </div>,
       );
 
       const content = screen.getByTestId("dark-popover-content");
       expect(content).toBeInTheDocument();
       expect(content).toHaveClass("cl-popover");
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wave 1 Remediation: Initial-Position Flash Prevention
+  // ---------------------------------------------------------------------------
+  describe("Wave 1 Remediation: Initial-Position Flash Prevention", () => {
+    it("has :not([data-positioned='true']) flash prevention rule in stylesheet", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const cssPath = path.resolve(__dirname, "Popover.styles.css");
+      const cssContent = fs.readFileSync(cssPath, "utf-8");
+
+      expect(cssContent).toMatch(
+        /\.cl-popover:not\(\[data-positioned="true"\]\)\s*\{/,
+      );
+      expect(cssContent).toMatch(/pointer-events:\s*none;/);
+    });
+
+    it("exposes data-positioned='true' attribute when popover position is computed", async () => {
+      const { waitFor } = await import("@testing-library/react");
+      render(
+        <Popover defaultOpen>
+          <PopoverTrigger>
+            <button type="button">Trigger</button>
+          </PopoverTrigger>
+          <PopoverContent data-testid="popover-content">
+            <div>Positioned Content</div>
+          </PopoverContent>
+        </Popover>,
+      );
+
+      const content = screen.getByTestId("popover-content");
+      expect(content).toBeInTheDocument();
+      await waitFor(() => {
+        expect(content).toHaveAttribute("data-positioned", "true");
+      });
+    });
+
+    it("preserves controlled open state and sets data-positioned upon opening", async () => {
+      const { waitFor } = await import("@testing-library/react");
+      const user = userEvent.setup();
+
+      function ControlledWrapper() {
+        const [open, setOpen] = React.useState(false);
+        return (
+          <>
+            <button type="button" onClick={() => setOpen((prev) => !prev)}>
+              Toggle Controlled
+            </button>
+            <Popover isOpen={open} onOpenChange={setOpen}>
+              <PopoverTrigger>
+                <button type="button">Anchor</button>
+              </PopoverTrigger>
+              <PopoverContent data-testid="controlled-popover">
+                <div>Controlled Popover Content</div>
+              </PopoverContent>
+            </Popover>
+          </>
+        );
+      }
+
+      render(<ControlledWrapper />);
+      expect(
+        screen.queryByTestId("controlled-popover"),
+      ).not.toBeInTheDocument();
+
+      const toggleBtn = screen.getByRole("button", {
+        name: "Toggle Controlled",
+      });
+      await user.click(toggleBtn);
+
+      const popover = screen.getByTestId("controlled-popover");
+      expect(popover).toBeInTheDocument();
+      await waitFor(() => {
+        expect(popover).toHaveAttribute("data-positioned", "true");
+      });
     });
   });
 });

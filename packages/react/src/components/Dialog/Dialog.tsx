@@ -43,7 +43,7 @@ function useDialogContext(componentName: string): DialogContextValue {
   const context = React.useContext(DialogContext);
   if (!context) {
     throw new Error(
-      `<Dialog.${componentName}> must be used within a <Dialog.Root> or <Dialog> component.`
+      `<Dialog.${componentName}> must be used within a <Dialog.Root> or <Dialog> component.`,
     );
   }
   return context;
@@ -51,6 +51,58 @@ function useDialogContext(componentName: string): DialogContextValue {
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+// Reference-counted body scroll lock manager with scrollbar compensation
+let activeScrollLockCount = 0;
+let originalBodyOverflow = "";
+let originalBodyPaddingRight = "";
+
+export function acquireBodyScrollLock(): void {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    return;
+  }
+
+  if (activeScrollLockCount === 0) {
+    originalBodyOverflow = document.body.style.overflow;
+    originalBodyPaddingRight = document.body.style.paddingRight;
+
+    // Calculate vertical scrollbar width to prevent horizontal layout shift
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    if (scrollbarWidth > 0) {
+      const computedPaddingRight =
+        parseFloat(window.getComputedStyle(document.body).paddingRight) || 0;
+      document.body.style.paddingRight = `${computedPaddingRight + scrollbarWidth}px`;
+    }
+
+    document.body.style.overflow = "hidden";
+  }
+
+  activeScrollLockCount++;
+}
+
+export function releaseBodyScrollLock(): void {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    return;
+  }
+
+  activeScrollLockCount = Math.max(0, activeScrollLockCount - 1);
+
+  if (activeScrollLockCount === 0) {
+    document.body.style.overflow = originalBodyOverflow;
+    document.body.style.paddingRight = originalBodyPaddingRight;
+    originalBodyOverflow = "";
+    originalBodyPaddingRight = "";
+  }
+}
+
+/** @internal Reset helper for testing */
+export function __resetBodyScrollLockForTesting(): void {
+  activeScrollLockCount = 0;
+  originalBodyOverflow = "";
+  originalBodyPaddingRight = "";
+}
 
 /**
  * DialogRoot component - manages controlled/uncontrolled visibility and dialog context.
@@ -114,7 +166,7 @@ export const DialogRoot: React.FC<DialogRootProps> = ({
       isCentered,
       titleId,
       descriptionId,
-    ]
+    ],
   );
 
   return (
@@ -128,45 +180,44 @@ DialogRoot.displayName = "Dialog.Root";
 /**
  * DialogTrigger component - wraps or renders a button that opens the dialog.
  */
-export const DialogTrigger = React.forwardRef<
-  HTMLElement,
-  DialogTriggerProps
->(({ asChild = false, onClick, children, ...props }, forwardedRef) => {
-  const { onOpen, triggerRef } = useDialogContext("Trigger");
-  const mergedRef = useMergeRefs(triggerRef, forwardedRef);
+export const DialogTrigger = React.forwardRef<HTMLElement, DialogTriggerProps>(
+  ({ asChild = false, onClick, children, ...props }, forwardedRef) => {
+    const { onOpen, triggerRef } = useDialogContext("Trigger");
+    const mergedRef = useMergeRefs(triggerRef, forwardedRef);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick?.(e);
-    if (!e.defaultPrevented) {
-      onOpen();
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+      if (!e.defaultPrevented) {
+        onOpen();
+      }
+    };
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={mergedRef}
+          aria-haspopup="dialog"
+          onClick={handleClick}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
     }
-  };
 
-  if (asChild) {
     return (
-      <Slot
-        ref={mergedRef}
+      <button
+        ref={mergedRef as React.Ref<HTMLButtonElement>}
+        type="button"
         aria-haspopup="dialog"
         onClick={handleClick}
         {...props}
       >
         {children}
-      </Slot>
+      </button>
     );
-  }
-
-  return (
-    <button
-      ref={mergedRef as React.Ref<HTMLButtonElement>}
-      type="button"
-      aria-haspopup="dialog"
-      onClick={handleClick}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-});
+  },
+);
 DialogTrigger.displayName = "Dialog.Trigger";
 
 /**
@@ -196,49 +247,58 @@ DialogPortal.displayName = "Dialog.Portal";
 export const DialogOverlay = React.forwardRef<
   HTMLDivElement,
   DialogOverlayProps
->(({ asChild = false, className, onClick, children, ...props }, forwardedRef) => {
-  const { onClose, closeOnOverlayClick, isCentered } =
-    useDialogContext("Overlay");
+>(
+  (
+    { asChild = false, className, onClick, children, ...props },
+    forwardedRef,
+  ) => {
+    const { onClose, closeOnOverlayClick, isCentered } =
+      useDialogContext("Overlay");
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    onClick?.(e);
-    if (!e.defaultPrevented && closeOnOverlayClick && e.target === e.currentTarget) {
-      onClose();
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      onClick?.(e);
+      if (
+        !e.defaultPrevented &&
+        closeOnOverlayClick &&
+        e.target === e.currentTarget
+      ) {
+        onClose();
+      }
+    };
+
+    const classNames = [
+      "cl-dialog__overlay",
+      !isCentered && "cl-dialog__overlay--top",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={forwardedRef}
+          className={classNames}
+          onClick={handleClick}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
     }
-  };
 
-  const classNames = [
-    "cl-dialog__overlay",
-    !isCentered && "cl-dialog__overlay--top",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  if (asChild) {
     return (
-      <Slot
+      <div
         ref={forwardedRef}
         className={classNames}
         onClick={handleClick}
         {...props}
       >
         {children}
-      </Slot>
+      </div>
     );
-  }
-
-  return (
-    <div
-      ref={forwardedRef}
-      className={classNames}
-      onClick={handleClick}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+  },
+);
 DialogOverlay.displayName = "Dialog.Overlay";
 
 /**
@@ -247,132 +307,156 @@ DialogOverlay.displayName = "Dialog.Overlay";
 export const DialogContent = React.forwardRef<
   HTMLDivElement,
   DialogContentProps
->(({ asChild = false, className, children, onKeyDown, ...props }, forwardedRef) => {
-  const {
-    isOpen,
-    onClose,
-    closeOnEsc,
-    size,
-    isCentered,
-    titleId,
-    descriptionId,
-    initialFocusRef,
-    finalFocusRef,
-    triggerRef,
-  } = useDialogContext("Content");
+>(
+  (
+    { asChild = false, className, children, onKeyDown, ...props },
+    forwardedRef,
+  ) => {
+    const {
+      isOpen,
+      onClose,
+      closeOnEsc,
+      size,
+      isCentered,
+      titleId,
+      descriptionId,
+      initialFocusRef,
+      finalFocusRef,
+      triggerRef,
+    } = useDialogContext("Content");
 
-  const internalRef = React.useRef<HTMLDivElement | null>(null);
-  const mergedRef = useMergeRefs(internalRef, forwardedRef);
-  const prevFocusedRef = React.useRef<HTMLElement | null>(null);
+    const internalRef = React.useRef<HTMLDivElement | null>(null);
+    const mergedRef = useMergeRefs(internalRef, forwardedRef);
+    const prevFocusedRef = React.useRef<HTMLElement | null>(null);
 
-  // Focus management and body scroll locking
-  React.useEffect(() => {
-    if (!isOpen) return;
+    // Body scroll lock lifecycle (ref-counted with scrollbar compensation)
+    React.useEffect(() => {
+      if (!isOpen) return;
 
-    // Store previous focused element before opening
-    if (typeof document !== "undefined") {
-      prevFocusedRef.current = document.activeElement as HTMLElement | null;
-    }
+      acquireBodyScrollLock();
 
-    // Scroll lock on body
-    const originalOverflow =
-      typeof document !== "undefined" ? document.body.style.overflow : "";
-    if (typeof document !== "undefined") {
-      document.body.style.overflow = "hidden";
-    }
+      return () => {
+        releaseBodyScrollLock();
+      };
+    }, [isOpen]);
 
-    // Initial focus
-    const frameId = requestAnimationFrame(() => {
-      if (initialFocusRef?.current) {
-        initialFocusRef.current.focus();
-      } else if (internalRef.current) {
-        const focusables = internalRef.current.querySelectorAll<HTMLElement>(
-          FOCUSABLE_SELECTOR
-        );
-        if (focusables.length > 0) {
-          focusables[0]?.focus();
-        } else {
-          internalRef.current.focus();
-        }
-      }
-    });
+    // Focus management lifecycle
+    React.useEffect(() => {
+      if (!isOpen) return;
 
-    return () => {
-      cancelAnimationFrame(frameId);
-      // Restore scroll lock
+      // Store previous focused element before opening
       if (typeof document !== "undefined") {
-        document.body.style.overflow = originalOverflow;
+        prevFocusedRef.current = document.activeElement as HTMLElement | null;
       }
-      // Restore focus to trigger or finalFocusRef
-      const elementToFocus =
-        finalFocusRef?.current ?? triggerRef.current ?? prevFocusedRef.current;
-      if (elementToFocus && typeof elementToFocus.focus === "function") {
-        elementToFocus.focus();
-      }
-    };
-  }, [isOpen, initialFocusRef, finalFocusRef, triggerRef]);
 
-  // Keyboard trap and Escape listener
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    onKeyDown?.(e);
-    if (e.defaultPrevented) return;
+      // Initial focus
+      const frameId = requestAnimationFrame(() => {
+        if (initialFocusRef?.current) {
+          initialFocusRef.current.focus();
+        } else if (internalRef.current) {
+          const focusables =
+            internalRef.current.querySelectorAll<HTMLElement>(
+              FOCUSABLE_SELECTOR,
+            );
+          if (focusables.length > 0) {
+            focusables[0]?.focus();
+          } else {
+            internalRef.current.focus();
+          }
+        }
+      });
 
-    if (e.key === "Escape" && closeOnEsc) {
-      e.stopPropagation();
-      onClose();
-      return;
-    }
+      return () => {
+        cancelAnimationFrame(frameId);
+        // Restore focus to trigger or finalFocusRef
+        const elementToFocus =
+          finalFocusRef?.current ??
+          triggerRef.current ??
+          prevFocusedRef.current;
+        if (elementToFocus && typeof elementToFocus.focus === "function") {
+          elementToFocus.focus();
+        }
+      };
+    }, [isOpen, initialFocusRef, finalFocusRef, triggerRef]);
 
-    if (e.key === "Tab" && internalRef.current) {
-      const focusables = Array.from(
-        internalRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
-      ).filter((el) => !el.hasAttribute("disabled") && el.getAttribute("aria-hidden") !== "true");
+    // Keyboard trap and Escape listener
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(e);
+      if (e.defaultPrevented) return;
 
-      if (focusables.length === 0) {
-        e.preventDefault();
+      if (e.key === "Escape" && closeOnEsc) {
+        e.stopPropagation();
+        onClose();
         return;
       }
 
-      const firstFocusable = focusables[0];
-      const lastFocusable = focusables[focusables.length - 1];
+      if (e.key === "Tab" && internalRef.current) {
+        const focusables = Array.from(
+          internalRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+        ).filter(
+          (el) =>
+            !el.hasAttribute("disabled") &&
+            el.getAttribute("aria-hidden") !== "true",
+        );
 
-      if (e.shiftKey) {
-        if (
-          document.activeElement === firstFocusable ||
-          document.activeElement === internalRef.current
-        ) {
+        if (focusables.length === 0) {
           e.preventDefault();
-          lastFocusable?.focus();
+          return;
         }
-      } else {
-        if (document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable?.focus();
+
+        const firstFocusable = focusables[0];
+        const lastFocusable = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (
+            document.activeElement === firstFocusable ||
+            document.activeElement === internalRef.current
+          ) {
+            e.preventDefault();
+            lastFocusable?.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable?.focus();
+          }
         }
       }
+    };
+
+    const classNames = [
+      "cl-dialog__content",
+      `cl-dialog__content--${size}`,
+      !isCentered && "cl-dialog__content--top",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const ariaAttributes = {
+      role: "dialog",
+      "aria-modal": true,
+      ...(titleId ? { "aria-labelledby": titleId } : {}),
+      ...(descriptionId ? { "aria-describedby": descriptionId } : {}),
+      tabIndex: -1,
+    };
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={mergedRef}
+          className={classNames}
+          onKeyDown={handleKeyDown}
+          {...ariaAttributes}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
     }
-  };
 
-  const classNames = [
-    "cl-dialog__content",
-    `cl-dialog__content--${size}`,
-    !isCentered && "cl-dialog__content--top",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const ariaAttributes = {
-    role: "dialog",
-    "aria-modal": true,
-    ...(titleId ? { "aria-labelledby": titleId } : {}),
-    ...(descriptionId ? { "aria-describedby": descriptionId } : {}),
-    tabIndex: -1,
-  };
-
-  if (asChild) {
     return (
-      <Slot
+      <div
         ref={mergedRef}
         className={classNames}
         onKeyDown={handleKeyDown}
@@ -380,22 +464,10 @@ export const DialogContent = React.forwardRef<
         {...props}
       >
         {children}
-      </Slot>
+      </div>
     );
-  }
-
-  return (
-    <div
-      ref={mergedRef}
-      className={classNames}
-      onKeyDown={handleKeyDown}
-      {...ariaAttributes}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+  },
+);
 DialogContent.displayName = "Dialog.Content";
 
 /**
@@ -412,7 +484,7 @@ export const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 DialogHeader.displayName = "Dialog.Header";
 
@@ -498,7 +570,7 @@ export const DialogBody = React.forwardRef<HTMLDivElement, DialogBodyProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 DialogBody.displayName = "Dialog.Body";
 
@@ -516,50 +588,51 @@ export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 DialogFooter.displayName = "Dialog.Footer";
 
 /**
  * DialogClose component - button that dismisses the dialog when clicked.
  */
-export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>(
-  ({ asChild = false, className, onClick, children, ...props }, ref) => {
-    const { onClose } = useDialogContext("Close");
+export const DialogClose = React.forwardRef<
+  HTMLButtonElement,
+  DialogCloseProps
+>(({ asChild = false, className, onClick, children, ...props }, ref) => {
+  const { onClose } = useDialogContext("Close");
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(e);
-      if (!e.defaultPrevented) {
-        onClose();
-      }
-    };
-
-    const classNames = ["cl-dialog__close-button", className]
-      .filter(Boolean)
-      .join(" ");
-
-    if (asChild) {
-      return (
-        <Slot ref={ref} className={classNames} onClick={handleClick} {...props}>
-          {children}
-        </Slot>
-      );
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    if (!e.defaultPrevented) {
+      onClose();
     }
+  };
 
+  const classNames = ["cl-dialog__close-button", className]
+    .filter(Boolean)
+    .join(" ");
+
+  if (asChild) {
     return (
-      <button
-        ref={ref}
-        type="button"
-        className={classNames}
-        onClick={handleClick}
-        aria-label={props["aria-label"] ?? "Close dialog"}
-        {...props}
-      >
-        {children ?? "×"}
-      </button>
+      <Slot ref={ref} className={classNames} onClick={handleClick} {...props}>
+        {children}
+      </Slot>
     );
   }
-);
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={classNames}
+      onClick={handleClick}
+      aria-label={props["aria-label"] ?? "Close dialog"}
+      {...props}
+    >
+      {children ?? "×"}
+    </button>
+  );
+});
 DialogClose.displayName = "Dialog.Close";
 
 /**

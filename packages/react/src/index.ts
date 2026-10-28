@@ -163,6 +163,12 @@ export {
   FormFieldContext,
   useFormField,
   type FormFieldContextValue,
+  useFormValidation,
+  type FieldValidationError,
+  type FieldValidationResult,
+  type FieldValidator,
+  type UseFormValidationOptions,
+  type UseFormValidationReturn,
 } from "./components/FormField";
 export {
   Checkbox,
@@ -360,12 +366,17 @@ export {
   AccordionTrigger,
   AccordionContent,
   AccordionIcon,
+  AccordionActions,
+  AccordionExpandAll,
+  AccordionCollapseAll,
   AccordionContext,
   AccordionItemContext,
   useAccordionContext,
   useAccordionItemContext,
   type AccordionType,
   type AccordionVariant,
+  type AccordionSize,
+  type AccordionIndicatorPosition,
   type AccordionSingleProps,
   type AccordionMultipleProps,
   type AccordionRootProps,
@@ -375,6 +386,9 @@ export {
   type AccordionTriggerProps,
   type AccordionContentProps,
   type AccordionIconProps,
+  type AccordionActionsProps,
+  type AccordionExpandAllProps,
+  type AccordionCollapseAllProps,
   type AccordionContextValue,
   type AccordionItemContextValue,
 } from "./components/Accordion";
@@ -573,3 +587,261 @@ export {
   type TableCellProps,
   type TableContextValue,
 } from "./components/Table";
+
+// Feedback Components (Wave 2)
+export {
+  Spinner,
+  type SpinnerProps,
+  type SpinnerSize,
+  type SpinnerColorScheme,
+} from "./components/Spinner";
+
+export {
+  Skeleton,
+  type SkeletonProps,
+  type SkeletonVariant,
+  type SkeletonAnimation,
+} from "./components/Skeleton";
+
+export {
+  Progress,
+  type ProgressProps,
+  type ProgressVariant,
+  type ProgressSize,
+  type ProgressColorScheme,
+} from "./components/Progress";
+
+// Calendar & DatePicker Components (Wave 2)
+export {
+  Calendar,
+  type CalendarProps,
+  type DateRange,
+} from "./components/Calendar";
+
+export {
+  DatePicker,
+  type DatePickerProps,
+} from "./components/DatePicker";
+
+// Pure Date Utilities
+export {
+  isLeapYear,
+  getDaysInMonth,
+  createLocalDate,
+  isSameDay,
+  isSameMonth,
+  isDateBefore,
+  isDateAfter,
+  isDateInRange,
+  addDays,
+  addMonths,
+  addYears,
+  getCalendarGrid,
+  getWeekdayLabels,
+  getMonthLabel,
+  formatLocalDate,
+  parseLocalDate,
+  type CalendarGridDay,
+} from "./utils/date";
+
+// Menus & Drawer Overlays (Wave 3)
+export {
+  DropdownMenu,
+  DropdownMenuRoot,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  useDropdownMenuContext,
+  type DropdownMenuRootProps,
+  type DropdownMenuTriggerProps,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+  type DropdownMenuCheckboxItemProps,
+  type DropdownMenuRadioGroupProps,
+  type DropdownMenuRadioItemProps,
+  type DropdownMenuSeparatorProps,
+  type DropdownMenuLabelProps,
+  type DropdownMenuSide,
+  type DropdownMenuAlign,
+} from "./components/DropdownMenu";
+
+export {
+  ContextMenu,
+  ContextMenuRoot,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  type ContextMenuRootProps,
+  type ContextMenuTriggerProps,
+  type ContextMenuContentProps,
+  type ContextMenuItemProps,
+  type ContextMenuCheckboxItemProps,
+  type ContextMenuRadioGroupProps,
+  type ContextMenuRadioItemProps,
+  type ContextMenuSeparatorProps,
+  type ContextMenuLabelProps,
+} from "./components/ContextMenu";
+
+export {
+  Drawer,
+  DrawerRoot,
+  DrawerTrigger,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  Sheet,
+  SheetRoot,
+  SheetTrigger,
+  SheetPortal,
+  SheetOverlay,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  SheetFooter,
+  SheetClose,
+  useDrawerContext,
+  type DrawerPlacement,
+  type DrawerSize,
+  type DrawerRootProps,
+  type DrawerTriggerProps,
+  type DrawerPortalProps,
+  type DrawerOverlayProps,
+  type DrawerContentProps,
+  type DrawerHeaderProps,
+  type DrawerTitleProps,
+  type DrawerDescriptionProps,
+  type DrawerBodyProps,
+  type DrawerFooterProps,
+  type DrawerCloseProps,
+  type SheetPlacement,
+  type SheetSize,
+  type SheetRootProps,
+  type SheetTriggerProps,
+  type SheetPortalProps,
+  type SheetOverlayProps,
+  type SheetContentProps,
+  type SheetHeaderProps,
+  type SheetTitleProps,
+  type SheetDescriptionProps,
+  type SheetBodyProps,
+  type SheetFooterProps,
+  type SheetCloseProps,
+} from "./components/Drawer";
+
+// Navigation, Form Validation & Date Extensions (Wave 4)
+export {
+  Breadcrumbs,
+  Breadcrumb,
+  BreadcrumbsRoot,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  type BreadcrumbsProps,
+  type BreadcrumbListProps,
+  type BreadcrumbItemProps,
+  type BreadcrumbLinkProps,
+  type BreadcrumbPageProps,
+  type BreadcrumbSeparatorProps,
+  type BreadcrumbEllipsisProps,
+} from "./components/Breadcrumbs";
+
+export {
+  Link,
+  type LinkProps,
+  type LinkUnderline,
+  type LinkColorScheme,
+} from "./components/Link";
+
+export {
+  DateRangePicker,
+  type DateRangePickerProps,
+} from "./components/DateRangePicker";
+
+export {
+  TimePicker,
+  type TimePickerProps,
+  type TimeFormat,
+} from "./components/TimePicker";
+
+// Data Components & Advanced Form Controls (Wave 5)
+export {
+  MultiSelect,
+  type MultiSelectProps,
+  type MultiSelectOption,
+  type MultiSelectSize,
+  type MultiSelectVariant,
+} from "./components/MultiSelect";
+
+export {
+  DataGrid,
+  type DataGridProps,
+  type DataGridColumn,
+  type DataGridSort,
+  type DataGridPaginationProps,
+  type SortDirection,
+} from "./components/DataGrid";
+
+export {
+  FileUpload,
+  type FileUploadProps,
+  type FileItem,
+  type FileValidationError,
+  type FileValidationErrorCode,
+} from "./components/FileUpload";
+
+export {
+  Slider,
+  RangeSlider,
+  type SliderProps,
+  type RangeSliderProps,
+  type SliderMark,
+  type SliderSize,
+  type SliderColorScheme,
+} from "./components/Slider";
+
+// Hierarchical, Workflow & Rotator Controls (Wave 6)
+export {
+  TreeView,
+  type TreeViewProps,
+  type TreeNode,
+  type TreeNodeState,
+  type TreeViewSelectionMode,
+} from "./components/TreeView";
+
+export {
+  Stepper,
+  type StepperProps,
+  type StepItem,
+  type StepperOrientation,
+  type StepperSize,
+} from "./components/Stepper";
+
+export {
+  Carousel,
+  CarouselSlide,
+  type CarouselProps,
+  type CarouselSlideProps,
+  type CarouselSlideData,
+} from "./components/Carousel";
+

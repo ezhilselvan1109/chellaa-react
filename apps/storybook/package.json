@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "prebuild": "pnpm --filter @chellaa/react build",
     "build": "storybook build -o dist",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \".storybook/**/*.{ts,tsx}\"",

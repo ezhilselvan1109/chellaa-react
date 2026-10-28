@@ -6,6 +6,10 @@ import type { SxProps } from "../../system/types";
 import { Slot } from "../../primitives/Slot";
 import { classNames } from "../../utils/classNames";
 import { FormFieldContext, type FormFieldContextValue } from "./FormFieldContext";
+import type {
+  FieldValidationError,
+  FieldValidationResult,
+} from "./FormValidation.types";
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string | undefined;
@@ -18,6 +22,11 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   isReadOnly?: boolean | undefined;
   error?: boolean | undefined;
   isInvalid?: boolean | undefined;
+  errorMessage?: string | FieldValidationError | undefined;
+  validationResult?: FieldValidationResult | undefined;
+  isValidating?: boolean | undefined;
+  isTouched?: boolean | undefined;
+  isDirty?: boolean | undefined;
   fullWidth?: boolean | undefined;
   asChild?: boolean | undefined;
   component?: React.ElementType | undefined;
@@ -35,6 +44,11 @@ const StyledFormFieldRoot = styled("div", {
     prop !== "component" &&
     prop !== "error" &&
     prop !== "isInvalid" &&
+    prop !== "errorMessage" &&
+    prop !== "validationResult" &&
+    prop !== "isValidating" &&
+    prop !== "isTouched" &&
+    prop !== "isDirty" &&
     prop !== "disabled" &&
     prop !== "isDisabled" &&
     prop !== "readOnly" &&
@@ -68,6 +82,11 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       isReadOnly = false,
       error: errorProp = false,
       isInvalid = false,
+      errorMessage: errorMessageProp,
+      validationResult,
+      isValidating = false,
+      isTouched = false,
+      isDirty = false,
       fullWidth = false,
       asChild = false,
       component,
@@ -79,10 +98,21 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       ...rest
     } = props;
 
+    const resolvedErrorMessage =
+      typeof errorMessageProp === "string"
+        ? errorMessageProp
+        : errorMessageProp?.message ??
+          (validationResult && !validationResult.valid
+            ? validationResult.error.message
+            : undefined);
+
     const required = isRequired || requiredProp;
     const disabled = isDisabled || disabledProp;
     const readOnly = isReadOnly || readOnlyProp;
-    const error = isInvalid || errorProp;
+    const error =
+      isInvalid ||
+      errorProp ||
+      (validationResult ? !validationResult.valid : Boolean(resolvedErrorMessage));
 
     const generatedId = React.useId();
     const id = idProp || generatedId;
@@ -101,6 +131,10 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
         disabled,
         readOnly,
         error,
+        errorMessage: resolvedErrorMessage,
+        isValidating,
+        isTouched,
+        isDirty,
         labelId,
         helperTextId,
         errorMessageId,
@@ -116,6 +150,10 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
         disabled,
         readOnly,
         error,
+        resolvedErrorMessage,
+        isValidating,
+        isTouched,
+        isDirty,
         labelId,
         helperTextId,
         errorMessageId,

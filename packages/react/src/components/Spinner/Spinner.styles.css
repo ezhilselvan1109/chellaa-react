@@ -1,0 +1,84 @@
+@layer cl-components {
+  /* =========================================================================
+     Spinner Component Styles
+     ========================================================================= */
+
+  .cl-spinner {
+    display: inline-block;
+    vertical-align: middle;
+    animation: cl-spin 0.75s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .cl-spinner__track {
+    opacity: 0.25;
+  }
+
+  .cl-spinner__head {
+    stroke-linecap: round;
+  }
+
+  /* Sizes */
+  .cl-spinner--xs {
+    width: 12px;
+    height: 12px;
+  }
+
+  .cl-spinner--sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cl-spinner--md {
+    width: 24px;
+    height: 24px;
+  }
+
+  .cl-spinner--lg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cl-spinner--xl {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Semantic Color Schemes */
+  .cl-spinner--primary {
+    color: var(--cl-color-primary-base, #4f46e5);
+  }
+
+  .cl-spinner--neutral {
+    color: var(--cl-color-text-secondary, #64748b);
+  }
+
+  .cl-spinner--success {
+    color: var(--cl-color-success-base, #16a34a);
+  }
+
+  .cl-spinner--danger {
+    color: var(--cl-color-danger-base, #dc2626);
+  }
+
+  .cl-spinner--warning {
+    color: var(--cl-color-warning-base, #ca8a04);
+  }
+
+  /* Keyframes */
+  @keyframes cl-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Reduced Motion Preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-spinner {
+      animation-duration: 2.5s !important;
+    }
+  }
+}

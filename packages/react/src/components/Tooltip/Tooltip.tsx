@@ -64,6 +64,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       placement: actualPlacement,
       middlewareData,
       context,
+      isPositioned,
     } = useFloating({
       placement,
       open: isEffectivelyOpen,
@@ -126,7 +127,8 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     }
 
     const childProps = children.props as Record<string, unknown>;
-    const childAriaDescribedBy = childProps["aria-describedby"] as string | undefined;
+    const childAriaDescribedBy = childProps["aria-describedby"] as
+      string | undefined;
     const mergedAriaDescribedBy = isEffectivelyOpen
       ? [childAriaDescribedBy, tooltipId].filter(Boolean).join(" ")
       : childAriaDescribedBy;
@@ -157,6 +159,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
               })}
               data-state="open"
               data-placement={actualPlacement}
+              data-positioned={isPositioned ? "true" : undefined}
             >
               <span className="cl-tooltip__label">{content}</span>
               {shortcut && (

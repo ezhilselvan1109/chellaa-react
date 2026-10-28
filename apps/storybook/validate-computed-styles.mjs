@@ -6,10 +6,13 @@ console.log("CHELLAA REACT — STORYBOOK BROWSER COMPUTED-STYLE SUITE");
 console.log("=================================================");
 
 // 1. Verify Storybook Build Artifacts
-const distPath = path.resolve("./dist");
-const iframeHtmlPath = path.resolve("./dist/iframe.html");
-const indexPath = path.resolve("./dist/index.json");
-const previewAssetsPath = path.resolve("./dist/assets");
+const baseDir = fs.existsSync(path.resolve("./dist/iframe.html"))
+  ? path.resolve("./dist")
+  : path.resolve("./apps/storybook/dist");
+const distPath = baseDir;
+const iframeHtmlPath = path.resolve(distPath, "iframe.html");
+const indexPath = path.resolve(distPath, "index.json");
+const previewAssetsPath = path.resolve(distPath, "assets");
 
 if (!fs.existsSync(distPath) || !fs.existsSync(iframeHtmlPath) || !fs.existsSync(indexPath)) {
   throw new Error("Storybook static output missing in ./dist (requires dist/iframe.html and dist/index.json)");
@@ -17,12 +20,16 @@ if (!fs.existsSync(distPath) || !fs.existsSync(iframeHtmlPath) || !fs.existsSync
 
 console.log("[Storybook Audit] Static build outputs verified in ./dist");
 
-// 2. Verify all 32 Public Component Story Chunks exist in the built distribution
+// 2. Verify all 37 Public Component Story Chunks exist in the built distribution
 const expectedComponentStoryBundles = [
   // Actions
   "Button.stories",
   "ButtonGroup.stories",
   // Forms & Inputs
+  "Calendar.stories",
+  "DatePicker.stories",
+  "DateRangePicker.stories",
+  "TimePicker.stories",
   "Input.stories",
   "Textarea.stories",
   "FormField.stories",
@@ -31,24 +38,39 @@ const expectedComponentStoryBundles = [
   "Switch.stories",
   "Select.stories",
   "Combobox.stories",
+  "MultiSelect.stories",
+  "FileUpload.stories",
+  "Slider.stories",
   // Data Display
   "Avatar.stories",
   "Badge.stories",
   "Card.stories",
+  "Carousel.stories",
+  "DataGrid.stories",
   "Kbd.stories",
   "Table.stories",
+  "TreeView.stories",
   "Typography.stories",
   // Navigation
   "Accordion.stories",
+  "Breadcrumbs.stories",
+  "Link.stories",
+  "Stepper.stories",
   "Tabs.stories",
   "Pagination.stories",
   // Overlays
+  "ContextMenu.stories",
   "Dialog.stories",
+  "Drawer.stories",
+  "DropdownMenu.stories",
   "Popover.stories",
   "Tooltip.stories",
   // Feedback
   "Alert.stories",
+  "Progress.stories",
+  "Skeleton.stories",
   "Snackbar.stories",
+  "Spinner.stories",
   "TouchRipple.stories",
   // Layout
   "Box.stories",
@@ -78,7 +100,7 @@ const expectedUtilityStoryBundles = [
 
 const builtAssets = fs.readdirSync(previewAssetsPath);
 
-console.log("\n[Audit Phase 1A] Verifying 32 Public Component Story Chunks in built distribution:");
+console.log(`\n[Audit Phase 1A] Verifying ${expectedComponentStoryBundles.length} Public Component Story Chunks in built distribution:`);
 for (const story of expectedComponentStoryBundles) {
   const found = builtAssets.some((file) => file.startsWith(story));
   if (!found) {
@@ -86,7 +108,7 @@ for (const story of expectedComponentStoryBundles) {
   }
   console.log(`  ✓ Component Story Chunk: ${story}`);
 }
-console.log(`✓ All 32 component story chunks verified (32/32)\n`);
+console.log(`✓ All ${expectedComponentStoryBundles.length} component story chunks verified (${expectedComponentStoryBundles.length}/${expectedComponentStoryBundles.length})\n`);
 
 console.log("[Audit Phase 1B] Verifying Foundations & Introduction Story Chunks in built distribution:");
 for (const story of expectedFoundationStoryBundles) {
@@ -133,32 +155,52 @@ const componentStyleSpecs = [
   { name: "Avatar", selector: ".cl-avatar", token: "--cl-rad-full" },
   { name: "Badge", selector: ".cl-badge", token: "--cl-radius-full" },
   { name: "Box", selector: ".cl-box", token: "box-sizing" },
+  { name: "Breadcrumbs", selector: ".cl-breadcrumb", token: "--cl-space-" },
   { name: "Button", selector: ".cl-button", token: "--cl-color-primary-base" },
   { name: "ButtonGroup", selector: ".cl-button-group", token: "inline-flex" },
+  { name: "Calendar", selector: ".cl-calendar", token: "--cl-radius-" },
   { name: "Card", selector: ".cl-card", token: "--cl-card-bg" },
   { name: "Checkbox", selector: ".cl-checkbox", token: "--cl-color-primary" },
   { name: "Combobox", selector: ".cl-combobox", token: "--cl-radius-" },
   { name: "Container", selector: ".cl-container", token: "--cl-breakpoint-sm" },
+  { name: "ContextMenu", selector: ".cl-context-menu", token: "--cl-color-border" },
+  { name: "DatePicker", selector: ".cl-datepicker", token: "--cl-color-border" },
+  { name: "DateRangePicker", selector: ".cl-daterangepicker", token: "--cl-color-border" },
   { name: "Dialog", selector: ".cl-dialog", token: "--cl-dialog-bg" },
   { name: "Divider", selector: ".cl-divider", token: "--cl-color-border" },
+  { name: "Drawer", selector: ".cl-drawer", token: "--cl-color-border" },
+  { name: "DropdownMenu", selector: ".cl-dropdown-menu", token: "--cl-color-border" },
   { name: "Flex", selector: ".cl-flex", token: "display:flex" },
   { name: "FormField", selector: ".cl-form-field", token: "display:flex" },
   { name: "Grid", selector: ".cl-grid", token: "display:grid" },
   { name: "Input", selector: ".cl-input", token: "--cl-color-border" },
   { name: "Kbd", selector: ".cl-kbd", token: "--cl-radius-sm" },
+  { name: "Link", selector: ".cl-link", token: "--cl-color-" },
   { name: "Pagination", selector: ".cl-pagination", token: "display:inline-flex" },
   { name: "Paper", selector: ".cl-paper", token: "--cl-paper-bg" },
   { name: "Popover", selector: ".cl-popover", token: "--cl-popover-bg" },
+  { name: "Progress", selector: ".cl-progress", token: "--cl-color-primary" },
   { name: "Radio", selector: ".cl-radio", token: "--cl-color-primary" },
   { name: "Select", selector: ".cl-select", token: "--cl-select-bg" },
+  { name: "Skeleton", selector: ".cl-skeleton", token: "--cl-radius-" },
   { name: "Snackbar", selector: ".cl-toast", token: "--cl-color-bg-surface" },
+  { name: "Spinner", selector: ".cl-spinner", token: "--cl-color-primary" },
   { name: "Stack", selector: ".cl-stack", token: "display:flex" },
   { name: "Switch", selector: ".cl-switch", token: "--cl-color-primary" },
   { name: "Table", selector: ".cl-table", token: "--cl-table-border" },
   { name: "Tabs", selector: ".cl-tabs", token: "--cl-color-primary" },
   { name: "Textarea", selector: ".cl-textarea", token: "--cl-color-border" },
+  { name: "TimePicker", selector: ".cl-timepicker", token: "--cl-color-border" },
   { name: "Tooltip", selector: ".cl-tooltip", token: "--cl-radius-" },
   { name: "Typography", selector: ".cl-typography", token: "--cl-font-" },
+  { name: "MultiSelect", selector: ".cl-multiselect", token: "--cl-color-" },
+  { name: "DataGrid", selector: ".cl-datagrid", token: "--cl-color-" },
+  { name: "FileUpload", selector: ".cl-fileupload", token: "--cl-color-" },
+  { name: "Slider", selector: ".cl-slider", token: "--cl-slider-accent" },
+  { name: "RangeSlider", selector: ".cl-range-slider", token: "--cl-slider-accent" },
+  { name: "TreeView", selector: ".cl-treeview", token: "--cl-color-" },
+  { name: "Stepper", selector: ".cl-stepper", token: "--cl-color-" },
+  { name: "Carousel", selector: ".cl-carousel", token: "--cl-color-" },
 ];
 
 for (const spec of componentStyleSpecs) {
@@ -186,7 +228,7 @@ if (!hasTouchRippleBundle) {
 }
 console.log(`  ✓ Runtime Emotion Verified: TouchRipple    [Emotion runtime-styled component bundle verified]`);
 
-console.log(`\n✓ All 32 components verified for stylesheet and design token integrity (32/32)\n`);
+console.log(`\n✓ All ${componentStyleSpecs.length + 1} components verified for stylesheet and design token integrity (${componentStyleSpecs.length + 1}/${componentStyleSpecs.length + 1})\n`);
 
 // 4. Verify Autodocs & Storybook Metadata Manifest
 console.log("[Audit Phase 3] Verifying Storybook index.json entries:");
@@ -306,6 +348,13 @@ const CANONICAL_SIDEBAR_INVENTORY = {
   },
 
   // Components / Forms & Inputs
+  "Calendar": {
+    expectedTitle: "Components/Forms & Inputs/Calendar",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
   "Checkbox": {
     expectedTitle: "Components/Forms & Inputs/Checkbox",
     topLevel: "Components",
@@ -315,6 +364,20 @@ const CANONICAL_SIDEBAR_INVENTORY = {
   },
   "Combobox": {
     expectedTitle: "Components/Forms & Inputs/Combobox",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "DatePicker": {
+    expectedTitle: "Components/Forms & Inputs/DatePicker",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "DateRangePicker": {
+    expectedTitle: "Components/Forms & Inputs/DateRangePicker",
     topLevel: "Components",
     group: "Forms & Inputs",
     isComponent: true,
@@ -362,6 +425,34 @@ const CANONICAL_SIDEBAR_INVENTORY = {
     isComponent: true,
     requiresAutodocs: true,
   },
+  "TimePicker": {
+    expectedTitle: "Components/Forms & Inputs/TimePicker",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "MultiSelect": {
+    expectedTitle: "Components/Forms & Inputs/MultiSelect",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "FileUpload": {
+    expectedTitle: "Components/Forms & Inputs/FileUpload",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Slider": {
+    expectedTitle: "Components/Forms & Inputs/Slider",
+    topLevel: "Components",
+    group: "Forms & Inputs",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
 
   // Components / Data Display
   "Avatar": {
@@ -385,6 +476,20 @@ const CANONICAL_SIDEBAR_INVENTORY = {
     isComponent: true,
     requiresAutodocs: true,
   },
+  "Carousel": {
+    expectedTitle: "Components/Data Display/Carousel",
+    topLevel: "Components",
+    group: "Data Display",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "DataGrid": {
+    expectedTitle: "Components/Data Display/DataGrid",
+    topLevel: "Components",
+    group: "Data Display",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
   "Kbd": {
     expectedTitle: "Components/Data Display/Kbd",
     topLevel: "Components",
@@ -394,6 +499,13 @@ const CANONICAL_SIDEBAR_INVENTORY = {
   },
   "Table": {
     expectedTitle: "Components/Data Display/Table",
+    topLevel: "Components",
+    group: "Data Display",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "TreeView": {
+    expectedTitle: "Components/Data Display/TreeView",
     topLevel: "Components",
     group: "Data Display",
     isComponent: true,
@@ -415,8 +527,29 @@ const CANONICAL_SIDEBAR_INVENTORY = {
     isComponent: true,
     requiresAutodocs: true,
   },
+  "Breadcrumbs": {
+    expectedTitle: "Components/Navigation/Breadcrumbs",
+    topLevel: "Components",
+    group: "Navigation",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Link": {
+    expectedTitle: "Components/Navigation/Link",
+    topLevel: "Components",
+    group: "Navigation",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
   "Pagination": {
     expectedTitle: "Components/Navigation/Pagination",
+    topLevel: "Components",
+    group: "Navigation",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Stepper": {
+    expectedTitle: "Components/Navigation/Stepper",
     topLevel: "Components",
     group: "Navigation",
     isComponent: true,
@@ -431,8 +564,29 @@ const CANONICAL_SIDEBAR_INVENTORY = {
   },
 
   // Components / Overlays
+  "ContextMenu": {
+    expectedTitle: "Components/Overlays/ContextMenu",
+    topLevel: "Components",
+    group: "Overlays",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
   "Dialog": {
     expectedTitle: "Components/Overlays/Dialog",
+    topLevel: "Components",
+    group: "Overlays",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Drawer": {
+    expectedTitle: "Components/Overlays/Drawer",
+    topLevel: "Components",
+    group: "Overlays",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "DropdownMenu": {
+    expectedTitle: "Components/Overlays/DropdownMenu",
     topLevel: "Components",
     group: "Overlays",
     isComponent: true,
@@ -461,8 +615,29 @@ const CANONICAL_SIDEBAR_INVENTORY = {
     isComponent: true,
     requiresAutodocs: true,
   },
+  "Progress": {
+    expectedTitle: "Components/Feedback/Progress",
+    topLevel: "Components",
+    group: "Feedback",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Skeleton": {
+    expectedTitle: "Components/Feedback/Skeleton",
+    topLevel: "Components",
+    group: "Feedback",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
   "Snackbar": {
     expectedTitle: "Components/Feedback/Snackbar",
+    topLevel: "Components",
+    group: "Feedback",
+    isComponent: true,
+    requiresAutodocs: true,
+  },
+  "Spinner": {
+    expectedTitle: "Components/Feedback/Spinner",
     topLevel: "Components",
     group: "Feedback",
     isComponent: true,

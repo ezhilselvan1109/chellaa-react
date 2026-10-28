@@ -467,6 +467,195 @@ describe("Accordion Component", () => {
     });
   });
 
+  describe("Density & Size Variants", () => {
+    it("applies sm, md, and lg size classes correctly", () => {
+      const { rerender, container } = render(
+        <Accordion size="sm" type="single">
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>Trigger</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>Content</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      expect(container.querySelector(".cl-accordion")).toHaveClass(
+        "cl-accordion--size-sm",
+      );
+
+      rerender(
+        <Accordion size="lg" type="single">
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>Trigger</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>Content</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      expect(container.querySelector(".cl-accordion")).toHaveClass(
+        "cl-accordion--size-lg",
+      );
+    });
+  });
+
+  describe("Redesigned Visual Variants", () => {
+    it("applies default, borderless, and filled variant classes", () => {
+      const { rerender, container } = render(
+        <Accordion variant="default" type="single">
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>T1</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>C1</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      const root = container.querySelector(".cl-accordion");
+      expect(root).toHaveClass("cl-accordion--default");
+      expect(root).toHaveClass("cl-accordion--outline");
+
+      rerender(
+        <Accordion variant="borderless" type="single">
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>T1</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>C1</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      expect(container.querySelector(".cl-accordion")).toHaveClass(
+        "cl-accordion--borderless",
+      );
+
+      rerender(
+        <Accordion variant="filled" type="single">
+          <Accordion.Item value="1">
+            <Accordion.Header>
+              <Accordion.Trigger>T1</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>C1</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      expect(container.querySelector(".cl-accordion")).toHaveClass(
+        "cl-accordion--filled",
+      );
+    });
+  });
+
+  describe("Structured Header Layout", () => {
+    it("renders title, description, leading icon, and trailing badge", () => {
+      render(
+        <Accordion type="single">
+          <Accordion.Item value="item-1">
+            <Accordion.Header>
+              <Accordion.Trigger
+                title="Account Settings"
+                description="Manage your profile and security credentials"
+                leadingIcon={<span data-testid="leading-icon">🔒</span>}
+                trailingBadge={<span data-testid="trailing-badge">Active</span>}
+              />
+            </Accordion.Header>
+            <Accordion.Content>Panel Content</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      expect(screen.getByText("Account Settings")).toBeInTheDocument();
+      expect(screen.getByText("Account Settings")).toHaveClass("cl-accordion__title");
+      expect(
+        screen.getByText("Manage your profile and security credentials"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Manage your profile and security credentials"),
+      ).toHaveClass("cl-accordion__description");
+      expect(screen.getByTestId("leading-icon")).toBeInTheDocument();
+      expect(screen.getByTestId("trailing-badge")).toBeInTheDocument();
+    });
+
+    it("supports indicator position start and custom indicator function", () => {
+      render(
+        <Accordion type="single" defaultValue="item-1" indicatorPosition="start">
+          <Accordion.Item value="item-1">
+            <Accordion.Header>
+              <Accordion.Trigger
+                title="Start Indicator Section"
+                indicator={({ isOpen }) => (
+                  <span data-testid="custom-indicator">{isOpen ? "[-]" : "[+]"}</span>
+                )}
+              />
+            </Accordion.Header>
+            <Accordion.Content>Custom indicator content</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      const trigger = screen.getByRole("button", { name: /Start Indicator Section/i });
+      expect(trigger).toHaveClass("cl-accordion__trigger--indicator-start");
+      expect(screen.getByTestId("custom-indicator")).toHaveTextContent("[-]");
+    });
+  });
+
+  describe("Bulk Actions (Expand All / Collapse All)", () => {
+    it("expands and collapses all eligible items in multiple mode", () => {
+      render(
+        <div>
+          <Accordion type="multiple" defaultValue={[]}>
+            <Accordion.Actions>
+              <Accordion.ExpandAll data-testid="expand-all" />
+              <Accordion.CollapseAll data-testid="collapse-all" />
+            </Accordion.Actions>
+            <Accordion.Item value="item-1">
+              <Accordion.Header>
+                <Accordion.Trigger>Item 1</Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content>Content 1</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="item-2">
+              <Accordion.Header>
+                <Accordion.Trigger>Item 2</Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content>Content 2</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="item-3" isDisabled>
+              <Accordion.Header>
+                <Accordion.Trigger>Item 3 Disabled</Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content>Content 3</Accordion.Content>
+            </Accordion.Item>
+          </Accordion>
+        </div>,
+      );
+
+      const trigger1 = screen.getByRole("button", { name: "Item 1" });
+      const trigger2 = screen.getByRole("button", { name: "Item 2" });
+      const trigger3 = screen.getByRole("button", { name: "Item 3 Disabled" });
+
+      expect(trigger1).toHaveAttribute("aria-expanded", "false");
+      expect(trigger2).toHaveAttribute("aria-expanded", "false");
+      expect(trigger3).toHaveAttribute("aria-expanded", "false");
+
+      fireEvent.click(screen.getByTestId("expand-all"));
+
+      expect(trigger1).toHaveAttribute("aria-expanded", "true");
+      expect(trigger2).toHaveAttribute("aria-expanded", "true");
+      // Disabled item remains unexpanded per policy
+      expect(trigger3).toHaveAttribute("aria-expanded", "false");
+
+      fireEvent.click(screen.getByTestId("collapse-all"));
+
+      expect(trigger1).toHaveAttribute("aria-expanded", "false");
+      expect(trigger2).toHaveAttribute("aria-expanded", "false");
+    });
+  });
+
   describe("Accessibility (axe-core)", () => {
     it("passes axe accessibility checks on default closed accordion", async () => {
       const { container } = render(
@@ -529,6 +718,31 @@ describe("Accordion Component", () => {
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content>Content 2</Accordion.Content>
+          </Accordion.Item>
+        </Accordion>,
+      );
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("passes axe accessibility checks on filled variant with rich header content and actions", async () => {
+      const { container } = render(
+        <Accordion variant="filled" size="lg" type="multiple" defaultValue={["item-1"]}>
+          <Accordion.Actions>
+            <Accordion.ExpandAll />
+            <Accordion.CollapseAll />
+          </Accordion.Actions>
+          <Accordion.Item value="item-1">
+            <Accordion.Header level={2}>
+              <Accordion.Trigger
+                title="System Notifications"
+                description="Configure delivery preferences for email and push"
+                leadingIcon={<span>🔔</span>}
+                trailingBadge={<span>3 Unread</span>}
+              />
+            </Accordion.Header>
+            <Accordion.Content>Notification settings details</Accordion.Content>
           </Accordion.Item>
         </Accordion>,
       );

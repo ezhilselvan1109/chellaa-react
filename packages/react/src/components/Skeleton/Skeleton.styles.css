@@ -1,0 +1,81 @@
+@layer cl-components {
+  /* =========================================================================
+     Skeleton Component Styles
+     ========================================================================= */
+
+  .cl-skeleton {
+    display: block;
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Variants */
+  .cl-skeleton--text {
+    height: 1.2em;
+    border-radius: var(--cl-radius-xs, 4px);
+    margin-block: 0.2em;
+  }
+
+  .cl-skeleton--circular {
+    border-radius: 50%;
+  }
+
+  .cl-skeleton--rectangular {
+    border-radius: 0;
+  }
+
+  .cl-skeleton--rounded {
+    border-radius: var(--cl-radius-md, 8px);
+  }
+
+  /* Animations */
+  .cl-skeleton--pulse {
+    animation: cl-skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  .cl-skeleton--wave {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      90deg,
+      var(--cl-color-surface-hover, #f1f5f9) 0%,
+      var(--cl-color-surface-elevated, #ffffff) 50%,
+      var(--cl-color-surface-hover, #f1f5f9) 100%
+    );
+    background-size: 200% 100%;
+    animation: cl-skeleton-wave 1.6s linear infinite;
+  }
+
+  .cl-skeleton--none {
+    animation: none;
+  }
+
+  @keyframes cl-skeleton-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes cl-skeleton-wave {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-skeleton,
+    .cl-skeleton--pulse,
+    .cl-skeleton--wave {
+      animation: none !important;
+    }
+  }
+}

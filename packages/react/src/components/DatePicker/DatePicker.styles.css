@@ -1,0 +1,170 @@
+@layer cl-components {
+  /* =========================================================================
+     DatePicker Component Styles
+     ========================================================================= */
+
+  .cl-datepicker {
+    display: inline-block;
+    position: relative;
+    width: 260px;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  /* Trigger input control container */
+  .cl-datepicker__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cl-datepicker__input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--cl-color-border-default, #e2e8f0);
+    border-radius: var(--cl-radius-md, 8px);
+    background-color: var(--cl-color-surface-elevated, #ffffff);
+    color: var(--cl-color-text-primary, #0f172a);
+    font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  /* Sizes */
+  .cl-datepicker--sm .cl-datepicker__input {
+    height: 32px;
+    padding: 0 2rem 0 2rem;
+    font-size: 0.8125rem;
+  }
+
+  .cl-datepicker--md .cl-datepicker__input {
+    height: 40px;
+    padding: 0 2.25rem 0 2.25rem;
+    font-size: 0.875rem;
+  }
+
+  .cl-datepicker--lg .cl-datepicker__input {
+    height: 48px;
+    padding: 0 2.5rem 0 2.5rem;
+    font-size: 1rem;
+  }
+
+  .cl-datepicker__input:focus {
+    outline: none;
+    border-color: var(--cl-color-primary-base, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+
+  .cl-datepicker__input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+  }
+
+  .cl-datepicker--invalid .cl-datepicker__input {
+    border-color: var(--cl-color-danger-base, #dc2626);
+  }
+
+  .cl-datepicker--invalid .cl-datepicker__input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  /* Calendar Trigger Icon Button (Left) */
+  .cl-datepicker__icon-btn {
+    position: absolute;
+    left: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    border-radius: var(--cl-radius-sm, 4px);
+    color: var(--cl-color-text-secondary, #64748b);
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    z-index: 1;
+  }
+
+  .cl-datepicker__icon-btn:hover:not(:disabled) {
+    color: var(--cl-color-text-primary, #0f172a);
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+  }
+
+  .cl-datepicker__icon-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
+  /* Right Actions */
+  .cl-datepicker__actions {
+    position: absolute;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .cl-datepicker__clear-btn,
+  .cl-datepicker__toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    border-radius: var(--cl-radius-sm, 4px);
+    color: var(--cl-color-text-secondary, #64748b);
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+
+  .cl-datepicker__clear-btn:hover,
+  .cl-datepicker__toggle-btn:hover {
+    color: var(--cl-color-text-primary, #0f172a);
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+  }
+
+  .cl-datepicker__clear-btn:focus-visible,
+  .cl-datepicker__toggle-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
+  /* Popover Content Override & Animation */
+  .cl-datepicker__popover {
+    padding: 0 !important;
+    background-color: var(--cl-color-surface-elevated, #ffffff);
+    border: 1px solid var(--cl-color-border-default, #e2e8f0);
+    border-radius: var(--cl-radius-lg, 12px);
+    box-shadow: var(--cl-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1));
+    z-index: 1000;
+  }
+
+  .cl-datepicker__popover:not([data-positioned="true"]) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .cl-datepicker__popover[data-positioned="true"] {
+    animation: cl-datepicker-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    visibility: visible;
+  }
+
+  @keyframes cl-datepicker-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .cl-datepicker__popover .cl-calendar {
+    border: none;
+    box-shadow: none;
+  }
+}

@@ -6,6 +6,9 @@ export {
   AccordionTrigger,
   AccordionContent,
   AccordionIcon,
+  AccordionActions,
+  AccordionExpandAll,
+  AccordionCollapseAll,
   AccordionContext,
   AccordionItemContext,
   useAccordionContext,
@@ -15,6 +18,8 @@ export {
 export type {
   AccordionType,
   AccordionVariant,
+  AccordionSize,
+  AccordionIndicatorPosition,
   AccordionSingleProps,
   AccordionMultipleProps,
   AccordionRootProps,
@@ -24,6 +29,9 @@ export type {
   AccordionTriggerProps,
   AccordionContentProps,
   AccordionIconProps,
+  AccordionActionsProps,
+  AccordionExpandAllProps,
+  AccordionCollapseAllProps,
   AccordionContextValue,
   AccordionItemContextValue,
 } from "./Accordion.types";

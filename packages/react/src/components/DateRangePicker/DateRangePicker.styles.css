@@ -1,0 +1,170 @@
+@layer cl-components {
+  /* =========================================================================
+     DateRangePicker Component Styles
+     ========================================================================= */
+
+  .cl-daterangepicker {
+    display: inline-block;
+    position: relative;
+    width: 320px;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  /* Trigger input control container */
+  .cl-daterangepicker__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cl-daterangepicker__input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--cl-color-border-default, #e2e8f0);
+    border-radius: var(--cl-radius-md, 8px);
+    background-color: var(--cl-color-surface-elevated, #ffffff);
+    color: var(--cl-color-text-primary, #0f172a);
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  /* Sizes */
+  .cl-daterangepicker--sm .cl-daterangepicker__input {
+    height: 32px;
+    padding: 0 3.25rem 0 2rem;
+    font-size: 0.8125rem;
+  }
+
+  .cl-daterangepicker--md .cl-daterangepicker__input {
+    height: 40px;
+    padding: 0 3.5rem 0 2.25rem;
+    font-size: 0.875rem;
+  }
+
+  .cl-daterangepicker--lg .cl-daterangepicker__input {
+    height: 48px;
+    padding: 0 4rem 0 2.5rem;
+    font-size: 1rem;
+  }
+
+  .cl-daterangepicker__input:focus {
+    outline: none;
+    border-color: var(--cl-color-primary-base, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+
+  .cl-daterangepicker__input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+  }
+
+  .cl-daterangepicker--error .cl-daterangepicker__input {
+    border-color: var(--cl-color-danger-base, #dc2626);
+  }
+
+  .cl-daterangepicker--error .cl-daterangepicker__input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  /* Calendar Trigger Icon Button (Left) */
+  .cl-daterangepicker__icon-btn {
+    position: absolute;
+    left: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    border-radius: var(--cl-radius-sm, 4px);
+    color: var(--cl-color-text-secondary, #64748b);
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    z-index: 1;
+  }
+
+  .cl-daterangepicker__icon-btn:hover:not(:disabled) {
+    color: var(--cl-color-text-primary, #0f172a);
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+  }
+
+  .cl-daterangepicker__icon-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
+  /* Right Actions */
+  .cl-daterangepicker__actions {
+    position: absolute;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    z-index: 1;
+  }
+
+  .cl-daterangepicker__clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    border-radius: var(--cl-radius-full, 9999px);
+    background-color: var(--cl-color-surface-hover, #f1f5f9);
+    color: var(--cl-color-text-subtle, #94a3b8);
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+
+  .cl-daterangepicker__clear-btn:hover {
+    background-color: var(--cl-color-border-default, #e2e8f0);
+    color: var(--cl-color-text-primary, #0f172a);
+  }
+
+  .cl-daterangepicker__clear-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
+  .cl-daterangepicker__toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border: none;
+    border-radius: var(--cl-radius-sm, 4px);
+    background: transparent;
+    color: var(--cl-color-text-secondary, #64748b);
+    cursor: pointer;
+    transition: transform 0.15s ease, color 0.12s ease;
+  }
+
+  .cl-daterangepicker__toggle-btn:hover:not(:disabled) {
+    color: var(--cl-color-text-primary, #0f172a);
+  }
+
+  .cl-daterangepicker__toggle-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 1px;
+  }
+
+  .cl-daterangepicker--open .cl-daterangepicker__toggle-btn {
+    transform: rotate(180deg);
+  }
+
+  /* Popover Floating Overlay Content */
+  .cl-daterangepicker__popover {
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: var(--cl-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05));
+    border-radius: var(--cl-radius-lg, 12px);
+    overflow: hidden;
+  }
+}

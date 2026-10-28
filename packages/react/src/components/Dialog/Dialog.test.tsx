@@ -17,19 +17,26 @@ import {
   DialogBody,
   DialogFooter,
   DialogClose,
+  __resetBodyScrollLockForTesting,
 } from "./Dialog";
 
 describe("Dialog / Modal Component (SPEC-004)", () => {
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ["requestAnimationFrame", "cancelAnimationFrame"] });
+    vi.useFakeTimers({
+      toFake: ["requestAnimationFrame", "cancelAnimationFrame"],
+    });
   });
 
   afterEach(() => {
     vi.useRealTimers();
     document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+    __resetBodyScrollLockForTesting();
   });
 
-  const renderStandardDialog = (props: Partial<React.ComponentProps<typeof DialogRoot>> = {}) => {
+  const renderStandardDialog = (
+    props: Partial<React.ComponentProps<typeof DialogRoot>> = {},
+  ) => {
     return render(
       <DialogRoot defaultOpen={false} {...props}>
         <DialogTrigger>Open Dialog</DialogTrigger>
@@ -43,16 +50,20 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
               <DialogBody>
                 <p>This is the dialog body.</p>
                 <input data-testid="first-input" placeholder="First input" />
-                <button type="button" data-testid="middle-button">Middle Button</button>
+                <button type="button" data-testid="middle-button">
+                  Middle Button
+                </button>
               </DialogBody>
               <DialogFooter>
                 <DialogClose data-testid="close-button">Cancel</DialogClose>
-                <button type="button" data-testid="confirm-button">Confirm</button>
+                <button type="button" data-testid="confirm-button">
+                  Confirm
+                </button>
               </DialogFooter>
             </DialogContent>
           </DialogOverlay>
         </DialogPortal>
-      </DialogRoot>
+      </DialogRoot>,
     );
   };
 
@@ -90,7 +101,7 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
             </DialogContent>
           </DialogOverlay>
         </DialogPortal>
-      </DialogRoot>
+      </DialogRoot>,
     );
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -105,7 +116,7 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
             </DialogContent>
           </DialogOverlay>
         </DialogPortal>
-      </DialogRoot>
+      </DialogRoot>,
     );
 
     act(() => {
@@ -169,7 +180,11 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
               <DialogContent>
                 <DialogTitle>Initial Focus</DialogTitle>
                 <input placeholder="Ignored Input" />
-                <input ref={initialRef} data-testid="target-input" placeholder="Target" />
+                <input
+                  ref={initialRef}
+                  data-testid="target-input"
+                  placeholder="Target"
+                />
               </DialogContent>
             </DialogOverlay>
           </DialogPortal>
@@ -200,7 +215,7 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
             </DialogOverlay>
           </DialogPortal>
         </DialogRoot>
-      </div>
+      </div>,
     );
 
     const triggerBtn = screen.getByTestId("trigger-btn");
@@ -264,7 +279,11 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
 
   it("FR-DLG-08: does not dismiss on overlay click if closeOnOverlayClick is false", async () => {
     const onClose = vi.fn();
-    renderStandardDialog({ defaultOpen: true, closeOnOverlayClick: false, onClose });
+    renderStandardDialog({
+      defaultOpen: true,
+      closeOnOverlayClick: false,
+      onClose,
+    });
     act(() => {
       vi.runAllTimers();
     });
@@ -337,5 +356,163 @@ describe("Dialog / Modal Component (SPEC-004)", () => {
 
     expect(overlay).toHaveClass("cl-dialog__overlay");
     expect(content).toHaveClass("cl-dialog__content");
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wave 1 Remediation: Scrollbar Layout Shift & Multi-Dialog Lock
+  // ---------------------------------------------------------------------------
+  describe("Wave 1 Remediation: Scrollbar Layout Shift & Multi-Dialog Lock", () => {
+    it("measures scrollbar width and applies paddingRight compensation when scrollbar is present", () => {
+      vi.spyOn(window, "innerWidth", "get").mockReturnValue(1024);
+      vi.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(
+        1008,
+      ); // 16px scrollbar
+
+      const { unmount } = renderStandardDialog({ defaultOpen: true });
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.body.style.paddingRight).toBe("16px");
+
+      unmount();
+      expect(document.body.style.overflow).toBe("");
+      expect(document.body.style.paddingRight).toBe("");
+    });
+
+    it("preserves pre-existing body inline styles and restores them on close", () => {
+      vi.spyOn(window, "innerWidth", "get").mockReturnValue(1024);
+      vi.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(
+        1008,
+      ); // 16px scrollbar
+
+      document.body.style.overflow = "scroll";
+      document.body.style.paddingRight = "8px";
+
+      const { unmount } = renderStandardDialog({ defaultOpen: true });
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.body.style.paddingRight).toBe("24px"); // 8px existing + 16px compensation
+
+      unmount();
+      expect(document.body.style.overflow).toBe("scroll");
+      expect(document.body.style.paddingRight).toBe("8px");
+    });
+
+    it("does not accumulate padding across repeated open/close cycles", () => {
+      vi.spyOn(window, "innerWidth", "get").mockReturnValue(1024);
+      vi.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(
+        1008,
+      ); // 16px scrollbar
+      document.body.style.paddingRight = "10px";
+
+      const TestToggle = () => {
+        const [open, setOpen] = React.useState(false);
+        return (
+          <>
+            <button onClick={() => setOpen((prev) => !prev)}>Toggle</button>
+            <DialogRoot isOpen={open} onClose={() => setOpen(false)}>
+              <DialogPortal>
+                <DialogOverlay>
+                  <DialogContent>
+                    <DialogTitle>Repeated Open</DialogTitle>
+                  </DialogContent>
+                </DialogOverlay>
+              </DialogPortal>
+            </DialogRoot>
+          </>
+        );
+      };
+
+      render(<TestToggle />);
+      const toggle = screen.getByRole("button", { name: "Toggle" });
+
+      // Cycle 1: Open
+      fireEvent.click(toggle);
+      act(() => {
+        vi.runAllTimers();
+      });
+      expect(document.body.style.paddingRight).toBe("26px");
+
+      // Cycle 1: Close
+      fireEvent.click(toggle);
+      act(() => {
+        vi.runAllTimers();
+      });
+      expect(document.body.style.paddingRight).toBe("10px");
+
+      // Cycle 2: Open again - must NOT accumulate
+      fireEvent.click(toggle);
+      act(() => {
+        vi.runAllTimers();
+      });
+      expect(document.body.style.paddingRight).toBe("26px");
+
+      // Cycle 2: Close again
+      fireEvent.click(toggle);
+      act(() => {
+        vi.runAllTimers();
+      });
+      expect(document.body.style.paddingRight).toBe("10px");
+    });
+
+    it("maintains scroll lock correctly across multiple simultaneously mounted dialogs", () => {
+      vi.spyOn(window, "innerWidth", "get").mockReturnValue(1024);
+      vi.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(
+        1008,
+      ); // 16px scrollbar
+
+      const { unmount: unmountD1 } = render(
+        <DialogRoot defaultOpen={true}>
+          <DialogPortal>
+            <DialogOverlay>
+              <DialogContent>
+                <DialogTitle>Dialog 1</DialogTitle>
+              </DialogContent>
+            </DialogOverlay>
+          </DialogPortal>
+        </DialogRoot>,
+      );
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.body.style.paddingRight).toBe("16px");
+
+      // Mount Dialog 2 simultaneously
+      const { unmount: unmountD2 } = render(
+        <DialogRoot defaultOpen={true}>
+          <DialogPortal>
+            <DialogOverlay>
+              <DialogContent>
+                <DialogTitle>Dialog 2</DialogTitle>
+              </DialogContent>
+            </DialogOverlay>
+          </DialogPortal>
+        </DialogRoot>,
+      );
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      // Still locked, padding not doubled
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.body.style.paddingRight).toBe("16px");
+
+      // Unmount Dialog 1: Dialog 2 is still open, so lock must NOT be prematurely released
+      unmountD1();
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.body.style.paddingRight).toBe("16px");
+
+      // Unmount Dialog 2: now all dialogs closed, lock must be released
+      unmountD2();
+      expect(document.body.style.overflow).toBe("");
+      expect(document.body.style.paddingRight).toBe("");
+    });
   });
 });

@@ -48,6 +48,25 @@ import {
   Tabs,
   Pagination,
   Combobox,
+  DropdownMenu,
+  ContextMenu,
+  Drawer,
+  // Wave 4
+  Breadcrumbs,
+  Link,
+  DateRangePicker,
+  TimePicker,
+  // Wave 5
+  MultiSelect,
+  DataGrid,
+  FileUpload,
+  Slider,
+  RangeSlider,
+  // Wave 6
+  TreeView,
+  Stepper,
+  Carousel,
+  CarouselSlide,
 } from "@chellaa/react";
 
 console.log("[Benchmark SSR] Testing Server-Side Rendering across all 18 library components...");
@@ -243,6 +262,108 @@ function App() {
           placeholder: "Search in SSR...",
           options: [{ value: "us", label: "United States" }],
         }),
+
+        // 22. DropdownMenu (Wave 3)
+        React.createElement(
+          DropdownMenu,
+          null,
+          React.createElement(DropdownMenu.Trigger, null, "Actions Menu"),
+        ),
+
+        // 23. ContextMenu (Wave 3)
+        React.createElement(
+          ContextMenu,
+          null,
+          React.createElement(ContextMenu.Trigger, null, "Right click zone"),
+        ),
+
+        // 24. Drawer (Wave 3)
+        React.createElement(
+          Drawer,
+          null,
+          React.createElement(Drawer.Trigger, null, "Open Drawer Sheet"),
+        ),
+
+        // 25. Breadcrumbs (Wave 4)
+        React.createElement(
+          Breadcrumbs,
+          { "aria-label": "SSR Breadcrumbs" },
+          React.createElement(
+            Breadcrumbs.List,
+            null,
+            React.createElement(
+              Breadcrumbs.Item,
+              null,
+              React.createElement(Breadcrumbs.Link, { href: "/" }, "Home"),
+            ),
+            React.createElement(Breadcrumbs.Separator, null),
+            React.createElement(
+              Breadcrumbs.Item,
+              null,
+              React.createElement(Breadcrumbs.Page, null, "Settings"),
+            ),
+          ),
+        ),
+
+        // 26. Link (Wave 4)
+        React.createElement(
+          Link,
+          { href: "https://example.com", isExternal: true },
+          "SSR Link",
+        ),
+
+        // 27. DateRangePicker (Wave 4)
+        React.createElement(DateRangePicker, {
+          placeholder: "Select SSR date range...",
+        }),
+
+        // 28. TimePicker (Wave 4)
+        React.createElement(TimePicker, {
+          placeholder: "Select SSR time...",
+        }),
+
+        // 29. MultiSelect (Wave 5)
+        React.createElement(MultiSelect, {
+          options: [{ label: "SSR Option", value: "ssr" }],
+          defaultValue: ["ssr"],
+        }),
+
+        // 30. DataGrid (Wave 5)
+        React.createElement(DataGrid, {
+          columns: [{ key: "col", header: "Header" }],
+          data: [{ col: "Value" }],
+          getRowId: (_r, i) => i,
+        }),
+
+        // 31. FileUpload (Wave 5)
+        React.createElement(FileUpload, {
+          dropzoneText: "SSR File Dropzone",
+        }),
+
+        // 32. Slider & RangeSlider (Wave 5)
+        React.createElement(Slider, {
+          defaultValue: 40,
+        }),
+        React.createElement(RangeSlider, {
+          defaultValue: [20, 80],
+        }),
+
+        // 33. TreeView (Wave 6)
+        React.createElement(TreeView, {
+          nodes: [{ id: "root", label: "SSR Node", children: [{ id: "c1", label: "Child" }] }],
+          defaultExpandedIds: ["root"],
+        }),
+
+        // 34. Stepper (Wave 6)
+        React.createElement(Stepper, {
+          steps: [{ id: "s1", label: "Step 1" }, { id: "s2", label: "Step 2" }],
+          defaultActiveStep: 0,
+        }),
+
+        // 35. Carousel (Wave 6)
+        React.createElement(Carousel, {
+          slides: [React.createElement("div", { key: "1" }, "Slide 1")],
+        }),
       ),
     ),
   );
@@ -304,6 +425,28 @@ const mandatoryAssertions = [
   { name: "Combobox class (cl-combobox)", check: html.includes("cl-combobox") },
   { name: "Combobox control class (cl-combobox__control)", check: html.includes("cl-combobox__control") },
   { name: "Combobox input class (cl-combobox__input)", check: html.includes("cl-combobox__input") },
+  // Wave 3
+  { name: "DropdownMenu Trigger text", check: html.includes("Actions Menu") },
+  { name: "ContextMenu Trigger text", check: html.includes("Right click zone") },
+  { name: "Drawer Trigger text", check: html.includes("Open Drawer Sheet") },
+  // Wave 4: Navigation, Form Validation & Date Extensions
+  { name: "Breadcrumbs class (cl-breadcrumb)", check: html.includes("cl-breadcrumb") },
+  { name: "Breadcrumb list class (cl-breadcrumb__list)", check: html.includes("cl-breadcrumb__list") },
+  { name: "Breadcrumb item class (cl-breadcrumb__item)", check: html.includes("cl-breadcrumb__item") },
+  { name: "Breadcrumb page class (cl-breadcrumb__page)", check: html.includes("cl-breadcrumb__page") },
+  { name: "Link class (cl-link)", check: html.includes("cl-link") },
+  { name: "DateRangePicker class (cl-daterangepicker)", check: html.includes("cl-daterangepicker") },
+  { name: "TimePicker class (cl-timepicker)", check: html.includes("cl-timepicker") },
+  // Wave 5: Data Components & Advanced Form Controls
+  { name: "MultiSelect class (cl-multiselect)", check: html.includes("cl-multiselect") },
+  { name: "DataGrid class (cl-datagrid)", check: html.includes("cl-datagrid") },
+  { name: "FileUpload class (cl-fileupload)", check: html.includes("cl-fileupload") },
+  { name: "Slider class (cl-slider)", check: html.includes("cl-slider") },
+  { name: "RangeSlider class (cl-range-slider)", check: html.includes("cl-range-slider") },
+  // Wave 6: Hierarchical, Workflow & Rotator Controls
+  { name: "TreeView class (cl-treeview)", check: html.includes("cl-treeview") },
+  { name: "Stepper class (cl-stepper)", check: html.includes("cl-stepper") },
+  { name: "Carousel class (cl-carousel)", check: html.includes("cl-carousel") },
 ];
 
 for (const assertion of mandatoryAssertions) {
@@ -313,5 +456,6 @@ for (const assertion of mandatoryAssertions) {
 }
 
 console.log(
-  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
+  `[Benchmark SSR] PASSED: SSR renderToString rendered all components including Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, Combobox, DropdownMenu, ContextMenu, Drawer, and Wave 4 (${mandatoryAssertions.length} static class assertions verified) with zero errors and zero window access.`,
 );
+

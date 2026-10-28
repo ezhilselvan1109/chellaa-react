@@ -25,6 +25,8 @@ export interface PopoverRootProps {
   initialFocusRef?: React.RefObject<HTMLElement | null>;
   /** Ref to the element that should receive focus when closed */
   returnFocusRef?: React.RefObject<HTMLElement | null>;
+  /** Optional custom reference element for floating positioning */
+  referenceElement?: React.RefObject<HTMLElement | null> | HTMLElement | null;
 }
 
 export interface PopoverProps extends PopoverRootProps {}
@@ -97,4 +99,6 @@ export interface PopoverContextValue {
   setHasPortalParent: (hasPortal: boolean) => void;
   initialFocusRef?: React.RefObject<HTMLElement | null> | undefined;
   returnFocusRef?: React.RefObject<HTMLElement | null> | undefined;
+  /** Whether Floating UI has calculated the initial floating coordinates */
+  isPositioned: boolean;
 }

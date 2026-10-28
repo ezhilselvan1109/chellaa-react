@@ -46,7 +46,9 @@ describe("Tooltip Component", () => {
 
     it("returns null gracefully if child is not a valid React element", () => {
       // @ts-expect-error testing invalid children runtime resilience
-      const { container } = render(<Tooltip content="Info">invalid child</Tooltip>);
+      const { container } = render(
+        <Tooltip content="Info">invalid child</Tooltip>,
+      );
       expect(container.firstChild).toBeNull();
     });
   });
@@ -207,7 +209,11 @@ describe("Tooltip Component", () => {
     it("honors controlled isOpen={true} prop regardless of mouse events", () => {
       const handleOpenChange = vi.fn();
       render(
-        <Tooltip content="Controlled text" isOpen={true} onOpenChange={handleOpenChange}>
+        <Tooltip
+          content="Controlled text"
+          isOpen={true}
+          onOpenChange={handleOpenChange}
+        >
           <button type="button">Controlled Trigger</button>
         </Tooltip>,
       );
@@ -218,12 +224,18 @@ describe("Tooltip Component", () => {
     it("honors controlled isOpen={false} prop when trigger is focused", () => {
       const handleOpenChange = vi.fn();
       render(
-        <Tooltip content="Controlled text" isOpen={false} onOpenChange={handleOpenChange}>
+        <Tooltip
+          content="Controlled text"
+          isOpen={false}
+          onOpenChange={handleOpenChange}
+        >
           <button type="button">Controlled Trigger</button>
         </Tooltip>,
       );
 
-      const trigger = screen.getByRole("button", { name: "Controlled Trigger" });
+      const trigger = screen.getByRole("button", {
+        name: "Controlled Trigger",
+      });
       fireEvent.focus(trigger);
 
       expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
@@ -278,7 +290,9 @@ describe("Tooltip Component", () => {
       const tooltip = screen.getByRole("tooltip");
       expect(tooltip).toHaveTextContent("Save Document");
       expect(tooltip).toHaveTextContent("Ctrl+S");
-      expect(tooltip.querySelector(".cl-tooltip__shortcut")).toBeInTheDocument();
+      expect(
+        tooltip.querySelector(".cl-tooltip__shortcut"),
+      ).toBeInTheDocument();
     });
 
     it("renders decorative arrow by default and allows omitting with hasArrow={false}", () => {
@@ -296,7 +310,9 @@ describe("Tooltip Component", () => {
         </Tooltip>,
       );
 
-      expect(document.querySelector(".cl-tooltip__arrow")).not.toBeInTheDocument();
+      expect(
+        document.querySelector(".cl-tooltip__arrow"),
+      ).not.toBeInTheDocument();
     });
 
     it("applies placement and custom className / style attributes", () => {
@@ -364,6 +380,56 @@ describe("Tooltip Component", () => {
 
       const results = await axe(container);
       expect(results).toHaveNoViolations();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wave 1 Remediation: Initial-Position Flash Prevention
+  // ---------------------------------------------------------------------------
+  describe("Wave 1 Remediation: Initial-Position Flash Prevention", () => {
+    it("has :not([data-positioned='true']) flash prevention rule in stylesheet", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const cssPath = path.resolve(__dirname, "Tooltip.styles.css");
+      const cssContent = fs.readFileSync(cssPath, "utf-8");
+
+      expect(cssContent).toMatch(
+        /\.cl-tooltip:not\(\[data-positioned="true"\]\)\s*\{/,
+      );
+      expect(cssContent).toMatch(/pointer-events:\s*none;/);
+    });
+
+    it("renders with data-positioned='true' attribute when tooltip position is resolved", async () => {
+      const { waitFor } = await import("@testing-library/react");
+      render(
+        <Tooltip content="Positioned Hint" defaultOpen>
+          <button type="button">Anchor</button>
+        </Tooltip>,
+      );
+
+      const tooltip = screen.getByRole("tooltip");
+      expect(tooltip).toBeInTheDocument();
+      await waitFor(() => {
+        expect(tooltip).toHaveAttribute("data-positioned", "true");
+      });
+    });
+
+    it("attaches data-positioned='true' when triggered via keyboard focus", async () => {
+      const { waitFor } = await import("@testing-library/react");
+      render(
+        <Tooltip content="Focus Hint">
+          <button type="button">Focus Target</button>
+        </Tooltip>,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Focus Target" });
+      fireEvent.focus(trigger);
+
+      const tooltip = screen.getByRole("tooltip");
+      expect(tooltip).toBeInTheDocument();
+      await waitFor(() => {
+        expect(tooltip).toHaveAttribute("data-positioned", "true");
+      });
     });
   });
 });

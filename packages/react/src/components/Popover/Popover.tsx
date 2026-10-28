@@ -40,15 +40,22 @@ import type {
 
 interface PopoverInternalContextValue extends PopoverContextValue {
   floatingContext: FloatingContext;
-  getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
-  getFloatingProps: (userProps?: React.HTMLProps<HTMLElement>) => Record<string, unknown>;
+  getReferenceProps: (
+    userProps?: React.HTMLProps<Element>,
+  ) => Record<string, unknown>;
+  getFloatingProps: (
+    userProps?: React.HTMLProps<HTMLElement>,
+  ) => Record<string, unknown>;
   refs: ExtendedRefs<Element>;
   floatingStyles: React.CSSProperties;
   middlewareData: MiddlewareData;
   arrowRef: React.RefObject<HTMLDivElement | null>;
+  hasCustomReference?: boolean;
 }
 
-const PopoverContext = React.createContext<PopoverInternalContextValue | null>(null);
+const PopoverContext = React.createContext<PopoverInternalContextValue | null>(
+  null,
+);
 
 export function usePopoverContext(): PopoverInternalContextValue {
   const context = React.useContext(PopoverContext);
@@ -75,6 +82,7 @@ export function PopoverRoot({
   closeOnEsc = true,
   initialFocusRef,
   returnFocusRef,
+  referenceElement,
 }: PopoverRootProps) {
   const [isOpen, setIsOpen] = useControllableState<boolean>({
     value: controlledOpen,
@@ -92,6 +100,7 @@ export function PopoverRoot({
     placement: actualPlacement,
     middlewareData,
     context: floatingContext,
+    isPositioned,
   } = useFloating({
     placement,
     open: isOpen,
@@ -104,6 +113,17 @@ export function PopoverRoot({
       arrow({ element: arrowRef }),
     ],
   });
+
+  // Attach custom reference element if provided
+  React.useEffect(() => {
+    if (referenceElement) {
+      const node =
+        "current" in referenceElement ? referenceElement.current : referenceElement;
+      if (node) {
+        refs.setReference(node);
+      }
+    }
+  }, [referenceElement, refs]);
 
   const click = useClick(floatingContext);
   const dismiss = useDismiss(floatingContext, {
@@ -127,7 +147,10 @@ export function PopoverRoot({
 
   const open = React.useCallback(() => setIsOpen(true), [setIsOpen]);
   const close = React.useCallback(() => setIsOpen(false), [setIsOpen]);
-  const toggle = React.useCallback(() => setIsOpen((prev) => !prev), [setIsOpen]);
+  const toggle = React.useCallback(
+    () => setIsOpen((prev) => !prev),
+    [setIsOpen],
+  );
 
   const contextValue: PopoverInternalContextValue = {
     isOpen,
@@ -152,6 +175,8 @@ export function PopoverRoot({
     floatingStyles,
     middlewareData,
     arrowRef,
+    isPositioned,
+    hasCustomReference: Boolean(referenceElement),
   };
 
   return (
@@ -166,36 +191,41 @@ PopoverRoot.displayName = "Popover.Root";
 /**
  * Popover.Trigger wraps the anchor element, binding click and aria attributes.
  */
-export const PopoverTrigger = React.forwardRef<HTMLElement, PopoverTriggerProps>(
-  function PopoverTrigger({ children, asChild = false }, ref) {
-    const { refs, getReferenceProps, isOpen, id } = usePopoverContext();
+export const PopoverTrigger = React.forwardRef<
+  HTMLElement,
+  PopoverTriggerProps
+>(function PopoverTrigger({ children, asChild = false }, ref) {
+  const { refs, getReferenceProps, isOpen, id, hasCustomReference } = usePopoverContext();
 
-    const childRef = React.isValidElement(children)
-      ? getElementRef(children)
-      : undefined;
-    const mergedRef = useMergeRefs(refs.setReference, childRef, ref);
+  const childRef = React.isValidElement(children)
+    ? getElementRef(children)
+    : undefined;
+  const mergedRef = useMergeRefs(
+    hasCustomReference ? null : refs.setReference,
+    childRef,
+    ref,
+  );
 
-    if (!React.isValidElement(children)) {
-      return null;
-    }
+  if (!React.isValidElement(children)) {
+    return null;
+  }
 
-    const childProps = children.props as Record<string, unknown>;
+  const childProps = children.props as Record<string, unknown>;
 
-    const referenceProps = getReferenceProps({
-      ...childProps,
-      ref: mergedRef,
-      "aria-haspopup": "dialog",
-      "aria-expanded": isOpen,
-      "aria-controls": isOpen ? id : undefined,
-    });
+  const referenceProps = getReferenceProps({
+    ...childProps,
+    ref: mergedRef,
+    "aria-haspopup": "dialog",
+    "aria-expanded": isOpen,
+    "aria-controls": isOpen ? id : undefined,
+  });
 
-    if (asChild) {
-      return <Slot {...referenceProps}>{children}</Slot>;
-    }
+  if (asChild) {
+    return <Slot {...referenceProps}>{children}</Slot>;
+  }
 
-    return React.cloneElement(children, referenceProps);
-  },
-);
+  return React.cloneElement(children, referenceProps);
+});
 
 PopoverTrigger.displayName = "Popover.Trigger";
 
@@ -222,78 +252,75 @@ PopoverPortal.displayName = "Popover.Portal";
 /**
  * Popover.Content renders the floating dialog container with focus trapping and styling.
  */
-export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
-  function PopoverContent(
-    {
-      children,
-      hasArrow = true,
-      className,
-      style,
-      ...restProps
-    },
-    ref,
-  ) {
-    const {
-      isOpen,
-      id,
-      titleId,
-      hasTitle,
-      trapFocus,
-      initialFocusRef,
-      returnFocusRef,
-      floatingContext,
-      getFloatingProps,
-      refs,
-      floatingStyles,
-      actualPlacement,
-      hasPortalParent,
-    } = usePopoverContext();
+export const PopoverContent = React.forwardRef<
+  HTMLDivElement,
+  PopoverContentProps
+>(function PopoverContent(
+  { children, hasArrow = true, className, style, ...restProps },
+  ref,
+) {
+  const {
+    isOpen,
+    id,
+    titleId,
+    hasTitle,
+    trapFocus,
+    initialFocusRef,
+    returnFocusRef,
+    floatingContext,
+    getFloatingProps,
+    refs,
+    floatingStyles,
+    actualPlacement,
+    hasPortalParent,
+    isPositioned,
+  } = usePopoverContext();
 
-    const mergedRef = useMergeRefs(refs.setFloating, ref);
+  const mergedRef = useMergeRefs(refs.setFloating, ref);
 
-    if (!isOpen) {
-      return null;
-    }
+  if (!isOpen) {
+    return null;
+  }
 
-    const contentNode = (
-      <FloatingFocusManager
-        context={floatingContext}
-        modal={trapFocus}
-        disabled={!trapFocus}
-        initialFocus={initialFocusRef || undefined}
-        returnFocus={returnFocusRef || true}
+  const contentNode = (
+    <FloatingFocusManager
+      context={floatingContext}
+      modal={trapFocus}
+      disabled={!trapFocus}
+      initialFocus={initialFocusRef || undefined}
+      returnFocus={returnFocusRef || true}
+    >
+      <div
+        {...getFloatingProps({
+          id,
+          ref: mergedRef,
+          role: "dialog",
+          "aria-modal": trapFocus ? "true" : undefined,
+          "aria-labelledby": hasTitle ? titleId : undefined,
+          className: classNames("cl-popover", className),
+          style: {
+            ...floatingStyles,
+            ...style,
+          },
+          tabIndex: -1,
+          ...restProps,
+        })}
+        data-state={isOpen ? "open" : "closed"}
+        data-placement={actualPlacement}
+        data-positioned={isPositioned ? "true" : undefined}
       >
-        <div
-          {...getFloatingProps({
-            id,
-            ref: mergedRef,
-            role: "dialog",
-            "aria-modal": trapFocus ? "true" : undefined,
-            "aria-labelledby": hasTitle ? titleId : undefined,
-            className: classNames("cl-popover", className),
-            style: {
-              ...floatingStyles,
-              ...style,
-            },
-            tabIndex: -1,
-            ...restProps,
-          })}
-          data-state={isOpen ? "open" : "closed"}
-          data-placement={actualPlacement}
-        >
-          {hasArrow && <PopoverArrow />}
-          {children}
-        </div>
-      </FloatingFocusManager>
-    );
+        {hasArrow && <PopoverArrow />}
+        {children}
+      </div>
+    </FloatingFocusManager>
+  );
 
-    if (hasPortalParent) {
-      return contentNode;
-    }
+  if (hasPortalParent) {
+    return contentNode;
+  }
 
-    return <Portal>{contentNode}</Portal>;
-  },
-);
+  return <Portal>{contentNode}</Portal>;
+});
 
 PopoverContent.displayName = "Popover.Content";
 
@@ -332,82 +359,85 @@ PopoverArrow.displayName = "Popover.Arrow";
 /**
  * Popover.Close renders a dismiss button or decorates a child button via asChild.
  */
-export const PopoverClose = React.forwardRef<HTMLButtonElement, PopoverCloseProps>(
-  function PopoverClose(
-    { children, asChild = false, onClick, className, ...restProps },
-    ref,
-  ) {
-    const { close } = usePopoverContext();
-    const handleClick = composeEventHandlers(onClick, () => close());
+export const PopoverClose = React.forwardRef<
+  HTMLButtonElement,
+  PopoverCloseProps
+>(function PopoverClose(
+  { children, asChild = false, onClick, className, ...restProps },
+  ref,
+) {
+  const { close } = usePopoverContext();
+  const handleClick = composeEventHandlers(onClick, () => close());
 
-    if (asChild && React.isValidElement(children)) {
-      return (
-        <Slot ref={ref} onClick={handleClick} {...restProps}>
-          {children}
-        </Slot>
-      );
-    }
-
+  if (asChild && React.isValidElement(children)) {
     return (
-      <button
-        type="button"
-        ref={ref}
-        onClick={handleClick}
-        aria-label="Close popover"
-        className={classNames("cl-popover__close", className)}
-        {...restProps}
-      >
-        {children || "✕"}
-      </button>
+      <Slot ref={ref} onClick={handleClick} {...restProps}>
+        {children}
+      </Slot>
     );
-  },
-);
+  }
+
+  return (
+    <button
+      type="button"
+      ref={ref}
+      onClick={handleClick}
+      aria-label="Close popover"
+      className={classNames("cl-popover__close", className)}
+      {...restProps}
+    >
+      {children || "✕"}
+    </button>
+  );
+});
 
 PopoverClose.displayName = "Popover.Close";
 
 /**
  * Popover.Header provides the top bar of the popover.
  */
-export const PopoverHeader = React.forwardRef<HTMLDivElement, PopoverHeaderProps>(
-  function PopoverHeader({ children, className, ...restProps }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={classNames("cl-popover__header", className)}
-        {...restProps}
-      >
-        {children}
-      </div>
-    );
-  },
-);
+export const PopoverHeader = React.forwardRef<
+  HTMLDivElement,
+  PopoverHeaderProps
+>(function PopoverHeader({ children, className, ...restProps }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={classNames("cl-popover__header", className)}
+      {...restProps}
+    >
+      {children}
+    </div>
+  );
+});
 
 PopoverHeader.displayName = "Popover.Header";
 
 /**
  * Popover.Title provides the dialog title and links via aria-labelledby.
  */
-export const PopoverTitle = React.forwardRef<HTMLHeadingElement, PopoverTitleProps>(
-  function PopoverTitle({ children, className, ...restProps }, ref) {
-    const { titleId, setHasTitle } = usePopoverContext();
+export const PopoverTitle = React.forwardRef<
+  HTMLHeadingElement,
+  PopoverTitleProps
+>(function PopoverTitle({ children, className, ...restProps }, ref) {
+  const { titleId, setHasTitle } = usePopoverContext();
 
-    React.useEffect(() => {
-      setHasTitle(true);
-      return () => setHasTitle(false);
-    }, [setHasTitle]);
+  React.useEffect(() => {
+    setHasTitle(true);
+    return () => setHasTitle(false);
+  }, [setHasTitle]);
 
-    return (
-      <h3
-        ref={ref}
-        id={titleId}
-        className={classNames("cl-popover__title", className)}
-        {...restProps}
-      >
-        {children}
-      </h3>
-    );
-  },
-);
+  return (
+    <h3
+      ref={ref}
+      id={titleId}
+      className={classNames("cl-popover__title", className)}
+      {...restProps}
+    >
+      {children}
+    </h3>
+  );
+});
 
 PopoverTitle.displayName = "Popover.Title";
 
@@ -433,19 +463,20 @@ PopoverBody.displayName = "Popover.Body";
 /**
  * Popover.Footer provides the action footer of the popover.
  */
-export const PopoverFooter = React.forwardRef<HTMLDivElement, PopoverFooterProps>(
-  function PopoverFooter({ children, className, ...restProps }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={classNames("cl-popover__footer", className)}
-        {...restProps}
-      >
-        {children}
-      </div>
-    );
-  },
-);
+export const PopoverFooter = React.forwardRef<
+  HTMLDivElement,
+  PopoverFooterProps
+>(function PopoverFooter({ children, className, ...restProps }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={classNames("cl-popover__footer", className)}
+      {...restProps}
+    >
+      {children}
+    </div>
+  );
+});
 
 PopoverFooter.displayName = "Popover.Footer";
 

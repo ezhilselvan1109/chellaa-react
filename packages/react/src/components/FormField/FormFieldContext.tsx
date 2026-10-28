@@ -7,6 +7,10 @@ export interface FormFieldContextValue {
   disabled?: boolean | undefined;
   readOnly?: boolean | undefined;
   error?: boolean | undefined;
+  errorMessage?: string | undefined;
+  isValidating?: boolean | undefined;
+  isTouched?: boolean | undefined;
+  isDirty?: boolean | undefined;
   labelId: string;
   helperTextId: string;
   errorMessageId: string;

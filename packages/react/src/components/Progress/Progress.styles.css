@@ -1,0 +1,232 @@
+@layer cl-components {
+  /* =========================================================================
+     Progress Component Styles
+     ========================================================================= */
+
+  /* Linear Variant */
+  .cl-progress--linear {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .cl-progress__track {
+    position: relative;
+    width: 100%;
+    background-color: var(--cl-color-surface-hover, #e2e8f0);
+    overflow: hidden;
+    border-radius: var(--cl-radius-full, 9999px);
+    flex: 1;
+  }
+
+  .cl-progress__bar {
+    height: 100%;
+    border-radius: inherit;
+    transition: width 0.3s ease;
+  }
+
+  /* Linear Sizes */
+  .cl-progress--linear.cl-progress--xs .cl-progress__track {
+    height: 4px;
+  }
+
+  .cl-progress--linear.cl-progress--sm .cl-progress__track {
+    height: 8px;
+  }
+
+  .cl-progress--linear.cl-progress--md .cl-progress__track {
+    height: 12px;
+  }
+
+  .cl-progress--linear.cl-progress--lg .cl-progress__track {
+    height: 16px;
+  }
+
+  /* Color Schemes */
+  .cl-progress--primary .cl-progress__bar,
+  .cl-progress--primary .cl-progress__circle-head {
+    background-color: var(--cl-color-primary-base, #4f46e5);
+    stroke: var(--cl-color-primary-base, #4f46e5);
+  }
+
+  .cl-progress--success .cl-progress__bar,
+  .cl-progress--success .cl-progress__circle-head {
+    background-color: var(--cl-color-success-base, #16a34a);
+    stroke: var(--cl-color-success-base, #16a34a);
+  }
+
+  .cl-progress--warning .cl-progress__bar,
+  .cl-progress--warning .cl-progress__circle-head {
+    background-color: var(--cl-color-warning-base, #ca8a04);
+    stroke: var(--cl-color-warning-base, #ca8a04);
+  }
+
+  .cl-progress--danger .cl-progress__bar,
+  .cl-progress--danger .cl-progress__circle-head {
+    background-color: var(--cl-color-danger-base, #dc2626);
+    stroke: var(--cl-color-danger-base, #dc2626);
+  }
+
+  /* Stripes */
+  .cl-progress__bar--striped {
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 1rem 1rem;
+  }
+
+  .cl-progress__bar--animated {
+    animation: cl-progress-stripes 1s linear infinite;
+  }
+
+  @keyframes cl-progress-stripes {
+    from {
+      background-position: 1rem 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+
+  /* Linear Indeterminate */
+  .cl-progress__bar--indeterminate {
+    width: 100% !important;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    transform-origin: left;
+    animation: cl-progress-linear-indeterminate 1.8s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  }
+
+  @keyframes cl-progress-linear-indeterminate {
+    0% {
+      left: -35%;
+      right: 100%;
+    }
+    60% {
+      left: 100%;
+      right: -90%;
+    }
+    100% {
+      left: 100%;
+      right: -90%;
+    }
+  }
+
+  /* Circular Variant */
+  .cl-progress--circular {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .cl-progress__svg {
+    transform: rotate(-90deg);
+  }
+
+  .cl-progress__circle-track {
+    stroke: var(--cl-color-surface-hover, #e2e8f0);
+    fill: none;
+  }
+
+  .cl-progress__circle-head {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+  }
+
+  /* Circular Sizes */
+  .cl-progress--circular.cl-progress--xs {
+    width: 24px;
+    height: 24px;
+  }
+
+  .cl-progress--circular.cl-progress--sm {
+    width: 36px;
+    height: 36px;
+  }
+
+  .cl-progress--circular.cl-progress--md {
+    width: 48px;
+    height: 48px;
+  }
+
+  .cl-progress--circular.cl-progress--lg {
+    width: 64px;
+    height: 64px;
+  }
+
+  /* Circular Indeterminate */
+  .cl-progress--circular.cl-progress--indeterminate .cl-progress__svg {
+    animation: cl-progress-circular-rotate 1.4s linear infinite;
+  }
+
+  .cl-progress--circular.cl-progress--indeterminate .cl-progress__circle-head {
+    animation: cl-progress-circular-dash 1.4s ease-in-out infinite;
+  }
+
+  @keyframes cl-progress-circular-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes cl-progress-circular-dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+    }
+  }
+
+  .cl-progress__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--cl-color-text-primary, #1e293b);
+    min-width: 3ch;
+    text-align: right;
+  }
+
+  .cl-progress__circular-label {
+    position: absolute;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cl-color-text-primary, #1e293b);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-progress__bar,
+    .cl-progress__circle-head {
+      transition: none !important;
+    }
+
+    .cl-progress__bar--animated,
+    .cl-progress__bar--indeterminate,
+    .cl-progress--circular.cl-progress--indeterminate .cl-progress__svg,
+    .cl-progress--circular.cl-progress--indeterminate .cl-progress__circle-head {
+      animation: none !important;
+    }
+  }
+}

@@ -6,7 +6,12 @@
     z-index: var(--cl-z-tooltip, 1400);
     max-width: var(--cl-size-tooltip-max, 320px);
     padding: var(--cl-space-1, 4px) var(--cl-space-2, 8px);
-    font-family: var(--cl-font-family-sans, system-ui, -apple-system, sans-serif);
+    font-family: var(
+      --cl-font-family-sans,
+      system-ui,
+      -apple-system,
+      sans-serif
+    );
     font-size: var(--cl-font-size-xs, 12px);
     line-height: var(--cl-line-height-tight, 1.4);
     font-weight: var(--cl-font-weight-medium, 500);
@@ -14,14 +19,26 @@
     background-color: var(--cl-color-bg-inverse, #0f172a);
     border: 1px solid var(--cl-color-border-subtle, rgba(255, 255, 255, 0.1));
     border-radius: var(--cl-radius-sm, 4px);
-    box-shadow: var(--cl-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1));
+    box-shadow: var(
+      --cl-shadow-md,
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1)
+    );
     pointer-events: auto;
     user-select: none;
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
-    transition: opacity var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
-                transform var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+    transition:
+      opacity var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+      transform var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .cl-tooltip:not([data-positioned="true"]) {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .cl-tooltip[data-state="closed"] {

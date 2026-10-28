@@ -7,15 +7,34 @@
     max-width: var(--cl-size-popover-max, 400px);
     width: max-content;
     box-sizing: border-box;
-    font-family: var(--cl-font-family-sans, system-ui, -apple-system, sans-serif);
+    font-family: var(
+      --cl-font-family-sans,
+      system-ui,
+      -apple-system,
+      sans-serif
+    );
     background-color: var(--cl-popover-bg, var(--cl-color-bg-elev, #ffffff));
     color: var(--cl-color-fg-primary, #0f172a);
-    border: 1px solid var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
+    border: 1px solid
+      var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
     border-radius: var(--cl-radius-lg, 8px);
-    box-shadow: var(--cl-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1));
+    box-shadow: var(
+      --cl-shadow-lg,
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1)
+    );
     outline: none;
-    transition: opacity var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
-                transform var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+    transition:
+      opacity var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+      transform var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .cl-popover:not([data-positioned="true"]) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
   }
 
   .cl-popover[data-state="closed"] {
@@ -24,9 +43,10 @@
     pointer-events: none;
   }
 
-  .cl-popover[data-state="open"] {
+  .cl-popover[data-state="open"][data-positioned="true"] {
     opacity: 1;
     transform: scale(1);
+    visibility: visible;
   }
 
   .cl-popover__header {
@@ -34,7 +54,8 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--cl-space-3, 12px) var(--cl-space-4, 16px);
-    border-bottom: 1px solid var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
+    border-bottom: 1px solid
+      var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
   }
 
   .cl-popover__title {
@@ -59,8 +80,11 @@
     cursor: pointer;
     font-size: 14px;
     line-height: 1;
-    transition: background-color var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
-                color var(--cl-duration-fast, 150ms) var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
+    transition:
+      background-color var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+      color var(--cl-duration-fast, 150ms)
+        var(--cl-easing-standard, cubic-bezier(0.4, 0, 0.2, 1));
   }
 
   .cl-popover__close:hover {
@@ -82,7 +106,8 @@
     justify-content: flex-end;
     gap: var(--cl-space-2, 8px);
     padding: var(--cl-space-3, 12px) var(--cl-space-4, 16px);
-    border-top: 1px solid var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
+    border-top: 1px solid
+      var(--cl-popover-border, var(--cl-color-border-subtle, #e2e8f0));
   }
 
   .cl-popover__arrow {
@@ -122,13 +147,21 @@
   /* Dark Theme Adaptations */
   [data-theme="dark"] .cl-popover {
     background-color: var(--cl-popover-bg, var(--cl-color-bg-elev, #1e293b));
-    border-color: var(--cl-popover-border, var(--cl-color-border-subtle, #334155));
+    border-color: var(
+      --cl-popover-border,
+      var(--cl-color-border-subtle, #334155)
+    );
     color: var(--cl-color-fg-primary, #f8fafc);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.5),
+      0 4px 6px -4px rgba(0, 0, 0, 0.4);
   }
 
   [data-theme="dark"] .cl-popover__header {
-    border-bottom-color: var(--cl-popover-border, var(--cl-color-border-subtle, #334155));
+    border-bottom-color: var(
+      --cl-popover-border,
+      var(--cl-color-border-subtle, #334155)
+    );
   }
 
   [data-theme="dark"] .cl-popover__title {
@@ -145,7 +178,10 @@
   }
 
   [data-theme="dark"] .cl-popover__footer {
-    border-top-color: var(--cl-popover-border, var(--cl-color-border-subtle, #334155));
+    border-top-color: var(
+      --cl-popover-border,
+      var(--cl-color-border-subtle, #334155)
+    );
   }
 
   @media (max-width: 480px) {

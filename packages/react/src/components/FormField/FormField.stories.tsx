@@ -3,6 +3,7 @@ import { FormField } from "./FormField";
 import { FormLabel } from "./FormLabel";
 import { FormHelperText } from "./FormHelperText";
 import { FormErrorMessage } from "./FormErrorMessage";
+import { useFormValidation } from "./useFormValidation";
 import { Input } from "../Input";
 import { Textarea } from "../Textarea";
 import { Stack } from "../Stack";
@@ -127,3 +128,65 @@ export const WithTextarea = {
     </Box>
   ),
 };
+
+export const HookFormValidation = {
+  render: function HookFormValidationDemo() {
+    const form = useFormValidation({
+      initialValues: {
+        username: "",
+        email: "",
+      },
+      validators: {
+        username: (val) =>
+          val.trim().length >= 3
+            ? { valid: true }
+            : { valid: false, error: { message: "Username must be at least 3 characters." } },
+        email: (val) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
+            ? { valid: true }
+            : { valid: false, error: { message: "Please provide a valid email format." } },
+      },
+      onSubmit: (values) => {
+        alert("Form submitted successfully with: " + JSON.stringify(values));
+      },
+    });
+
+    return (
+      <Box sx={{ maxWidth: 460, p: 4 }}>
+        <form onSubmit={form.handleSubmit}>
+          <Stack spacing={4}>
+            <FormField {...form.getFieldProps("username")} required fullWidth>
+              <FormLabel>Username</FormLabel>
+              <Input placeholder="Enter username" {...form.getInputProps("username")} />
+              <FormHelperText>Your public display handle.</FormHelperText>
+              <FormErrorMessage />
+            </FormField>
+
+            <FormField {...form.getFieldProps("email")} required fullWidth>
+              <FormLabel>Email Address</FormLabel>
+              <Input type="email" placeholder="you@domain.com" {...form.getInputProps("email")} />
+              <FormErrorMessage />
+            </FormField>
+
+            <button
+              type="submit"
+              className="cl-button cl-button--primary cl-button--md"
+              style={{
+                background: "var(--cl-color-primary, #6366f1)",
+                color: "#ffffff",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                border: "none",
+                cursor: "pointer",
+                fontWeight: 500,
+              }}
+            >
+              Submit Form
+            </button>
+          </Stack>
+        </form>
+      </Box>
+    );
+  },
+};
+

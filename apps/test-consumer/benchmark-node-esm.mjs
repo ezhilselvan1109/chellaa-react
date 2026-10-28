@@ -127,9 +127,79 @@ import {
   ComboboxTag,
   ComboboxClear,
   useCombobox,
+  // Wave 3: DropdownMenu, ContextMenu, Drawer / Sheet
+  DropdownMenu,
+  DropdownMenuRoot,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  ContextMenu,
+  ContextMenuRoot,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  Drawer,
+  DrawerRoot,
+  DrawerTrigger,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  Sheet,
+  SheetRoot,
+  SheetTrigger,
+  SheetPortal,
+  SheetOverlay,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  SheetFooter,
+  SheetClose,
+  // Wave 4: Navigation, Form Validation & Date Extensions
+  Breadcrumbs,
+  Breadcrumb,
+  BreadcrumbsRoot,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  Link,
+  useFormValidation,
+  DateRangePicker,
+  TimePicker,
+  // Wave 5: Data Components & Advanced Form Controls
+  MultiSelect,
+  DataGrid,
+  FileUpload,
+  Slider,
+  RangeSlider,
+  // Wave 6
+  TreeView,
+  Stepper,
+  Carousel,
+  CarouselSlide,
 } from "@chellaa/react";
 
-console.log("[Benchmark Node ESM] Testing module resolution for all 18 library components...");
+console.log("[Benchmark Node ESM] Testing module resolution for all library components...");
 
 function assertComponent(name, comp) {
   if (typeof comp !== "object" && typeof comp !== "function") {
@@ -327,6 +397,95 @@ assertComponent("ComboboxTag", ComboboxTag);
 assertComponent("ComboboxClear", ComboboxClear);
 assertFunction("useCombobox", useCombobox);
 
+// 22. DropdownMenu (Wave 3)
+assertComponent("DropdownMenu", DropdownMenu);
+assertComponent("DropdownMenu.Trigger", DropdownMenuTrigger);
+assertComponent("DropdownMenu.Content", DropdownMenuContent);
+assertComponent("DropdownMenu.Item", DropdownMenuItem);
+assertComponent("DropdownMenu.CheckboxItem", DropdownMenuCheckboxItem);
+assertComponent("DropdownMenu.RadioGroup", DropdownMenuRadioGroup);
+assertComponent("DropdownMenu.RadioItem", DropdownMenuRadioItem);
+assertComponent("DropdownMenu.Separator", DropdownMenuSeparator);
+assertComponent("DropdownMenu.Label", DropdownMenuLabel);
+assertComponent("DropdownMenuRoot", DropdownMenuRoot);
+
+// 23. ContextMenu (Wave 3)
+assertComponent("ContextMenu", ContextMenu);
+assertComponent("ContextMenu.Trigger", ContextMenuTrigger);
+assertComponent("ContextMenu.Content", ContextMenuContent);
+assertComponent("ContextMenu.Item", ContextMenuItem);
+assertComponent("ContextMenu.CheckboxItem", ContextMenuCheckboxItem);
+assertComponent("ContextMenu.RadioGroup", ContextMenuRadioGroup);
+assertComponent("ContextMenu.RadioItem", ContextMenuRadioItem);
+assertComponent("ContextMenu.Separator", ContextMenuSeparator);
+assertComponent("ContextMenu.Label", ContextMenuLabel);
+assertComponent("ContextMenuRoot", ContextMenuRoot);
+
+// 24. Drawer / Sheet (Wave 3)
+assertComponent("Drawer", Drawer);
+assertComponent("Drawer.Trigger", DrawerTrigger);
+assertComponent("Drawer.Portal", DrawerPortal);
+assertComponent("Drawer.Overlay", DrawerOverlay);
+assertComponent("Drawer.Content", DrawerContent);
+assertComponent("Drawer.Header", DrawerHeader);
+assertComponent("Drawer.Title", DrawerTitle);
+assertComponent("Drawer.Description", DrawerDescription);
+assertComponent("Drawer.Body", DrawerBody);
+assertComponent("Drawer.Footer", DrawerFooter);
+assertComponent("Drawer.Close", DrawerClose);
+assertComponent("DrawerRoot", DrawerRoot);
+assertComponent("Sheet", Sheet);
+assertComponent("Sheet.Trigger", SheetTrigger);
+assertComponent("Sheet.Content", SheetContent);
+assertComponent("SheetRoot", SheetRoot);
+
+// 25. Breadcrumbs (Wave 4)
+assertComponent("Breadcrumbs", Breadcrumbs);
+assertComponent("Breadcrumb", Breadcrumb);
+assertComponent("Breadcrumb.List", BreadcrumbList);
+assertComponent("Breadcrumb.Item", BreadcrumbItem);
+assertComponent("Breadcrumb.Link", BreadcrumbLink);
+assertComponent("Breadcrumb.Page", BreadcrumbPage);
+assertComponent("Breadcrumb.Separator", BreadcrumbSeparator);
+assertComponent("Breadcrumb.Ellipsis", BreadcrumbEllipsis);
+assertComponent("BreadcrumbsRoot", BreadcrumbsRoot);
+
+// 26. Link (Wave 4)
+assertComponent("Link", Link);
+
+// 27. Form Validation (Wave 4)
+assertFunction("useFormValidation", useFormValidation);
+
+// 28. DateRangePicker (Wave 4)
+assertComponent("DateRangePicker", DateRangePicker);
+
+// 29. TimePicker (Wave 4)
+assertComponent("TimePicker", TimePicker);
+
+// 30. MultiSelect (Wave 5)
+assertComponent("MultiSelect", MultiSelect);
+
+// 31. DataGrid (Wave 5)
+assertComponent("DataGrid", DataGrid);
+
+// 32. FileUpload (Wave 5)
+assertComponent("FileUpload", FileUpload);
+
+// 33. Slider & RangeSlider (Wave 5)
+assertComponent("Slider", Slider);
+assertComponent("RangeSlider", RangeSlider);
+
+// 34. TreeView (Wave 6)
+assertComponent("TreeView", TreeView);
+
+// 35. Stepper (Wave 6)
+assertComponent("Stepper", Stepper);
+
+// 36. Carousel & CarouselSlide (Wave 6)
+assertComponent("Carousel", Carousel);
+assertComponent("CarouselSlide", CarouselSlide);
+
 console.log(
-  "[Benchmark Node ESM] PASSED: All library components, primitives, Tooltip, Popover, Alert, Snackbar, Avatar, Accordion, Tabs, Pagination, and Combobox imported cleanly in Node ESM.",
+  "[Benchmark Node ESM] PASSED: All library components including Wave 6 (TreeView, Stepper, Carousel) imported cleanly in Node ESM.",
 );
+

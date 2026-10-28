@@ -68,14 +68,16 @@ export const FormErrorMessage = React.forwardRef<
   const isError = formField?.error ?? false;
   const setHasErrorMessage = formField?.setHasErrorMessage;
 
+  const content = children ?? formField?.errorMessage;
+
   React.useEffect(() => {
-    if (isError || forceMount) {
+    if ((isError && content) || forceMount) {
       setHasErrorMessage?.(true);
       return () => setHasErrorMessage?.(false);
     }
-  }, [setHasErrorMessage, isError, forceMount]);
+  }, [setHasErrorMessage, isError, content, forceMount]);
 
-  if (!isError && !forceMount) {
+  if ((!isError || !content) && !forceMount) {
     return null;
   }
 
@@ -97,7 +99,7 @@ export const FormErrorMessage = React.forwardRef<
         sx={sx}
         {...rest}
       >
-        {children}
+        {content}
       </StyledErrorMessageRoot>
     );
   }
@@ -114,7 +116,7 @@ export const FormErrorMessage = React.forwardRef<
       sx={sx}
       {...rest}
     >
-      {children}
+      {content}
     </StyledErrorMessageRoot>
   );
 });

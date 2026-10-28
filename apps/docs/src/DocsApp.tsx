@@ -29,14 +29,31 @@ import { RadioDocPage, radioToc } from "./content/components/RadioDocPage";
 import { SwitchDocPage, switchToc } from "./content/components/SwitchDocPage";
 import { SelectDocPage, selectToc } from "./content/components/SelectDocPage";
 import { ComboboxDocPage, comboboxToc } from "./content/components/ComboboxDocPage";
+import { CalendarDocPage, calendarToc } from "./content/components/CalendarDocPage";
+import { DatePickerDocPage, datePickerToc } from "./content/components/DatePickerDocPage";
+import { DateRangePickerDocPage, dateRangePickerToc } from "./content/components/DateRangePickerDocPage";
+import { TimePickerDocPage, timePickerToc } from "./content/components/TimePickerDocPage";
+import { MultiSelectDocPage, multiSelectToc } from "./content/components/MultiSelectDocPage";
+import { DataGridDocPage, dataGridToc } from "./content/components/DataGridDocPage";
+import { FileUploadDocPage, fileUploadToc } from "./content/components/FileUploadDocPage";
+import { SliderDocPage, sliderToc } from "./content/components/SliderDocPage";
+import { RangeSliderDocPage, rangeSliderToc } from "./content/components/RangeSliderDocPage";
 
 // 3. Navigation
+import { BreadcrumbsDocPage, breadcrumbsToc } from "./content/components/BreadcrumbsDocPage";
+import { LinkDocPage, linkToc } from "./content/components/LinkDocPage";
 import { AccordionDocPage, accordionToc } from "./content/components/AccordionDocPage";
+import { StepperDocPage, stepperToc } from "./content/components/StepperDocPage";
 import { TabsDocPage, tabsToc } from "./content/components/TabsDocPage";
 import { PaginationDocPage, paginationToc } from "./content/components/PaginationDocPage";
+import { TreeViewDocPage, treeViewToc } from "./content/components/TreeViewDocPage";
+import { CarouselDocPage, carouselToc } from "./content/components/CarouselDocPage";
 
 // 4. Overlays
 import { DialogDocPage, dialogToc } from "./content/components/DialogDocPage";
+import { DrawerDocPage, drawerToc } from "./content/components/DrawerDocPage";
+import { DropdownMenuDocPage, dropdownMenuToc } from "./content/components/DropdownMenuDocPage";
+import { ContextMenuDocPage, contextMenuToc } from "./content/components/ContextMenuDocPage";
 import { PopoverDocPage, popoverToc } from "./content/components/PopoverDocPage";
 import { TooltipDocPage, tooltipToc } from "./content/components/TooltipDocPage";
 
@@ -44,6 +61,9 @@ import { TooltipDocPage, tooltipToc } from "./content/components/TooltipDocPage"
 import { AlertDocPage, alertToc } from "./content/components/AlertDocPage";
 import { SnackbarDocPage, snackbarToc } from "./content/components/SnackbarDocPage";
 import { TouchRippleDocPage, touchRippleToc } from "./content/components/TouchRippleDocPage";
+import { SpinnerDocPage, spinnerToc } from "./content/components/SpinnerDocPage";
+import { SkeletonDocPage, skeletonToc } from "./content/components/SkeletonDocPage";
+import { ProgressDocPage, progressToc } from "./content/components/ProgressDocPage";
 
 // 6. Data Display
 import { AvatarDocPage, avatarToc } from "./content/components/AvatarDocPage";
@@ -86,8 +106,19 @@ const titleMap: Record<string, string> = {
   "/components/switch": "Switch Component — Chellaa React",
   "/components/select": "Select Component — Chellaa React",
   "/components/combobox": "Combobox Component — Chellaa React",
+  "/components/multi-select": "MultiSelect Component — Chellaa React",
+  "/components/file-upload": "FileUpload Component — Chellaa React",
+  "/components/slider": "Slider Component — Chellaa React",
+  "/components/range-slider": "RangeSlider Component — Chellaa React",
+  "/components/calendar": "Calendar Component — Chellaa React",
+  "/components/date-picker": "DatePicker Component — Chellaa React",
+  "/components/date-range-picker": "DateRangePicker Component — Chellaa React",
+  "/components/time-picker": "TimePicker Component — Chellaa React",
   // Navigation
+  "/components/breadcrumbs": "Breadcrumbs Component — Chellaa React",
+  "/components/link": "Link Component — Chellaa React",
   "/components/accordion": "Accordion Component — Chellaa React",
+  "/components/stepper": "Stepper Component — Chellaa React",
   "/components/tabs": "Tabs Component — Chellaa React",
   "/components/pagination": "Pagination Component — Chellaa React",
   // Overlays
@@ -104,8 +135,12 @@ const titleMap: Record<string, string> = {
   "/components/avatar": "Avatar Component — Chellaa React",
   "/components/badge": "Badge Component — Chellaa React",
   "/components/card": "Card Component — Chellaa React",
+  "/components/carousel": "Carousel Component — Chellaa React",
+  "/components/data-grid": "DataGrid Component — Chellaa React",
   "/components/kbd": "Kbd Component — Chellaa React",
   "/components/table": "Table Component — Chellaa React",
+  "/components/tree-view": "TreeView Component — Chellaa React",
+  "/components/treeview": "TreeView Component — Chellaa React",
   "/components/typography": "Typography Component — Chellaa React",
   // Layouts
   "/components/box": "Box Component — Chellaa React",
@@ -219,10 +254,32 @@ export function DocsApp() {
         return { content: <SelectDocPage />, toc: selectToc };
       case "/components/combobox":
         return { content: <ComboboxDocPage />, toc: comboboxToc };
+      case "/components/multi-select":
+        return { content: <MultiSelectDocPage />, toc: multiSelectToc };
+      case "/components/file-upload":
+        return { content: <FileUploadDocPage />, toc: fileUploadToc };
+      case "/components/slider":
+        return { content: <SliderDocPage />, toc: sliderToc };
+      case "/components/range-slider":
+        return { content: <RangeSliderDocPage />, toc: rangeSliderToc };
+      case "/components/calendar":
+        return { content: <CalendarDocPage />, toc: calendarToc };
+      case "/components/date-picker":
+        return { content: <DatePickerDocPage />, toc: datePickerToc };
+      case "/components/date-range-picker":
+        return { content: <DateRangePickerDocPage />, toc: dateRangePickerToc };
+      case "/components/time-picker":
+        return { content: <TimePickerDocPage />, toc: timePickerToc };
 
       // 3. Navigation
+      case "/components/breadcrumbs":
+        return { content: <BreadcrumbsDocPage />, toc: breadcrumbsToc };
+      case "/components/link":
+        return { content: <LinkDocPage />, toc: linkToc };
       case "/components/accordion":
         return { content: <AccordionDocPage />, toc: accordionToc };
+      case "/components/stepper":
+        return { content: <StepperDocPage />, toc: stepperToc };
       case "/components/tabs":
         return { content: <TabsDocPage />, toc: tabsToc };
       case "/components/pagination":
@@ -232,6 +289,15 @@ export function DocsApp() {
       case "/components/dialog":
       case "/components/modal":
         return { content: <DialogDocPage />, toc: dialogToc };
+      case "/components/drawer":
+      case "/components/sheet":
+        return { content: <DrawerDocPage />, toc: drawerToc };
+      case "/components/dropdown-menu":
+      case "/components/dropdown":
+      case "/components/menu":
+        return { content: <DropdownMenuDocPage />, toc: dropdownMenuToc };
+      case "/components/context-menu":
+        return { content: <ContextMenuDocPage />, toc: contextMenuToc };
       case "/components/popover":
         return { content: <PopoverDocPage />, toc: popoverToc };
       case "/components/tooltip":
@@ -245,6 +311,12 @@ export function DocsApp() {
         return { content: <SnackbarDocPage />, toc: snackbarToc };
       case "/components/touch-ripple":
         return { content: <TouchRippleDocPage />, toc: touchRippleToc };
+      case "/components/spinner":
+        return { content: <SpinnerDocPage />, toc: spinnerToc };
+      case "/components/skeleton":
+        return { content: <SkeletonDocPage />, toc: skeletonToc };
+      case "/components/progress":
+        return { content: <ProgressDocPage />, toc: progressToc };
 
       // 6. Data Display
       case "/components/avatar":
@@ -253,10 +325,17 @@ export function DocsApp() {
         return { content: <BadgeDocPage />, toc: badgeToc };
       case "/components/card":
         return { content: <CardDocPage />, toc: cardToc };
+      case "/components/carousel":
+        return { content: <CarouselDocPage />, toc: carouselToc };
+      case "/components/data-grid":
+        return { content: <DataGridDocPage />, toc: dataGridToc };
       case "/components/kbd":
         return { content: <KbdDocPage />, toc: kbdToc };
       case "/components/table":
         return { content: <TableDocPage />, toc: tableToc };
+      case "/components/tree-view":
+      case "/components/treeview":
+        return { content: <TreeViewDocPage />, toc: treeViewToc };
       case "/components/typography":
         return { content: <TypographyDocPage />, toc: typographyToc };
 

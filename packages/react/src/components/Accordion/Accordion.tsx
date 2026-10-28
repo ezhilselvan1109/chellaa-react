@@ -14,8 +14,13 @@ import type {
   AccordionTriggerProps,
   AccordionContentProps,
   AccordionIconProps,
+  AccordionActionsProps,
+  AccordionExpandAllProps,
+  AccordionCollapseAllProps,
   AccordionVariant,
   AccordionType,
+  AccordionSize,
+  AccordionIndicatorPosition,
 } from "./Accordion.types";
 
 export const AccordionContext =
@@ -45,13 +50,15 @@ export const useAccordionItemContext = (): AccordionItemContextValue => {
 };
 
 /**
- * Accordion.Root provides expansion state management and keyboard navigation for accordion items.
+ * Accordion.Root provides expansion state management, variant theming, and keyboard navigation.
  */
 export const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
   function AccordionRoot(props, ref) {
     const {
       type = "single",
-      variant = "outline",
+      variant = "default",
+      size = "md",
+      indicatorPosition = "end",
       isDisabled = false,
       className,
       children,
@@ -106,6 +113,21 @@ export const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps
       return singleValue ? [singleValue] : [];
     }, [isMultiple, multipleValues, singleValue]);
 
+    // Item registry for expandAll / collapseAll operations
+    const registeredItemsRef = React.useRef<Map<string, { isDisabled: boolean }>>(
+      new Map(),
+    );
+
+    const registerItem = React.useCallback(
+      (itemVal: string, itemDisabled: boolean) => {
+        registeredItemsRef.current.set(itemVal, { isDisabled: itemDisabled });
+        return () => {
+          registeredItemsRef.current.delete(itemVal);
+        };
+      },
+      [],
+    );
+
     const toggleItem = React.useCallback(
       (itemValue: string) => {
         if (isMultiple) {
@@ -135,6 +157,30 @@ export const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps
       ],
     );
 
+    const expandAll = React.useCallback(() => {
+      const eligibleValues: string[] = [];
+      registeredItemsRef.current.forEach((info, val) => {
+        if (!info.isDisabled && !isDisabled) {
+          eligibleValues.push(val);
+        }
+      });
+
+      if (isMultiple) {
+        setMultipleValues(eligibleValues);
+      } else if (eligibleValues.length > 0) {
+        const firstVal = eligibleValues[0]!;
+        setSingleValue(firstVal);
+      }
+    }, [isDisabled, isMultiple, setMultipleValues, setSingleValue]);
+
+    const collapseAll = React.useCallback(() => {
+      if (isMultiple) {
+        setMultipleValues([]);
+      } else if (collapsible) {
+        setSingleValue("");
+      }
+    }, [isMultiple, collapsible, setMultipleValues, setSingleValue]);
+
     const internalRootRef = React.useRef<HTMLDivElement | null>(null);
     const mergedRef = useMergeRefs(ref, internalRootRef);
 
@@ -142,14 +188,44 @@ export const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps
       () => ({
         type: type as AccordionType,
         variant: variant as AccordionVariant,
+        size: size as AccordionSize,
+        indicatorPosition: indicatorPosition as AccordionIndicatorPosition,
         collapsible,
         isDisabled,
         expandedValues,
         toggleItem,
+        expandAll,
+        collapseAll,
+        registerItem,
         rootRef: internalRootRef,
       }),
-      [type, variant, collapsible, isDisabled, expandedValues, toggleItem],
+      [
+        type,
+        variant,
+        size,
+        indicatorPosition,
+        collapsible,
+        isDisabled,
+        expandedValues,
+        toggleItem,
+        expandAll,
+        collapseAll,
+        registerItem,
+      ],
     );
+
+    // Normalize variant class mapping for legacy and new naming conventions
+    const variantClass = `cl-accordion--${variant}`;
+    const legacyVariantClass =
+      variant === "default"
+        ? "cl-accordion--outline"
+        : variant === "outline"
+          ? "cl-accordion--default"
+          : variant === "borderless"
+            ? "cl-accordion--flush"
+            : variant === "flush"
+              ? "cl-accordion--borderless"
+              : undefined;
 
     return (
       <AccordionContext.Provider value={contextValue}>
@@ -157,7 +233,10 @@ export const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps
           ref={mergedRef}
           className={classNames(
             "cl-accordion",
-            `cl-accordion--${variant}`,
+            variantClass,
+            legacyVariantClass,
+            `cl-accordion--size-${size}`,
+            isDisabled && "cl-accordion--disabled",
             className,
           )}
           {...domProps}
@@ -179,9 +258,14 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
     { value, isDisabled: itemDisabledProp = false, className, children, ...restProps },
     ref,
   ) {
-    const { expandedValues, isDisabled: globalDisabled } = useAccordionContext();
+    const { expandedValues, isDisabled: globalDisabled, registerItem } =
+      useAccordionContext();
     const isOpen = expandedValues.includes(value);
     const isDisabled = Boolean(itemDisabledProp || globalDisabled);
+
+    React.useEffect(() => {
+      return registerItem(value, isDisabled);
+    }, [registerItem, value, isDisabled]);
 
     const generatedId = React.useId();
     const triggerId = `cl-accordion-trigger-${value}-${generatedId}`;
@@ -202,7 +286,12 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
       <AccordionItemContext.Provider value={contextValue}>
         <div
           ref={ref}
-          className={classNames("cl-accordion__item", className)}
+          className={classNames(
+            "cl-accordion__item",
+            isOpen && "cl-accordion__item--open",
+            isDisabled && "cl-accordion__item--disabled",
+            className,
+          )}
           data-state={isOpen ? "open" : "closed"}
           data-disabled={isDisabled ? "" : undefined}
           {...restProps}
@@ -242,18 +331,65 @@ export const AccordionHeader = React.forwardRef<
 AccordionHeader.displayName = "Accordion.Header";
 
 /**
+ * Accordion.Icon renders a chevron SVG icon that smoothly rotates 180° when expanded.
+ */
+export const AccordionIcon = React.forwardRef<
+  SVGSVGElement,
+  AccordionIconProps
+>(function AccordionIcon({ className, ...restProps }, ref) {
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={classNames("cl-accordion__icon", className)}
+      aria-hidden="true"
+      focusable="false"
+      {...restProps}
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+});
+
+AccordionIcon.displayName = "Accordion.Icon";
+
+/**
  * Accordion.Trigger renders the interactive button that toggles expansion.
+ * Supports structured titles, descriptions, leading icons, badges, and custom indicators.
  */
 export const AccordionTrigger = React.forwardRef<
   HTMLButtonElement,
   AccordionTriggerProps
 >(function AccordionTrigger(
-  { asChild = false, className, children, onClick, onKeyDown, ...restProps },
+  {
+    asChild = false,
+    title,
+    description,
+    leadingIcon,
+    trailingBadge,
+    indicator,
+    indicatorPosition: triggerIndicatorPosition,
+    hideIndicator = false,
+    className,
+    children,
+    onClick,
+    onKeyDown,
+    ...restProps
+  },
   ref,
 ) {
-  const { toggleItem, rootRef } = useAccordionContext();
+  const { toggleItem, rootRef, indicatorPosition: rootIndicatorPosition } =
+    useAccordionContext();
   const { value, isOpen, isDisabled, triggerId, panelId } =
     useAccordionItemContext();
+
+  const effectiveIndicatorPos =
+    triggerIndicatorPosition ?? rootIndicatorPosition ?? "end";
 
   const handleClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -299,7 +435,13 @@ export const AccordionTrigger = React.forwardRef<
     [onKeyDown, rootRef],
   );
 
-  const triggerClasses = classNames("cl-accordion__trigger", className);
+  const triggerClasses = classNames(
+    "cl-accordion__trigger",
+    isOpen && "cl-accordion__trigger--open",
+    isDisabled && "cl-accordion__trigger--disabled",
+    effectiveIndicatorPos === "start" && "cl-accordion__trigger--indicator-start",
+    className,
+  );
 
   if (asChild) {
     return (
@@ -318,6 +460,62 @@ export const AccordionTrigger = React.forwardRef<
       >
         {children}
       </Slot>
+    );
+  }
+
+  // Determine whether to use structured layout composition
+  const hasStructuredLayout = Boolean(
+    title !== undefined ||
+      description !== undefined ||
+      leadingIcon !== undefined ||
+      trailingBadge !== undefined ||
+      indicator !== undefined,
+  );
+
+  if (hasStructuredLayout) {
+    const renderedTitle = title ?? children;
+    const renderedIndicator =
+      !hideIndicator &&
+      (typeof indicator === "function" ? (
+        indicator({ isOpen })
+      ) : indicator !== undefined ? (
+        indicator
+      ) : (
+        <AccordionIcon />
+      ));
+
+    return (
+      <button
+        ref={ref}
+        id={triggerId}
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        disabled={isDisabled}
+        data-state={isOpen ? "open" : "closed"}
+        data-disabled={isDisabled ? "" : undefined}
+        className={triggerClasses}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        {...restProps}
+      >
+        {effectiveIndicatorPos === "start" && renderedIndicator}
+        {leadingIcon && (
+          <span className="cl-accordion__leading-icon" aria-hidden="true">
+            {leadingIcon}
+          </span>
+        )}
+        <div className="cl-accordion__trigger-text">
+          <span className="cl-accordion__title">{renderedTitle}</span>
+          {description && (
+            <span className="cl-accordion__description">{description}</span>
+          )}
+        </div>
+        {trailingBadge && (
+          <span className="cl-accordion__badge">{trailingBadge}</span>
+        )}
+        {effectiveIndicatorPos === "end" && renderedIndicator}
+      </button>
     );
   }
 
@@ -344,7 +542,7 @@ export const AccordionTrigger = React.forwardRef<
 AccordionTrigger.displayName = "Accordion.Trigger";
 
 /**
- * Accordion.Content renders the collapsible body region with CSS grid height transition.
+ * Accordion.Content renders the collapsible body region with pure CSS grid height transitions.
  */
 export const AccordionContent = React.forwardRef<
   HTMLDivElement,
@@ -372,32 +570,92 @@ export const AccordionContent = React.forwardRef<
 AccordionContent.displayName = "Accordion.Content";
 
 /**
- * Accordion.Icon renders a 16x16 chevron SVG icon that rotates 180° when expanded.
+ * Accordion.Actions provides an optional container for bulk operations (Expand All / Collapse All).
  */
-export const AccordionIcon = React.forwardRef<
-  SVGSVGElement,
-  AccordionIconProps
->(function AccordionIcon({ className, ...restProps }, ref) {
+export const AccordionActions = React.forwardRef<
+  HTMLDivElement,
+  AccordionActionsProps
+>(function AccordionActions({ className, children, ...restProps }, ref) {
   return (
-    <svg
+    <div
       ref={ref}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={classNames("cl-accordion__icon", className)}
-      aria-hidden="true"
-      focusable="false"
+      className={classNames("cl-accordion__actions", className)}
       {...restProps}
     >
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
+      {children}
+    </div>
   );
 });
 
-AccordionIcon.displayName = "Accordion.Icon";
+AccordionActions.displayName = "Accordion.Actions";
+
+/**
+ * Accordion.ExpandAll triggers expansion of all eligible items in the accordion.
+ */
+export const AccordionExpandAll = React.forwardRef<
+  HTMLButtonElement,
+  AccordionExpandAllProps
+>(function AccordionExpandAll(
+  { className, children = "Expand All", onClick, ...restProps },
+  ref,
+) {
+  const { expandAll } = useAccordionContext();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    if (!e.defaultPrevented) {
+      expandAll();
+    }
+  };
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={classNames("cl-accordion__action-btn", className)}
+      onClick={handleClick}
+      {...restProps}
+    >
+      {children}
+    </button>
+  );
+});
+
+AccordionExpandAll.displayName = "Accordion.ExpandAll";
+
+/**
+ * Accordion.CollapseAll triggers collapse of all expanded items in the accordion.
+ */
+export const AccordionCollapseAll = React.forwardRef<
+  HTMLButtonElement,
+  AccordionCollapseAllProps
+>(function AccordionCollapseAll(
+  { className, children = "Collapse All", onClick, ...restProps },
+  ref,
+) {
+  const { collapseAll } = useAccordionContext();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    if (!e.defaultPrevented) {
+      collapseAll();
+    }
+  };
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={classNames("cl-accordion__action-btn", className)}
+      onClick={handleClick}
+      {...restProps}
+    >
+      {children}
+    </button>
+  );
+});
+
+AccordionCollapseAll.displayName = "Accordion.CollapseAll";
 
 export interface AccordionComponent
   extends React.ForwardRefExoticComponent<
@@ -409,6 +667,9 @@ export interface AccordionComponent
   Trigger: typeof AccordionTrigger;
   Content: typeof AccordionContent;
   Icon: typeof AccordionIcon;
+  Actions: typeof AccordionActions;
+  ExpandAll: typeof AccordionExpandAll;
+  CollapseAll: typeof AccordionCollapseAll;
 }
 
 export const Accordion = AccordionRoot as AccordionComponent;
@@ -418,3 +679,6 @@ Accordion.Header = AccordionHeader;
 Accordion.Trigger = AccordionTrigger;
 Accordion.Content = AccordionContent;
 Accordion.Icon = AccordionIcon;
+Accordion.Actions = AccordionActions;
+Accordion.ExpandAll = AccordionExpandAll;
+Accordion.CollapseAll = AccordionCollapseAll;

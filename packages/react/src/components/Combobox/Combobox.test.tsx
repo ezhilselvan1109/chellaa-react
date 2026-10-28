@@ -80,8 +80,12 @@ describe("Combobox Component (SPEC-030)", () => {
 
     await user.type(input, "Uni");
     expect(input).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("option", { name: /United States/i })).toBeInTheDocument();
-    expect(screen.queryByRole("option", { name: /Canada/i })).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: /United States/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: /Canada/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("shows Combobox.Empty when no items match the search query", async () => {
@@ -125,7 +129,10 @@ describe("Combobox Component (SPEC-030)", () => {
     const options = screen.getAllByRole("option");
 
     fireEvent.keyDown(input, { key: "End" });
-    expect(input).toHaveAttribute("aria-activedescendant", options[options.length - 1]?.id);
+    expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      options[options.length - 1]?.id,
+    );
 
     fireEvent.keyDown(input, { key: "Home" });
     expect(input).toHaveAttribute("aria-activedescendant", options[0]?.id);
@@ -190,10 +197,12 @@ describe("Combobox Component (SPEC-030)", () => {
         </div>
         <Combobox.Content>
           <Combobox.Item value="1">Option 1</Combobox.Item>
-          <Combobox.Item value="2" isDisabled>Option 2</Combobox.Item>
+          <Combobox.Item value="2" isDisabled>
+            Option 2
+          </Combobox.Item>
           <Combobox.Item value="3">Option 3</Combobox.Item>
         </Combobox.Content>
-      </Combobox.Root>
+      </Combobox.Root>,
     );
 
     const input = screen.getByRole("combobox");
@@ -215,7 +224,11 @@ describe("Combobox Component (SPEC-030)", () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
     render(
-      <Combobox.Root isMulti defaultValue={["us"]} onValueChange={onValueChange}>
+      <Combobox.Root
+        isMulti
+        defaultValue={["us"]}
+        onValueChange={onValueChange}
+      >
         <div className="cl-combobox__control">
           <Combobox.Tag value="us">United States</Combobox.Tag>
           <Combobox.Input />
@@ -226,7 +239,7 @@ describe("Combobox Component (SPEC-030)", () => {
           <Combobox.Item value="ca">Canada</Combobox.Item>
           <Combobox.Item value="in">India</Combobox.Item>
         </Combobox.Content>
-      </Combobox.Root>
+      </Combobox.Root>,
     );
 
     const trigger = screen.getByRole("button", { name: "Toggle options" });
@@ -237,7 +250,9 @@ describe("Combobox Component (SPEC-030)", () => {
     expect(onValueChange).toHaveBeenCalledWith(["us", "ca"]);
 
     // Removing tag chip via button
-    const removeBtn = screen.getByRole("button", { name: "Remove United States" });
+    const removeBtn = screen.getByRole("button", {
+      name: "Remove United States",
+    });
     await user.click(removeBtn);
     expect(onValueChange).toHaveBeenCalledWith(["ca"]);
   });
@@ -253,7 +268,7 @@ describe("Combobox Component (SPEC-030)", () => {
           <Combobox.Item value="us">United States</Combobox.Item>
           <Combobox.Item value="ca">Canada</Combobox.Item>
         </Combobox.Content>
-      </Combobox.Root>
+      </Combobox.Root>,
     );
 
     const input = screen.getByRole("combobox");
@@ -273,7 +288,7 @@ describe("Combobox Component (SPEC-030)", () => {
         <Combobox.Content>
           <Combobox.Item value="us">United States</Combobox.Item>
         </Combobox.Content>
-      </Combobox.Root>
+      </Combobox.Root>,
     );
 
     const clearBtn = screen.getByRole("button", { name: "Clear selection" });
@@ -295,7 +310,7 @@ describe("Combobox Component (SPEC-030)", () => {
             <Combobox.Item value="us">United States</Combobox.Item>
           </Combobox.Content>
         </Combobox.Root>
-      </FormField>
+      </FormField>,
     );
 
     const input = screen.getByRole("combobox");
@@ -329,7 +344,7 @@ describe("Combobox Component (SPEC-030)", () => {
             ))}
           </Combobox.Content>
         </Combobox.Root>
-      </main>
+      </main>,
     );
 
     const results = await axe(container);
@@ -344,7 +359,7 @@ describe("Combobox Component (SPEC-030)", () => {
           <Combobox.Input placeholder="Test control" />
           <Combobox.Trigger />
         </Combobox.Control>
-      </Combobox.Root>
+      </Combobox.Root>,
     );
 
     const controlEl = screen.getByTestId("cb-control");
@@ -394,8 +409,13 @@ describe("Combobox Component (SPEC-030)", () => {
 
     // All options must remain visible, Canada is selected
     expect(screen.getAllByRole("option")).toHaveLength(4);
-    expect(screen.getByRole("option", { name: /United States/i })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /Canada/i })).toHaveAttribute("aria-selected", "true");
+    expect(
+      screen.getByRole("option", { name: /United States/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: /Canada/i })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
   it("[DEF-009] pressing ArrowDown on closed input opens listbox and highlights first option", () => {
@@ -421,7 +441,7 @@ describe("Combobox Component (SPEC-030)", () => {
           </Combobox.Control>
         </Combobox.Root>
         <FormErrorMessage>Country is required.</FormErrorMessage>
-      </FormField>
+      </FormField>,
     );
 
     const input = screen.getByRole("combobox");
@@ -430,7 +450,9 @@ describe("Combobox Component (SPEC-030)", () => {
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(input).toHaveAttribute("name", "user_country");
     expect(input).toHaveAttribute("aria-describedby");
-    expect(input.getAttribute("aria-describedby")).toContain("country-ff-error");
+    expect(input.getAttribute("aria-describedby")).toContain(
+      "country-ff-error",
+    );
   });
 
   it("[DEF-011] auto-layout renders tag chips and clear button in multi-select mode", () => {
@@ -440,12 +462,14 @@ describe("Combobox Component (SPEC-030)", () => {
         isMulti
         defaultValue={["us", "ca"]}
         placeholder="Select countries"
-      />
+      />,
     );
 
     expect(screen.getByText("United States")).toBeInTheDocument();
     expect(screen.getByText("Canada")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Clear selection/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Clear selection/i }),
+    ).toBeInTheDocument();
   });
 
   it("[DEF-012] ComboboxTrigger retains focus on input when closing popup", async () => {
@@ -468,7 +492,7 @@ describe("Combobox Component (SPEC-030)", () => {
           options={COUNTRIES}
           defaultValue="us"
           onValueChange={handleValueChange}
-        />
+        />,
       );
 
       const input = screen.getByRole("combobox");
@@ -495,7 +519,7 @@ describe("Combobox Component (SPEC-030)", () => {
           options={COUNTRIES}
           defaultValue="ca"
           onValueChange={handleValueChange}
-        />
+        />,
       );
 
       const input = screen.getByRole("combobox");
@@ -520,11 +544,13 @@ describe("Combobox Component (SPEC-030)", () => {
           isMulti
           defaultValue={["us", "ca"]}
           onValueChange={handleValueChange}
-        />
+        />,
       );
 
       const input = screen.getByRole("combobox");
-      const removeUS = screen.getByRole("button", { name: "Remove United States" });
+      const removeUS = screen.getByRole("button", {
+        name: "Remove United States",
+      });
       const removeCA = screen.getByRole("button", { name: "Remove Canada" });
 
       expect(removeUS).toHaveAttribute("tabindex", "0");
@@ -539,7 +565,9 @@ describe("Combobox Component (SPEC-030)", () => {
       expect(input).toHaveFocus();
 
       // Now focus and remove Canada via Space
-      const removeCAAfter = screen.getByRole("button", { name: "Remove Canada" });
+      const removeCAAfter = screen.getByRole("button", {
+        name: "Remove Canada",
+      });
       removeCAAfter.focus();
       await user.keyboard(" ");
       expect(handleValueChange).toHaveBeenCalledWith([]);
@@ -561,13 +589,15 @@ describe("Combobox Component (SPEC-030)", () => {
               <ComboboxTrigger />
             </ComboboxActions>
           </ComboboxControl>
-        </ComboboxRoot>
+        </ComboboxRoot>,
       );
 
       const actions = screen.getByTestId("combobox-actions");
       expect(actions).toHaveClass("cl-combobox__actions");
       expect(actions.querySelector(".cl-combobox__clear")).toBeInTheDocument();
-      expect(actions.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
+      expect(
+        actions.querySelector(".cl-combobox__trigger"),
+      ).toBeInTheDocument();
     });
 
     it("propagates root placeholder prop to Combobox.Input via context", () => {
@@ -577,11 +607,14 @@ describe("Combobox Component (SPEC-030)", () => {
             <ComboboxInput />
             <ComboboxTrigger />
           </ComboboxControl>
-        </ComboboxRoot>
+        </ComboboxRoot>,
       );
 
       const input = screen.getByRole("combobox");
-      expect(input).toHaveAttribute("placeholder", "Search or select country...");
+      expect(input).toHaveAttribute(
+        "placeholder",
+        "Search or select country...",
+      );
     });
 
     it("renders multi-select tags with cl-combobox__tag-label for text truncation", () => {
@@ -592,16 +625,17 @@ describe("Combobox Component (SPEC-030)", () => {
           options={[
             {
               value: "us",
-              label: "United States of America with a very long descriptive region label",
+              label:
+                "United States of America with a very long descriptive region label",
             },
           ]}
-        />
+        />,
       );
 
       const tagLabel = document.querySelector(".cl-combobox__tag-label");
       expect(tagLabel).toBeInTheDocument();
       expect(tagLabel).toHaveTextContent(
-        "United States of America with a very long descriptive region label"
+        "United States of America with a very long descriptive region label",
       );
     });
 
@@ -611,13 +645,79 @@ describe("Combobox Component (SPEC-030)", () => {
           options={COUNTRIES}
           defaultValue="us"
           placeholder="Select country"
-        />
+        />,
       );
 
       const actions = document.querySelector(".cl-combobox__actions");
       expect(actions).toBeInTheDocument();
       expect(actions?.querySelector(".cl-combobox__clear")).toBeInTheDocument();
-      expect(actions?.querySelector(".cl-combobox__trigger")).toBeInTheDocument();
+      expect(
+        actions?.querySelector(".cl-combobox__trigger"),
+      ).toBeInTheDocument();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wave 1 Remediation: Floating-Position Collision & Spacing
+  // ---------------------------------------------------------------------------
+  describe("Wave 1 Remediation: Floating-Position Collision & Spacing", () => {
+    it("does not have conflicting margin-top on .cl-combobox__content in stylesheet", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const cssPath = path.resolve(__dirname, "Combobox.styles.css");
+      const cssContent = fs.readFileSync(cssPath, "utf-8");
+
+      // Extract the .cl-combobox__content rule block
+      const contentRuleMatch = cssContent.match(
+        /\.cl-combobox__content\s*\{([^}]+)\}/,
+      );
+      expect(contentRuleMatch).toBeTruthy();
+      const contentRuleBody = contentRuleMatch ? contentRuleMatch[1] : "";
+
+      // Ensure margin-top: 4px is absent so Floating UI offset(4) solely governs spacing
+      expect(contentRuleBody).not.toMatch(/margin-top:\s*4px/);
+    });
+
+    it("renders popup content with data-positioned attribute when open", async () => {
+      const { waitFor } = await import("@testing-library/react");
+      render(
+        <Combobox
+          defaultOpen
+          options={COUNTRIES}
+          placeholder="Select country"
+        />,
+      );
+
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+      await waitFor(() => {
+        expect(listbox).toHaveAttribute("data-positioned", "true");
+      });
+      expect(listbox).toHaveClass("cl-combobox__content");
+    });
+
+    it("preserves selection and keyboard interaction with Floating UI offset positioning", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      render(
+        <Combobox
+          options={COUNTRIES}
+          onValueChange={onValueChange}
+          placeholder="Select country"
+        />,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Toggle options" });
+      await user.click(trigger);
+
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+
+      const optionUS = screen.getByRole("option", { name: "United States" });
+      await user.click(optionUS);
+
+      expect(onValueChange).toHaveBeenCalledWith("us");
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
     });
   });
 });

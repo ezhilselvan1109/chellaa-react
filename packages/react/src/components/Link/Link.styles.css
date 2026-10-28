@@ -1,0 +1,83 @@
+@layer cl-components {
+  /* =========================================================================
+     Link Component Styles
+     ========================================================================= */
+  .cl-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cl-space-1, 4px);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    cursor: pointer;
+    transition: color 150ms ease, text-decoration-color 150ms ease;
+    outline: none;
+    border-radius: var(--cl-radius-xs, 2px);
+  }
+
+  .cl-link:focus-visible {
+    outline: 2px solid var(--cl-color-primary-base, #2563eb);
+    outline-offset: 2px;
+  }
+
+  /* Color Schemes */
+  .cl-link--color-primary {
+    color: var(--cl-color-primary-base, #2563eb);
+  }
+
+  .cl-link--color-primary:hover {
+    color: var(--cl-color-primary-hover, #1d4ed8);
+  }
+
+  .cl-link--color-neutral {
+    color: var(--cl-color-text-primary, #0f172a);
+  }
+
+  .cl-link--color-neutral:hover {
+    color: var(--cl-color-primary-base, #2563eb);
+  }
+
+  .cl-link--color-subtle {
+    color: var(--cl-color-text-muted, #64748b);
+  }
+
+  .cl-link--color-subtle:hover {
+    color: var(--cl-color-text-primary, #0f172a);
+  }
+
+  /* Underline Variants */
+  .cl-link--underline-always {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cl-link--underline-hover {
+    text-decoration: none;
+    text-underline-offset: 3px;
+  }
+
+  .cl-link--underline-hover:hover {
+    text-decoration: underline;
+  }
+
+  .cl-link--underline-none {
+    text-decoration: none;
+  }
+
+  /* Disabled State */
+  .cl-link--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration: none;
+  }
+
+  /* External Link Indicator Icon */
+  .cl-link__external-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+  }
+}

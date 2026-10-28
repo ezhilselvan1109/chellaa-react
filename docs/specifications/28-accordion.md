@@ -4,7 +4,7 @@
 **Phase:** 3 — Component Specifications (Tier 4 / Phase 3 Surfaces & Visual Data Display)  
 **Specification ID:** SPEC-028  
 **Target Package:** `@chellaa/react`  
-**Revision:** 1.0.0  
+**Revision:** 1.1.0 (Redesign & Functional Enhancement)  
 **Priority:** P1 High  
 **Governing Standard:** [00-component-specification-standard.md](./00-component-specification-standard.md), [01-api-conventions.md](./01-api-conventions.md), [ADR-007-css-delivery.md](../adr/ADR-007-css-delivery.md), [ADR-011-hybrid-styling-architecture-and-engine-boundary.md](../adr/ADR-011-hybrid-styling-architecture-and-engine-boundary.md)  
 **Dependencies:** Chellaa Design Tokens (`--cl-*`), `useControllableState` hook, React 18/19  
@@ -14,14 +14,14 @@
 ## 1. Identity
 
 ```text
-Component Name:     Accordion (Compound Architecture: Accordion.Root, Accordion.Item, Accordion.Header, Accordion.Trigger, Accordion.Content, Accordion.Icon)
+Component Name:     Accordion (Compound Architecture: Accordion.Root, Accordion.Item, Accordion.Header, Accordion.Trigger, Accordion.Content, Accordion.Icon, Accordion.Actions, Accordion.ExpandAll, Accordion.CollapseAll)
 Specification ID:   SPEC-028
-Package Export:     import { Accordion, type AccordionProps, type AccordionItemProps, type AccordionType } from "@chellaa/react";
+Package Export:     import { Accordion, type AccordionProps, type AccordionItemProps, type AccordionType, type AccordionVariant, type AccordionSize } from "@chellaa/react";
 Category:           Data Display / Disclosure
 Status:             Approved & Implementation Ready
 Phase:              Phase 3 — Surfaces & Visual Data Display
 Priority:           P1 High
-Version:            1.0.0
+Version:            1.1.0 (Redesigned)
 Related Components: Card, Button, Typography
 Governing ADRs:     ADR-007 (Zero-Config Styling), ADR-011 (Hybrid Styling Architecture)
 ```
@@ -39,7 +39,7 @@ Naive disclosure implementations introduce severe accessibility and styling flaw
 3. JavaScript-based height calculations trigger layout thrashing and stutter during animation.
 4. Rigid monolithic abstractions prevent custom placement of icons, badges, or action buttons inside headers.
 
-The `Accordion` component solves this by providing an accessible, composable disclosure primitive with hardware-accelerated CSS grid height animations, full WAI-ARIA APG keyboard navigation, single and multi-expansion modes, and seamless token integration.
+The `Accordion` component solves this by providing an accessible, composable disclosure primitive with hardware-accelerated CSS grid height animations, full WAI-ARIA APG keyboard navigation, single and multi-expansion modes, rich header content slots (title, description, leading icon, trailing badge), density sizing (sm, md, lg), and seamless token integration.
 
 ### 2.2 Why It Belongs in Chellaa React
 `Accordion` is a foundational enterprise surface primitive needed across dashboards, documentation hubs, and complex sidebars to manage vertical density with tactile elegance.
@@ -59,7 +59,7 @@ The `Accordion` component solves this by providing an accessible, composable dis
 ## 3. Scope & Requirements
 
 ### 3.1 Functional Requirements (In Scope)
-- **FR-01 (Compound Structure):** `Accordion.Root`, `Accordion.Item`, `Accordion.Header`, `Accordion.Trigger`, `Accordion.Content`, `Accordion.Icon`.
+- **FR-01 (Compound Structure):** `Accordion.Root`, `Accordion.Item`, `Accordion.Header`, `Accordion.Trigger`, `Accordion.Content`, `Accordion.Icon`, `Accordion.Actions`, `Accordion.ExpandAll`, `Accordion.CollapseAll`.
 - **FR-02 (Expansion Modes):**
   - `type="single"`: Only one item can be expanded at a time (`value?: string`). Optional `collapsible?: boolean` allows collapsing the active item.
   - `type="multiple"`: Any number of items can be expanded simultaneously (`value?: string[]`).
@@ -70,11 +70,14 @@ The `Accordion` component solves this by providing an accessible, composable dis
 - **FR-04 (Keyboard Navigation):** Arrow key navigation between triggers (`ArrowDown`/`ArrowUp`), `Home` (first trigger), `End` (last trigger).
 - **FR-05 (Fluid CSS Grid Animation):** Uses pure modern CSS `grid-template-rows: 0fr -> 1fr` for 60fps height transitions without JavaScript DOM measurement.
 - **FR-06 (Visual Variants):**
-  - `outline`: Bordered continuous container with divider lines (default).
+  - `default` (`outline`): Bordered continuous container with divider lines (default).
   - `separated`: Individual card-like items with vertical gaps.
-  - `flush`: Borderless flush container for seamless sidebar embedding.
-- **FR-07 (Controlled & Uncontrolled):** Controlled via `value` + `onValueChange`; uncontrolled via `defaultValue`.
-- **FR-08 (Chevron Icon Slot):** `<Accordion.Icon />` with automatic 180° rotation on expansion.
+  - `borderless` (`flush`): Borderless container with minimal line dividers.
+  - `filled`: Subtle surface-tinted background panels.
+- **FR-07 (Density Sizing):** `size="sm" | "md" | "lg"`. Scales trigger padding, typography, icon size, and panel spacing.
+- **FR-08 (Rich Header Content):** Structured props on `Accordion.Trigger`: `title`, `description`, `leadingIcon`, `trailingBadge`, `indicator`, `indicatorPosition="start" | "end"`.
+- **FR-09 (Bulk Operations):** `expandAll()` and `collapseAll()` helper functions and components (`Accordion.ExpandAll`, `Accordion.CollapseAll`).
+- **FR-10 (Controlled & Uncontrolled):** Controlled via `value` + `onValueChange`; uncontrolled via `defaultValue`.
 
 ### 3.2 Non-Functional Requirements
 - **NFR-01 (Zero Layout Thrashing):** Zero runtime `offsetHeight` / `getBoundingClientRect()` polling.
@@ -95,20 +98,30 @@ The `Accordion` component solves this by providing an accessible, composable dis
 | **APG Heading Semantics** | Native button in semantic heading | `<h3 className="cl-accordion__header"><button ...>` |
 | **Zero-JS Animation** | 60fps CSS grid row transition | `grid-template-rows: 0fr -> 1fr` |
 | **Keyboard APG Roving** | Arrow keys navigate headers | APG Accordion keymap |
-| **3 Visual Styles** | `outline`, `separated`, `flush` | Tokenized border and background styles |
+| **4 Visual Styles** | `default`, `separated`, `borderless`, `filled` | Tokenized border and background styles |
+| **3 Density Sizes** | `sm`, `md`, `lg` | Scaled trigger padding, fonts, icons |
+| **Rich Header Layout** | Title, subtitle, icon, badge | Flexbox structure with truncation & word-break |
+| **Bulk Actions** | Expand all / collapse all | `Accordion.Actions`, `ExpandAll`, `CollapseAll` |
 
 ---
 
 ## 6. Anatomy
 
 ```text
-<Accordion.Root type="single" collapsible>
+<Accordion.Root type="single" collapsible variant="default" size="md">
+  <Accordion.Actions>
+    <Accordion.ExpandAll />
+    <Accordion.CollapseAll />
+  </Accordion.Actions>
   <Accordion.Item value="item-1" className="cl-accordion__item">
     <Accordion.Header className="cl-accordion__header">
-      <Accordion.Trigger className="cl-accordion__trigger">
-        <span>Section Title</span>
-        <Accordion.Icon className="cl-accordion__icon" />
-      </Accordion.Trigger>
+      <Accordion.Trigger
+        title="Section Title"
+        description="Optional subtitle"
+        leadingIcon={<Icon />}
+        trailingBadge={<Badge />}
+        className="cl-accordion__trigger"
+      />
     </Accordion.Header>
     <Accordion.Content className="cl-accordion__content">
       <div className="cl-accordion__inner">
@@ -126,10 +139,12 @@ The `Accordion` component solves this by providing an accessible, composable dis
 ### 7.1 Props Interface
 ```typescript
 export type AccordionType = "single" | "multiple";
-export type AccordionVariant = "outline" | "separated" | "flush";
+export type AccordionVariant = "default" | "outline" | "separated" | "borderless" | "flush" | "filled";
+export type AccordionSize = "sm" | "md" | "lg";
+export type AccordionIndicatorPosition = "start" | "end";
 
 export interface AccordionSingleProps {
-  type: "single";
+  type?: "single";
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -141,14 +156,18 @@ export interface AccordionMultipleProps {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
+  collapsible?: never;
 }
 
 export type AccordionRootProps = (AccordionSingleProps | AccordionMultipleProps) & {
   variant?: AccordionVariant;
+  size?: AccordionSize;
+  indicatorPosition?: AccordionIndicatorPosition;
   isDisabled?: boolean;
   className?: string;
   children: React.ReactNode;
 };
+```
 
 export interface AccordionItemProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string;

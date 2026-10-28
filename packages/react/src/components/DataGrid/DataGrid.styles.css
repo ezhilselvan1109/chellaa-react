@@ -1,0 +1,206 @@
+@layer cl-components {
+  /* =========================================================================
+     DataGrid Component Styles
+     ========================================================================= */
+
+  .cl-datagrid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    border: 1px solid var(--cl-color-border-default, #e2e8f0);
+    border-radius: var(--cl-radius-md, 8px);
+    background-color: var(--cl-color-surface-elevated, #ffffff);
+    overflow: hidden;
+  }
+
+  /* Scrollable Region */
+  .cl-datagrid__container {
+    width: 100%;
+    overflow-x: auto;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .cl-datagrid__container:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: -2px;
+  }
+
+  /* Table */
+  .cl-datagrid__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+    font-size: var(--cl-font-size-sm, 14px);
+    line-height: var(--cl-line-height-normal, 1.5);
+  }
+
+  /* Header */
+  .cl-datagrid__thead {
+    background-color: var(--cl-color-surface-hover, #f8fafc);
+    border-bottom: 1px solid var(--cl-color-border-default, #e2e8f0);
+  }
+
+  .cl-datagrid--sticky-header .cl-datagrid__thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .cl-datagrid__th {
+    padding: 10px 16px;
+    font-weight: 600;
+    color: var(--cl-color-text-primary, #0f172a);
+    box-sizing: border-box;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .cl-datagrid__th--select,
+  .cl-datagrid__td--select {
+    width: 48px;
+    text-align: center;
+    padding: 10px 12px;
+  }
+
+  /* Sort Button */
+  .cl-datagrid__sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    color: inherit;
+    cursor: pointer;
+    border-radius: var(--cl-radius-sm, 4px);
+    transition: color 0.12s ease;
+  }
+
+  .cl-datagrid__sort-btn:hover {
+    color: var(--cl-color-primary-base, #4f46e5);
+  }
+
+  .cl-datagrid__sort-btn:focus-visible {
+    outline: 2px solid var(--cl-color-focus-ring, var(--cl-color-primary-base, #4f46e5));
+    outline-offset: 2px;
+  }
+
+  .cl-datagrid__sort-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Body Rows & Cells */
+  .cl-datagrid__tr {
+    border-bottom: 1px solid var(--cl-color-border-subtle, #f1f5f9);
+    transition: background-color 0.1s ease;
+  }
+
+  .cl-datagrid__tr:hover {
+    background-color: var(--cl-color-surface-hover, #f8fafc);
+  }
+
+  .cl-datagrid__tr--selected {
+    background-color: var(--cl-color-primary-subtle, #eef2ff) !important;
+  }
+
+  .cl-datagrid__tr--clickable {
+    cursor: pointer;
+  }
+
+  .cl-datagrid__td {
+    padding: 12px 16px;
+    color: var(--cl-color-text-secondary, #334155);
+    box-sizing: border-box;
+  }
+
+  /* Alignments */
+  .cl-datagrid__th--align-center,
+  .cl-datagrid__td--align-center {
+    text-align: center;
+  }
+
+  .cl-datagrid__th--align-right,
+  .cl-datagrid__td--align-right {
+    text-align: right;
+  }
+
+  /* Variants */
+  .cl-datagrid--striped .cl-datagrid__tbody .cl-datagrid__tr:nth-child(even) {
+    background-color: var(--cl-color-surface-hover, #f8fafc);
+  }
+
+  .cl-datagrid--bordered .cl-datagrid__th,
+  .cl-datagrid--bordered .cl-datagrid__td {
+    border-right: 1px solid var(--cl-color-border-subtle, #f1f5f9);
+  }
+
+  .cl-datagrid--bordered .cl-datagrid__th:last-child,
+  .cl-datagrid--bordered .cl-datagrid__td:last-child {
+    border-right: none;
+  }
+
+  /* Sizes */
+  .cl-datagrid--sm .cl-datagrid__th {
+    padding: 6px 10px;
+    font-size: var(--cl-font-size-xs, 12px);
+  }
+  .cl-datagrid--sm .cl-datagrid__td {
+    padding: 8px 10px;
+    font-size: var(--cl-font-size-xs, 12px);
+  }
+
+  .cl-datagrid--md .cl-datagrid__th {
+    padding: 10px 16px;
+    font-size: var(--cl-font-size-sm, 14px);
+  }
+  .cl-datagrid--md .cl-datagrid__td {
+    padding: 12px 16px;
+    font-size: var(--cl-font-size-sm, 14px);
+  }
+
+  .cl-datagrid--lg .cl-datagrid__th {
+    padding: 14px 20px;
+    font-size: var(--cl-font-size-base, 16px);
+  }
+  .cl-datagrid--lg .cl-datagrid__td {
+    padding: 16px 20px;
+    font-size: var(--cl-font-size-base, 16px);
+  }
+
+  /* States */
+  .cl-datagrid__loading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 40px;
+    color: var(--cl-color-text-muted, #64748b);
+  }
+
+  .cl-datagrid__empty-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    color: var(--cl-color-text-muted, #64748b);
+    font-size: 0.875rem;
+  }
+
+  /* Footer / Pagination */
+  .cl-datagrid__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 16px;
+    border-top: 1px solid var(--cl-color-border-default, #e2e8f0);
+    background-color: var(--cl-color-surface-elevated, #ffffff);
+  }
+}

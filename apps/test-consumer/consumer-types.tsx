@@ -83,6 +83,9 @@ import {
   AccordionTrigger,
   AccordionContent,
   AccordionIcon,
+  AccordionActions,
+  AccordionExpandAll,
+  AccordionCollapseAll,
   type AccordionProps,
   type AccordionSingleProps,
   type AccordionMultipleProps,
@@ -92,6 +95,8 @@ import {
   type AccordionContentProps,
   type AccordionIconProps,
   type AccordionVariant,
+  type AccordionSize,
+  type AccordionIndicatorPosition,
   // Navigation Primitives (Wave 3)
   Tabs,
   TabsRoot,
@@ -257,6 +262,79 @@ import {
   type TableHeaderCellProps,
   type TableCellProps,
   type TableContextValue,
+  // Wave 3: DropdownMenu, ContextMenu, Drawer / Sheet
+  DropdownMenu,
+  type DropdownMenuRootProps,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+  ContextMenu,
+  type ContextMenuRootProps,
+  type ContextMenuContentProps,
+  type ContextMenuItemProps,
+  Drawer,
+  type DrawerRootProps,
+  type DrawerContentProps,
+  Sheet,
+  type SheetRootProps,
+  type SheetContentProps,
+  // Wave 4: Navigation, Form Validation & Date Extensions
+  Breadcrumbs,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  type BreadcrumbsProps,
+  type BreadcrumbItemProps,
+  Link,
+  type LinkProps,
+  type LinkUnderline,
+  type LinkColorScheme,
+  useFormValidation,
+  type FieldValidationError,
+  type FieldValidationResult,
+  type FieldValidator,
+  type UseFormValidationOptions,
+  type UseFormValidationReturn,
+  DateRangePicker,
+  type DateRangePickerProps,
+  type DateRange,
+  TimePicker,
+  type TimePickerProps,
+  type TimeFormat,
+  MultiSelect,
+  type MultiSelectProps,
+  type MultiSelectOption,
+  DataGrid,
+  type DataGridProps,
+  type DataGridColumn,
+  type DataGridSort,
+  FileUpload,
+  type FileUploadProps,
+  type FileItem,
+  type FileValidationError,
+  Slider,
+  RangeSlider,
+  type SliderProps,
+  type RangeSliderProps,
+  type SliderMark,
+  // Wave 6: TreeView, Stepper & Carousel
+  TreeView,
+  type TreeViewProps,
+  type TreeNode,
+  type TreeNodeState,
+  type TreeViewSelectionMode,
+  Stepper,
+  type StepperProps,
+  type StepItem,
+  type StepperOrientation,
+  type StepperSize,
+  Carousel,
+  CarouselSlide,
+  type CarouselProps,
+  type CarouselSlideProps,
 } from "@chellaa/react";
 
 export function ConsumerTypeFixture() {
@@ -516,11 +594,15 @@ export function ConsumerTypeFixture() {
 
         {/* 22. Accordion Disclosure Primitives (Wave 3) */}
         {(() => {
+          const _size: AccordionSize = "md";
+          const _indicatorPos: AccordionIndicatorPosition = "end";
           const _accordionProps: AccordionProps = {
             type: "single",
             collapsible: true,
             defaultValue: "item-1",
             variant: "outline" as AccordionVariant,
+            size: _size,
+            indicatorPosition: _indicatorPos,
             children: null,
           };
           const _singleProps: AccordionSingleProps = {
@@ -542,6 +624,8 @@ export function ConsumerTypeFixture() {
           };
           const _triggerProps: AccordionTriggerProps = {
             asChild: false,
+            title: "Title",
+            description: "Desc",
             children: null,
           };
           const _contentProps: AccordionContentProps = {
@@ -561,6 +645,10 @@ export function ConsumerTypeFixture() {
           return (
             <>
               <div data-testid="accordion-fixture">
+                <AccordionActions>
+                  <AccordionExpandAll />
+                  <AccordionCollapseAll />
+                </AccordionActions>
                 <Accordion type="single" collapsible defaultValue="item-1" variant="outline">
                   <Accordion.Item value="item-1">
                     <Accordion.Header level={3}>
@@ -1072,6 +1160,320 @@ export function ConsumerTypeFixture() {
                   );
                 })()}
               </div>
+
+              {/* 25. DropdownMenu */}
+              {(() => {
+                const rootProps: DropdownMenuRootProps = { open: true, modal: false };
+                const contentProps: DropdownMenuContentProps = { side: "bottom", align: "start" };
+                const itemProps: DropdownMenuItemProps = { disabled: false };
+                return (
+                  <DropdownMenu {...rootProps}>
+                    <DropdownMenu.Trigger asChild>
+                      <Button>Options</Button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content {...contentProps}>
+                      <DropdownMenu.Label>Navigation</DropdownMenu.Label>
+                      <DropdownMenu.Item {...itemProps} onSelect={() => {}}>Profile</DropdownMenu.Item>
+                      <DropdownMenu.CheckboxItem checked onCheckedChange={(_c: boolean) => {}}>
+                        Show Status
+                      </DropdownMenu.CheckboxItem>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.RadioGroup value="dark" onValueChange={(_v: string) => {}}>
+                        <DropdownMenu.RadioItem value="dark">Dark</DropdownMenu.RadioItem>
+                        <DropdownMenu.RadioItem value="light">Light</DropdownMenu.RadioItem>
+                      </DropdownMenu.RadioGroup>
+                    </DropdownMenu.Content>
+                  </DropdownMenu>
+                );
+              })()}
+
+              {/* 26. ContextMenu */}
+              {(() => {
+                const rootProps: ContextMenuRootProps = {};
+                const contentProps: ContextMenuContentProps = { sideOffset: 4 };
+                const itemProps: ContextMenuItemProps = {};
+                return (
+                  <ContextMenu {...rootProps}>
+                    <ContextMenu.Trigger>
+                      <div>Right click region</div>
+                    </ContextMenu.Trigger>
+                    <ContextMenu.Content {...contentProps}>
+                      <ContextMenu.Item {...itemProps} onSelect={() => {}}>Copy</ContextMenu.Item>
+                      <ContextMenu.Separator />
+                      <ContextMenu.Item {...itemProps} onSelect={() => {}}>Paste</ContextMenu.Item>
+                    </ContextMenu.Content>
+                  </ContextMenu>
+                );
+              })()}
+
+              {/* 27. Drawer & Sheet */}
+              {(() => {
+                const drawerProps: DrawerRootProps = { placement: "right", size: "md", open: true };
+                const drawerContentProps: DrawerContentProps = { placement: "right" };
+                const sheetProps: SheetRootProps = { placement: "left", size: "full" };
+                const sheetContentProps: SheetContentProps = { placement: "left" };
+                return (
+                  <>
+                    <Drawer {...drawerProps}>
+                      <Drawer.Trigger asChild>
+                        <Button>Open Drawer</Button>
+                      </Drawer.Trigger>
+                      <Drawer.Portal>
+                        <Drawer.Overlay />
+                        <Drawer.Content {...drawerContentProps}>
+                          <Drawer.Header>
+                            <Drawer.Title>Drawer Heading</Drawer.Title>
+                            <Drawer.Description>Accessible drawer description</Drawer.Description>
+                          </Drawer.Header>
+                          <Drawer.Body>Content</Drawer.Body>
+                          <Drawer.Footer>
+                            <Drawer.Close asChild>
+                              <Button>Close</Button>
+                            </Drawer.Close>
+                          </Drawer.Footer>
+                        </Drawer.Content>
+                      </Drawer.Portal>
+                    </Drawer>
+
+                    <Sheet {...sheetProps}>
+                      <Sheet.Trigger asChild>
+                        <Button>Open Sheet</Button>
+                      </Sheet.Trigger>
+                      <Sheet.Portal>
+                        <Sheet.Overlay />
+                        <Sheet.Content {...sheetContentProps}>
+                          <Sheet.Header>
+                            <Sheet.Title>Sheet Heading</Sheet.Title>
+                          </Sheet.Header>
+                        </Sheet.Content>
+                      </Sheet.Portal>
+                    </Sheet>
+                  </>
+                );
+              })()}
+
+              {/* 28. Breadcrumbs (Wave 4) */}
+              {(() => {
+                void Breadcrumb;
+                void BreadcrumbList;
+                void BreadcrumbItem;
+                void BreadcrumbLink;
+                void BreadcrumbPage;
+                void BreadcrumbSeparator;
+                void BreadcrumbEllipsis;
+                type _FV = FieldValidator<string>;
+                void (null as unknown as _FV);
+
+                const breadcrumbProps: BreadcrumbsProps = {
+                  "aria-label": "Site Navigation",
+                  separator: "/",
+                  itemsBeforeCollapse: 1,
+                  itemsAfterCollapse: 1,
+                  children: null,
+                };
+                const itemProps: BreadcrumbItemProps = {
+                  children: null,
+                };
+                return (
+                  <Breadcrumbs {...breadcrumbProps}>
+                    <Breadcrumbs.List>
+                      <Breadcrumbs.Item {...itemProps}>
+                        <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+                      </Breadcrumbs.Item>
+                      <Breadcrumbs.Separator />
+                      <Breadcrumbs.Item>
+                        <Breadcrumbs.Ellipsis />
+                      </Breadcrumbs.Item>
+                      <Breadcrumbs.Separator />
+                      <Breadcrumbs.Item>
+                        <Breadcrumbs.Page>Current Page</Breadcrumbs.Page>
+                      </Breadcrumbs.Item>
+                    </Breadcrumbs.List>
+                  </Breadcrumbs>
+                );
+              })()}
+
+              {/* 29. Link (Wave 4) */}
+              {(() => {
+                const underline: LinkUnderline = "hover";
+                const colorScheme: LinkColorScheme = "primary";
+                const linkProps: LinkProps = {
+                  href: "https://example.com",
+                  isExternal: true,
+                  underline,
+                  colorScheme,
+                };
+                return <Link {...linkProps}>External Link Example</Link>;
+              })()}
+
+              {/* 30. Form Validation (Wave 4) */}
+              <FormValidationConsumerDemo />
+
+              {/* 31. DateRangePicker (Wave 4) */}
+              {(() => {
+                const range: DateRange = {
+                  startDate: new Date(2026, 0, 1),
+                  endDate: new Date(2026, 0, 15),
+                };
+                const dateRangeProps: DateRangePickerProps = {
+                  value: range,
+                  onValueChange: (_next: DateRange | null) => {},
+                  isClearable: true,
+                  placeholder: "Choose range...",
+                };
+                return <DateRangePicker {...dateRangeProps} />;
+              })()}
+
+              {/* 32. TimePicker (Wave 4) */}
+              {(() => {
+                const format: TimeFormat = "12h";
+                const timeProps: TimePickerProps = {
+                  format,
+                  minuteStep: 15,
+                  value: "09:30",
+                  onValueChange: (_val: string) => {},
+                  isClearable: true,
+                  placeholder: "Select meeting time...",
+                };
+                return <TimePicker {...timeProps} />;
+              })()}
+
+              {/* 33. MultiSelect (Wave 5) */}
+              {(() => {
+                const options: MultiSelectOption<string>[] = [
+                  { label: "React", value: "react" },
+                  { label: "Vue", value: "vue" },
+                ];
+                const multiProps: MultiSelectProps<string> = {
+                  options,
+                  defaultValue: ["react"],
+                  onValueChange: (_vals: string[]) => {},
+                  isSearchable: true,
+                  isClearable: true,
+                };
+                return <MultiSelect {...multiProps} />;
+              })()}
+
+              {/* 34. DataGrid (Wave 5) */}
+              {(() => {
+                interface UserRow {
+                  id: string;
+                  name: string;
+                }
+                const cols: DataGridColumn<UserRow>[] = [
+                  { key: "name", header: "Name", accessor: (r) => r.name, isSortable: true },
+                ];
+                const data: UserRow[] = [{ id: "1", name: "Alice" }];
+                const sort: DataGridSort<string> = { columnKey: "name", direction: "asc" };
+                const dgProps: DataGridProps<UserRow> = {
+                  columns: cols,
+                  data,
+                  getRowId: (r) => r.id,
+                  isSelectable: true,
+                  sort,
+                };
+                return <DataGrid {...dgProps} />;
+              })()}
+
+              {/* 35. FileUpload (Wave 5) */}
+              {(() => {
+                type _ConsumerFileItem = FileItem;
+                const _mockItem: _ConsumerFileItem = {
+                  id: "f-1",
+                  file: new File([], "test.txt"),
+                  name: "test.txt",
+                  size: 0,
+                  type: "text/plain",
+                };
+                void _mockItem;
+
+                const fuProps: FileUploadProps = {
+                  isMultiple: true,
+                  accept: "image/*",
+                  maxSize: 1024 * 1024,
+                  onValueChange: (_files: File[]) => {},
+                  onValidationErrors: (_errs: FileValidationError[]) => {},
+                };
+                return <FileUpload {...fuProps} />;
+              })()}
+
+              {/* 36. Slider & RangeSlider (Wave 5) */}
+              {(() => {
+                const marks: SliderMark[] = [{ value: 0, label: "0" }, { value: 100, label: "100" }];
+                const sliderProps: SliderProps = {
+                  defaultValue: 50,
+                  min: 0,
+                  max: 100,
+                  step: 5,
+                  marks,
+                  onChange: (_val: number) => {},
+                };
+                const rangeProps: RangeSliderProps = {
+                  defaultValue: [20, 80],
+                  minDistance: 10,
+                  onChange: (_range: [number, number]) => {},
+                };
+                return (
+                  <>
+                    <Slider {...sliderProps} />
+                    <RangeSlider {...rangeProps} />
+                  </>
+                );
+              })()}
+
+              {/* 37. TreeView (Wave 6) */}
+              {(() => {
+                const nodes: TreeNode[] = [
+                  { id: "1", label: "Folder 1", children: [{ id: "1-1", label: "File 1" }] },
+                ];
+                const mode: TreeViewSelectionMode = "single";
+                const treeProps: TreeViewProps = {
+                  nodes,
+                  selectionMode: mode,
+                  defaultExpandedIds: ["1"],
+                  renderNode: (_node: TreeNode, _state: TreeNodeState) => <span>Node</span>,
+                  onSelectionChange: (_ids: string[]) => {},
+                };
+                return <TreeView {...treeProps} />;
+              })()}
+
+              {/* 38. Stepper (Wave 6) */}
+              {(() => {
+                const steps: StepItem[] = [
+                  { id: "step-1", label: "Step 1", description: "Details" },
+                  { id: "step-2", label: "Step 2" },
+                ];
+                const orientation: StepperOrientation = "horizontal";
+                const size: StepperSize = "md";
+                const stepperProps: StepperProps = {
+                  steps,
+                  activeStep: "step-1",
+                  orientation,
+                  size,
+                  isClickable: true,
+                  onStepChange: (_id: string | number) => {},
+                };
+                return <Stepper {...stepperProps} />;
+              })()}
+
+              {/* 39. Carousel (Wave 6) */}
+              {(() => {
+                const carouselProps: CarouselProps = {
+                  slides: [<div>Slide 1</div>, <div>Slide 2</div>],
+                  loop: true,
+                  autoPlay: true,
+                  autoPlayInterval: 3000,
+                  onSlideChange: (_idx: number) => {},
+                };
+                const slideProps: CarouselSlideProps = {
+                  children: <div>Slide A</div>,
+                };
+                return (
+                  <Carousel {...carouselProps}>
+                    <CarouselSlide {...slideProps} />
+                  </Carousel>
+                );
+              })()}
             </>
           );
         })()}
@@ -1103,3 +1505,37 @@ function ToastConsumerDemo() {
     </button>
   );
 }
+
+function FormValidationConsumerDemo() {
+  type FormState = Record<string, unknown> & {
+    email: string;
+  };
+  const formOptions: UseFormValidationOptions<FormState> = {
+    initialValues: { email: "" },
+    validators: {
+      email: (val: unknown) => {
+        if (!val || typeof val !== "string" || !val.trim()) {
+          const err: FieldValidationError = { message: "Email is required" };
+          const res: FieldValidationResult = { valid: false, error: err };
+          return res;
+        }
+        return { valid: true };
+      },
+    },
+  };
+  const form: UseFormValidationReturn<FormState> = useFormValidation<FormState>(formOptions);
+
+  return (
+    <form onSubmit={(e) => void form.handleSubmit(e)}>
+      <FormField {...form.getFieldProps("email")}>
+        <FormLabel>Email</FormLabel>
+        <Input {...form.getInputProps("email")} />
+        <FormErrorMessage />
+      </FormField>
+      <Button type="submit" isLoading={form.isSubmitting}>
+        Submit
+      </Button>
+    </form>
+  );
+}
+
