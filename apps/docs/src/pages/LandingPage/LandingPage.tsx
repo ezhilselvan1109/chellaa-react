@@ -87,7 +87,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           }}
         >
           <span className="landing-badge-pill">NEW</span>
-          <span>Chellaa React v0.2.3 Released — Zero-Config Styling</span>
+          <span>Chellaa React v0.3.0 Released — Zero-Config Styling</span>
           <FiArrowRight size={13} />
         </a>
 
